@@ -33,9 +33,7 @@
     "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_failure_count": 0,
-    "last_dev_failure_at": null,
-    "dev_failure_reasons": [],
-    "dev_completed_at": "2026-01-17T12:49:20.116123+00:00"
+    "dev_completed_at": "2026-01-17T13:04:29.541307Z"
   },
   {
     "category": "functional",
@@ -256,9 +254,11 @@
       "Step 6: Toggle back to original view",
       "Step 7: Verify view preference persists across page navigation"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-17T13:13:56Z",
+    "qa_completed_at": "2026-01-17T13:13:56Z"
   },
   {
     "category": "functional",
@@ -270,9 +270,11 @@
       "Step 4: Verify cards have consistent width and height",
       "Step 5: Verify grid responds to container width changes"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-17T13:13:56Z",
+    "qa_completed_at": "2026-01-17T13:13:56Z"
   },
   {
     "category": "functional",
@@ -284,9 +286,11 @@
       "Step 4: Verify essential information (title, priority, status) is visible",
       "Step 5: Verify more posts are visible per screen compared to Grid View"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-17T13:13:56Z",
+    "qa_completed_at": "2026-01-17T13:13:56Z"
   },
   {
     "category": "functional",

@@ -5,6 +5,7 @@ import { Search } from 'lucide-react';
 import { PostCard, type PostCardProps } from './post-card';
 import { FilterControls, type FilterState } from './filter-controls';
 import { SortControls, type SortState } from './sort-controls';
+import { ViewToggle, type ViewMode } from './view-toggle';
 
 interface QueuePaneProps {
   onPostSelect?: (post: PostCardProps) => void;
@@ -90,6 +91,8 @@ export function QueuePane({ onPostSelect, selectedPostId }: QueuePaneProps) {
     order: 'desc',
   });
 
+  const [viewMode, setViewMode] = useState<ViewMode>('list');
+
   // Filter and sort posts
   const filteredAndSortedPosts = useMemo(() => {
     let posts = [...mockPosts];
@@ -144,7 +147,7 @@ export function QueuePane({ onPostSelect, selectedPostId }: QueuePaneProps) {
   }, [filters, sort]);
 
   return (
-    <aside className="w-80 bg-background-secondary border-r border-border flex flex-col min-w-[320px] max-w-[400px]">
+    <aside className="w-80 bg-background-secondary border-r border-border flex flex-col min-w-[320px] max-w-[400px]" data-testid="queue-pane">
       {/* Queue Header */}
       <div className="p-4 border-b border-border">
         <h2 className="text-lg font-semibold text-foreground mb-3">Moderation Queue</h2>
@@ -165,8 +168,8 @@ export function QueuePane({ onPostSelect, selectedPostId }: QueuePaneProps) {
         </div>
       </div>
 
-      {/* Filters and Sort */}
-      <div className="p-3 border-b border-border flex gap-2">
+      {/* Filters, Sort, and View Toggle */}
+      <div className="p-3 border-b border-border flex gap-2 items-center">
         <FilterControls
           filters={filters}
           onFiltersChange={setFilters}
@@ -176,19 +179,28 @@ export function QueuePane({ onPostSelect, selectedPostId }: QueuePaneProps) {
           sort={sort}
           onSortChange={setSort}
         />
+        <div className="ml-auto">
+          <ViewToggle
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
+          />
+        </div>
       </div>
 
       {/* Queue List */}
       <div className="flex-1 overflow-y-auto">
         {filteredAndSortedPosts.length > 0 ? (
-          filteredAndSortedPosts.map((post) => (
-            <PostCard
-              key={post.id}
-              {...post}
-              isSelected={selectedPostId === post.id}
-              onClick={() => onPostSelect?.(post)}
-            />
-          ))
+          <div className={viewMode === 'grid' ? 'grid grid-cols-2 gap-3 p-3' : ''} data-testid="queue-container">
+            {filteredAndSortedPosts.map((post) => (
+              <PostCard
+                key={post.id}
+                {...post}
+                isSelected={selectedPostId === post.id}
+                onClick={() => onPostSelect?.(post)}
+                viewMode={viewMode}
+              />
+            ))}
+          </div>
         ) : (
           <div className="flex flex-col items-center justify-center h-64 p-6 text-center">
             <div className="w-12 h-12 bg-background-tertiary rounded-full flex items-center justify-center mb-3">

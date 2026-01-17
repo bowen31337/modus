@@ -2,6 +2,7 @@
 
 import { Clock, User, MessageSquare, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import type { ViewMode } from './view-toggle';
 
 export type PriorityLevel = 'P1' | 'P2' | 'P3' | 'P4' | 'P5';
 export type PostStatus = 'open' | 'in_progress' | 'resolved';
@@ -27,6 +28,7 @@ export interface PostCardProps {
   responseCount?: number;
   isSelected?: boolean;
   onClick?: () => void;
+  viewMode?: ViewMode;
 }
 
 const priorityColors: Record<PriorityLevel, string> = {
@@ -50,7 +52,7 @@ const statusColors: Record<PostStatus, string> = {
 };
 
 export function PostCard({
-  id: _id,
+  id,
   title,
   excerpt,
   priority,
@@ -63,9 +65,112 @@ export function PostCard({
   responseCount = 0,
   isSelected = false,
   onClick,
+  viewMode = 'list',
 }: PostCardProps) {
   const priorityStripColor = priorityColors[priority];
 
+  // Grid view layout
+  if (viewMode === 'grid') {
+    return (
+      <button
+        type="button"
+        role="button"
+        tabIndex={0}
+        onClick={onClick}
+        aria-pressed={isSelected}
+        data-testid={`post-card-${id}`}
+        className={cn(
+          'group relative flex flex-col w-full bg-background-secondary hover:bg-background-tertiary transition-colors cursor-pointer text-left border border-border rounded-lg overflow-hidden',
+          isSelected && 'ring-2 ring-primary'
+        )}
+      >
+        {/* Priority Strip (top) */}
+        <div className={cn('h-1 w-full', priorityStripColor)} />
+
+        {/* Content */}
+        <div className="flex-1 p-3">
+          {/* Header Row */}
+          <div className="flex items-start justify-between gap-2 mb-2">
+            <h3 className="text-sm font-medium text-foreground leading-tight line-clamp-2 flex-1">
+              {title}
+            </h3>
+
+            {/* Status Badge */}
+            <span
+              className={cn(
+                'text-[10px] px-1.5 py-0.5 rounded font-medium whitespace-nowrap',
+                statusColors[status]
+              )}
+            >
+              {status === 'open' ? 'Open' : status === 'in_progress' ? 'In Progress' : 'Resolved'}
+            </span>
+          </div>
+
+          {/* Excerpt */}
+          <p className="text-xs text-foreground-muted mb-3 line-clamp-3">{excerpt}</p>
+
+          {/* Metadata Grid */}
+          <div className="grid grid-cols-2 gap-2 text-xs text-foreground-muted mb-2">
+            {/* Priority */}
+            <span className={cn('font-mono text-[10px] px-1.5 py-0.5 rounded bg-background-tertiary')}>{priority}</span>
+
+            {/* Sentiment */}
+            {sentiment && (
+              <span className={cn('flex items-center gap-1', sentimentColors[sentiment])}>
+                {sentiment === 'negative' && <AlertCircle size={12} />}
+                {sentiment === 'positive' && <CheckCircle2 size={12} />}
+                {sentiment === 'neutral' && <MessageSquare size={12} />}
+                {sentiment}
+              </span>
+            )}
+
+            {/* Category */}
+            {category && (
+              <span
+                className="px-1.5 py-0.5 rounded text-[10px] font-medium truncate"
+                style={{ backgroundColor: category.color + '33', color: category.color }}
+              >
+                {category.name}
+              </span>
+            )}
+
+            {/* Response Count */}
+            {responseCount > 0 && (
+              <span className="flex items-center gap-1">
+                <MessageSquare size={11} />
+                {responseCount}
+              </span>
+            )}
+          </div>
+
+          {/* Author and Time */}
+          <div className="flex items-center justify-between text-xs text-foreground-muted pt-2 border-t border-border">
+            {author && (
+              <span className="flex items-center gap-1">
+                <User size={11} />
+                {author.name}
+                {author.postCount === 0 && <span> (new)</span>}
+              </span>
+            )}
+            <span className="flex items-center gap-1 ml-auto">
+              <Clock size={11} />
+              {createdAt}
+            </span>
+          </div>
+        </div>
+
+        {/* Assignment Indicator */}
+        {assignedTo && (
+          <div className="px-3 pb-2 text-[10px] text-primary flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+            {assignedTo}
+          </div>
+        )}
+      </button>
+    );
+  }
+
+  // List view layout (original)
   return (
     <button
       type="button"
@@ -73,6 +178,7 @@ export function PostCard({
       tabIndex={0}
       onClick={onClick}
       aria-pressed={isSelected}
+      data-testid={`post-card-${id}`}
       className={cn(
         'group relative flex w-full border-b border-border bg-background-secondary hover:bg-background-tertiary transition-colors cursor-pointer text-left',
         isSelected && 'bg-background-tertiary ring-1 ring-primary inset-0'
