@@ -2,3 +2,4 @@
 export * from './validation';
 export * from './rules';
 export * from './ai';
+export * from './sentiment';

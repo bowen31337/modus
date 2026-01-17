@@ -1158,8 +1158,11 @@
       "Step 7: Verify can modify system settings"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T19:45:50.923289Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -1218,8 +1221,11 @@
       "Step 5: Verify the change is traceable and attributable"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T19:45:35.154461Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",

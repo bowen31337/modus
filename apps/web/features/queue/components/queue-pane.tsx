@@ -6,6 +6,7 @@ import { PostCard, type PostCardProps } from './post-card';
 import { FilterControls, type FilterState, isDateInRange } from './filter-controls';
 import { SortControls, type SortState } from './sort-controls';
 import { ViewToggle, type ViewMode } from './view-toggle';
+import { analyzeSentiment, RulesEngine, RuleConditionType, RuleActionType } from '@modus/logic';
 
 interface QueuePaneProps {
   onPostSelect?: (post: PostCardProps) => void;
@@ -14,15 +15,13 @@ interface QueuePaneProps {
 
 // Mock data for initial development
 // Using ISO date format for proper date filtering
-const mockPosts: PostCardProps[] = [
+const rawMockPosts: Omit<PostCardProps, 'sentiment' | 'priority'>[] = [
   {
     id: '1',
     title: 'Unable to access my account after password reset',
     excerpt: 'I reset my password yesterday but still can\'t log in. The system keeps saying my credentials are invalid...',
     bodyContent: 'I reset my password yesterday but still can\'t log in. The system keeps saying my credentials are invalid. I\'ve tried clearing my cache, using incognito mode, and even a different browser, but nothing works. I need to access my account urgently for work purposes. Please help me resolve this issue as soon as possible.',
-    priority: 'P1',
     status: 'open',
-    sentiment: 'negative',
     category: { name: 'Account Issues', color: '#eab308' },
     author: { name: 'john_doe', postCount: 1 },
     createdAt: '2025-01-18T10:30:00Z',
@@ -33,9 +32,7 @@ const mockPosts: PostCardProps[] = [
     title: 'Feature request: Dark mode for mobile app',
     excerpt: 'Would love to see a dark mode option in the mobile application. My eyes get tired using the app at night...',
     bodyContent: 'Would love to see a dark mode option in the mobile application. My eyes get tired using the app at night, and the bright white background is really uncomfortable. Many other apps have this feature now, and it would be great if you could implement it. Maybe you could also add an automatic option that switches based on system settings.',
-    priority: 'P3',
     status: 'open',
-    sentiment: 'positive',
     category: { name: 'Feature Request', color: '#8b5cf6' },
     author: { name: 'sarah_w', postCount: 5 },
     createdAt: '2025-01-17T14:15:00Z',
@@ -46,9 +43,7 @@ const mockPosts: PostCardProps[] = [
     title: 'Bug: Images not loading in posts',
     excerpt: 'Since the last update, images in community posts are not loading. Just shows a broken image icon...',
     bodyContent: 'Since the last update, images in community posts are not loading. Just shows a broken image icon where the images should be. This is happening on both desktop and mobile versions. I\'ve tried on different internet connections and the issue persists. It\'s really frustrating because images are a big part of the community experience.',
-    priority: 'P2',
     status: 'in_progress',
-    sentiment: 'negative',
     category: { name: 'Bug Reports', color: '#ef4444' },
     author: { name: 'tech_user', postCount: 12 },
     assignedTo: 'Agent A',
@@ -60,9 +55,7 @@ const mockPosts: PostCardProps[] = [
     title: 'Spam account posting promotional content',
     excerpt: 'This user keeps posting links to dubious websites. Multiple reports from community members...',
     bodyContent: 'This user keeps posting links to dubious websites. Multiple reports from community members. The posts are clearly spam and contain affiliate links to questionable products. They\'re posting multiple times per day and it\'s cluttering up the community feed. Please take action immediately.',
-    priority: 'P1',
     status: 'open',
-    sentiment: 'negative',
     category: { name: 'Spam', color: '#ec4899' },
     author: { name: 'spammer123', postCount: 15 },
     createdAt: '2025-01-18T02:20:00Z',
@@ -73,9 +66,7 @@ const mockPosts: PostCardProps[] = [
     title: 'Harassment in community chat',
     excerpt: 'User is repeatedly sending abusive messages to other members. Need immediate intervention...',
     bodyContent: 'User is repeatedly sending abusive messages to other members. Need immediate intervention. This has been going on for days now and multiple users have reported feeling unsafe. The harassment includes personal attacks, threats, and hate speech. We need to ban this user before more people get hurt.',
-    priority: 'P1',
     status: 'resolved',
-    sentiment: 'negative',
     category: { name: 'Harassment', color: '#f97316' },
     author: { name: 'concerned_user', postCount: 8 },
     assignedTo: 'Agent B',
@@ -83,6 +74,65 @@ const mockPosts: PostCardProps[] = [
     responseCount: 5,
   },
 ];
+
+// Priority rules for automatic escalation
+const priorityRules = [
+  {
+    id: 'rule-1',
+    name: 'Sentiment-based Escalation',
+    description: 'Escalate posts with negative sentiment to P2',
+    condition_type: RuleConditionType.SENTIMENT_NEGATIVE,
+    condition_value: '-0.3',
+    action_type: RuleActionType.SET_PRIORITY,
+    action_value: 'P2',
+    position: 1,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'rule-2',
+    name: 'First-time Poster Priority',
+    description: 'Escalate posts from first-time posters to P2',
+    condition_type: RuleConditionType.FIRST_TIME_POSTER,
+    condition_value: '2',
+    action_type: RuleActionType.SET_PRIORITY,
+    action_value: 'P2',
+    position: 2,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+];
+
+// Initialize rules engine
+const rulesEngine = new RulesEngine(priorityRules);
+
+// Analyze sentiment and apply priority rules to mock posts
+const mockPosts: PostCardProps[] = rawMockPosts.map((post) => {
+  const fullText = `${post.title} ${post.bodyContent || post.excerpt}`;
+  const sentimentAnalysis = analyzeSentiment(fullText);
+
+  // Calculate priority using rules engine
+  const priority = rulesEngine.calculatePriority({
+    post: {
+      id: post.id,
+      title: post.title,
+      body_content: post.bodyContent || post.excerpt,
+      status: post.status,
+      priority: 'P3', // Default priority
+      sentiment_score: sentimentAnalysis.score,
+      sentiment_label: sentimentAnalysis.label,
+      author_user_id: post.author?.name || 'unknown',
+      author_post_count: post.author?.postCount || 0,
+      created_at: post.createdAt,
+    },
+  });
+
+  return {
+    ...post,
+    sentiment: sentimentAnalysis.label,
+    priority,
+  };
+});
 
 export function QueuePane({ onPostSelect, selectedPostId }: QueuePaneProps) {
   const [filters, setFilters] = useState<FilterState>({
