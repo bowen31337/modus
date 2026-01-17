@@ -11,8 +11,8 @@ test.describe('Command Palette Debug', () => {
 
     await page.goto('/dashboard');
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
-    // Wait for the keyboard listener marker to be present
-    await page.waitForSelector('#cmd-k-listener-attached', { timeout: 10000 });
+    // Wait for the keyboard listener marker to be present (it's hidden with display: none)
+    await page.waitForSelector('#cmd-k-listener-attached', { state: 'attached', timeout: 10000 });
 
     // Check if the marker element exists (added by useEffect)
     const markerExists = await page.evaluate(() => {
@@ -39,8 +39,8 @@ test.describe('Command Palette Debug', () => {
 
     await page.goto('/dashboard');
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
-    // Wait for the keyboard listener marker to be present
-    await page.waitForSelector('#cmd-k-listener-attached', { timeout: 10000 });
+    // Wait for the keyboard listener marker to be present (it's hidden with display: none)
+    await page.waitForSelector('#cmd-k-listener-attached', { state: 'attached', timeout: 10000 });
 
     // Verify the marker exists (useEffect has run)
     const markerExists = await page.evaluate(() => {

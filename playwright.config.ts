@@ -39,7 +39,7 @@ export default defineConfig({
     //   use: { ...devices['iPhone 12'] },
     // },
   ],
-  // webServer is disabled - use existing dev server on port 3000
+  // webServer is disabled - use existing dev server on port 3006
   // Run with: pnpm run dev
   outputDir: 'reports/screenshots',
 });

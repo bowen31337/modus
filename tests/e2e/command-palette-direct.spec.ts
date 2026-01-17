@@ -17,8 +17,8 @@ test.describe('Command Palette - Direct State Control', () => {
 
     // Wait for the page to load and keyboard listener to be attached
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
-    // Wait for the keyboard listener marker to be present
-    await page.waitForSelector('#cmd-k-listener-attached', { timeout: 10000 });
+    // Wait for the keyboard listener marker to be present (it's hidden with display: none)
+    await page.waitForSelector('#cmd-k-listener-attached', { state: 'attached', timeout: 10000 });
   });
 
   test('should render CommandPalette in DOM but hidden initially', async ({ page }) => {

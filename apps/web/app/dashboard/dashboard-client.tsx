@@ -47,29 +47,71 @@ export default function DashboardPage() {
     };
   }, []);
 
-  const handlePostSelect = (post: PostCardProps) => {
+  const handlePostSelect = async (post: PostCardProps) => {
     // Auto-assign on click if not already assigned
     if (!assignedPosts.has(post.id)) {
-      setAssignedPosts(prev => new Set(prev).add(post.id));
+      try {
+        const response = await fetch(`/api/v1/posts/${post.id}/assign`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ agent_id: CURRENT_AGENT.id }),
+        });
+
+        if (response.ok) {
+          setAssignedPosts(prev => new Set(prev).add(post.id));
+        } else {
+          console.error('Failed to assign post:', await response.text());
+        }
+      } catch (error) {
+        console.error('Error assigning post:', error);
+      }
     }
     setSelectedPost(post);
   };
 
-  const handleAssignToMe = () => {
+  const handleAssignToMe = async () => {
     if (selectedPost) {
-      setAssignedPosts(prev => new Set(prev).add(selectedPost.id));
+      try {
+        const response = await fetch(`/api/v1/posts/${selectedPost.id}/assign`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ agent_id: CURRENT_AGENT.id }),
+        });
+
+        if (response.ok) {
+          setAssignedPosts(prev => new Set(prev).add(selectedPost.id));
+        } else {
+          console.error('Failed to assign post:', await response.text());
+        }
+      } catch (error) {
+        console.error('Error assigning post:', error);
+      }
     }
   };
 
-  const handleRelease = () => {
+  const handleRelease = async () => {
     if (selectedPost) {
-      setAssignedPosts(prev => {
-        const newSet = new Set(prev);
-        newSet.delete(selectedPost.id);
-        return newSet;
-      });
+      try {
+        const response = await fetch(`/api/v1/posts/${selectedPost.id}/release`, {
+          method: 'POST',
+        });
+
+        if (response.ok) {
+          setAssignedPosts(prev => {
+            const newSet = new Set(prev);
+            newSet.delete(selectedPost.id);
+            return newSet;
+          });
+        } else {
+          console.error('Failed to release post:', await response.text());
+        }
+      } catch (error) {
+        console.error('Error releasing post:', error);
+      }
     }
-    // Keep the detail view open so user can reassign
+    // Note: We keep the detail view open after release so the user can see
+    // the post and choose to reassign. The post is removed from assignedPosts
+    // but remains selected.
   };
 
   const handleCloseDetail = () => {
@@ -79,23 +121,52 @@ export default function DashboardPage() {
     setForceReset(prev => prev + 1);
   };
 
-  const handleResolve = () => {
-    // In a real app, this would update the post status via API
+  const handleResolve = async () => {
+    if (!selectedPost) return;
+
+    try {
+      const response = await fetch(`/api/v1/posts/${selectedPost.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'resolved' }),
+      });
+
+      if (response.ok) {
+        // Successfully resolved - post will be updated in queue via refetch
+        // For now, just clear the selected post
+        setSelectedPost(null);
+      } else {
+        console.error('Failed to resolve post:', await response.text());
+      }
+    } catch (error) {
+      console.error('Error resolving post:', error);
+    }
   };
 
-  const handleReassign = (postId: string, toAgentId: string) => {
-    // Remove from current agent's assigned posts
-    setAssignedPosts(prev => {
-      const newSet = new Set(prev);
-      newSet.delete(postId);
-      return newSet;
-    });
+  const handleReassign = async (postId: string, toAgentId: string) => {
+    try {
+      const response = await fetch(`/api/v1/posts/${postId}/assign`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ agent_id: toAgentId }),
+      });
 
-    // In a real app, this would:
-    // 1. Update the post's assigned_to field in the database
-    // 2. Send a notification to the new agent
-    // 3. Log the reassignment in the audit trail
-    console.log(`Reassigned post ${postId} to agent ${toAgentId}`);
+      if (response.ok) {
+        // Remove from current agent's assigned posts
+        setAssignedPosts(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(postId);
+          return newSet;
+        });
+
+        // Log the reassignment (in production, this would be an audit log entry)
+        console.log(`Reassigned post ${postId} to agent ${toAgentId}`);
+      } else {
+        console.error('Failed to reassign post:', await response.text());
+      }
+    } catch (error) {
+      console.error('Error reassigning post:', error);
+    }
   };
 
   const handleCommandPaletteNavigate = (path: string) => {

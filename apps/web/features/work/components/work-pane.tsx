@@ -103,6 +103,14 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
           setIsReassignModalOpen(false);
           return;
         }
+        // Don't intercept Escape if the command palette is open
+        // Check if the event target is inside the command palette
+        const target = e.target as Node;
+        const commandPalette = document.querySelector('[data-testid="command-palette"]');
+        if (commandPalette && commandPalette.contains(target)) {
+          // Let the command palette handle the Escape key
+          return;
+        }
         // Only close detail view if not typing in textarea (RichTextEditor handles Escape there)
         if (selectedPost && !(e.target instanceof HTMLTextAreaElement)) {
           e.preventDefault();
@@ -141,20 +149,67 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
     };
   }, []);
 
-  const handleSendResponse = () => {
-    if (!responseContent.trim() || !selectedPost) return;
+  // Load responses when post is selected
+  useEffect(() => {
+    if (!selectedPost) {
+      setResponses([]);
+      return;
+    }
 
-    const newResponse = {
-      id: `response-${Date.now()}`,
-      content: responseContent,
-      isInternalNote,
-      agent: currentAgent.name,
-      createdAt: new Date().toISOString(),
+    const loadResponses = async () => {
+      try {
+        const response = await fetch(`/api/v1/posts/${selectedPost.id}/responses`);
+        if (response.ok) {
+          const result = await response.json();
+          const transformedResponses = result.data.map((r: any) => ({
+            id: r.id,
+            content: r.content,
+            isInternalNote: r.is_internal_note,
+            agent: currentAgent.name, // In production, this would come from the agent_id
+            createdAt: r.created_at,
+          }));
+          setResponses(transformedResponses);
+        }
+      } catch (error) {
+        console.error('Error loading responses:', error);
+      }
     };
 
-    setResponses([...responses, newResponse]);
-    setResponseContent('');
-    setIsInternalNote(false);
+    loadResponses();
+  }, [selectedPost?.id, currentAgent.name]);
+
+  const handleSendResponse = async () => {
+    if (!responseContent.trim() || !selectedPost) return;
+
+    try {
+      const response = await fetch(`/api/v1/posts/${selectedPost.id}/responses`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          content: responseContent,
+          is_internal_note: isInternalNote,
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        const newResponse = {
+          id: result.data.id,
+          content: result.data.content,
+          isInternalNote: result.data.is_internal_note,
+          agent: currentAgent.name,
+          createdAt: result.data.created_at,
+        };
+
+        setResponses([...responses, newResponse]);
+        setResponseContent('');
+        setIsInternalNote(false);
+      } else {
+        console.error('Failed to submit response:', await response.text());
+      }
+    } catch (error) {
+      console.error('Error submitting response:', error);
+    }
   };
 
   const handleTemplateSelect = (content: string) => {

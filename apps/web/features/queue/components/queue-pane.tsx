@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useMemo, useEffect, useRef } from 'react';
-import { Search } from 'lucide-react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { Search, Loader2 } from 'lucide-react';
 import { PostCard, type PostCardProps } from './post-card';
+import { PostCardSkeleton } from './post-card-skeleton';
 import { FilterControls, type FilterState, isDateInRange } from './filter-controls';
 import { SortControls, type SortState } from './sort-controls';
 import { ViewToggle, type ViewMode } from './view-toggle';
-import { analyzeSentiment, RulesEngine, RuleConditionType, RuleActionType } from '@modus/logic';
 
 interface QueuePaneProps {
   forceReset?: number;
@@ -14,138 +14,48 @@ interface QueuePaneProps {
   selectedPostId?: string | null;
 }
 
-// Mock data for initial development
-// Using ISO date format for proper date filtering
-const rawMockPosts: Omit<PostCardProps, 'sentiment' | 'priority'>[] = [
-  {
-    id: '1',
-    title: 'Unable to access my account after password reset',
-    excerpt: 'I reset my password yesterday but still can\'t log in. The system keeps saying my credentials are invalid...',
-    bodyContent: 'I reset my password yesterday but still can\'t log in. The system keeps saying my credentials are invalid. I\'ve tried clearing my cache, using incognito mode, and even a different browser, but nothing works. I need to access my account urgently for work purposes. Please help me resolve this issue as soon as possible.',
-    status: 'open',
-    category: { name: 'Account Issues', color: '#eab308' },
-    author: { name: 'john_doe', postCount: 1 },
-    createdAt: '2025-01-18T10:30:00Z',
-    responseCount: 0,
-  },
-  {
-    id: '2',
-    title: 'Feature request: Dark mode for mobile app',
-    excerpt: 'Would love to see a dark mode option in the mobile application. My eyes get tired using the app at night...',
-    bodyContent: 'Would love to see a dark mode option in the mobile application. My eyes get tired using the app at night, and the bright white background is really uncomfortable. Many other apps have this feature now, and it would be great if you could implement it. Maybe you could also add an automatic option that switches based on system settings.',
-    status: 'open',
-    category: { name: 'Feature Request', color: '#8b5cf6' },
-    author: { name: 'sarah_w', postCount: 5 },
-    createdAt: '2025-01-17T14:15:00Z',
-    responseCount: 0,
-  },
-  {
-    id: '3',
-    title: 'Bug: Images not loading in posts',
-    excerpt: 'Since the last update, images in community posts are not loading. Just shows a broken image icon...',
-    bodyContent: 'Since the last update, images in community posts are not loading. Just shows a broken image icon where the images should be. This is happening on both desktop and mobile versions. I\'ve tried on different internet connections and the issue persists. It\'s really frustrating because images are a big part of the community experience.',
-    status: 'in_progress',
-    category: { name: 'Bug Reports', color: '#ef4444' },
-    author: { name: 'tech_user', postCount: 12 },
-    assignedTo: 'Agent A',
-    createdAt: '2025-01-16T09:45:00Z',
-    responseCount: 2,
-  },
-  {
-    id: '4',
-    title: 'Spam account posting promotional content',
-    excerpt: 'This user keeps posting links to dubious websites. Multiple reports from community members...',
-    bodyContent: 'This user keeps posting links to dubious websites. Multiple reports from community members. The posts are clearly spam and contain affiliate links to questionable products. They\'re posting multiple times per day and it\'s cluttering up the community feed. Please take action immediately.',
-    status: 'open',
-    category: { name: 'Spam', color: '#ec4899' },
-    author: { name: 'spammer123', postCount: 15 },
-    createdAt: '2025-01-18T02:20:00Z',
-    responseCount: 0,
-  },
-  {
-    id: '5',
-    title: 'Harassment in community chat',
-    excerpt: 'User is repeatedly sending abusive messages to other members. Need immediate intervention...',
-    bodyContent: 'URGENT: User is repeatedly sending extremely abusive and threatening messages to other members. This is completely unacceptable and needs immediate intervention. I am terrified for my safety and the safety of others. The harassment includes violent threats, hate speech, and personal attacks. This is the worst harassment I have ever seen. We need to ban this dangerous user immediately before someone gets seriously hurt.',
-    status: 'resolved',
-    category: { name: 'Harassment', color: '#f97316' },
-    author: { name: 'concerned_user', postCount: 8 },
-    assignedTo: 'Agent B',
-    createdAt: '2025-01-10T16:30:00Z',
-    responseCount: 5,
-  },
-];
-
-// Priority rules for automatic escalation
-const priorityRules = [
-  {
-    id: 'rule-1',
-    name: 'Critical Sentiment Escalation',
-    description: 'Escalate posts with very negative sentiment to P1',
-    condition_type: RuleConditionType.SENTIMENT_NEGATIVE,
-    condition_value: '-0.7',
-    action_type: RuleActionType.SET_PRIORITY,
-    action_value: 'P1',
-    position: 1,
-    is_active: true,
-    created_at: new Date().toISOString(),
-  },
-  {
-    id: 'rule-2',
-    name: 'Sentiment-based Escalation',
-    description: 'Escalate posts with negative sentiment to P2',
-    condition_type: RuleConditionType.SENTIMENT_NEGATIVE,
-    condition_value: '-0.3',
-    action_type: RuleActionType.SET_PRIORITY,
-    action_value: 'P2',
-    position: 2,
-    is_active: true,
-    created_at: new Date().toISOString(),
-  },
-  {
-    id: 'rule-3',
-    name: 'First-time Poster Priority',
-    description: 'Escalate posts from first-time posters to P2',
-    condition_type: RuleConditionType.FIRST_TIME_POSTER,
-    condition_value: '2',
-    action_type: RuleActionType.SET_PRIORITY,
-    action_value: 'P2',
-    position: 3,
-    is_active: true,
-    created_at: new Date().toISOString(),
-  },
-];
-
-// Initialize rules engine
-const rulesEngine = new RulesEngine(priorityRules);
-
-// Analyze sentiment and apply priority rules to mock posts
-const mockPosts: PostCardProps[] = rawMockPosts.map((post) => {
-  const fullText = `${post.title} ${post.bodyContent || post.excerpt}`;
-  const sentimentAnalysis = analyzeSentiment(fullText);
-
-  // Calculate priority using rules engine
-  const priority = rulesEngine.calculatePriority({
-    post: {
-      id: post.id,
-      title: post.title,
-      body_content: post.bodyContent || post.excerpt,
-      status: post.status,
-      priority: 'P3', // Default priority
-      sentiment_score: sentimentAnalysis.score,
-      sentiment_label: sentimentAnalysis.label,
-      author_user_id: post.author?.name || 'unknown',
-      author_post_count: post.author?.postCount || 0,
-      created_at: post.createdAt,
-    },
-  });
-
-  return {
-    ...post,
-    sentiment: sentimentAnalysis.label,
-    priority,
+// API response type for posts
+interface ApiPost {
+  id: string;
+  title: string;
+  body_content: string;
+  excerpt?: string;
+  status: 'open' | 'in_progress' | 'resolved';
+  priority: 'P1' | 'P2' | 'P3' | 'P4' | 'P5';
+  sentiment_label?: 'negative' | 'neutral' | 'positive' | null;
+  sentiment_score?: number | null;
+  category_id?: string;
+  category?: {
+    id: string;
+    name: string;
+    color: string;
   };
-});
+  author_user_id: string;
+  author_post_count: number;
+  assigned_to_id?: string | null;
+  assigned_agent?: {
+    id: string;
+    display_name: string;
+  } | null;
+  assigned_at?: string | null;
+  created_at: string;
+  updated_at: string;
+  resolved_at?: string | null;
+  response_count?: number;
+}
+
+interface ApiPostsResponse {
+  data: ApiPost[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    pages: number;
+  };
+}
+
+// Constants for API pagination
+const POSTS_PER_PAGE = 20;
 
 export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePaneProps) {
   const [filters, setFilters] = useState<FilterState>({
@@ -162,21 +72,22 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
 
   const [viewMode, setViewMode] = useState<ViewMode>('list');
 
+  // API state
+  const [posts, setPosts] = useState<PostCardProps[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPosts, setTotalPosts] = useState(0);
+
   // Keyboard navigation state
   const [focusedIndex, setFocusedIndex] = useState<number>(0);
   const queueContainerRef = useRef<HTMLDivElement>(null);
 
-  // Reset focused index when forceReset changes (e.g., when closing detail view)
-  useEffect(() => {
-    if (forceReset && forceReset > 0) {
-      setFocusedIndex(0);
-    }
-  }, [forceReset]);
-
-  // Use refs to avoid stale closures in keyboard handler
+  // Refs for keyboard handler
   const focusedIndexRef = useRef<number>(0);
-  const filteredAndSortedPostsRef = useRef<PostCardProps[]>([]);
+  const postsRef = useRef<PostCardProps[]>([]);
   const onPostSelectRef = useRef(onPostSelect);
+  const loadingRef = useRef(false);
 
   // Update refs when values change
   useEffect(() => {
@@ -184,8 +95,23 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
   }, [focusedIndex]);
 
   useEffect(() => {
+    postsRef.current = posts;
+  }, [posts]);
+
+  useEffect(() => {
     onPostSelectRef.current = onPostSelect;
   }, [onPostSelect]);
+
+  useEffect(() => {
+    loadingRef.current = loading;
+  }, [loading]);
+
+  // Reset focused index when forceReset changes (e.g., when closing detail view)
+  useEffect(() => {
+    if (forceReset && forceReset > 0) {
+      setFocusedIndex(0);
+    }
+  }, [forceReset]);
 
   // Blur search input on mount to prevent it from capturing keyboard events
   useEffect(() => {
@@ -195,77 +121,94 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
     }
   }, []);
 
-  // Filter and sort posts
-  const filteredAndSortedPosts = useMemo(() => {
-    let posts = [...mockPosts];
+  // Transform API post to PostCardProps
+  const transformApiPost = useCallback((apiPost: ApiPost): PostCardProps => {
+    return {
+      id: apiPost.id,
+      title: apiPost.title,
+      excerpt: apiPost.excerpt || apiPost.body_content.substring(0, 150) + '...',
+      bodyContent: apiPost.body_content,
+      priority: apiPost.priority,
+      status: apiPost.status,
+      sentiment: apiPost.sentiment_label || undefined,
+      category: apiPost.category,
+      author: {
+        name: apiPost.author_user_id,
+        postCount: apiPost.author_post_count,
+      },
+      assignedTo: apiPost.assigned_agent?.display_name || undefined,
+      createdAt: apiPost.created_at,
+      responseCount: apiPost.response_count || 0,
+    };
+  }, []);
 
-    // Apply filters
-    if (filters.category !== 'all') {
-      posts = posts.filter(p => p.category?.name === filters.category);
-    }
+  // Fetch posts from API
+  const fetchPosts = useCallback(async (page: number, reset: boolean = false) => {
+    if (loadingRef.current) return;
 
-    if (filters.status !== 'all') {
-      posts = posts.filter(p => p.status === filters.status);
-    }
+    setLoading(true);
+    try {
+      // Build query parameters
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: POSTS_PER_PAGE.toString(),
+        sort_by: sort.field,
+        sort_order: sort.order,
+      });
 
-    if (filters.priority !== 'all') {
-      posts = posts.filter(p => p.priority === filters.priority);
-    }
+      // Add filters
+      if (filters.status !== 'all') {
+        params.append('status', filters.status);
+      }
+      if (filters.priority !== 'all') {
+        params.append('priority', filters.priority);
+      }
+      if (filters.search) {
+        params.append('search', filters.search);
+      }
+      // Note: category filter would need category_id, not name
+      // Date range would use date_from and date_to
 
-    if (filters.search) {
-      const searchLower = filters.search.toLowerCase();
-      posts = posts.filter(p =>
-        p.title.toLowerCase().includes(searchLower) ||
-        p.excerpt.toLowerCase().includes(searchLower) ||
-        (p.bodyContent && p.bodyContent.toLowerCase().includes(searchLower))
-      );
-    }
-
-    // Apply date range filter
-    if (filters.dateRange?.startDate || filters.dateRange?.endDate) {
-      posts = posts.filter(p =>
-        isDateInRange(p.createdAt, filters.dateRange?.startDate, filters.dateRange?.endDate)
-      );
-    }
-
-    // Apply sorting
-    posts.sort((a, b) => {
-      let comparison = 0;
-
-      switch (sort.field) {
-        case 'priority':
-          const priorityOrder = { P1: 1, P2: 2, P3: 3, P4: 4, P5: 5 };
-          comparison = priorityOrder[a.priority] - priorityOrder[b.priority];
-          // For priority: ascending = P1, P2, P3 (highest to lowest priority)
-          // descending = P3, P2, P1 (lowest to highest priority)
-          // But we want "desc" to mean highest priority first (P1, P2, P3)
-          // So we flip the logic for priority
-          return sort.order === 'asc' ? -comparison : comparison;
-        case 'date':
-          // Simple sort by createdAt string (in real app, use actual dates)
-          comparison = a.createdAt.localeCompare(b.createdAt);
-          return sort.order === 'asc' ? comparison : -comparison;
-        case 'status':
-          const statusOrder = { open: 1, in_progress: 2, resolved: 3 };
-          comparison = statusOrder[a.status] - statusOrder[b.status];
-          return sort.order === 'asc' ? comparison : -comparison;
-        case 'response_count':
-          comparison = (a.responseCount || 0) - (b.responseCount || 0);
-          return sort.order === 'asc' ? comparison : -comparison;
+      const response = await fetch(`/api/v1/posts?${params.toString()}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      return comparison;
-    });
+      const data: ApiPostsResponse = await response.json();
 
-    return posts;
-  }, [filters, sort]);
+      // Transform API posts to PostCardProps
+      const transformedPosts = data.data.map(transformApiPost);
 
-  // Update filteredAndSortedPostsRef after filteredAndSortedPosts is computed
+      if (reset) {
+        setPosts(transformedPosts);
+      } else {
+        setPosts(prev => [...prev, ...transformedPosts]);
+      }
+
+      setTotalPosts(data.meta.total);
+      setHasMore(page < data.meta.pages);
+      setCurrentPage(page);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+      // On error, keep existing posts or show empty state
+      if (reset) {
+        setPosts([]);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [filters, sort, transformApiPost]);
+
+  // Initial fetch and refetch when filters/sort change
   useEffect(() => {
-    filteredAndSortedPostsRef.current = filteredAndSortedPosts;
-  }, [filteredAndSortedPosts]);
+    // Reset and fetch when filters or sort change
+    setPosts([]);
+    setCurrentPage(1);
+    setHasMore(true);
+    fetchPosts(1, true);
+  }, [filters, sort, fetchPosts]);
 
-  // Keyboard navigation handler - uses refs to avoid stale closures
+  // Keyboard navigation handler
   useEffect(() => {
     console.log('[QueuePane] Keyboard event listener ATTACHED!');
     // Add a marker to the DOM for testing
@@ -284,7 +227,7 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
       // J key: navigate down
       if (e.key === 'j' || e.key === 'J') {
         e.preventDefault();
-        const currentPosts = filteredAndSortedPostsRef.current;
+        const currentPosts = postsRef.current;
         const currentIndex = focusedIndexRef.current;
         const newIndex = (currentIndex + 1) % currentPosts.length;
 
@@ -306,7 +249,7 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
       // K key: navigate up (but not when Cmd/Ctrl is pressed - that's a shortcut)
       if ((e.key === 'k' || e.key === 'K') && !e.metaKey && !e.ctrlKey) {
         e.preventDefault();
-        const currentPosts = filteredAndSortedPostsRef.current;
+        const currentPosts = postsRef.current;
         const currentIndex = focusedIndexRef.current;
         const newIndex = currentIndex <= 0 ? currentPosts.length - 1 : currentIndex - 1;
 
@@ -323,7 +266,7 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
 
       // Enter key: select the focused post
       if (e.key === 'Enter') {
-        const currentPosts = filteredAndSortedPostsRef.current;
+        const currentPosts = postsRef.current;
         console.log(`[Enter key] posts length: ${currentPosts.length}, focusedIndex: ${focusedIndexRef.current}`);
         if (currentPosts.length > 0) {
           e.preventDefault();
@@ -345,10 +288,74 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
     };
   }, []);
 
-  // Reset focused index when filters change
+  // Reset focused index when filters or sort change
   useEffect(() => {
     setFocusedIndex(0);
   }, [filters, sort]);
+
+  // Infinite scroll handler
+  const handleScroll = useCallback(() => {
+    if (!queueContainerRef.current || loading || !hasMore) return;
+
+    const container = queueContainerRef.current;
+    const scrollBottom = container.scrollTop + container.clientHeight;
+    const threshold = container.scrollHeight - 200; // Load more when 200px from bottom
+
+    if (scrollBottom >= threshold) {
+      fetchPosts(currentPage + 1);
+    }
+  }, [loading, hasMore, currentPage, fetchPosts]);
+
+  // Attach scroll listener
+  useEffect(() => {
+    const container = queueContainerRef.current;
+    if (!container) return;
+
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
+
+  // Filter posts locally for display (client-side filtering for already loaded posts)
+  // Note: In production, all filtering would be done server-side via API
+  const filteredPosts = posts.filter(post => {
+    // Apply category filter
+    if (filters.category !== 'all' && post.category?.name !== filters.category) {
+      return false;
+    }
+
+    // Apply date range filter
+    if (filters.dateRange?.startDate || filters.dateRange?.endDate) {
+      if (!isDateInRange(post.createdAt, filters.dateRange?.startDate, filters.dateRange?.endDate)) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+
+  // Sort posts locally for display
+  const sortedPosts = [...filteredPosts].sort((a, b) => {
+    let comparison = 0;
+
+    switch (sort.field) {
+      case 'priority':
+        const priorityOrder = { P1: 1, P2: 2, P3: 3, P4: 4, P5: 5 };
+        comparison = priorityOrder[a.priority] - priorityOrder[b.priority];
+        return sort.order === 'asc' ? -comparison : comparison;
+      case 'date':
+        comparison = a.createdAt.localeCompare(b.createdAt);
+        return sort.order === 'asc' ? comparison : -comparison;
+      case 'status':
+        const statusOrder = { open: 1, in_progress: 2, resolved: 3 };
+        comparison = statusOrder[a.status] - statusOrder[b.status];
+        return sort.order === 'asc' ? comparison : -comparison;
+      case 'response_count':
+        comparison = (a.responseCount || 0) - (b.responseCount || 0);
+        return sort.order === 'asc' ? comparison : -comparison;
+    }
+
+    return comparison;
+  });
 
   return (
     <aside className="w-80 bg-background-secondary border-r border-border flex flex-col min-w-[320px] max-w-[400px]" data-testid="queue-pane">
@@ -377,7 +384,7 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
         <FilterControls
           filters={filters}
           onFiltersChange={setFilters}
-          postCount={filteredAndSortedPosts.length}
+          postCount={sortedPosts.length}
         />
         <SortControls
           sort={sort}
@@ -393,25 +400,47 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
 
       {/* Queue List */}
       <div className="flex-1 overflow-y-auto" ref={queueContainerRef}>
-        {filteredAndSortedPosts.length > 0 ? (
-          <div className={viewMode === 'grid' ? 'grid grid-cols-2 gap-3 p-3' : ''} data-testid="queue-container">
-            {filteredAndSortedPosts.map((post, index) => {
-              const isFocused = index === focusedIndex;
-              return (
-                <PostCard
-                  key={post.id}
-                  {...post}
-                  isSelected={selectedPostId === post.id}
-                  isKeyboardFocused={isFocused}
-                  onClick={() => {
-                    setFocusedIndex(index);
-                    onPostSelect?.(post);
-                  }}
-                  viewMode={viewMode}
-                />
-              );
-            })}
+        {loading && posts.length === 0 ? (
+          <div className={viewMode === 'grid' ? 'grid grid-cols-2 gap-3 p-3' : ''}>
+            {/* Show 5 skeleton cards during initial load */}
+            {Array.from({ length: 5 }).map((_, index) => (
+              <PostCardSkeleton key={`skeleton-${index}`} viewMode={viewMode} />
+            ))}
           </div>
+        ) : sortedPosts.length > 0 ? (
+          <>
+            <div className={viewMode === 'grid' ? 'grid grid-cols-2 gap-3 p-3' : ''} data-testid="queue-container">
+              {sortedPosts.map((post, index) => {
+                const isFocused = index === focusedIndex;
+                return (
+                  <PostCard
+                    key={post.id}
+                    {...post}
+                    isSelected={selectedPostId === post.id}
+                    isKeyboardFocused={isFocused}
+                    onClick={() => {
+                      setFocusedIndex(index);
+                      onPostSelect?.(post);
+                    }}
+                    viewMode={viewMode}
+                  />
+                );
+              })}
+            </div>
+            {loading && (
+              <div className={viewMode === 'grid' ? 'grid grid-cols-2 gap-3 p-3' : ''}>
+                {/* Show 2 skeleton cards when loading more */}
+                {Array.from({ length: 2 }).map((_, index) => (
+                  <PostCardSkeleton key={`skeleton-more-${index}`} viewMode={viewMode} />
+                ))}
+              </div>
+            )}
+            {!hasMore && sortedPosts.length > 0 && (
+              <div className="text-center p-4 text-xs text-muted-foreground">
+                End of list
+              </div>
+            )}
+          </>
         ) : (
           <div className="flex flex-col items-center justify-center h-64 p-6 text-center">
             <div className="w-12 h-12 bg-background-tertiary rounded-full flex items-center justify-center mb-3">
@@ -426,8 +455,8 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
       {/* Queue Stats */}
       <div className="p-3 border-t border-border bg-background-secondary">
         <div className="flex justify-between text-xs text-muted-foreground">
-          <span>Total: {filteredAndSortedPosts.length}</span>
-          <span>Open: {filteredAndSortedPosts.filter(p => p.status === 'open').length}</span>
+          <span>Total: {totalPosts}</span>
+          <span>Loaded: {posts.length}</span>
         </div>
       </div>
     </aside>

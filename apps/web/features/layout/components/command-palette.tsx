@@ -108,34 +108,15 @@ export function CommandPalette({ isOpen, onClose, onNavigate }: CommandPalettePr
     };
   }, [isOpen, onClose]);
 
-  // Handle keyboard navigation
+  // Handle keyboard navigation on the container (for clicks on the backdrop)
+  // Note: Input handles its own keyboard events to avoid double-processing
   const handleKeyDown = (e: KeyboardEvent) => {
     if (!isOpen) return;
 
-    switch (e.key) {
-      case 'Escape':
-        e.preventDefault();
-        onClose();
-        break;
-      case 'ArrowDown':
-        e.preventDefault();
-        setSelectedIndex((prev) =>
-          prev < filteredCommands.length - 1 ? prev + 1 : 0
-        );
-        break;
-      case 'ArrowUp':
-        e.preventDefault();
-        setSelectedIndex((prev) =>
-          prev > 0 ? prev - 1 : filteredCommands.length - 1
-        );
-        break;
-      case 'Enter':
-        e.preventDefault();
-        if (filteredCommands[selectedIndex]) {
-          filteredCommands[selectedIndex].action();
-          onClose();
-        }
-        break;
+    // Only handle Escape at the container level (for when input isn't focused)
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      onClose();
     }
   };
 
@@ -153,16 +134,20 @@ export function CommandPalette({ isOpen, onClose, onNavigate }: CommandPalettePr
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh]">
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+      {/* Backdrop - pointer-events-auto ensures it's clickable */}
+      <div
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm pointer-events-auto"
+        onClick={onClose}
+        data-testid="command-palette-backdrop"
+      />
 
-      {/* Command Palette Modal */}
+      {/* Command Palette Modal - pointer-events-auto ensures content is interactive */}
       <div
         ref={containerRef}
         className={cn(
           'relative w-full max-w-2xl rounded-lg bg-background-secondary',
           'border border-border shadow-2xl overflow-hidden',
-          'animate-in fade-in zoom-in-95 duration-200'
+          'animate-in fade-in zoom-in-95 duration-200 pointer-events-auto'
         )}
         onKeyDown={handleKeyDown}
         data-testid="command-palette"
@@ -176,6 +161,38 @@ export function CommandPalette({ isOpen, onClose, onNavigate }: CommandPalettePr
             placeholder="Type a command or search..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              // Handle keyboard navigation directly on the input
+              switch (e.key) {
+                case 'Escape':
+                  e.stopPropagation();
+                  e.preventDefault();
+                  onClose();
+                  break;
+                case 'ArrowDown':
+                  e.stopPropagation();
+                  e.preventDefault();
+                  setSelectedIndex((prev) =>
+                    prev < filteredCommands.length - 1 ? prev + 1 : 0
+                  );
+                  break;
+                case 'ArrowUp':
+                  e.stopPropagation();
+                  e.preventDefault();
+                  setSelectedIndex((prev) =>
+                    prev > 0 ? prev - 1 : filteredCommands.length - 1
+                  );
+                  break;
+                case 'Enter':
+                  e.stopPropagation();
+                  e.preventDefault();
+                  if (filteredCommands[selectedIndex]) {
+                    filteredCommands[selectedIndex].action();
+                    onClose();
+                  }
+                  break;
+              }
+            }}
             className={cn(
               'flex-1 bg-transparent text-foreground text-sm outline-none',
               'placeholder:text-muted-foreground'

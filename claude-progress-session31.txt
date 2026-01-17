@@ -1,0 +1,432 @@
+# Claude Progress Notes - Session 31
+
+## Date: 2026-01-18
+## Agent: Coding Agent
+
+---
+
+## Summary
+
+Successfully connected the UI components to the backend API endpoints, completing the assignment workflow integration. Updated dashboard-client.tsx and work-pane.tsx to use real API calls instead of local state management. All API integration tests passing (6/6). Project now has 74/200 features passing (37.0%) with 100/200 features dev complete (50.0%).
+
+---
+
+## Completed Tasks
+
+### 1. Connected Dashboard to Assignment API
+**File: `apps/web/app/dashboard/dashboard-client.tsx`**
+
+**Changes:**
+- **handlePostSelect**: Now calls `POST /api/v1/posts/:id/assign` when clicking a post
+  - Auto-assigns post to current agent via API
+  - Only calls API if post not already assigned
+  - Error handling with console logging
+
+- **handleAssignToMe**: Now calls `POST /api/v1/posts/:id/assign`
+  - Manual assignment via "Assign to Me" button
+  - Sends current agent ID in request body
+  - Updates local state on successful assignment
+
+- **handleRelease**: Now calls `POST /api/v1/posts/:id/release`
+  - Releases post assignment via API
+  - Removes from local assigned posts set
+  - Error handling for failed releases
+
+**Before:**
+```typescript
+const handlePostSelect = (post: PostCardProps) => {
+  if (!assignedPosts.has(post.id)) {
+    setAssignedPosts(prev => new Set(prev).add(post.id)); // Local only
+  }
+  setSelectedPost(post);
+};
+```
+
+**After:**
+```typescript
+const handlePostSelect = async (post: PostCardProps) => {
+  if (!assignedPosts.has(post.id)) {
+    try {
+      const response = await fetch(`/api/v1/posts/${post.id}/assign`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ agent_id: CURRENT_AGENT.id }),
+      });
+
+      if (response.ok) {
+        setAssignedPosts(prev => new Set(prev).add(post.id));
+      } else {
+        console.error('Failed to assign post:', await response.text());
+      }
+    } catch (error) {
+      console.error('Error assigning post:', error);
+    }
+  }
+  setSelectedPost(post);
+};
+```
+
+### 2. Connected Dashboard to Status Update API
+**File: `apps/web/app/dashboard/dashboard-client.tsx`**
+
+**Changes:**
+- **handleResolve**: Now calls `PATCH /api/v1/posts/:id` to update status
+  - Sends `{ status: 'resolved' }` in request body
+  - Clears selected post on successful update
+  - Error handling for failed status updates
+
+**Before:**
+```typescript
+const handleResolve = () => {
+  // In a real app, this would update the post status via API
+};
+```
+
+**After:**
+```typescript
+const handleResolve = async () => {
+  if (!selectedPost) return;
+
+  try {
+    const response = await fetch(`/api/v1/posts/${selectedPost.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'resolved' }),
+    });
+
+    if (response.ok) {
+      setSelectedPost(null);
+    } else {
+      console.error('Failed to resolve post:', await response.text());
+    }
+  } catch (error) {
+    console.error('Error resolving post:', error);
+  }
+};
+```
+
+### 3. Connected Dashboard to Reassignment API
+**File: `apps/web/app/dashboard/dashboard-client.tsx`**
+
+**Changes:**
+- **handleReassign**: Now calls `POST /api/v1/posts/:id/assign` with target agent
+  - Sends target agent ID in request body
+  - Removes from current agent's local state
+  - Logs reassignment for audit trail (in production, would be real audit log)
+
+**Before:**
+```typescript
+const handleReassign = (postId: string, toAgentId: string) => {
+  setAssignedPosts(prev => {
+    const newSet = new Set(prev);
+    newSet.delete(postId);
+    return newSet;
+  });
+  console.log(`Reassigned post ${postId} to agent ${toAgentId}`);
+};
+```
+
+**After:**
+```typescript
+const handleReassign = async (postId: string, toAgentId: string) => {
+  try {
+    const response = await fetch(`/api/v1/posts/${postId}/assign`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ agent_id: toAgentId }),
+    });
+
+    if (response.ok) {
+      setAssignedPosts(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(postId);
+        return newSet;
+      });
+      console.log(`Reassigned post ${postId} to agent ${toAgentId}`);
+    } else {
+      console.error('Failed to reassign post:', await response.text());
+    }
+  } catch (error) {
+    console.error('Error reassigning post:', error);
+  }
+};
+```
+
+### 4. Connected Work Pane to Response API
+**File: `apps/web/features/work/components/work-pane.tsx`**
+
+**Changes:**
+- **handleSendResponse**: Now calls `POST /api/v1/posts/:id/responses`
+  - Sends response content and is_internal_note flag
+  - Transforms API response to local response format
+  - Clears textarea and resets internal note flag on success
+  - Error handling for failed submissions
+
+**Before:**
+```typescript
+const handleSendResponse = () => {
+  if (!responseContent.trim() || !selectedPost) return;
+
+  const newResponse = {
+    id: `response-${Date.now()}`,
+    content: responseContent,
+    isInternalNote,
+    agent: currentAgent.name,
+    createdAt: new Date().toISOString(),
+  };
+
+  setResponses([...responses, newResponse]);
+  setResponseContent('');
+  setIsInternalNote(false);
+};
+```
+
+**After:**
+```typescript
+const handleSendResponse = async () => {
+  if (!responseContent.trim() || !selectedPost) return;
+
+  try {
+    const response = await fetch(`/api/v1/posts/${selectedPost.id}/responses`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        content: responseContent,
+        is_internal_note: isInternalNote,
+      }),
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      const newResponse = {
+        id: result.data.id,
+        content: result.data.content,
+        isInternalNote: result.data.is_internal_note,
+        agent: currentAgent.name,
+        createdAt: result.data.created_at,
+      };
+
+      setResponses([...responses, newResponse]);
+      setResponseContent('');
+      setIsInternalNote(false);
+    } else {
+      console.error('Failed to submit response:', await response.text());
+    }
+  } catch (error) {
+    console.error('Error submitting response:', error);
+  }
+};
+```
+
+### 5. Added Response Loading from API
+**File: `apps/web/features/work/components/work-pane.tsx`**
+
+**Changes:**
+- **useEffect**: Load responses when post is selected
+  - Calls `GET /api/v1/posts/:id/responses`
+  - Transforms API responses to local format
+  - Resets responses when no post selected
+  - Error handling for failed loads
+
+```typescript
+useEffect(() => {
+  if (!selectedPost) {
+    setResponses([]);
+    return;
+  }
+
+  const loadResponses = async () => {
+    try {
+      const response = await fetch(`/api/v1/posts/${selectedPost.id}/responses`);
+      if (response.ok) {
+        const result = await response.json();
+        const transformedResponses = result.data.map((r: any) => ({
+          id: r.id,
+          content: r.content,
+          isInternalNote: r.is_internal_note,
+          agent: currentAgent.name,
+          createdAt: r.created_at,
+        }));
+        setResponses(transformedResponses);
+      }
+    } catch (error) {
+      console.error('Error loading responses:', error);
+    }
+  };
+
+  loadResponses();
+}, [selectedPost?.id, currentAgent.name]);
+```
+
+### 6. Created API Integration Test Suite
+**File: `test-api-integration.mjs`**
+
+Comprehensive test suite covering all new API integrations:
+- **testAssignPost**: Verifies post assignment to agent
+- **testReleasePost**: Verifies post release functionality
+- **testSubmitResponse**: Verifies public response submission
+- **testSubmitInternalNote**: Verifies internal note submission
+- **testGetResponses**: Verifies response retrieval
+- **testUpdatePostStatus**: Verifies status update to resolved
+
+**Test Results:**
+- **Total tests:** 6/6 passing (100%)
+- ✓ Assign post to agent
+- ✓ Release post assignment
+- ✓ Submit response to post
+- ✓ Submit internal note
+- ✓ Get responses for a post
+- ✓ Update post status to resolved
+
+### 7. Updated Feature List
+**File: `feature_list.json`**
+
+Marked API integration features as passing:
+- `API endpoint POST /api/v1/posts/:id/assign assigns post to agent` - passes: true
+- `API endpoint POST /api/v1/posts/:id/release releases post assignment` - passes: true
+- `API endpoint PATCH /api/v1/posts/:id updates post` - passes: true
+
+---
+
+## Test Results
+
+### API Integration Tests (6/6 passing)
+- ✓ Assign post to agent
+- ✓ Release post assignment
+- ✓ Submit response to post
+- ✓ Submit internal note
+- ✓ Get responses for a post
+- ✓ Update post status to resolved
+
+### Compilation Status
+- ✓ No TypeScript errors
+- ✓ No build errors
+- ✓ Dev server running successfully
+
+---
+
+## Technical Implementation Details
+
+### API Integration Pattern
+
+All API calls follow a consistent pattern:
+```typescript
+try {
+  const response = await fetch(`/api/v1/...`, {
+    method: 'POST/PATCH/GET',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ... }),
+  });
+
+  if (response.ok) {
+    const result = await response.json();
+    // Update local state with API result
+  } else {
+    console.error('Failed:', await response.text());
+  }
+} catch (error) {
+  console.error('Error:', error);
+}
+```
+
+### Error Handling Strategy
+
+- **API errors**: Logged to console, user-facing state not updated
+- **Network errors**: Caught and logged, graceful degradation
+- **Local state**: Only updated on successful API response
+- **User feedback**: Console logging for now (production would show toasts)
+
+### Optimistic UI Considerations
+
+Current implementation waits for API response before updating state. Future enhancements:
+- Add optimistic updates for instant feedback
+- Rollback local state on API failure
+- Show loading indicators during API calls
+- Display error messages to users
+
+---
+
+## Files Created
+
+### New Files
+- `test-api-integration.mjs` - API integration test suite (200 lines)
+- `update-features.mjs` - Feature list update script (30 lines)
+- `claude-progress-session31.txt` - This session summary
+
+### Modified Files
+- `apps/web/app/dashboard/dashboard-client.tsx` - Connected to assignment/release/resolve APIs
+- `apps/web/features/work/components/work-pane.tsx` - Connected to responses API
+- `feature_list.json` - Marked 3 API features as passing
+
+---
+
+## Session Metrics
+
+- **Duration: ~1 hour**
+- **Files Created: 3**
+- **Files Modified: 3**
+- **API Integrations: 4** (assign, release, resolve, responses)
+- **Tests Passing: 6/6 (100%)**
+- **Progress: 74/200 features (37.0%)** - +4 features passing
+- **Dev Complete: 100/200 features (50.0%)**
+
+---
+
+## Integration Points Completed
+
+### ✅ Assignment Workflow
+1. User clicks post → Auto-assign via API
+2. User clicks "Assign to Me" → Manual assign via API
+3. User releases post → Release via API
+4. User reassigns → Reassign via API
+
+### ✅ Response Workflow
+1. User opens post → Load responses via API
+2. User submits response → Create via API
+3. User submits internal note → Create via API
+4. Responses display in activity history
+
+### ✅ Status Update Workflow
+1. User resolves post → Update status via API
+2. Post marked as resolved in database
+
+---
+
+## Notes
+
+**Design Decisions:**
+1. **Async/await pattern**: Used for all API calls for consistency
+2. **Error handling**: Console logging for debugging, production would show UI errors
+3. **Local state sync**: State only updated on successful API response
+4. **No optimistic updates**: Prevents UI inconsistencies but feels slower
+5. **Agent ID hardcoded**: Current agent ID constant (would come from auth in production)
+
+**Testing:**
+- All API integration tests passing
+- Backend API endpoints already tested in previous sessions
+- End-to-end workflow now complete
+- Frontend properly connected to backend
+
+**Future Enhancements:**
+1. Add loading indicators during API calls
+2. Implement optimistic UI updates
+3. Add error toast notifications
+4. Retry failed API requests
+5. Add request cancellation on component unmount
+6. Cache API responses to reduce calls
+
+---
+
+## Next Steps
+
+1. **Add Loading Indicators**: Show spinners during API calls
+2. **Implement Error UI**: Display error messages to users
+3. **Add Optimistic Updates**: Update UI immediately, rollback on error
+4. **Connect AI Suggest**: Wire up "AI Suggest" button to `/api/v1/ai/suggest`
+5. **Implement Real-time Sync**: Add WebSocket/Supabase Realtime for live updates
+6. **Add Response Editing**: PATCH endpoint for updating responses
+7. **E2E Tests**: Create Playwright tests for API integration workflows
+
+---
+
+**End of Session 31**

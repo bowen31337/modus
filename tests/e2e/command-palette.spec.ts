@@ -17,8 +17,8 @@ test.describe('Command Palette', () => {
 
     // Wait for the page to load and keyboard listener to be attached
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
-    // Wait for the keyboard listener marker to be present
-    await page.waitForSelector('#cmd-k-listener-attached', { timeout: 10000 });
+    // Wait for the keyboard listener marker to be present (element exists, even if hidden)
+    await page.waitForSelector('#cmd-k-listener-attached', { state: 'attached', timeout: 10000 });
 
     // Blur any focused inputs to ensure keyboard events go to document
     await page.evaluate(() => {
@@ -86,14 +86,41 @@ test.describe('Command Palette', () => {
     // Wait for command palette to be visible
     await expect(page.getByTestId('command-palette')).toBeVisible();
 
+    // Wait for input to be focused
+    await expect(page.getByTestId('command-palette-input')).toBeFocused();
+
+    // Wait a bit for React to initialize
+    await page.waitForTimeout(200);
+
+    // Debug: check the selected index state BEFORE pressing ArrowDown
+    const beforeState = await page.evaluate(() => {
+      const commands = document.querySelectorAll('[data-testid^="command-"]');
+      return Array.from(commands).map((el) => ({
+        testId: el.getAttribute('data-testid'),
+        class: el.getAttribute('class'),
+      }));
+    });
+    console.log('Commands BEFORE ArrowDown:', JSON.stringify(beforeState, null, 2));
+
     // Press arrow down to select second command
     await page.keyboard.press('ArrowDown');
 
+    // Wait for React to update
+    await page.waitForTimeout(200);
+
+    // Debug: check the selected index state AFTER pressing ArrowDown
+    const selectedIndex = await page.evaluate(() => {
+      // Check if we can find the selected element by its class
+      const commands = document.querySelectorAll('[data-testid^="command-"]');
+      return Array.from(commands).map((el) => ({
+        testId: el.getAttribute('data-testid'),
+        class: el.getAttribute('class'),
+      }));
+    });
+    console.log('Commands after ArrowDown:', JSON.stringify(selectedIndex, null, 2));
+
     // Verify the second command is selected (has ring)
     const secondCommand = page.getByTestId('command-go-settings');
-
-    // After ArrowDown, second command should be selected
-    // Check if it has the ring-primary class
     const className = await secondCommand.getAttribute('class');
     expect(className).toMatch(/ring-1.*ring-primary/);
   });
@@ -109,8 +136,8 @@ test.describe('Command Palette', () => {
     // Press Enter to execute
     await page.keyboard.press('Enter');
 
-    // Command palette should close
-    await expect(page.getByTestId('command-palette')).not.toBeVisible();
+    // Command palette should close - wait for the hidden element
+    await expect(page.getByTestId('command-palette')).toHaveClass(/hidden/);
   });
 
   test('should close command palette with Escape', async ({ page }) => {
@@ -123,8 +150,8 @@ test.describe('Command Palette', () => {
     // Press Escape
     await page.keyboard.press('Escape');
 
-    // Verify it's closed
-    await expect(page.getByTestId('command-palette')).not.toBeVisible();
+    // Verify it's closed - wait for the hidden element
+    await expect(page.getByTestId('command-palette')).toHaveClass(/hidden/);
   });
 
   test('should close command palette when clicking outside', async ({ page }) => {
@@ -134,9 +161,10 @@ test.describe('Command Palette', () => {
     // Verify it's open
     await expect(page.getByTestId('command-palette')).toBeVisible();
 
-    // Click on the backdrop (note: it's .absolute not .fixed)
-    const backdrop = page.locator('.absolute.inset-0.bg-black\\/50');
-    await backdrop.click();
+    // Click on the backdrop at the top of the screen (outside the modal)
+    // The modal is centered with pt-[15vh], so clicking at the top should work
+    const backdrop = page.getByTestId('command-palette-backdrop');
+    await backdrop.click({ position: { x: 10, y: 10 } });
 
     // Verify it's closed
     await expect(page.getByTestId('command-palette')).not.toBeVisible();
@@ -159,7 +187,7 @@ test.describe('Command Palette', () => {
     await page.keyboard.press('Meta+k');
 
     // Verify command count is shown (should show "5 commands" initially)
-    await expect(page.locator('text=/\d+ command(s)?/')).toBeVisible();
+    await expect(page.locator('text=/\\d+ command(s)?/')).toBeVisible();
   });
 
   test('should filter to no results and show message', async ({ page }) => {

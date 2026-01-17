@@ -55,7 +55,10 @@ test.describe('Authentication - Logout & Protected Routes', () => {
     await expect(page).toHaveURL(/.*login/);
   });
 
-  test('should redirect to login when accessing any protected sub-route without authentication', async ({ page }) => {
+  test('should redirect to login when accessing any protected sub-route without authentication', async ({ page, context }) => {
+    // Clear cookies to ensure no authentication (bypasses the beforeEach hook's demo session cookie)
+    await context.clearCookies();
+
     // Try to access various protected routes without logging in
     const protectedRoutes = ['/dashboard', '/dashboard/queue', '/dashboard/assigned', '/dashboard/settings'];
 

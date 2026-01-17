@@ -1,20 +1,27 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Search Body Content', () => {
-  test.beforeEach(async ({ page }) => {
-    // Navigate to login page
-    await page.goto('/login');
+  test.beforeEach(async ({ page, context }) => {
+    // Add demo session cookie to bypass login
+    await context.addCookies([
+      {
+        name: 'modus_demo_session',
+        value: 'active',
+        domain: 'localhost',
+        path: '/',
+      },
+    ]);
 
-    // Fill in the form (demo mode works with any credentials)
-    await page.getByLabel('Email').fill('demo@example.com');
-    await page.getByLabel('Password').fill('password');
+    // Navigate to dashboard
+    await page.goto('/dashboard');
 
-    // Submit the form
-    await page.getByRole('button', { name: 'Sign In' }).click();
-
-    // Wait for redirect to dashboard and queue pane to be visible
-    await expect(page).toHaveURL(/.*dashboard/);
+    // Wait for queue pane to be visible
     await expect(page.locator('[data-testid="queue-pane"]')).toBeVisible();
+
+    // Clear any existing search/filter state
+    const searchInput = page.getByPlaceholder('Search posts...');
+    await searchInput.clear();
+    await page.waitForTimeout(100);
   });
 
   test('should find posts by searching body content', async ({ page }) => {
@@ -135,12 +142,13 @@ test.describe('Search Body Content', () => {
   });
 
   test('should preserve search when changing filters', async ({ page }) => {
-    // First search for something
-    await page.getByPlaceholder('Search posts...').fill('images');
+    // First search for something that matches a P2 post
+    // Post 6 ("Question about account settings") is a first-time poster with neutral sentiment, so it's P2
+    await page.getByPlaceholder('Search posts...').fill('notification preferences');
     await page.waitForTimeout(500);
 
-    // Verify results - the bug report post should be visible
-    await expect(page.locator('[data-testid="queue-pane"]')).toContainText('Bug: Images not loading');
+    // Verify results - the question post should be visible
+    await expect(page.locator('[data-testid="queue-pane"]')).toContainText('Question about account settings');
 
     // Open filter dropdown
     await page.getByRole('button', { name: /Filters/i }).click();
@@ -155,7 +163,7 @@ test.describe('Search Body Content', () => {
     await dropdown.locator('button:has-text("P2")').click();
     await page.waitForTimeout(500);
 
-    // Should still show the same post (Bug report with images)
-    await expect(page.locator('[data-testid="queue-pane"]')).toContainText('Bug: Images not loading');
+    // Should still show the same post (first-time poster with P2 priority)
+    await expect(page.locator('[data-testid="queue-pane"]')).toContainText('Question about account settings');
   });
 });

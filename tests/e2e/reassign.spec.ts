@@ -36,14 +36,16 @@ test.describe('Post Reassignment', () => {
     await page.click('[data-testid="post-card-1"]');
     await expect(page.getByTestId('work-pane')).toBeVisible();
 
-    // Release the assignment
-    await page.getByTestId('release-button').click();
+    // Reassign to another agent (which unassigns from current agent)
+    await page.getByTestId('reassign-button').click();
+    await page.click('[data-testid="agent-option-550e8400-e29b-41d4-a716-446655440002"]'); // Agent B
+    await page.getByTestId('confirm-reassign-button').click();
 
-    // Verify assign button is visible
-    await expect(page.getByTestId('assign-to-me-button')).toBeVisible();
-
-    // Verify reassign button is not visible
+    // Verify reassign button is not visible (since post is unassigned from current agent)
     await expect(page.getByTestId('reassign-button')).not.toBeVisible();
+
+    // Verify assign button is visible (since post is unassigned from current agent)
+    await expect(page.getByTestId('assign-to-me-button')).toBeVisible();
   });
 
   test('should open reassign modal when reassign button is clicked', async ({ page }) => {

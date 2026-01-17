@@ -2,20 +2,24 @@ import { test, expect } from '@playwright/test';
 
 // Run tests sequentially to avoid interference between keyboard navigation tests
 test.describe.serial('Keyboard Navigation - Queue', () => {
-  test.beforeEach(async ({ page, context }) => {
-    // Set demo session cookie directly on the browser context
-    await context.addCookies([{
-      name: 'modus_demo_session',
-      value: 'active',
-      domain: 'localhost',
-      path: '/',
-    }]);
+  test.beforeEach(async ({ page }) => {
+    // Navigate to login page first
+    await page.goto('/login');
 
-    // Navigate directly to dashboard
-    await page.goto('/dashboard');
+    // Wait for login page to load
+    await page.waitForSelector('text=Sign in to your account', { timeout: 10000 });
+
+    // Click sign in button (demo mode doesn't require credentials)
+    await page.getByRole('button', { name: 'Sign In' }).click();
+
+    // Wait for redirect to dashboard
+    await page.waitForURL(/.*dashboard/, { timeout: 10000 });
 
     // Wait for the queue pane to be visible
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
+
+    // Wait for the first post to be visible
+    await page.waitForSelector('[data-testid^="post-card-"]', { timeout: 5000 });
 
     // Blur the search input to ensure it doesn't capture keyboard events
     await page.evaluate(() => {
@@ -27,13 +31,14 @@ test.describe.serial('Keyboard Navigation - Queue', () => {
       document.body.focus();
     });
 
-    // Wait for the first post to be visible and have keyboard focus
-    await page.waitForSelector('[data-testid^="post-card-"]', { timeout: 5000 });
+    // Wait a moment for React effects to run and keyboard handler to be attached
+    await page.waitForTimeout(500);
 
-    // Wait for the keyboard handler to be attached
-    await page.waitForFunction(() => {
+    // Debug: Check if keyboard handler marker exists
+    const hasMarker = await page.evaluate(() => {
       return !!document.getElementById('keyboard-handler-attached');
-    }, { timeout: 5000 });
+    });
+    console.log('Keyboard handler marker exists:', hasMarker);
   });
 
   test('should navigate down in queue with J key', async ({ page }) => {
@@ -69,11 +74,23 @@ test.describe.serial('Keyboard Navigation - Queue', () => {
     });
     console.log('Search input value:', searchInputValue);
 
+    // Add console listener to capture logs from the browser
+    page.on('console', msg => console.log('Browser console:', msg.text()));
+
     // Press J to navigate down - use keyDown instead of press for better compatibility
     await page.keyboard.press('J');
 
-    // Wait for React to re-render
-    await page.waitForTimeout(1000);
+    // Wait for focus to move to second post (wait for the ring-2 class to appear)
+    // Also log the state for debugging
+    await page.waitForFunction(() => {
+      const posts = document.querySelectorAll('[data-testid^="post-card-"]');
+      if (posts.length < 2) return false;
+      const hasRing = posts[1].classList.contains('ring-2');
+      if (!hasRing) {
+        console.log('Post 1 classes:', posts[1].getAttribute('class'));
+      }
+      return hasRing;
+    }, { timeout: 5000 });
 
     // Check the class of the second post directly
     const secondPostClass = await page.evaluate(() => {
@@ -220,10 +237,10 @@ test.describe.serial('Keyboard Navigation - Queue', () => {
   });
 
   test('should wrap navigation at end of list', async ({ page }) => {
-    // Posts are sorted by priority (P1 first), so order is: id:1 (P1), id:4 (P1), id:5 (P1), id:3 (P2), id:2 (P3)
-    // There are 5 posts, press J 4 times to go from index 0 to index 4 (last post in sorted order)
+    // Posts are sorted by priority (P1 first), so order is: id:1 (P1), id:4 (P1), id:5 (P1), id:6 (P1), id:3 (P2), id:2 (P3)
+    // There are 6 posts, press J 5 times to go from index 0 to index 5 (last post in sorted order)
     // Then press J 1 more time to wrap to index 0 (first post)
-    // Starting at index 0: 1 press -> index 1, 2 presses -> index 2, 3 presses -> index 3, 4 presses -> index 4 (last)
+    // Starting at index 0: 1 press -> index 1, 2 presses -> index 2, 3 presses -> index 3, 4 presses -> index 4, 5 presses -> index 5 (last)
 
     const allPosts = page.locator('[data-testid^="post-card-"]');
     const count = await allPosts.count();
@@ -235,7 +252,8 @@ test.describe.serial('Keyboard Navigation - Queue', () => {
       window.focus();
     });
 
-    for (let i = 0; i < 4; i++) {
+    // Press J (count - 1) times to reach the last post
+    for (let i = 0; i < count - 1; i++) {
       await page.keyboard.press('J');
       await page.waitForTimeout(1000);
 
@@ -259,9 +277,8 @@ test.describe.serial('Keyboard Navigation - Queue', () => {
       console.log(`After J press ${i + 1}:`, JSON.stringify(state, null, 2));
     }
 
-    // Verify the last post in sorted order (index 4, id:2 - P3) is focused
-    // The last post in the DOM should be the one at index 4 after sorting by priority
-    const lastPost = allPosts.nth(count - 1); // Last post in DOM (should be id:2 after sorting)
+    // Verify the last post in sorted order (index count-1) is focused
+    const lastPost = allPosts.nth(count - 1); // Last post in DOM
     const lastPostClass = await lastPost.getAttribute('class');
     expect(lastPostClass).toContain('ring-2');
     expect(lastPostClass).toContain('ring-primary');

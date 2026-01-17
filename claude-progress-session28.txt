@@ -1,0 +1,134 @@
+# Claude Progress Notes - Session 28
+
+## Date: 2026-01-18
+## Agent: Coding Agent
+
+---
+
+## Summary
+
+Fixed critical infrastructure issues blocking E2E tests. Dev server port mismatch and Next.js compilation cache were preventing API routes from loading. After fixing these issues, ran full test suite with excellent results: **216/239 tests passing (90.4%)**. All core features working including authentication, keyboard navigation, response submission, and API endpoints.
+
+---
+
+## Completed Tasks
+
+### 1. Identified and Fixed Dev Server Port Issues
+**Problem:** Playwright config was pointing to port 3002, but dev server was running on different ports (3001, 3005, 3006).
+
+**Root Cause:** Multiple dev server instances created different port assignments.
+
+**Solution:**
+- Cleared all running dev servers
+- Restarted fresh dev server (got port 3006)
+- Updated Playwright config to use port 3006
+
+### 2. Fixed Next.js API Route Compilation
+**Problem:** API endpoints returning 500 error: "Cannot find module route.js"
+
+**Root Cause:** Stale `.next` build cache wasn't picking up new API route files.
+
+**Solution:**
+- Removed `apps/web/.next` and `apps/web/.turbo` directories
+- Restarted dev server with fresh cache
+- API routes compiled successfully
+
+### 3. Verified API Endpoint Functionality
+**Test Results:**
+- ✅ GET /api/v1/posts - Returns 5 posts with pagination
+- ✅ GET /api/v1/posts/:id - Returns single post with relationships
+- ✅ PATCH /api/v1/posts/:id - Updates post status/priority
+- ✅ POST /api/v1/posts/:id/assign - Assigns post to agent
+- ✅ POST /api/v1/posts/:id/release - Releases post assignment
+
+**API Response Structure:**
+```json
+{
+  "data": [...],
+  "meta": {
+    "total": 5,
+    "page": 1,
+    "limit": 20,
+    "pages": 1
+  }
+}
+```
+
+### 4. Ran Complete E2E Test Suite
+**Command:** `pnpm exec playwright test --project=chromium`
+
+**Results:**
+- **Total Tests:** 239
+- **Passed:** 216 (90.4%)
+- **Failed:** 23 (9.6%)
+- **Duration:** 6.3 minutes
+
+---
+
+## Test Results Breakdown
+
+### ✅ Fully Passing Test Suites (100%)
+
+1. **Login/Authentication** (5/5 tests)
+2. **Keyboard Navigation** (14/14 tests)
+3. **Response Submission** (10/10 tests)
+4. **Reassignment** (13/13 tests)
+5. **Three-Pane Layout** (6/6 tests)
+6. **View Toggle** (10/10 tests)
+7. **Plus many more...**
+
+### ❌ Failing Tests (23 total)
+
+#### 1. Command Palette (11 failures)
+**Issue:** Keyboard event handler not intercepting Cmd+K
+
+#### 2. Sentiment Escalation (3 failures)
+**Issue:** Priority rules engine not auto-escalating negative sentiment to P2
+
+#### 3. Response Templates (5 failures)
+**Issue:** Template dropdown and selection not functional
+
+#### 4. Other Minor Issues (4 failures)
+- Template management navigation
+- Priority strip color test
+- Protected route redirect
+- Search preservation
+
+---
+
+## Files Modified
+
+### Configuration
+- `playwright.config.ts` - Updated baseURL to port 3006
+
+### Infrastructure
+- Cleared `apps/web/.next/` build cache
+- Cleared `apps/web/.turbo/` cache
+
+### Test Scripts Created
+- `test-api-manually.js` - API testing utility
+- `test-responses-api.js` - Responses endpoint testing
+- `test-search-manually.js` - Search functionality testing
+
+---
+
+## Session Metrics
+
+- **Duration:** ~2 hours
+- **Infrastructure Issues Fixed:** 2
+- **API Endpoints Verified:** 5/5 working
+- **E2E Tests Run:** 239 total
+- **Pass Rate:** 90.4% (216/239)
+
+---
+
+## Next Priority Actions
+
+1. **Fix Command Palette (11 tests)** - Implement global Cmd+K handler
+2. **Fix Sentiment Escalation (3 tests)** - Auto-escalate negative sentiment
+3. **Implement Response Templates (5 tests)** - Build template dropdown and selection
+4. **Fix Minor Issues (4 tests)** - Navigation, colors, redirects
+
+---
+
+**End of Session 28**
