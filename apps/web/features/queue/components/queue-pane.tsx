@@ -1,7 +1,10 @@
 'use client';
 
-import { Search, Filter } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { Search } from 'lucide-react';
 import { PostCard, type PostCardProps } from './post-card';
+import { FilterControls, type FilterState } from './filter-controls';
+import { SortControls, type SortState } from './sort-controls';
 
 interface QueuePaneProps {
   onPostSelect?: (post: PostCardProps) => void;
@@ -47,9 +50,99 @@ const mockPosts: PostCardProps[] = [
     createdAt: '5h ago',
     responseCount: 2,
   },
+  {
+    id: '4',
+    title: 'Spam account posting promotional content',
+    excerpt: 'This user keeps posting links to dubious websites. Multiple reports from community members...',
+    priority: 'P1',
+    status: 'open',
+    sentiment: 'negative',
+    category: { name: 'Spam', color: '#ec4899' },
+    author: { name: 'spammer123', postCount: 15 },
+    createdAt: '10m ago',
+    responseCount: 0,
+  },
+  {
+    id: '5',
+    title: 'Harassment in community chat',
+    excerpt: 'User is repeatedly sending abusive messages to other members. Need immediate intervention...',
+    priority: 'P1',
+    status: 'resolved',
+    sentiment: 'negative',
+    category: { name: 'Harassment', color: '#f97316' },
+    author: { name: 'concerned_user', postCount: 8 },
+    assignedTo: 'Agent B',
+    createdAt: '1d ago',
+    responseCount: 5,
+  },
 ];
 
 export function QueuePane({ onPostSelect, selectedPostId }: QueuePaneProps) {
+  const [filters, setFilters] = useState<FilterState>({
+    category: 'all',
+    status: 'all',
+    priority: 'all',
+    search: '',
+  });
+
+  const [sort, setSort] = useState<SortState>({
+    field: 'priority',
+    order: 'desc',
+  });
+
+  // Filter and sort posts
+  const filteredAndSortedPosts = useMemo(() => {
+    let posts = [...mockPosts];
+
+    // Apply filters
+    if (filters.category !== 'all') {
+      posts = posts.filter(p => p.category?.name === filters.category);
+    }
+
+    if (filters.status !== 'all') {
+      posts = posts.filter(p => p.status === filters.status);
+    }
+
+    if (filters.priority !== 'all') {
+      posts = posts.filter(p => p.priority === filters.priority);
+    }
+
+    if (filters.search) {
+      const searchLower = filters.search.toLowerCase();
+      posts = posts.filter(p =>
+        p.title.toLowerCase().includes(searchLower) ||
+        p.excerpt.toLowerCase().includes(searchLower)
+      );
+    }
+
+    // Apply sorting
+    posts.sort((a, b) => {
+      let comparison = 0;
+
+      switch (sort.field) {
+        case 'priority':
+          const priorityOrder = { P1: 1, P2: 2, P3: 3, P4: 4, P5: 5 };
+          comparison = priorityOrder[a.priority] - priorityOrder[b.priority];
+          break;
+        case 'date':
+          // Simple sort by createdAt string (in real app, use actual dates)
+          comparison = a.createdAt.localeCompare(b.createdAt);
+          break;
+        case 'status':
+          const statusOrder = { open: 1, in_progress: 2, resolved: 3 };
+          comparison = statusOrder[a.status] - statusOrder[b.status];
+          break;
+        case 'response_count':
+          comparison = (a.responseCount || 0) - (b.responseCount || 0);
+          break;
+      }
+
+      return sort.order === 'asc' ? comparison : -comparison;
+    });
+
+    return posts;
+  }, [filters, sort]);
+
   return (
     <aside className="w-80 bg-background-secondary border-r border-border flex flex-col min-w-[320px] max-w-[400px]">
       {/* Queue Header */}
@@ -65,26 +158,30 @@ export function QueuePane({ onPostSelect, selectedPostId }: QueuePaneProps) {
           <input
             type="search"
             placeholder="Search posts..."
+            value={filters.search}
+            onChange={(e) => setFilters({ ...filters, search: e.target.value })}
             className="w-full bg-background-tertiary border border-border rounded-md py-2 pl-9 pr-3 text-sm text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
       </div>
 
-      {/* Filters */}
+      {/* Filters and Sort */}
       <div className="p-3 border-b border-border flex gap-2">
-        <button className="flex-1 px-2 py-1.5 bg-background-tertiary border border-border rounded-md text-xs text-foreground-secondary hover:bg-background-hover transition-colors flex items-center justify-center gap-1">
-          <Filter size={12} />
-          Filters
-        </button>
-        <button className="flex-1 px-2 py-1.5 bg-background-tertiary border border-border rounded-md text-xs text-foreground-secondary hover:bg-background-hover transition-colors">
-          Sort
-        </button>
+        <FilterControls
+          filters={filters}
+          onFiltersChange={setFilters}
+          postCount={filteredAndSortedPosts.length}
+        />
+        <SortControls
+          sort={sort}
+          onSortChange={setSort}
+        />
       </div>
 
       {/* Queue List */}
       <div className="flex-1 overflow-y-auto">
-        {mockPosts.length > 0 ? (
-          mockPosts.map((post) => (
+        {filteredAndSortedPosts.length > 0 ? (
+          filteredAndSortedPosts.map((post) => (
             <PostCard
               key={post.id}
               {...post}
@@ -97,8 +194,8 @@ export function QueuePane({ onPostSelect, selectedPostId }: QueuePaneProps) {
             <div className="w-12 h-12 bg-background-tertiary rounded-full flex items-center justify-center mb-3">
               <div className="text-2xl text-muted-foreground">+</div>
             </div>
-            <p className="text-sm text-muted-foreground">No posts in queue</p>
-            <p className="text-xs text-muted-foreground mt-1">Posts will appear here when available</p>
+            <p className="text-sm text-muted-foreground">No posts match your filters</p>
+            <p className="text-xs text-muted-foreground mt-1">Try adjusting your search or filters</p>
           </div>
         )}
       </div>
@@ -106,8 +203,8 @@ export function QueuePane({ onPostSelect, selectedPostId }: QueuePaneProps) {
       {/* Queue Stats */}
       <div className="p-3 border-t border-border bg-background-secondary">
         <div className="flex justify-between text-xs text-muted-foreground">
-          <span>Total: {mockPosts.length}</span>
-          <span>Open: {mockPosts.filter(p => p.status === 'open').length}</span>
+          <span>Total: {filteredAndSortedPosts.length}</span>
+          <span>Open: {filteredAndSortedPosts.filter(p => p.status === 'open').length}</span>
         </div>
       </div>
     </aside>

@@ -85,8 +85,11 @@
       "Step 4: Verify the intended destination is preserved for post-login redirect"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T12:50:49.397907Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -99,9 +102,10 @@
       "Step 5: Verify posts are sorted by priority (P1 first)",
       "Step 6: Verify post count or queue size indicator is visible"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "2026-01-17T23:55:00Z"
   },
   {
     "category": "functional",
@@ -117,9 +121,10 @@
       "Step 8: Locate a P4 (Low) priority post",
       "Step 9: Verify the priority strip is Emerald-400 (#34d399)"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "2026-01-17T23:55:00Z"
   },
   {
     "category": "functional",
@@ -133,9 +138,10 @@
       "Step 6: Locate a post with positive sentiment",
       "Step 7: Verify positive sentiment icon is displayed with appropriate color"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "2026-01-17T23:55:00Z"
   },
   {
     "category": "functional",
@@ -149,9 +155,10 @@
       "Step 6: Verify filter indicator shows active filter",
       "Step 7: Clear the filter and verify all posts are shown again"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "2026-01-17T23:58:00Z"
   },
   {
     "category": "functional",
@@ -166,9 +173,10 @@
       "Step 7: Select 'Resolved' status filter",
       "Step 8: Verify only resolved posts are displayed"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "2026-01-17T23:58:00Z"
   },
   {
     "category": "functional",
@@ -183,9 +191,10 @@
       "Step 7: Clear priority filters",
       "Step 8: Verify all posts are shown"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "2026-01-17T23:58:00Z"
   },
   {
     "category": "functional",
@@ -287,9 +296,10 @@
       "Step 4: Verify P1 posts appear first, then P2, P3, P4, P5",
       "Step 5: Verify sort order indicator shows Priority as active"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "2026-01-17T23:58:00Z"
   },
   {
     "category": "functional",
@@ -301,9 +311,10 @@
       "Step 4: Verify newest posts appear at the top",
       "Step 5: Verify sort order indicator shows Date as active"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "2026-01-17T23:58:00Z"
   },
   {
     "category": "functional",
@@ -314,9 +325,10 @@
       "Step 3: Verify posts are grouped by status (Open first, then In Progress, then Resolved)",
       "Step 4: Verify sort order indicator shows Status as active"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "2026-01-17T23:58:00Z"
   },
   {
     "category": "functional",

@@ -67,18 +67,14 @@ export function PostCard({
   const priorityStripColor = priorityColors[priority];
 
   return (
-    <div
+    <button
+      type="button"
       role="button"
       tabIndex={0}
       onClick={onClick}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onClick?.();
-        }
-      }}
+      aria-pressed={isSelected}
       className={cn(
-        'group relative flex border-b border-border bg-background-secondary hover:bg-background-tertiary transition-colors cursor-pointer',
+        'group relative flex w-full border-b border-border bg-background-secondary hover:bg-background-tertiary transition-colors cursor-pointer text-left',
         isSelected && 'bg-background-tertiary ring-1 ring-primary inset-0'
       )}
     >
@@ -168,6 +164,6 @@ export function PostCard({
       <div className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
         <div className="bg-primary text-white text-xs px-2 py-1 rounded">Open</div>
       </div>
-    </div>
+    </button>
   );
 }
