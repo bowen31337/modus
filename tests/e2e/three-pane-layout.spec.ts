@@ -23,8 +23,8 @@ test.describe('Three-Pane Layout', () => {
       path: '/',
     }]);
 
-    // Navigate directly to dashboard
-    await page.goto('/dashboard');
+    // Navigate directly to dashboard with hard reload
+    await page.goto('/dashboard', { waitUntil: 'networkidle' });
 
     // Wait for the queue to load
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
@@ -36,8 +36,8 @@ test.describe('Three-Pane Layout', () => {
     await expect(page.locator('body')).toBeVisible();
 
     // Step 3: Verify the left rail (64px width) is visible
-    // Use the specific class to identify the left rail
-    const leftRail = page.locator('aside[class*="w-16"], aside[class*="w-rail"]').first();
+    // Use the data-testid to identify the left rail
+    const leftRail = page.getByTestId('left-rail');
     await expect(leftRail).toBeVisible();
 
     // Verify left rail has exact width of 64px
@@ -58,7 +58,7 @@ test.describe('Three-Pane Layout', () => {
     await expect(navIcons).toHaveCount(4);
 
     // Step 4: Verify the queue pane (320-400px width) is visible
-    const queuePane = page.locator('aside').nth(1);
+    const queuePane = page.getByTestId('queue-pane');
     await expect(queuePane).toBeVisible();
 
     // Verify queue pane width is between 320px and 400px
@@ -158,8 +158,8 @@ test.describe('Three-Pane Layout', () => {
     await page.reload();
 
     // Verify all three panes are still visible
-    const leftRail = page.locator('aside[class*="w-16"], aside[class*="w-rail"]').first();
-    const queuePane = page.locator('aside').nth(1);
+    const leftRail = page.getByTestId('left-rail');
+    const queuePane = page.getByTestId('queue-pane');
 
     await expect(leftRail).toBeVisible();
     await expect(queuePane).toBeVisible();
