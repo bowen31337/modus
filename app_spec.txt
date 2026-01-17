@@ -1,0 +1,509 @@
+<project_specification>
+  <project_name>m - Community Moderation System</project_name>
+
+  <overview>
+    Build a lightweight, high-efficiency community moderation platform for agents to discover, manage,
+    and respond to community posts. Features intelligent prioritization rules, LLM-assisted drafting
+    with RAG, click-to-assign workflow, and real-time synchronization. Focus on flow-state UX with
+    keyboard-first navigation and sub-second performance for professional moderation teams.
+  </overview>
+
+  <project_classification>
+    <technical_type>SaaS / Dashboard (B2B/Internal Tool)</technical_type>
+    <domain>Community Management &amp; Moderation</domain>
+    <complexity>Medium</complexity>
+    <project_context>Greenfield / Initial Prototype</project_context>
+  </project_classification>
+
+  <technology_stack>
+    <language_preference>
+      IMPORTANT: Use TypeScript (.ts, .tsx) for ALL code. Do NOT use JavaScript (.js, .jsx).
+      All files must have proper type annotations and strict type checking enabled.
+    </language_preference>
+    <toolchain>
+      <package_manager>pnpm</package_manager>
+      <build_orchestrator>Turborepo</build_orchestrator>
+      <linting_formatting>Biome</linting_formatting>
+      <testing>Vitest</testing>
+    </toolchain>
+    <frontend>
+      <framework>Next.js 14+ with App Router and TypeScript</framework>
+      <language>TypeScript (strict mode) - use .tsx for components, .ts for utilities</language>
+      <styling>Tailwind CSS with shadcn/ui components</styling>
+      <state_management>React Context for local UI, Supabase Realtime subscriptions for server state</state_management>
+      <routing>Next.js App Router with typed routes</routing>
+      <forms>React Hook Form with TypeScript and Zod v4.3.5 for validation</forms>
+      <type_safety>Enable strict mode in tsconfig.json, no implicit any</type_safety>
+    </frontend>
+    <backend>
+      <runtime>Next.js API Routes + Supabase Edge Functions</runtime>
+      <language>TypeScript - compiled with Next.js</language>
+      <database>Supabase PostgreSQL 16+ with pgvector v0.8.1</database>
+      <authentication>Supabase Auth with Row Level Security (RLS)</authentication>
+      <real_time>Supabase Realtime (WebSockets)</real_time>
+      <ai_integration>Vercel AI SDK v6.x for LLM streaming</ai_integration>
+      <type_safety>Use Zod schemas shared between frontend and backend</type_safety>
+    </backend>
+    <communication>
+      <api>Next.js API Routes with typed request/response interfaces</api>
+      <shared_types>Zod schemas in packages/logic/validation</shared_types>
+      <realtime>Supabase Realtime for assignment and status updates</realtime>
+    </communication>
+  </technology_stack>
+
+  <prerequisites>
+    <environment_setup>
+      - Turborepo monorepo initialized with pnpm
+      - Supabase project provisioned with Auth, Database, and Realtime
+      - Environment variables configured for Supabase and AI provider
+      - Biome and Vitest configured at workspace level
+    </environment_setup>
+    <initialization_command>
+      npx create-turbo@latest . --package-manager pnpm
+    </initialization_command>
+  </prerequisites>
+
+  <core_features>
+    <content_discovery_management>
+      - Unified content stream with filterable feed of community posts
+      - Advanced filtering by Category, Status, Priority, and Date Range
+      - Full-text search across titles and body content
+      - Grid View (cards) and List View (compact) toggles
+      - High-density PostCard optimized for vertical space
+    </content_discovery_management>
+
+    <agent_workflow_assignment>
+      - Auto-assignment on click (implicit ownership)
+      - Manual reassignment to other agents or release to pool
+      - Agent status tracking (Online, Offline, Busy)
+      - Real-time presence indicators to prevent duplicate work
+      - Keyboard-driven navigation (J/K for nav, R for reply)
+    </agent_workflow_assignment>
+
+    <response_template_system>
+      - Rich text editor with bold, italic, links, and lists
+      - Template library with CRUD operations and dynamic placeholders
+      - LLM response suggestion via "AI Suggest" button using RAG
+      - Streaming AI drafts with "Ghost Text" and Tab-to-accept
+      - Internal notes not visible to community
+    </response_template_system>
+
+    <priority_rules_engine>
+      - Automated priority leveling (P1 Critical to P5 No Priority)
+      - First-time poster rule (auto P2 for users with less than 2 posts)
+      - Sentiment-based escalation for negative sentiment posts
+      - SLA-based escalation for posts unresponded beyond X hours
+      - Admin UI for rule management, testing, and reordering
+    </priority_rules_engine>
+
+    <administration_roles>
+      - RBAC with Agent, Supervisor, Admin, and Moderator roles
+      - Rule management interface for priority configuration
+      - Audit logging for all agent actions
+      - Permission checks enforced server-side via RLS
+    </administration_roles>
+
+    <real_time_sync>
+      - Assignment status reflects across dashboards within 2 seconds
+      - WebSocket-based updates via Supabase Realtime
+      - Optimistic UI with instant local state updates
+      - Live presence showing "Agent X is viewing" indicators
+    </real_time_sync>
+  </core_features>
+
+  <database_schema>
+    <tables>
+      <moderation_posts>
+        - id, title, body_content, excerpt
+        - category_id, status, priority (P1-P5)
+        - sentiment_score, sentiment_label
+        - author_user_id, author_post_count
+        - assigned_to_id, assigned_at
+        - created_at, updated_at, resolved_at
+        - embedding (vector for RAG)
+      </moderation_posts>
+
+      <categories>
+        - id, name, slug, description
+        - color, icon, position, is_active
+      </categories>
+
+      <agents>
+        - id, user_id, display_name, avatar_url
+        - role (agent, supervisor, admin, moderator)
+        - status (online, offline, busy)
+        - last_active_at, created_at
+      </agents>
+
+      <responses>
+        - id, post_id, agent_id
+        - content, is_internal_note
+        - created_at, updated_at
+      </responses>
+
+      <response_templates>
+        - id, name, content
+        - placeholders (JSON array)
+        - category_id, usage_count
+        - created_by, created_at, updated_at
+      </response_templates>
+
+      <priority_rules>
+        - id, name, description
+        - condition_type, condition_value
+        - action_type, action_value
+        - position, is_active
+        - created_at, updated_at
+      </priority_rules>
+
+      <audit_log>
+        - id, agent_id, post_id
+        - action_type, action_details (JSON)
+        - previous_state, new_state
+        - created_at
+      </audit_log>
+    </tables>
+  </database_schema>
+
+  <api_endpoints_summary>
+    <posts>
+      - GET /api/v1/posts (filterable queue)
+      - GET /api/v1/posts/:id
+      - PATCH /api/v1/posts/:id (update status, priority)
+      - POST /api/v1/posts/:id/assign
+      - POST /api/v1/posts/:id/release
+      - GET /api/v1/posts/search
+    </posts>
+
+    <responses>
+      - GET /api/v1/posts/:id/responses
+      - POST /api/v1/posts/:id/responses
+      - PATCH /api/v1/responses/:id
+      - DELETE /api/v1/responses/:id
+    </responses>
+
+    <templates>
+      - GET /api/v1/templates
+      - POST /api/v1/templates
+      - PATCH /api/v1/templates/:id
+      - DELETE /api/v1/templates/:id
+    </templates>
+
+    <ai>
+      - POST /api/v1/ai/suggest (RAG-powered response suggestion)
+      - POST /api/v1/ai/analyze-sentiment
+    </ai>
+
+    <rules>
+      - GET /api/v1/rules
+      - POST /api/v1/rules
+      - PATCH /api/v1/rules/:id
+      - DELETE /api/v1/rules/:id
+      - POST /api/v1/rules/test
+      - PATCH /api/v1/rules/reorder
+    </rules>
+
+    <agents>
+      - GET /api/v1/agents
+      - GET /api/v1/agents/:id
+      - PATCH /api/v1/agents/:id/status
+    </agents>
+
+    <auth>
+      - POST /api/v1/auth/login
+      - POST /api/v1/auth/logout
+      - GET /api/v1/auth/session
+    </auth>
+  </api_endpoints_summary>
+
+  <ui_layout>
+    <three_pane_stream>
+      <left_rail width="64px">
+        - Logo and branding
+        - Global navigation icons
+        - Agent status indicator
+        - Settings access
+      </left_rail>
+
+      <queue_pane width="320-400px">
+        - Search bar and filter controls
+        - Sort dropdown (Priority, Date, Status)
+        - View toggle (Grid/List)
+        - Prioritized post cards with:
+          - Vertical priority strip (color-coded)
+          - Sentiment icon
+          - Post title and excerpt
+          - Author and category metadata
+          - Reply count and status badge
+        - Keyboard focus states (J/K navigation)
+      </queue_pane>
+
+      <work_pane width="flexible">
+        - Post header with ID, resolve, and close buttons
+        - User context sidebar (sentiment, history, post count)
+        - Full post content with attachments
+        - Activity history timeline
+        - AI-assisted response editor with:
+          - Formatting toolbar (B, I, U, Link, List)
+          - Auto-focusing text area
+          - Ghost text for streaming AI drafts
+          - Template dropdown
+          - AI Suggest button
+          - Post Reply and Internal Note buttons
+      </work_pane>
+    </three_pane_stream>
+
+    <keyboard_shortcuts>
+      - J/K: Navigate queue up/down
+      - Enter: Open selected post (auto-assign)
+      - R: Focus reply editor
+      - Tab: Accept AI draft suggestion
+      - Cmd+Enter: Post reply and resolve
+      - Cmd+Shift+A: Open reassign menu
+      - Esc: Close detail view / Cancel
+      - Cmd+K: Global command palette
+    </keyboard_shortcuts>
+  </ui_layout>
+
+  <design_system>
+    <theme>Obsidian Flow (Dark Mode First)</theme>
+    
+    <color_palette>
+      - Primary: Indigo-500 (#6366f1) - focused actions and assignments
+      - Critical (P1): Red-500 (#ef4444)
+      - High/Negative (P2): Orange-400 (#fb923c)
+      - Medium/Neutral (P3): Slate-400 (#94a3b8)
+      - Low/Positive (P4): Emerald-400 (#34d399)
+      - Background: Slate-900 to Slate-950
+      - Text: White, Slate-300, Slate-400
+    </color_palette>
+
+    <typography>
+      - Primary Font: Inter (Variable) - high legibility
+      - Secondary Font: Geist Mono - system data, IDs, shortcuts
+      - Body: 14px (high-density standard)
+      - Small: 12px (metadata, tags)
+      - H1/H2: 18px/16px (focused headers)
+      - Line Height: 1.5x for post content
+    </typography>
+
+    <spacing_layout>
+      - Base Grid: 4px / 8px scale
+      - Density Profile: High-Density (minimal padding)
+      - Focus Rings: High-visibility Indigo-500
+    </spacing_layout>
+
+    <components>
+      - High-density PostCard with priority strip
+      - AI-Assisted ResponseEditor with ghost text
+      - Real-time PresenceIndicator
+      - Sentiment badges with icons (color-blind accessible)
+      - Skeleton loaders for optimistic UI
+      - Command palette (Cmd+K)
+    </components>
+
+    <accessibility>
+      - WCAG 2.1 Level AA compliance
+      - Color + icon indicators for priorities
+      - High-visibility focus rings
+      - Screen reader support via Radix UI primitives
+    </accessibility>
+  </design_system>
+
+  <project_structure>
+    <directory_tree>
+      modus/
+      ├── package.json
+      ├── turbo.json
+      ├── biome.json
+      ├── pnpm-workspace.yaml
+      ├── apps/
+      │   └── web/                     # Next.js App
+      │       ├── app/                 # App Router (layouts, pages, loading)
+      │       ├── api/                 # API Routes (auth, ai, templates)
+      │       ├── features/            # Feature-based organization
+      │       │   ├── moderation/      # Queue and Post detail
+      │       │   ├── assignment/      # Agent status and claim logic
+      │       │   └── rules/           # Priority rules management UI
+      │       ├── lib/                 # Next.js specific libraries
+      │       ├── hooks/               # Custom hooks (useRealtimeQueue)
+      │       └── components/          # App-specific components
+      ├── packages/
+      │   ├── ui/                      # Shared shadcn/ui components
+      │   ├── logic/                   # Shared business logic
+      │   │   ├── ai/                  # RAG and LLM suggest logic
+      │   │   ├── rules/               # Rules engine evaluator
+      │   │   └── validation/          # Shared Zod schemas
+      │   ├── config-biome/            # Shared Biome config
+      │   └── config-vitest/           # Shared Vitest config
+      ├── supabase/
+      │   ├── migrations/              # SQL migrations (Tables, RLS, Triggers)
+      │   ├── functions/               # Edge Functions (Rules Engine, Embeddings)
+      │   └── seed.sql                 # Initial priority rules and templates
+      └── tests/
+          └── e2e/                     # Playwright end-to-end tests
+    </directory_tree>
+  </project_structure>
+
+  <implementation_steps>
+    <step number="1">
+      <title>Foundation Setup</title>
+      <tasks>
+        - Initialize Turborepo monorepo with pnpm
+        - Configure Biome for linting and formatting
+        - Configure Vitest at workspace level
+        - Set up Next.js app with App Router and TypeScript strict mode
+        - Create packages/ui with shadcn/ui components
+        - Create shared Zod validation schemas
+      </tasks>
+    </step>
+
+    <step number="2">
+      <title>Supabase Infrastructure</title>
+      <tasks>
+        - Provision Supabase project (Auth, Database, Realtime)
+        - Create database migrations for all tables
+        - Enable pgvector extension for embeddings
+        - Implement RLS policies for RBAC
+        - Create audit logging triggers
+        - Seed initial priority rules and categories
+      </tasks>
+    </step>
+
+    <step number="3">
+      <title>Authentication &amp; Authorization</title>
+      <tasks>
+        - Implement Supabase Auth integration
+        - Create middleware for session validation
+        - Implement role-based access control
+        - Build login and session management UI
+      </tasks>
+    </step>
+
+    <step number="4">
+      <title>Moderation Queue</title>
+      <tasks>
+        - Build three-pane layout with ResizablePanel
+        - Implement PostCard component with priority indicators
+        - Create queue filtering and sorting
+        - Add full-text search functionality
+        - Implement keyboard navigation (J/K)
+        - Connect to Supabase Realtime for updates
+      </tasks>
+    </step>
+
+    <step number="5">
+      <title>Assignment &amp; Detail View</title>
+      <tasks>
+        - Implement auto-assignment on click
+        - Build post detail view with activity history
+        - Create user context sidebar
+        - Add real-time presence indicators
+        - Implement reassignment functionality
+      </tasks>
+    </step>
+
+    <step number="6">
+      <title>Response System</title>
+      <tasks>
+        - Build rich text response editor
+        - Implement template library with CRUD
+        - Add internal notes functionality
+        - Create response history display
+      </tasks>
+    </step>
+
+    <step number="7">
+      <title>AI Integration</title>
+      <tasks>
+        - Set up Vercel AI SDK for streaming
+        - Implement embedding generation for posts
+        - Build RAG-powered AI suggest feature
+        - Create ghost text streaming in editor
+        - Add sentiment analysis integration
+      </tasks>
+    </step>
+
+    <step number="8">
+      <title>Priority Rules Engine</title>
+      <tasks>
+        - Build rules management UI
+        - Implement rule evaluation logic
+        - Create Supabase Edge Function for rule execution
+        - Add rule testing functionality
+        - Implement drag-to-reorder rules
+      </tasks>
+    </step>
+
+    <step number="9">
+      <title>Polish &amp; Performance</title>
+      <tasks>
+        - Optimize for sub-second load times
+        - Implement skeleton loaders and optimistic UI
+        - Add micro-animations for feedback
+        - Mobile/tablet responsive optimization
+        - Accessibility audit (WCAG 2.1 AA)
+        - Performance testing and optimization
+      </tasks>
+    </step>
+  </implementation_steps>
+
+  <success_criteria>
+    <functionality>
+      - Complete moderation workflow works end-to-end
+      - Auto-assignment triggers correctly on post click
+      - AI suggestions generate relevant responses via RAG
+      - Priority rules execute automatically on post ingestion
+      - Real-time sync reflects changes within 2 seconds
+      - RBAC correctly restricts access by role
+    </functionality>
+
+    <performance>
+      - Primary feed loads in under 1.0 second
+      - Support 100 concurrent agents and 10,000 posts/month
+      - Sub-100ms UI interactions for flow state
+      - Real-time updates within 2 seconds
+    </performance>
+
+    <ux>
+      - Average response time under 1 minute for prioritized posts
+      - Greater than 70% of AI drafts used as response basis
+      - High adoption of keyboard shortcuts
+      - Agents report feeling "supported" not "overwhelmed"
+    </ux>
+
+    <design>
+      - Professional, high-density moderation interface
+      - Consistent dark mode theming
+      - Responsive at all breakpoints
+      - WCAG 2.1 AA accessibility compliance
+    </design>
+  </success_criteria>
+
+  <naming_conventions>
+    <database>
+      - Tables: snake_case, plural (e.g., moderation_posts, response_templates)
+      - Columns: snake_case (e.g., created_at, assigned_to_id)
+      - Foreign Keys: table_name_id (e.g., post_id)
+    </database>
+    <api>
+      - Endpoints: /api/v1/resource-name (kebab-case)
+      - Methods: Standard REST (GET, POST, PATCH, DELETE)
+    </api>
+    <code>
+      - Components: PascalCase (e.g., PostCard.tsx)
+      - Functions/Variables: camelCase
+      - Files: Match component names for UI; kebab-case for logic/utilities
+    </code>
+  </naming_conventions>
+
+  <enforcement_guidelines>
+    All AI Agents MUST:
+    - Use pnpm for all dependency management
+    - Run biome check --apply before committing
+    - Ensure all new database tables have RLS policies enabled
+    - Use Zod schemas for all data validation
+    - Follow the established naming conventions strictly
+    - Co-locate tests with source files (*.test.tsx)
+  </enforcement_guidelines>
+</project_specification>

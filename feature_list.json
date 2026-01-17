@@ -1,0 +1,2780 @@
+[
+  {
+    "category": "functional",
+    "description": "Application loads and displays the main three-pane layout with left rail, queue pane, and work pane",
+    "steps": [
+      "Step 1: Navigate to the application root URL",
+      "Step 2: Wait for the page to fully load",
+      "Step 3: Verify the left rail navigation (64px width) is visible with logo and navigation icons",
+      "Step 4: Verify the queue pane (320-400px width) is visible with search bar and filter controls",
+      "Step 5: Verify the work pane (flexible width) is visible and takes remaining space",
+      "Step 6: Verify all three panes are responsive and properly positioned"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "User can log in with valid Supabase Auth credentials",
+    "steps": [
+      "Step 1: Navigate to the login page",
+      "Step 2: Enter valid email address in the email field",
+      "Step 3: Enter valid password in the password field",
+      "Step 4: Click the login button",
+      "Step 5: Verify redirect to the main moderation dashboard",
+      "Step 6: Verify user session is established and agent status is displayed"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Login form displays validation errors for invalid credentials",
+    "steps": [
+      "Step 1: Navigate to the login page",
+      "Step 2: Enter invalid email address",
+      "Step 3: Enter invalid password",
+      "Step 4: Click the login button",
+      "Step 5: Verify error message is displayed indicating invalid credentials",
+      "Step 6: Verify user remains on login page"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "User can log out and session is properly terminated",
+    "steps": [
+      "Step 1: Log in with valid credentials",
+      "Step 2: Navigate to settings or user menu",
+      "Step 3: Click the logout button",
+      "Step 4: Verify redirect to login page",
+      "Step 5: Attempt to access protected route",
+      "Step 6: Verify redirect back to login page confirming session is terminated"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Protected routes redirect unauthenticated users to login",
+    "steps": [
+      "Step 1: Clear all session data/cookies",
+      "Step 2: Attempt to navigate directly to the moderation dashboard URL",
+      "Step 3: Verify automatic redirect to login page",
+      "Step 4: Verify the intended destination is preserved for post-login redirect"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Queue pane displays list of moderation posts with PostCard components",
+    "steps": [
+      "Step 1: Log in as an agent",
+      "Step 2: Navigate to the moderation dashboard",
+      "Step 3: Verify queue pane shows list of posts as PostCard components",
+      "Step 4: Verify each PostCard displays priority strip, title, excerpt, and metadata",
+      "Step 5: Verify posts are sorted by priority (P1 first)",
+      "Step 6: Verify post count or queue size indicator is visible"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "PostCard displays vertical priority strip with correct color coding",
+    "steps": [
+      "Step 1: Navigate to the moderation queue",
+      "Step 2: Locate a P1 (Critical) priority post",
+      "Step 3: Verify the priority strip is Red-500 (#ef4444)",
+      "Step 4: Locate a P2 (High) priority post",
+      "Step 5: Verify the priority strip is Orange-400 (#fb923c)",
+      "Step 6: Locate a P3 (Medium) priority post",
+      "Step 7: Verify the priority strip is Slate-400 (#94a3b8)",
+      "Step 8: Locate a P4 (Low) priority post",
+      "Step 9: Verify the priority strip is Emerald-400 (#34d399)"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "PostCard displays sentiment icon with appropriate visual indicator",
+    "steps": [
+      "Step 1: Navigate to the moderation queue",
+      "Step 2: Locate a post with negative sentiment",
+      "Step 3: Verify negative sentiment icon is displayed with appropriate color",
+      "Step 4: Locate a post with neutral sentiment",
+      "Step 5: Verify neutral sentiment icon is displayed",
+      "Step 6: Locate a post with positive sentiment",
+      "Step 7: Verify positive sentiment icon is displayed with appropriate color"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "User can filter posts by category using dropdown",
+    "steps": [
+      "Step 1: Navigate to the moderation queue",
+      "Step 2: Locate the category filter dropdown",
+      "Step 3: Click to open the dropdown",
+      "Step 4: Select a specific category",
+      "Step 5: Verify queue updates to show only posts in selected category",
+      "Step 6: Verify filter indicator shows active filter",
+      "Step 7: Clear the filter and verify all posts are shown again"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "User can filter posts by status (Open, In Progress, Resolved)",
+    "steps": [
+      "Step 1: Navigate to the moderation queue",
+      "Step 2: Locate the status filter control",
+      "Step 3: Select 'Open' status filter",
+      "Step 4: Verify only open posts are displayed",
+      "Step 5: Select 'In Progress' status filter",
+      "Step 6: Verify only in-progress posts are displayed",
+      "Step 7: Select 'Resolved' status filter",
+      "Step 8: Verify only resolved posts are displayed"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "User can filter posts by priority level (P1-P5)",
+    "steps": [
+      "Step 1: Navigate to the moderation queue",
+      "Step 2: Locate the priority filter control",
+      "Step 3: Select P1 (Critical) filter",
+      "Step 4: Verify only P1 priority posts are displayed",
+      "Step 5: Select multiple priorities (P1 and P2)",
+      "Step 6: Verify posts matching either priority are displayed",
+      "Step 7: Clear priority filters",
+      "Step 8: Verify all posts are shown"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "User can filter posts by date range",
+    "steps": [
+      "Step 1: Navigate to the moderation queue",
+      "Step 2: Locate the date range filter",
+      "Step 3: Set start date to one week ago",
+      "Step 4: Set end date to today",
+      "Step 5: Apply the date filter",
+      "Step 6: Verify only posts within the date range are displayed",
+      "Step 7: Verify posts outside the range are not shown"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Full-text search finds posts by title content",
+    "steps": [
+      "Step 1: Navigate to the moderation queue",
+      "Step 2: Locate the search bar",
+      "Step 3: Enter a search term that matches a post title",
+      "Step 4: Verify search results update in real-time or on submit",
+      "Step 5: Verify matching posts are displayed",
+      "Step 6: Verify non-matching posts are filtered out",
+      "Step 7: Clear search and verify all posts return"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Full-text search finds posts by body content",
+    "steps": [
+      "Step 1: Navigate to the moderation queue",
+      "Step 2: Enter a search term that appears only in post body (not title)",
+      "Step 3: Submit the search",
+      "Step 4: Verify posts containing the term in body content are returned",
+      "Step 5: Verify search highlights or indicates matched content"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "User can toggle between Grid View and List View",
+    "steps": [
+      "Step 1: Navigate to the moderation queue",
+      "Step 2: Locate the view toggle control",
+      "Step 3: Verify default view is displayed (Grid or List)",
+      "Step 4: Click to switch to alternative view",
+      "Step 5: Verify posts are re-rendered in the new view format",
+      "Step 6: Toggle back to original view",
+      "Step 7: Verify view preference persists across page navigation"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Grid View displays posts as card components with consistent sizing",
+    "steps": [
+      "Step 1: Navigate to the moderation queue",
+      "Step 2: Switch to Grid View if not already active",
+      "Step 3: Verify posts are displayed as cards in a grid layout",
+      "Step 4: Verify cards have consistent width and height",
+      "Step 5: Verify grid responds to container width changes"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "List View displays posts in compact horizontal rows",
+    "steps": [
+      "Step 1: Navigate to the moderation queue",
+      "Step 2: Switch to List View",
+      "Step 3: Verify posts are displayed as compact horizontal rows",
+      "Step 4: Verify essential information (title, priority, status) is visible",
+      "Step 5: Verify more posts are visible per screen compared to Grid View"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "User can sort posts by Priority (default)",
+    "steps": [
+      "Step 1: Navigate to the moderation queue",
+      "Step 2: Locate the sort dropdown",
+      "Step 3: Select 'Priority' as sort option",
+      "Step 4: Verify P1 posts appear first, then P2, P3, P4, P5",
+      "Step 5: Verify sort order indicator shows Priority as active"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "User can sort posts by Date (newest first)",
+    "steps": [
+      "Step 1: Navigate to the moderation queue",
+      "Step 2: Select 'Date' as sort option from dropdown",
+      "Step 3: Verify posts are ordered by creation date descending",
+      "Step 4: Verify newest posts appear at the top",
+      "Step 5: Verify sort order indicator shows Date as active"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "User can sort posts by Status",
+    "steps": [
+      "Step 1: Navigate to the moderation queue",
+      "Step 2: Select 'Status' as sort option",
+      "Step 3: Verify posts are grouped by status (Open first, then In Progress, then Resolved)",
+      "Step 4: Verify sort order indicator shows Status as active"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Clicking a post auto-assigns it to the current agent",
+    "steps": [
+      "Step 1: Log in as Agent A",
+      "Step 2: Navigate to the moderation queue",
+      "Step 3: Find an unassigned post in the queue",
+      "Step 4: Click on the post",
+      "Step 5: Verify the post detail view opens in the work pane",
+      "Step 6: Verify the post is now assigned to Agent A",
+      "Step 7: Verify the assigned_at timestamp is set",
+      "Step 8: Verify the post card in queue shows assignment indicator"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Post detail view displays full post content",
+    "steps": [
+      "Step 1: Navigate to the moderation queue",
+      "Step 2: Click on a post to open detail view",
+      "Step 3: Verify post header shows post ID and action buttons",
+      "Step 4: Verify full post title is displayed",
+      "Step 5: Verify full post body content is displayed",
+      "Step 6: Verify post metadata (author, date, category) is visible",
+      "Step 7: Verify any attachments are displayed or linked"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Post detail view shows user context sidebar",
+    "steps": [
+      "Step 1: Open a post in the detail view",
+      "Step 2: Locate the user context sidebar",
+      "Step 3: Verify author's sentiment indicator is displayed",
+      "Step 4: Verify author's post history count is shown",
+      "Step 5: Verify author's total post count is displayed",
+      "Step 6: Verify context information helps agent understand user's situation"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Post detail view shows activity history timeline",
+    "steps": [
+      "Step 1: Open a post that has previous activity",
+      "Step 2: Scroll to the activity history section",
+      "Step 3: Verify timeline shows all actions in chronological order",
+      "Step 4: Verify each entry shows action type, agent, and timestamp",
+      "Step 5: Verify responses and internal notes are listed in timeline"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent can release assigned post back to the pool",
+    "steps": [
+      "Step 1: Open a post that is assigned to the current agent",
+      "Step 2: Locate the release or unassign button",
+      "Step 3: Click the release button",
+      "Step 4: Confirm release action if prompted",
+      "Step 5: Verify post is no longer assigned to the agent",
+      "Step 6: Verify post appears in the unassigned queue for other agents"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Supervisor can manually reassign post to another agent",
+    "steps": [
+      "Step 1: Log in as Supervisor",
+      "Step 2: Open a post that is assigned to Agent A",
+      "Step 3: Open the reassign menu (Cmd+Shift+A or button)",
+      "Step 4: Select Agent B from the list of available agents",
+      "Step 5: Confirm the reassignment",
+      "Step 6: Verify post is now assigned to Agent B",
+      "Step 7: Verify audit log records the reassignment action"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent status shows Online when active",
+    "steps": [
+      "Step 1: Log in as an agent",
+      "Step 2: Verify agent status indicator shows Online",
+      "Step 3: Verify status is visible in the left rail",
+      "Step 4: Verify other agents can see this agent's Online status"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent can set status to Busy",
+    "steps": [
+      "Step 1: Log in as an agent",
+      "Step 2: Click on agent status indicator",
+      "Step 3: Select 'Busy' status option",
+      "Step 4: Verify status updates to Busy",
+      "Step 5: Verify status change is visible to other agents",
+      "Step 6: Verify agent can still work but signals unavailability for new assignments"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent status changes to Offline on logout or inactivity",
+    "steps": [
+      "Step 1: Log in as Agent A from two browser sessions",
+      "Step 2: In session 2, observe Agent A shows as Online",
+      "Step 3: Log out from session 1",
+      "Step 4: Verify session 2 shows Agent A status changed to Offline",
+      "Step 5: Verify last_active_at timestamp is updated"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Real-time presence shows which agent is viewing a post",
+    "steps": [
+      "Step 1: Log in as Agent A in browser 1",
+      "Step 2: Log in as Agent B in browser 2",
+      "Step 3: Agent A opens a specific post",
+      "Step 4: Agent B views the same post in queue",
+      "Step 5: Verify Agent B sees 'Agent A is viewing' indicator on that post",
+      "Step 6: Agent A navigates away from the post",
+      "Step 7: Verify the viewing indicator disappears for Agent B"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Response editor displays with rich text formatting toolbar",
+    "steps": [
+      "Step 1: Open a post in detail view",
+      "Step 2: Locate the response editor",
+      "Step 3: Verify formatting toolbar is visible with Bold, Italic, Underline options",
+      "Step 4: Verify Link insertion button is present",
+      "Step 5: Verify List formatting options are available",
+      "Step 6: Verify toolbar is accessible and functional"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent can apply bold formatting to text in response",
+    "steps": [
+      "Step 1: Open response editor",
+      "Step 2: Type some text",
+      "Step 3: Select a portion of the text",
+      "Step 4: Click the Bold button or use Ctrl/Cmd+B",
+      "Step 5: Verify selected text is formatted as bold",
+      "Step 6: Verify bold formatting is preserved in preview/submission"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent can apply italic formatting to text in response",
+    "steps": [
+      "Step 1: Open response editor",
+      "Step 2: Type some text",
+      "Step 3: Select a portion of the text",
+      "Step 4: Click the Italic button or use Ctrl/Cmd+I",
+      "Step 5: Verify selected text is formatted as italic"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent can insert links in response text",
+    "steps": [
+      "Step 1: Open response editor",
+      "Step 2: Type or select text to be linked",
+      "Step 3: Click the Link button",
+      "Step 4: Enter URL in the link dialog",
+      "Step 5: Confirm link insertion",
+      "Step 6: Verify text is now a clickable hyperlink",
+      "Step 7: Verify link URL is correctly stored"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent can create bulleted and numbered lists in response",
+    "steps": [
+      "Step 1: Open response editor",
+      "Step 2: Click bulleted list option",
+      "Step 3: Type list items pressing Enter between each",
+      "Step 4: Verify bullet points are displayed",
+      "Step 5: Switch to numbered list option",
+      "Step 6: Verify items are numbered sequentially",
+      "Step 7: Exit list mode and continue with normal text"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Response editor auto-focuses when R key is pressed",
+    "steps": [
+      "Step 1: Open a post in detail view",
+      "Step 2: Ensure focus is not in the response editor",
+      "Step 3: Press the R key",
+      "Step 4: Verify response editor receives focus",
+      "Step 5: Verify cursor is positioned ready for typing"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent can post a response to a community post",
+    "steps": [
+      "Step 1: Open an assigned post in detail view",
+      "Step 2: Type a response in the response editor",
+      "Step 3: Click the 'Post Reply' button",
+      "Step 4: Verify response is submitted successfully",
+      "Step 5: Verify response appears in the activity timeline",
+      "Step 6: Verify response is marked as not internal (visible to community)"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent can add internal notes not visible to community",
+    "steps": [
+      "Step 1: Open an assigned post",
+      "Step 2: Type a note in the response editor",
+      "Step 3: Click the 'Internal Note' button",
+      "Step 4: Verify note is saved successfully",
+      "Step 5: Verify note appears in activity timeline with internal indicator",
+      "Step 6: Verify note has is_internal_note flag set to true"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent can post reply and resolve post with Cmd+Enter",
+    "steps": [
+      "Step 1: Open an assigned post",
+      "Step 2: Type a response",
+      "Step 3: Press Cmd+Enter (or Ctrl+Enter)",
+      "Step 4: Verify response is posted",
+      "Step 5: Verify post status changes to Resolved",
+      "Step 6: Verify resolved_at timestamp is set",
+      "Step 7: Verify post moves to resolved section in queue"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Template library displays available response templates",
+    "steps": [
+      "Step 1: Open response editor",
+      "Step 2: Locate and click the template dropdown",
+      "Step 3: Verify list of available templates is displayed",
+      "Step 4: Verify templates show name and optional category",
+      "Step 5: Verify search/filter within template list works"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent can insert a template into the response editor",
+    "steps": [
+      "Step 1: Open response editor",
+      "Step 2: Open template dropdown",
+      "Step 3: Click on a template to select it",
+      "Step 4: Verify template content is inserted into editor",
+      "Step 5: Verify any placeholders are highlighted or editable",
+      "Step 6: Verify usage_count is incremented for the template"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin can create new response templates",
+    "steps": [
+      "Step 1: Log in as Admin",
+      "Step 2: Navigate to template management section",
+      "Step 3: Click 'Create Template' button",
+      "Step 4: Enter template name",
+      "Step 5: Enter template content with placeholders (e.g., {{username}})",
+      "Step 6: Optionally assign to a category",
+      "Step 7: Save the template",
+      "Step 8: Verify template appears in the template library"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin can edit existing response templates",
+    "steps": [
+      "Step 1: Log in as Admin",
+      "Step 2: Navigate to template management",
+      "Step 3: Locate an existing template",
+      "Step 4: Click edit button",
+      "Step 5: Modify template name or content",
+      "Step 6: Save changes",
+      "Step 7: Verify changes are reflected in template library"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin can delete response templates",
+    "steps": [
+      "Step 1: Log in as Admin",
+      "Step 2: Navigate to template management",
+      "Step 3: Locate a template to delete",
+      "Step 4: Click delete button",
+      "Step 5: Confirm deletion in confirmation dialog",
+      "Step 6: Verify template is removed from the library"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Template placeholders are dynamically replaced with post context",
+    "steps": [
+      "Step 1: Create a template with placeholder {{author_name}}",
+      "Step 2: Open a post from a specific author",
+      "Step 3: Insert the template into response editor",
+      "Step 4: Verify {{author_name}} is replaced with actual author's name",
+      "Step 5: Verify other placeholders like {{post_title}} work correctly"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "AI Suggest button generates response suggestion using RAG",
+    "steps": [
+      "Step 1: Open a post in detail view",
+      "Step 2: Click the 'AI Suggest' button",
+      "Step 3: Verify loading indicator appears",
+      "Step 4: Verify AI-generated suggestion streams into the editor as ghost text",
+      "Step 5: Verify suggestion is contextually relevant to the post content",
+      "Step 6: Verify RAG retrieves similar past responses for context"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Ghost text appears during AI suggestion streaming",
+    "steps": [
+      "Step 1: Open a post and click AI Suggest",
+      "Step 2: Observe the response editor during streaming",
+      "Step 3: Verify text appears in a distinct ghost/preview style",
+      "Step 4: Verify ghost text updates in real-time as tokens stream",
+      "Step 5: Verify ghost text is visually distinct from confirmed text"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Tab key accepts AI draft suggestion",
+    "steps": [
+      "Step 1: Trigger AI suggestion on a post",
+      "Step 2: Wait for ghost text to appear",
+      "Step 3: Press the Tab key",
+      "Step 4: Verify ghost text is converted to confirmed text",
+      "Step 5: Verify the text can now be edited normally",
+      "Step 6: Verify suggestion acceptance is smooth and instant"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent can dismiss AI suggestion and type manually",
+    "steps": [
+      "Step 1: Trigger AI suggestion on a post",
+      "Step 2: Wait for ghost text to appear",
+      "Step 3: Start typing in the editor (not Tab)",
+      "Step 4: Verify ghost text is dismissed/replaced",
+      "Step 5: Verify agent can type their own response freely"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Sentiment analysis is performed on new posts",
+    "steps": [
+      "Step 1: Create or ingest a new post with clearly negative content",
+      "Step 2: Verify sentiment analysis runs automatically",
+      "Step 3: Verify sentiment_score is populated",
+      "Step 4: Verify sentiment_label is set (negative/neutral/positive)",
+      "Step 5: Verify sentiment icon is displayed on the post card"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Priority rules automatically set priority for first-time posters",
+    "steps": [
+      "Step 1: Create a new post from a user with fewer than 2 previous posts",
+      "Step 2: Verify the first-time poster rule is evaluated",
+      "Step 3: Verify post is automatically set to P2 priority",
+      "Step 4: Verify priority indicator reflects P2 status"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Priority rules escalate posts with negative sentiment",
+    "steps": [
+      "Step 1: Create a post with clearly negative sentiment content",
+      "Step 2: Verify sentiment analysis tags it as negative",
+      "Step 3: Verify sentiment-based escalation rule is triggered",
+      "Step 4: Verify post priority is elevated appropriately",
+      "Step 5: Verify escalation is logged in audit trail"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "SLA-based escalation raises priority for overdue posts",
+    "steps": [
+      "Step 1: Configure SLA rule for posts unresponded after 2 hours",
+      "Step 2: Create a post and leave it unassigned",
+      "Step 3: Wait for (or simulate) 2+ hours passing",
+      "Step 4: Verify SLA escalation rule triggers",
+      "Step 5: Verify post priority is elevated",
+      "Step 6: Verify escalation is visible and logged"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin can view and manage priority rules",
+    "steps": [
+      "Step 1: Log in as Admin",
+      "Step 2: Navigate to Rules Management section",
+      "Step 3: Verify list of all priority rules is displayed",
+      "Step 4: Verify each rule shows name, condition, action, and status",
+      "Step 5: Verify rules are displayed in order of execution priority"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin can create new priority rules",
+    "steps": [
+      "Step 1: Log in as Admin",
+      "Step 2: Navigate to Rules Management",
+      "Step 3: Click 'Create Rule' button",
+      "Step 4: Enter rule name and description",
+      "Step 5: Select condition type and configure condition value",
+      "Step 6: Select action type and configure action value",
+      "Step 7: Save the rule",
+      "Step 8: Verify new rule appears in the rules list"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin can edit existing priority rules",
+    "steps": [
+      "Step 1: Log in as Admin",
+      "Step 2: Navigate to Rules Management",
+      "Step 3: Click edit on an existing rule",
+      "Step 4: Modify rule conditions or actions",
+      "Step 5: Save changes",
+      "Step 6: Verify rule is updated in the list"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin can delete priority rules",
+    "steps": [
+      "Step 1: Log in as Admin",
+      "Step 2: Navigate to Rules Management",
+      "Step 3: Click delete on a rule",
+      "Step 4: Confirm deletion",
+      "Step 5: Verify rule is removed from the list",
+      "Step 6: Verify rule no longer affects new posts"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin can enable/disable priority rules",
+    "steps": [
+      "Step 1: Log in as Admin",
+      "Step 2: Navigate to Rules Management",
+      "Step 3: Toggle a rule from active to inactive",
+      "Step 4: Verify rule status indicator changes",
+      "Step 5: Create a new post that would match the rule",
+      "Step 6: Verify disabled rule does not affect the post"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin can drag-to-reorder priority rules",
+    "steps": [
+      "Step 1: Log in as Admin",
+      "Step 2: Navigate to Rules Management",
+      "Step 3: Drag a rule from position 3 to position 1",
+      "Step 4: Verify rules reorder visually",
+      "Step 5: Verify position values are updated in database",
+      "Step 6: Verify new order affects rule evaluation priority"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin can test priority rules against sample post",
+    "steps": [
+      "Step 1: Log in as Admin",
+      "Step 2: Navigate to Rules Management",
+      "Step 3: Click 'Test Rules' button",
+      "Step 4: Enter sample post data (author post count, sentiment, etc.)",
+      "Step 5: Run the test",
+      "Step 6: Verify test shows which rules would match",
+      "Step 7: Verify expected priority result is displayed"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent role has correct permissions (view queue, claim posts, respond)",
+    "steps": [
+      "Step 1: Log in as user with Agent role",
+      "Step 2: Verify can view moderation queue",
+      "Step 3: Verify can claim/assign posts to self",
+      "Step 4: Verify can post responses and internal notes",
+      "Step 5: Verify cannot access admin settings",
+      "Step 6: Verify cannot manage rules or templates (if restricted)"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Supervisor role can reassign posts and view team metrics",
+    "steps": [
+      "Step 1: Log in as Supervisor",
+      "Step 2: Verify can view all queue items",
+      "Step 3: Verify can reassign posts between agents",
+      "Step 4: Verify can view team performance metrics",
+      "Step 5: Verify cannot modify system rules (if restricted to Admin)"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin role has full access to all features",
+    "steps": [
+      "Step 1: Log in as Admin",
+      "Step 2: Verify can access moderation queue",
+      "Step 3: Verify can access Rules Management",
+      "Step 4: Verify can access Template Management",
+      "Step 5: Verify can access User/Agent Management",
+      "Step 6: Verify can view audit logs",
+      "Step 7: Verify can modify system settings"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Moderator role has moderation privileges but limited admin access",
+    "steps": [
+      "Step 1: Log in as Moderator",
+      "Step 2: Verify can perform moderation actions",
+      "Step 3: Verify can access template library",
+      "Step 4: Verify limited access to admin-only features",
+      "Step 5: Verify role-appropriate menu items are shown"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "RLS policies prevent unauthorized data access",
+    "steps": [
+      "Step 1: Create posts assigned to Agent A",
+      "Step 2: Attempt to access Agent A's assigned posts as Agent B via API",
+      "Step 3: Verify appropriate data is returned based on RLS",
+      "Step 4: Verify internal notes are not visible to unauthorized users",
+      "Step 5: Verify database-level security is enforced"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Audit log records all agent actions",
+    "steps": [
+      "Step 1: Log in as an agent",
+      "Step 2: Perform various actions (claim post, respond, release)",
+      "Step 3: Log in as Admin",
+      "Step 4: Navigate to audit log viewer",
+      "Step 5: Verify all actions are logged with agent_id, action_type, and timestamp",
+      "Step 6: Verify action_details JSON contains relevant context"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Audit log captures previous and new state for changes",
+    "steps": [
+      "Step 1: Change a post's priority from P3 to P1",
+      "Step 2: View the audit log entry for this change",
+      "Step 3: Verify previous_state shows P3",
+      "Step 4: Verify new_state shows P1",
+      "Step 5: Verify the change is traceable and attributable"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Real-time sync updates queue within 2 seconds of changes",
+    "steps": [
+      "Step 1: Open the moderation queue in two browser windows (Agent A and B)",
+      "Step 2: Agent A assigns a post to themselves",
+      "Step 3: Start timer",
+      "Step 4: Verify Agent B's queue updates to show assignment within 2 seconds",
+      "Step 5: Verify optimistic UI shows update even faster locally"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Real-time sync updates post status changes across clients",
+    "steps": [
+      "Step 1: Open same post in two browser windows",
+      "Step 2: In window 1, change post status to Resolved",
+      "Step 3: Verify window 2 reflects the status change in real-time",
+      "Step 4: Verify status badge updates without page refresh"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Optimistic UI shows instant feedback for local actions",
+    "steps": [
+      "Step 1: Click to assign a post",
+      "Step 2: Verify UI immediately shows assignment (before server response)",
+      "Step 3: Verify server confirmation updates state",
+      "Step 4: Verify no flicker or revert if successful",
+      "Step 5: Test with simulated slow network to confirm optimistic behavior"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "J key navigates down in the queue",
+    "steps": [
+      "Step 1: Navigate to the moderation queue",
+      "Step 2: Ensure focus is on the queue (not in an input field)",
+      "Step 3: Press the J key",
+      "Step 4: Verify selection moves to the next post down",
+      "Step 5: Press J again to continue navigation",
+      "Step 6: Verify navigation wraps or stops at end of list"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "K key navigates up in the queue",
+    "steps": [
+      "Step 1: Navigate to the moderation queue",
+      "Step 2: Navigate down a few posts",
+      "Step 3: Press the K key",
+      "Step 4: Verify selection moves to the previous post up",
+      "Step 5: Verify navigation wraps or stops at beginning of list"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Enter key opens selected post and auto-assigns",
+    "steps": [
+      "Step 1: Use J/K to select a post in the queue",
+      "Step 2: Press Enter key",
+      "Step 3: Verify post detail view opens in work pane",
+      "Step 4: Verify post is auto-assigned to current agent",
+      "Step 5: Verify focus moves appropriately to detail view"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Escape key closes detail view and returns to queue",
+    "steps": [
+      "Step 1: Open a post in detail view",
+      "Step 2: Press the Escape key",
+      "Step 3: Verify detail view closes",
+      "Step 4: Verify focus returns to the queue",
+      "Step 5: Verify previously selected post is still highlighted"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Cmd+Shift+A opens reassign menu",
+    "steps": [
+      "Step 1: Open a post that is assigned to current agent",
+      "Step 2: Press Cmd+Shift+A (or Ctrl+Shift+A on Windows)",
+      "Step 3: Verify reassign menu/dialog opens",
+      "Step 4: Verify list of available agents is displayed",
+      "Step 5: Verify can select an agent or cancel"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Cmd+K opens global command palette",
+    "steps": [
+      "Step 1: From anywhere in the application",
+      "Step 2: Press Cmd+K (or Ctrl+K on Windows)",
+      "Step 3: Verify command palette modal opens",
+      "Step 4: Verify search input is focused",
+      "Step 5: Type to filter available commands",
+      "Step 6: Verify commands are filterable and selectable",
+      "Step 7: Press Escape to close palette"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Keyboard focus states are clearly visible",
+    "steps": [
+      "Step 1: Navigate the application using only keyboard (Tab, arrows, shortcuts)",
+      "Step 2: Verify all interactive elements show visible focus rings",
+      "Step 3: Verify focus ring color is Indigo-500 (#6366f1)",
+      "Step 4: Verify focus never gets lost or trapped",
+      "Step 5: Verify focus order is logical and sequential"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Categories can be managed by admin",
+    "steps": [
+      "Step 1: Log in as Admin",
+      "Step 2: Navigate to Categories Management",
+      "Step 3: View list of existing categories",
+      "Step 4: Create a new category with name, slug, color, and icon",
+      "Step 5: Edit an existing category",
+      "Step 6: Reorder categories by position",
+      "Step 7: Deactivate a category",
+      "Step 8: Verify changes reflect in queue filters"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Posts display correct category badge with color",
+    "steps": [
+      "Step 1: Ensure categories are configured with different colors",
+      "Step 2: Navigate to the moderation queue",
+      "Step 3: Verify posts show category badges",
+      "Step 4: Verify badge colors match category configuration",
+      "Step 5: Verify category name or icon is displayed"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "API endpoint GET /api/v1/posts returns paginated queue",
+    "steps": [
+      "Step 1: Make authenticated GET request to /api/v1/posts",
+      "Step 2: Verify response status is 200",
+      "Step 3: Verify response contains array of posts",
+      "Step 4: Verify posts include required fields (id, title, priority, status)",
+      "Step 5: Verify pagination metadata is included",
+      "Step 6: Verify response respects filter parameters"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "API endpoint GET /api/v1/posts/:id returns single post",
+    "steps": [
+      "Step 1: Make authenticated GET request to /api/v1/posts/123",
+      "Step 2: Verify response status is 200",
+      "Step 3: Verify response contains full post details",
+      "Step 4: Verify includes body_content, author info, and activity history",
+      "Step 5: Test with non-existent ID returns 404"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "API endpoint PATCH /api/v1/posts/:id updates post",
+    "steps": [
+      "Step 1: Make authenticated PATCH request to /api/v1/posts/123",
+      "Step 2: Include update data (status, priority) in body",
+      "Step 3: Verify response status is 200",
+      "Step 4: Verify response contains updated post",
+      "Step 5: Verify changes are persisted in database",
+      "Step 6: Verify unauthorized updates are rejected"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "API endpoint POST /api/v1/posts/:id/assign assigns post to agent",
+    "steps": [
+      "Step 1: Make authenticated POST request to /api/v1/posts/123/assign",
+      "Step 2: Verify response status is 200",
+      "Step 3: Verify post assigned_to_id is set to current agent",
+      "Step 4: Verify assigned_at timestamp is set",
+      "Step 5: Verify audit log entry is created"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "API endpoint POST /api/v1/posts/:id/release releases post assignment",
+    "steps": [
+      "Step 1: Assign a post to current agent",
+      "Step 2: Make authenticated POST request to /api/v1/posts/123/release",
+      "Step 3: Verify response status is 200",
+      "Step 4: Verify post assigned_to_id is null",
+      "Step 5: Verify post appears in unassigned queue"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "API endpoint GET /api/v1/posts/search performs full-text search",
+    "steps": [
+      "Step 1: Make GET request to /api/v1/posts/search?q=searchterm",
+      "Step 2: Verify response status is 200",
+      "Step 3: Verify results contain posts matching search term",
+      "Step 4: Verify search covers title and body_content",
+      "Step 5: Verify empty search returns appropriate response"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "API endpoint POST /api/v1/posts/:id/responses creates new response",
+    "steps": [
+      "Step 1: Make authenticated POST to /api/v1/posts/123/responses",
+      "Step 2: Include response content in body",
+      "Step 3: Verify response status is 201",
+      "Step 4: Verify response is saved with correct post_id and agent_id",
+      "Step 5: Verify is_internal_note flag is respected"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "API endpoint POST /api/v1/ai/suggest generates AI response",
+    "steps": [
+      "Step 1: Make authenticated POST to /api/v1/ai/suggest",
+      "Step 2: Include post_id and context in request body",
+      "Step 3: Verify response is streaming (SSE or chunked)",
+      "Step 4: Verify AI-generated content is relevant to post",
+      "Step 5: Verify RAG retrieval provides similar responses as context"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "API endpoint POST /api/v1/ai/analyze-sentiment returns sentiment",
+    "steps": [
+      "Step 1: Make POST to /api/v1/ai/analyze-sentiment",
+      "Step 2: Include text content in request body",
+      "Step 3: Verify response contains sentiment_score (-1 to 1)",
+      "Step 4: Verify response contains sentiment_label (negative/neutral/positive)",
+      "Step 5: Verify analysis is accurate for clearly positive/negative text"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Supabase Realtime subscription connects successfully",
+    "steps": [
+      "Step 1: Load the moderation queue page",
+      "Step 2: Open browser developer tools network tab",
+      "Step 3: Verify WebSocket connection is established to Supabase",
+      "Step 4: Verify subscription to posts table is active",
+      "Step 5: Verify heartbeat messages are exchanged"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Vector embeddings are generated for new posts",
+    "steps": [
+      "Step 1: Create or ingest a new post via API",
+      "Step 2: Verify post is created successfully",
+      "Step 3: Check that embedding column is populated",
+      "Step 4: Verify embedding vector has correct dimensions for pgvector",
+      "Step 5: Verify embedding generation doesn't block post creation"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "RAG retrieves similar posts for AI suggestions",
+    "steps": [
+      "Step 1: Create several posts with related content",
+      "Step 2: Ensure embeddings are generated",
+      "Step 3: Request AI suggestion for a new related post",
+      "Step 4: Verify RAG system retrieves similar posts",
+      "Step 5: Verify retrieved context improves AI response relevance"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Database migrations run successfully on fresh database",
+    "steps": [
+      "Step 1: Start with empty database",
+      "Step 2: Run supabase db push or migration command",
+      "Step 3: Verify all tables are created (moderation_posts, categories, agents, etc.)",
+      "Step 4: Verify RLS policies are applied",
+      "Step 5: Verify pgvector extension is enabled",
+      "Step 6: Verify indexes are created"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Seed data populates initial categories and rules",
+    "steps": [
+      "Step 1: Run database seed command",
+      "Step 2: Verify default categories are created",
+      "Step 3: Verify default priority rules are created",
+      "Step 4: Verify sample response templates exist",
+      "Step 5: Verify application can immediately use seeded data"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Application loads within 1 second performance target",
+    "steps": [
+      "Step 1: Clear browser cache",
+      "Step 2: Navigate to the moderation dashboard",
+      "Step 3: Measure time from navigation start to first contentful paint",
+      "Step 4: Measure time to interactive",
+      "Step 5: Verify primary feed loads in under 1.0 second",
+      "Step 6: Verify no layout shifts after initial load"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "UI interactions respond in sub-100ms",
+    "steps": [
+      "Step 1: Click on a post card",
+      "Step 2: Verify visual feedback appears within 100ms",
+      "Step 3: Test button clicks, toggles, and dropdowns",
+      "Step 4: Verify all interactions feel instant",
+      "Step 5: Test keyboard shortcuts for instant response"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Skeleton loaders display during content loading",
+    "steps": [
+      "Step 1: Throttle network to simulate slow connection",
+      "Step 2: Navigate to the moderation queue",
+      "Step 3: Verify skeleton loaders appear while posts load",
+      "Step 4: Verify skeletons match the layout of actual content",
+      "Step 5: Verify smooth transition from skeleton to content"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Error states display user-friendly messages",
+    "steps": [
+      "Step 1: Simulate API error (network failure or 500 response)",
+      "Step 2: Verify error message is displayed to user",
+      "Step 3: Verify error message is actionable (retry button)",
+      "Step 4: Verify technical details are not exposed to user",
+      "Step 5: Verify application doesn't crash on errors"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Empty states display helpful messages",
+    "steps": [
+      "Step 1: Apply filters that result in no posts",
+      "Step 2: Verify empty state message is displayed",
+      "Step 3: Verify message is contextual (e.g., 'No P1 posts')",
+      "Step 4: Verify empty state includes clear filter option",
+      "Step 5: Test empty state for new accounts with no activity"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Application uses dark mode (Obsidian Flow) theme by default",
+    "steps": [
+      "Step 1: Navigate to the application",
+      "Step 2: Take screenshot of the main interface",
+      "Step 3: Verify background is Slate-900 to Slate-950 gradient",
+      "Step 4: Verify text is White, Slate-300, or Slate-400",
+      "Step 5: Verify overall aesthetic matches 'Obsidian Flow' dark theme"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Primary action color is Indigo-500 (#6366f1)",
+    "steps": [
+      "Step 1: Locate primary action buttons (Assign, Post Reply, etc.)",
+      "Step 2: Verify button background is Indigo-500 (#6366f1)",
+      "Step 3: Verify focus rings use Indigo-500",
+      "Step 4: Verify selected states use Indigo-500",
+      "Step 5: Take screenshot for visual verification"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Priority colors are correctly applied throughout UI",
+    "steps": [
+      "Step 1: View posts of each priority level in queue",
+      "Step 2: Verify P1 Critical uses Red-500 (#ef4444)",
+      "Step 3: Verify P2 High uses Orange-400 (#fb923c)",
+      "Step 4: Verify P3 Medium uses Slate-400 (#94a3b8)",
+      "Step 5: Verify P4 Low uses Emerald-400 (#34d399)",
+      "Step 6: Take screenshots of each priority level"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Typography uses Inter font for primary text",
+    "steps": [
+      "Step 1: Inspect font-family of body text",
+      "Step 2: Verify Inter (Variable) is the primary font",
+      "Step 3: Verify fallback fonts are appropriate system fonts",
+      "Step 4: Verify font is loaded and rendered correctly",
+      "Step 5: Verify font weights are applied appropriately"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Monospace elements use Geist Mono font",
+    "steps": [
+      "Step 1: Locate elements that should use monospace (IDs, keyboard shortcuts)",
+      "Step 2: Verify font-family is Geist Mono",
+      "Step 3: Verify post IDs display in monospace",
+      "Step 4: Verify keyboard shortcut hints use monospace",
+      "Step 5: Verify code blocks (if any) use monospace"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Body text is 14px for high-density reading",
+    "steps": [
+      "Step 1: Inspect body text in post cards and content areas",
+      "Step 2: Verify font-size is 14px",
+      "Step 3: Verify text is readable at high density",
+      "Step 4: Verify line height supports comfortable reading"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Metadata and tags use 12px small text",
+    "steps": [
+      "Step 1: Locate metadata elements (dates, category tags, author info)",
+      "Step 2: Verify font-size is 12px",
+      "Step 3: Verify text is still legible at smaller size",
+      "Step 4: Verify contrast meets accessibility requirements"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Headers use correct sizing (H1: 18px, H2: 16px)",
+    "steps": [
+      "Step 1: Locate H1 headers in the application",
+      "Step 2: Verify H1 font-size is 18px",
+      "Step 3: Locate H2 headers",
+      "Step 4: Verify H2 font-size is 16px",
+      "Step 5: Verify headers are visually distinct from body text"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Line height is 1.5x for post content readability",
+    "steps": [
+      "Step 1: View post content in detail view",
+      "Step 2: Verify line-height is 1.5 or 150%",
+      "Step 3: Verify multi-line content is easy to read",
+      "Step 4: Verify paragraphs have appropriate spacing"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Spacing follows 4px/8px base grid system",
+    "steps": [
+      "Step 1: Inspect padding and margins of various components",
+      "Step 2: Verify values are multiples of 4px or 8px",
+      "Step 3: Verify consistent spacing patterns throughout UI",
+      "Step 4: Verify high-density profile with minimal padding"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Left rail maintains 64px width",
+    "steps": [
+      "Step 1: View the left navigation rail",
+      "Step 2: Measure or inspect width",
+      "Step 3: Verify width is exactly 64px",
+      "Step 4: Verify width is consistent at all viewport sizes",
+      "Step 5: Verify icons are centered within the rail"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Queue pane has width between 320-400px",
+    "steps": [
+      "Step 1: View the queue pane",
+      "Step 2: Measure or inspect width",
+      "Step 3: Verify width is between 320px and 400px",
+      "Step 4: Verify queue pane may be resizable within this range",
+      "Step 5: Verify content fits properly at minimum width"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Work pane is flexible width and fills remaining space",
+    "steps": [
+      "Step 1: View the work pane",
+      "Step 2: Resize browser window",
+      "Step 3: Verify work pane adjusts to fill available space",
+      "Step 4: Verify content reflows appropriately",
+      "Step 5: Verify minimum readable width is maintained"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "PostCard has vertical priority strip on left edge",
+    "steps": [
+      "Step 1: View PostCard components in queue",
+      "Step 2: Verify colored priority strip is on left edge",
+      "Step 3: Verify strip is consistently sized across cards",
+      "Step 4: Verify strip color matches priority level",
+      "Step 5: Take screenshot for visual verification"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "PostCard displays optimized high-density layout",
+    "steps": [
+      "Step 1: View PostCard in queue",
+      "Step 2: Verify vertical space is optimized (minimal padding)",
+      "Step 3: Verify essential info visible without scrolling",
+      "Step 4: Verify truncation is applied to long titles/excerpts",
+      "Step 5: Verify information hierarchy is clear"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Sentiment badges use both color and icon (color-blind accessible)",
+    "steps": [
+      "Step 1: View posts with different sentiment labels",
+      "Step 2: Verify each sentiment has unique icon (not just color)",
+      "Step 3: Verify negative uses color + distinct icon",
+      "Step 4: Verify positive uses color + distinct icon",
+      "Step 5: Verify information is conveyed without relying only on color"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Focus rings are high-visibility Indigo-500",
+    "steps": [
+      "Step 1: Navigate using keyboard (Tab, arrow keys)",
+      "Step 2: Verify focused elements have visible focus ring",
+      "Step 3: Verify focus ring color is Indigo-500 (#6366f1)",
+      "Step 4: Verify focus ring has sufficient contrast",
+      "Step 5: Verify focus ring is consistently applied"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Buttons have appropriate hover and active states",
+    "steps": [
+      "Step 1: Hover over various buttons",
+      "Step 2: Verify hover state changes appearance",
+      "Step 3: Click and hold on buttons",
+      "Step 4: Verify active/pressed state is distinct",
+      "Step 5: Verify transitions are smooth (not jarring)"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Cards have subtle hover elevation or highlight",
+    "steps": [
+      "Step 1: Hover over PostCard in queue",
+      "Step 2: Verify subtle hover effect is applied",
+      "Step 3: Verify effect is not too distracting",
+      "Step 4: Verify selected card state is distinct from hover",
+      "Step 5: Take screenshot of hover state"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Status badges use consistent styling",
+    "steps": [
+      "Step 1: View posts with different status values",
+      "Step 2: Verify Open status has consistent badge style",
+      "Step 3: Verify In Progress has distinct badge style",
+      "Step 4: Verify Resolved has distinct badge style",
+      "Step 5: Verify badges are compact and scannable"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Response editor has clean, minimal appearance",
+    "steps": [
+      "Step 1: View the response editor in work pane",
+      "Step 2: Verify editor has minimal, professional appearance",
+      "Step 3: Verify toolbar is clean and non-obtrusive",
+      "Step 4: Verify text area has appropriate padding",
+      "Step 5: Verify editor integrates visually with surrounding UI"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Ghost text for AI suggestions is visually distinct",
+    "steps": [
+      "Step 1: Trigger AI suggestion in response editor",
+      "Step 2: Observe ghost text appearance",
+      "Step 3: Verify ghost text has different opacity or color",
+      "Step 4: Verify ghost text is clearly not committed text",
+      "Step 5: Verify the distinction is accessible"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Command palette has modal overlay styling",
+    "steps": [
+      "Step 1: Open command palette with Cmd+K",
+      "Step 2: Verify modal has backdrop overlay",
+      "Step 3: Verify palette is centered and appropriately sized",
+      "Step 4: Verify search input is prominent",
+      "Step 5: Verify command list has clear visual hierarchy"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Skeleton loaders match content layout",
+    "steps": [
+      "Step 1: Throttle network to see skeleton loaders",
+      "Step 2: Verify skeleton shapes match PostCard layout",
+      "Step 3: Verify skeleton has subtle animation",
+      "Step 4: Verify skeleton colors are appropriate for dark theme",
+      "Step 5: Take screenshot of skeleton loading state"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Micro-animations provide interaction feedback",
+    "steps": [
+      "Step 1: Click various interactive elements",
+      "Step 2: Verify subtle animations accompany interactions",
+      "Step 3: Verify animations are quick (not slow or blocking)",
+      "Step 4: Verify animations don't cause motion sickness",
+      "Step 5: Verify animations can be reduced if prefers-reduced-motion is set"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Loading spinners are consistent and appropriately styled",
+    "steps": [
+      "Step 1: Trigger loading states (form submissions, data fetching)",
+      "Step 2: Verify loading spinner/indicator appears",
+      "Step 3: Verify spinner matches overall design system",
+      "Step 4: Verify spinner is appropriately sized for context",
+      "Step 5: Verify spinner color fits dark theme"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Dropdown menus have consistent styling",
+    "steps": [
+      "Step 1: Open various dropdown menus (filters, sort, template)",
+      "Step 2: Verify all dropdowns have consistent appearance",
+      "Step 3: Verify proper shadows/borders on dark background",
+      "Step 4: Verify menu items have proper hover states",
+      "Step 5: Verify selected items are indicated"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Toast notifications have consistent styling",
+    "steps": [
+      "Step 1: Trigger success notification (e.g., post response)",
+      "Step 2: Verify toast appears with consistent styling",
+      "Step 3: Trigger error notification",
+      "Step 4: Verify error toast is distinct from success",
+      "Step 5: Verify toast position and duration are appropriate"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Modal dialogs have proper overlay and centering",
+    "steps": [
+      "Step 1: Open a modal dialog (confirmation, reassign, etc.)",
+      "Step 2: Verify modal has dark overlay behind it",
+      "Step 3: Verify modal is vertically and horizontally centered",
+      "Step 4: Verify modal has appropriate max-width",
+      "Step 5: Verify close functionality (X button, Escape, click outside)"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Form inputs have consistent styling",
+    "steps": [
+      "Step 1: View various form inputs (text, email, password, textarea)",
+      "Step 2: Verify inputs have consistent border, padding, and background",
+      "Step 3: Verify focus state is clearly visible",
+      "Step 4: Verify error state is clearly indicated",
+      "Step 5: Verify placeholder text styling"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Validation errors display with consistent styling",
+    "steps": [
+      "Step 1: Submit form with invalid data",
+      "Step 2: Verify error messages appear below fields",
+      "Step 3: Verify error text is red/warning color",
+      "Step 4: Verify error icon or indicator accompanies message",
+      "Step 5: Verify error styling is consistent across all forms"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Responsive layout works on tablet (768-1024px)",
+    "steps": [
+      "Step 1: Resize browser to tablet width (768-1024px)",
+      "Step 2: Verify three-pane layout adapts appropriately",
+      "Step 3: Verify queue pane may collapse or overlay",
+      "Step 4: Verify all content remains accessible",
+      "Step 5: Take screenshots at tablet breakpoint"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Responsive layout works on mobile (<768px)",
+    "steps": [
+      "Step 1: Resize browser to mobile width (<768px)",
+      "Step 2: Verify single-pane or stacked layout",
+      "Step 3: Verify navigation is accessible via hamburger/bottom nav",
+      "Step 4: Verify touch targets are appropriately sized",
+      "Step 5: Verify content is readable without horizontal scroll"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Icons are consistent size and style (Lucide/Radix)",
+    "steps": [
+      "Step 1: Inspect icons throughout the application",
+      "Step 2: Verify icons are from consistent icon set",
+      "Step 3: Verify icons have consistent sizing within context",
+      "Step 4: Verify icons have appropriate color/contrast",
+      "Step 5: Verify icons are visually balanced with text"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Logo and branding are properly displayed",
+    "steps": [
+      "Step 1: View the logo in the left rail",
+      "Step 2: Verify logo is crisp and properly sized",
+      "Step 3: Verify branding is consistent with 'm' project name",
+      "Step 4: Verify logo works on dark background"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Avatar images have consistent circular styling",
+    "steps": [
+      "Step 1: View agent avatars in the UI",
+      "Step 2: Verify avatars are circular",
+      "Step 3: Verify consistent size for context",
+      "Step 4: Verify fallback styling for missing avatars",
+      "Step 5: Verify avatars have subtle border or ring"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Timestamp formatting is consistent (relative dates)",
+    "steps": [
+      "Step 1: View timestamps throughout the application",
+      "Step 2: Verify recent times show relative (e.g., '5m ago', '2h ago')",
+      "Step 3: Verify older times show full date",
+      "Step 4: Verify format is consistent across all timestamps",
+      "Step 5: Verify tooltip shows full datetime on hover"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Scrollbars are styled to match dark theme",
+    "steps": [
+      "Step 1: Navigate to scrollable content areas",
+      "Step 2: Verify scrollbars are styled (not default browser)",
+      "Step 3: Verify scrollbar colors match dark theme",
+      "Step 4: Verify scrollbars are visible when needed",
+      "Step 5: Verify smooth scrolling is enabled"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Activity timeline has clear visual progression",
+    "steps": [
+      "Step 1: View activity timeline in post detail",
+      "Step 2: Verify timeline has visual line connecting events",
+      "Step 3: Verify events have timestamps and icons",
+      "Step 4: Verify chronological order is clear",
+      "Step 5: Verify internal notes are visually distinct"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Presence indicators have appropriate styling",
+    "steps": [
+      "Step 1: View presence indicator when agent is viewing a post",
+      "Step 2: Verify indicator is noticeable but not distracting",
+      "Step 3: Verify agent name/avatar is displayed",
+      "Step 4: Verify indicator updates in real-time",
+      "Step 5: Verify multiple viewers are handled appropriately"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Application handles network disconnection gracefully",
+    "steps": [
+      "Step 1: Load the application with network connected",
+      "Step 2: Disable network connection",
+      "Step 3: Attempt to perform actions (assign post, submit response)",
+      "Step 4: Verify appropriate offline indicator appears",
+      "Step 5: Verify pending actions are queued or user is notified",
+      "Step 6: Re-enable network",
+      "Step 7: Verify connection is restored and sync occurs"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Session persists across page refresh",
+    "steps": [
+      "Step 1: Log in to the application",
+      "Step 2: Navigate to a specific page/state",
+      "Step 3: Refresh the browser",
+      "Step 4: Verify user remains logged in",
+      "Step 5: Verify context is preserved where appropriate"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Browser back/forward navigation works correctly",
+    "steps": [
+      "Step 1: Navigate from queue to post detail",
+      "Step 2: Click browser back button",
+      "Step 3: Verify return to queue view",
+      "Step 4: Click browser forward button",
+      "Step 5: Verify return to post detail",
+      "Step 6: Verify URL reflects current view"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Deep linking to specific post works",
+    "steps": [
+      "Step 1: Copy URL of a specific post detail view",
+      "Step 2: Open new browser session",
+      "Step 3: Paste and navigate to the URL",
+      "Step 4: Log in if required",
+      "Step 5: Verify direct navigation to the specific post"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Filter state is preserved in URL",
+    "steps": [
+      "Step 1: Apply multiple filters (category, status, priority)",
+      "Step 2: Verify URL query parameters reflect filters",
+      "Step 3: Copy and share URL",
+      "Step 4: Open URL in new session",
+      "Step 5: Verify filters are pre-applied from URL"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Pagination loads additional posts on scroll",
+    "steps": [
+      "Step 1: Navigate to queue with many posts",
+      "Step 2: Scroll to bottom of visible posts",
+      "Step 3: Verify additional posts are loaded (infinite scroll)",
+      "Step 4: Verify loading indicator during fetch",
+      "Step 5: Verify no duplicate posts appear"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Virtual scrolling handles large queues efficiently",
+    "steps": [
+      "Step 1: Load queue with 1000+ posts",
+      "Step 2: Scroll rapidly through the list",
+      "Step 3: Verify smooth scrolling without jank",
+      "Step 4: Verify only visible posts are rendered",
+      "Step 5: Verify memory usage remains stable"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Concurrent agent access to same post is handled",
+    "steps": [
+      "Step 1: Agent A opens a post",
+      "Step 2: Agent B attempts to open the same post",
+      "Step 3: Verify Agent B sees presence indicator of Agent A",
+      "Step 4: Verify warning or prevention of duplicate assignment",
+      "Step 5: Verify no data conflicts occur"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Optimistic update rollback on server error",
+    "steps": [
+      "Step 1: Trigger action that will fail (simulate server error)",
+      "Step 2: Observe optimistic UI update",
+      "Step 3: Verify error is received from server",
+      "Step 4: Verify UI rolls back to previous state",
+      "Step 5: Verify error notification is shown to user"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Form data is preserved if navigation occurs",
+    "steps": [
+      "Step 1: Start typing a response in the editor",
+      "Step 2: Accidentally navigate away",
+      "Step 3: Verify warning prompt about unsaved changes",
+      "Step 4: Cancel navigation",
+      "Step 5: Verify response content is preserved"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Content Security Policy headers are properly set",
+    "steps": [
+      "Step 1: Make request to application",
+      "Step 2: Inspect response headers",
+      "Step 3: Verify Content-Security-Policy header is present",
+      "Step 4: Verify policy appropriately restricts scripts, styles, frames",
+      "Step 5: Verify application functions with CSP enabled"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "XSS vulnerabilities are prevented in post content",
+    "steps": [
+      "Step 1: Create post with script tag in content",
+      "Step 2: View post in detail view",
+      "Step 3: Verify script is not executed",
+      "Step 4: Verify content is properly sanitized/escaped",
+      "Step 5: Test other XSS vectors (event handlers, etc.)"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "CSRF protection is implemented on state-changing endpoints",
+    "steps": [
+      "Step 1: Attempt to make POST request without proper tokens",
+      "Step 2: Verify request is rejected",
+      "Step 3: Verify proper CSRF token is required",
+      "Step 4: Verify legitimate requests with token succeed"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Rate limiting protects against abuse",
+    "steps": [
+      "Step 1: Make rapid successive API requests",
+      "Step 2: Verify rate limit is applied after threshold",
+      "Step 3: Verify appropriate 429 response is returned",
+      "Step 4: Verify Retry-After header is present",
+      "Step 5: Verify UI handles rate limit gracefully"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "API validates all input with Zod schemas",
+    "steps": [
+      "Step 1: Make API request with invalid data types",
+      "Step 2: Verify request is rejected with validation error",
+      "Step 3: Verify error message is descriptive",
+      "Step 4: Make request with missing required fields",
+      "Step 5: Verify appropriate validation error",
+      "Step 6: Make request with valid data",
+      "Step 7: Verify request succeeds"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "File uploads are validated and sanitized",
+    "steps": [
+      "Step 1: Attempt to upload file (if feature exists)",
+      "Step 2: Verify file type restrictions are enforced",
+      "Step 3: Verify file size limits are enforced",
+      "Step 4: Verify files are scanned/sanitized",
+      "Step 5: Verify malicious files are rejected"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Sensitive data is not logged",
+    "steps": [
+      "Step 1: Perform actions with sensitive data (passwords, tokens)",
+      "Step 2: Check server logs",
+      "Step 3: Verify passwords are not logged",
+      "Step 4: Verify API tokens are not logged",
+      "Step 5: Verify PII is appropriately redacted in logs"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "TypeScript strict mode is enabled throughout",
+    "steps": [
+      "Step 1: Check tsconfig.json settings",
+      "Step 2: Verify 'strict': true is enabled",
+      "Step 3: Verify 'noImplicitAny': true",
+      "Step 4: Run TypeScript compiler",
+      "Step 5: Verify no type errors"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Biome linting passes without errors",
+    "steps": [
+      "Step 1: Run 'pnpm lint' command",
+      "Step 2: Verify no linting errors",
+      "Step 3: Verify no formatting issues",
+      "Step 4: Run 'biome check' directly",
+      "Step 5: Verify all files pass checks"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Unit tests pass with Vitest",
+    "steps": [
+      "Step 1: Run 'pnpm test' command",
+      "Step 2: Verify all unit tests pass",
+      "Step 3: Verify test coverage meets threshold",
+      "Step 4: Verify no test warnings or skipped tests",
+      "Step 5: Verify tests run quickly"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "E2E tests pass with Playwright",
+    "steps": [
+      "Step 1: Run 'pnpm test:e2e' command",
+      "Step 2: Verify all E2E tests pass",
+      "Step 3: Verify screenshots are captured",
+      "Step 4: Verify tests cover critical user flows",
+      "Step 5: Verify tests are deterministic (no flakiness)"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Build process completes without errors",
+    "steps": [
+      "Step 1: Run 'pnpm build' command",
+      "Step 2: Verify TypeScript compilation succeeds",
+      "Step 3: Verify Next.js build succeeds",
+      "Step 4: Verify no build warnings that indicate issues",
+      "Step 5: Verify output bundles are created"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Production build runs without runtime errors",
+    "steps": [
+      "Step 1: Build application for production",
+      "Step 2: Start production server",
+      "Step 3: Navigate through all main features",
+      "Step 4: Verify no console errors",
+      "Step 5: Verify no server errors in logs"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Environment variables are properly validated",
+    "steps": [
+      "Step 1: Start application without required env vars",
+      "Step 2: Verify application fails with clear error message",
+      "Step 3: Provide all required env vars",
+      "Step 4: Verify application starts successfully",
+      "Step 5: Verify .env.example documents all required vars"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Error pages have consistent design with main app",
+    "steps": [
+      "Step 1: Navigate to non-existent route",
+      "Step 2: Verify 404 page displays",
+      "Step 3: Verify 404 page matches dark theme",
+      "Step 4: Simulate 500 error",
+      "Step 5: Verify error page is helpful and styled"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Login page has professional appearance",
+    "steps": [
+      "Step 1: Navigate to login page",
+      "Step 2: Verify dark theme is applied",
+      "Step 3: Verify form is centered and appropriately sized",
+      "Step 4: Verify logo/branding is displayed",
+      "Step 5: Take screenshot for visual verification"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Settings pages have consistent layout",
+    "steps": [
+      "Step 1: Navigate to settings/admin pages",
+      "Step 2: Verify layout is consistent with main app",
+      "Step 3: Verify navigation between settings sections works",
+      "Step 4: Verify forms are properly styled",
+      "Step 5: Verify dark theme is consistent"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Screen reader can navigate application",
+    "steps": [
+      "Step 1: Enable screen reader (VoiceOver, NVDA, etc.)",
+      "Step 2: Navigate to moderation queue",
+      "Step 3: Verify posts are announced with relevant info",
+      "Step 4: Navigate to post detail",
+      "Step 5: Verify all content is accessible to screen reader",
+      "Step 6: Verify form labels are properly associated"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "ARIA labels are correctly implemented",
+    "steps": [
+      "Step 1: Inspect buttons and interactive elements",
+      "Step 2: Verify all icon-only buttons have aria-labels",
+      "Step 3: Verify live regions announce updates",
+      "Step 4: Verify role attributes are correct",
+      "Step 5: Verify aria-expanded, aria-selected work correctly"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Contrast ratios meet WCAG 2.1 AA standards",
+    "steps": [
+      "Step 1: Run automated accessibility audit (Axe, Lighthouse)",
+      "Step 2: Verify all text has sufficient contrast",
+      "Step 3: Verify interactive elements have sufficient contrast",
+      "Step 4: Check specific color combinations",
+      "Step 5: Verify minimum 4.5:1 ratio for normal text"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Tab order follows logical reading sequence",
+    "steps": [
+      "Step 1: Start at the beginning of the page",
+      "Step 2: Tab through all interactive elements",
+      "Step 3: Verify order follows left-to-right, top-to-bottom",
+      "Step 4: Verify no elements are skipped",
+      "Step 5: Verify modals trap focus appropriately"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Reduced motion preference is respected",
+    "steps": [
+      "Step 1: Set OS preference for reduced motion",
+      "Step 2: Load the application",
+      "Step 3: Verify animations are reduced or eliminated",
+      "Step 4: Verify transitions are instant or minimal",
+      "Step 5: Verify functionality is not affected"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent can update their profile information",
+    "steps": [
+      "Step 1: Navigate to profile settings",
+      "Step 2: Update display_name field",
+      "Step 3: Upload new avatar_url",
+      "Step 4: Save changes",
+      "Step 5: Verify changes are reflected throughout UI"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin can view list of all agents",
+    "steps": [
+      "Step 1: Log in as Admin",
+      "Step 2: Navigate to agent management",
+      "Step 3: Verify list of all agents is displayed",
+      "Step 4: Verify agent status, role, and last active are shown",
+      "Step 5: Verify can search/filter agents"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin can change agent roles",
+    "steps": [
+      "Step 1: Log in as Admin",
+      "Step 2: Navigate to agent management",
+      "Step 3: Select an agent",
+      "Step 4: Change their role (e.g., Agent to Supervisor)",
+      "Step 5: Save changes",
+      "Step 6: Verify agent's permissions change accordingly"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "POST /api/v1/auth/login returns valid session",
+    "steps": [
+      "Step 1: Make POST request to /api/v1/auth/login with credentials",
+      "Step 2: Verify response status is 200",
+      "Step 3: Verify session token is returned",
+      "Step 4: Verify user data is returned",
+      "Step 5: Verify cookies are set appropriately"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "POST /api/v1/auth/logout terminates session",
+    "steps": [
+      "Step 1: Log in to get valid session",
+      "Step 2: Make POST request to /api/v1/auth/logout",
+      "Step 3: Verify response status is 200",
+      "Step 4: Verify session is invalidated",
+      "Step 5: Verify subsequent authenticated requests fail"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "GET /api/v1/auth/session returns current session info",
+    "steps": [
+      "Step 1: Log in to get valid session",
+      "Step 2: Make GET request to /api/v1/auth/session",
+      "Step 3: Verify response contains user data",
+      "Step 4: Verify response contains agent info",
+      "Step 5: Verify response indicates role and permissions"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "GET /api/v1/agents returns list of agents",
+    "steps": [
+      "Step 1: Make authenticated GET request to /api/v1/agents",
+      "Step 2: Verify response status is 200",
+      "Step 3: Verify response contains array of agents",
+      "Step 4: Verify each agent has id, display_name, status, role",
+      "Step 5: Verify RLS respects visibility rules"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "PATCH /api/v1/agents/:id/status updates agent status",
+    "steps": [
+      "Step 1: Make PATCH request to /api/v1/agents/123/status",
+      "Step 2: Include new status in body (online, offline, busy)",
+      "Step 3: Verify response status is 200",
+      "Step 4: Verify agent status is updated",
+      "Step 5: Verify change is broadcast via Realtime"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "GET /api/v1/templates returns response templates",
+    "steps": [
+      "Step 1: Make authenticated GET request to /api/v1/templates",
+      "Step 2: Verify response status is 200",
+      "Step 3: Verify response contains array of templates",
+      "Step 4: Verify each template has id, name, content, placeholders",
+      "Step 5: Verify templates can be filtered by category"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "POST /api/v1/templates creates new template",
+    "steps": [
+      "Step 1: Make authenticated POST to /api/v1/templates",
+      "Step 2: Include template name, content, placeholders",
+      "Step 3: Verify response status is 201",
+      "Step 4: Verify template is created with correct data",
+      "Step 5: Verify template appears in template list"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "GET /api/v1/rules returns priority rules",
+    "steps": [
+      "Step 1: Make authenticated GET request to /api/v1/rules",
+      "Step 2: Verify response status is 200",
+      "Step 3: Verify response contains array of rules",
+      "Step 4: Verify rules are ordered by position",
+      "Step 5: Verify each rule has condition and action info"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "POST /api/v1/rules/test tests rules against sample data",
+    "steps": [
+      "Step 1: Make POST request to /api/v1/rules/test",
+      "Step 2: Include sample post data in body",
+      "Step 3: Verify response shows matched rules",
+      "Step 4: Verify response shows resulting priority",
+      "Step 5: Verify rule evaluation order is correct"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "PATCH /api/v1/rules/reorder updates rule positions",
+    "steps": [
+      "Step 1: Make PATCH request to /api/v1/rules/reorder",
+      "Step 2: Include new order of rule IDs",
+      "Step 3: Verify response status is 200",
+      "Step 4: Verify rule positions are updated",
+      "Step 5: Verify new order affects rule evaluation"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Rules management page has drag handles for reordering",
+    "steps": [
+      "Step 1: Navigate to Rules Management as Admin",
+      "Step 2: Verify each rule row has a visible drag handle",
+      "Step 3: Verify cursor changes on handle hover",
+      "Step 4: Verify drag preview shows during drag operation",
+      "Step 5: Verify smooth animation during reorder"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "User context sidebar has clear information hierarchy",
+    "steps": [
+      "Step 1: Open a post to view user context sidebar",
+      "Step 2: Verify user information is grouped logically",
+      "Step 3: Verify most important info is prominent",
+      "Step 4: Verify secondary info has subdued styling",
+      "Step 5: Verify sidebar integrates with overall layout"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Internal notes have distinct visual styling from public responses",
+    "steps": [
+      "Step 1: View post with both internal notes and public responses",
+      "Step 2: Verify internal notes have distinct background or border",
+      "Step 3: Verify clear label indicates 'Internal' nature",
+      "Step 4: Verify internal notes are visually separated",
+      "Step 5: Take screenshot showing both types"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Filter chips have consistent pill styling",
+    "steps": [
+      "Step 1: Apply multiple filters to queue",
+      "Step 2: Verify active filters shown as chips/pills",
+      "Step 3: Verify chips have consistent border-radius",
+      "Step 4: Verify chips have remove (x) button",
+      "Step 5: Verify chips visually represent filter type"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Search bar has appropriate dark theme styling",
+    "steps": [
+      "Step 1: View search bar in queue pane",
+      "Step 2: Verify background fits dark theme",
+      "Step 3: Verify placeholder text is visible but subdued",
+      "Step 4: Verify search icon is appropriately styled",
+      "Step 5: Verify focus state is clear"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Concurrent database operations handle correctly",
+    "steps": [
+      "Step 1: Simulate multiple agents updating same post",
+      "Step 2: Verify no data corruption occurs",
+      "Step 3: Verify optimistic locking or last-write-wins is handled",
+      "Step 4: Verify users are notified of conflicts if applicable"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Database indexes optimize query performance",
+    "steps": [
+      "Step 1: Check database for expected indexes",
+      "Step 2: Verify indexes on frequently queried columns",
+      "Step 3: Run EXPLAIN on common queries",
+      "Step 4: Verify indexes are being used",
+      "Step 5: Verify query performance meets targets"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Memory usage remains stable under load",
+    "steps": [
+      "Step 1: Monitor server memory usage",
+      "Step 2: Simulate sustained load with multiple concurrent users",
+      "Step 3: Verify memory doesn't continuously grow",
+      "Step 4: Verify no memory leaks are present",
+      "Step 5: Verify garbage collection is effective"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Application supports 100 concurrent agents",
+    "steps": [
+      "Step 1: Set up load test with 100 simulated agents",
+      "Step 2: Have agents perform typical operations",
+      "Step 3: Verify response times remain acceptable",
+      "Step 4: Verify no errors under concurrent load",
+      "Step 5: Verify Realtime connections remain stable"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Queue handles 10,000 posts efficiently",
+    "steps": [
+      "Step 1: Seed database with 10,000 posts",
+      "Step 2: Load moderation queue",
+      "Step 3: Verify initial load is under 1 second",
+      "Step 4: Verify pagination/virtualization works",
+      "Step 5: Verify filters work efficiently at scale"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  }
+]
