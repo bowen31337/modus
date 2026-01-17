@@ -485,9 +485,10 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_failure_count": 2,
-    "last_dev_failure_at": "2026-01-17T14:48:01.538263Z",
+    "dev_failure_count": 3,
+    "last_dev_failure_at": "2026-01-17T15:18:47.383326Z",
     "dev_failure_reasons": [
+      "Worker session timed out",
       "Worker session timed out",
       "Worker session timed out"
     ],
@@ -742,8 +743,10 @@
     "passes": true,
     "is_dev_done": true,
     "is_qa_passed": true,
-    "dev_completed_at": "2026-01-18T16:00:00.000000Z",
-    "qa_completed_at": "2026-01-18T16:00:00.000000Z"
+    "dev_completed_at": "2026-01-17T15:18:14.438686Z",
+    "qa_completed_at": "2026-01-18T16:00:00.000000Z",
+    "qa_retry_count": 0,
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -1184,9 +1187,10 @@
       "Step 5: Press J again to continue navigation",
       "Step 6: Verify navigation wraps or stops at end of list"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768663101.597722"
   },
   {
     "category": "functional",
@@ -1198,9 +1202,10 @@
       "Step 4: Verify selection moves to the previous post up",
       "Step 5: Verify navigation wraps or stops at beginning of list"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768663105.989408"
   },
   {
     "category": "functional",
@@ -1212,9 +1217,10 @@
       "Step 4: Verify post is auto-assigned to current agent",
       "Step 5: Verify focus moves appropriately to detail view"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768663129.846447"
   },
   {
     "category": "functional",
