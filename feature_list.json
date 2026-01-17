@@ -447,12 +447,13 @@
       "Step 5: Verify post is no longer assigned to the agent",
       "Step 6: Verify post appears in the unassigned queue for other agents"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false,
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-17T14:30:01.827488Z"
+    "dev_completed_at": "1768668777",
+    "qa_completed_at": "1768668777"
   },
   {
     "category": "functional",
@@ -965,8 +966,11 @@
       "Step 6: Verify escalation is visible and logged"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T16:52:38.227996Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
