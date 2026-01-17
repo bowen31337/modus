@@ -1,0 +1,147 @@
+# Claude Progress Notes - Session 24
+
+## Date: 2026-01-18
+## Agent: Coding Agent
+
+---
+
+## Summary
+
+Fixed a critical bug in the Playwright configuration that was causing widespread E2E test failures. The issue was a simple port mismatch - Playwright was configured to use port 3002 while the Next.js dev server runs on port 3000.
+
+This single configuration error was causing ALL E2E tests to fail with timeout errors because the tests couldn't reach the application. After fixing this, the reassign tests (and likely many others) now pass correctly.
+
+---
+
+## Root Cause Analysis
+
+### Problem
+Tests were failing with errors like:
+- "reassign-button not found"
+- "work-pane not visible"
+- Timeout errors when trying to interact with elements
+
+### Investigation Process
+1. Started by investigating why reassign tests were failing
+2. Created debug tests to check if clicking post cards worked
+3. Discovered that `hasOnClick: false` when evaluating button elements
+4. Noticed the browser was accessing `http://localhost:3002/dashboard`
+5. Checked Playwright config and found `baseURL: 'http://localhost:3002'`
+6. Dev server logs showed it was running on port 3000
+7. **ROOT CAUSE**: Port mismatch between Playwright config and dev server
+
+### The Fix
+Changed `playwright.config.ts`:
+```typescript
+// BEFORE
+baseURL: 'http://localhost:3002'
+
+// AFTER
+baseURL: 'http://localhost:3000'
+```
+
+---
+
+## Impact
+
+### Before Fix
+- All E2E tests failing with timeout errors
+- Tests unable to find any elements after clicking
+- Apparent "state not updating" issues
+- Developer confusion about why clicks weren't working
+
+### After Fix
+- ✓ All 13 reassign tests now pass (100%)
+- ✓ Work pane appears correctly after clicking post cards
+- ✓ Reassign button is visible and functional
+- ✓ State management working as expected
+- ✓ Likely many other tests now passing too
+
+---
+
+## Files Modified
+
+1. **playwright.config.ts**
+   - Changed `baseURL` from port 3002 to port 3000
+   - Updated comments to reflect correct port and command
+
+2. **docs/session-24-fixes.md**
+   - Added detailed documentation of the bug and fix
+
+---
+
+## Test Results
+
+### Reassign Tests (Chromium)
+- **Total:** 13 tests
+- **Passing:** 13/13 (100%)
+- **Status:** ✓ All passing
+
+### Passing Tests Include:
+1. should display reassign button when post is assigned to current agent
+2. should not display reassign button for unassigned posts
+3. should open reassign modal when reassign button is clicked
+4. should open reassign modal with Cmd+Shift+A keyboard shortcut
+5. should display list of available agents in reassign modal
+6. should filter agents when searching in reassign modal
+7. should show current agent as disabled option
+8. should allow selecting and confirming reassignment to another agent
+9. should close reassign modal when cancel button is clicked
+10. should close reassign modal with Escape key
+11. should close reassign modal when clicking close button
+12. should show agent status indicators in reassign modal
+13. should display keyboard shortcut hint in reassign button tooltip
+
+---
+
+## Technical Details
+
+### Why This Caused Such Widespread Failures
+
+1. **Tests were hitting the wrong port**: All Playwright tests use the `baseURL` as the starting point for navigation. With port 3002, they were trying to access a non-existent server.
+
+2. **Silent failures**: The tests would start but fail when trying to interact with elements, making it look like a code issue rather than a configuration issue.
+
+3. **Misleading symptoms**: The errors suggested React state wasn't updating or event handlers weren't working, when in reality the browser couldn't even reach the application.
+
+4. **Debugging complexity**: It took extensive debugging to discover the root cause because the symptoms pointed to code issues rather than configuration.
+
+### Lessons Learned
+
+1. **Always verify configuration first**: When tests start failing universally, check test configuration before diving into code.
+2. **Check server ports**: Ensure test frameworks and development servers are configured to use the same ports.
+3. **Add port mismatch checks**: Could add a test that verifies the server is accessible before running tests.
+4. **Document port configuration**: Should clearly document which ports are used by which services.
+
+---
+
+## Session Metrics
+
+- **Duration:** ~2 hours
+- **Files Modified:** 2 (playwright.config.ts, docs/session-24-fixes.md)
+- **Tests Fixed:** All reassign tests (13/13 now passing)
+- **Bugs Found:** 1 critical configuration bug
+- **Commits Made:** 1
+
+---
+
+## Next Steps
+
+1. ✅ Fixed Playwright config port mismatch
+2. ✅ Verified reassign tests pass
+3. ⏳ Run full E2E test suite (currently in progress)
+4. ⏳ Update feature_list.json with passing features
+5. ⏳ Push commit to remote
+
+---
+
+## Notes
+
+- The dev server has always run on port 3000 (standard Next.js default)
+- The port 3002 in Playwright config was likely a leftover from previous testing setup
+- This fix will likely unblock many other failing tests beyond just reassign
+- Consider adding a pre-flight check to verify server accessibility
+
+---
+
+**End of Session 24**
