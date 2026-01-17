@@ -125,11 +125,7 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
   };
 
   const handleAcceptGhostText = () => {
-    console.log('[WorkPane] handleAcceptGhostText called');
-    console.log('[WorkPane] current ghostText:', aiSuggestion.ghostText);
     const acceptedText = aiSuggestion.acceptSuggestion();
-    console.log('[WorkPane] acceptedText:', acceptedText ? 'present' : 'null');
-    console.log('[WorkPane] acceptedText length:', acceptedText?.length);
     if (acceptedText) {
       setResponseContent(acceptedText);
       // Focus editor after accepting

@@ -42,9 +42,6 @@ export default function DashboardPage() {
 
   const handleResolve = () => {
     // In a real app, this would update the post status via API
-    if (selectedPost) {
-      console.log('Resolving post:', selectedPost.id);
-    }
   };
 
   return (

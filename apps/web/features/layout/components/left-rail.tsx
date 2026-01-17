@@ -60,7 +60,6 @@ export function LeftRail() {
         data-testid="agent-status"
         onStatusChange={(status) => {
           // TODO: Persist status to backend/database
-          console.log('Status changed to:', status);
         }}
       />
 

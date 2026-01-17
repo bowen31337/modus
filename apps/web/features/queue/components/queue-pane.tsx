@@ -276,10 +276,6 @@ export function QueuePane({ onPostSelect, selectedPostId, assignedPosts }: Queue
           <div className={viewMode === 'grid' ? 'grid grid-cols-2 gap-3 p-3' : ''} data-testid="queue-container">
             {filteredAndSortedPosts.map((post, index) => {
               const isFocused = index === focusedIndex;
-              // Debug logging
-              if (typeof window !== 'undefined') {
-                console.log(`Post ${index} (id=${post.id}): isKeyboardFocused=${isFocused}, focusedIndex=${focusedIndex}`);
-              }
               return (
                 <PostCard
                   key={post.id}
