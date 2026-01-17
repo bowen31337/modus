@@ -11,7 +11,7 @@ export default defineConfig({
     ['json', { outputFile: 'reports/test-results/results.json' }],
   ],
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:3002',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
@@ -24,24 +24,22 @@ export default defineConfig({
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
     },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-    {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] },
-    },
+    // WebKit and mobile browsers are skipped due to missing system dependencies
+    // Run with: sudo pnpm exec playwright install-deps webkit
+    // {
+    //   name: 'webkit',
+    //   use: { ...devices['Desktop Safari'] },
+    // },
+    // {
+    //   name: 'Mobile Chrome',
+    //   use: { ...devices['Pixel 5'] },
+    // },
+    // {
+    //   name: 'Mobile Safari',
+    //   use: { ...devices['iPhone 12'] },
+    // },
   ],
-  // webServer: {
-  //   command: 'cd apps/web && pnpm dev --port 3008',
-  //   url: 'http://localhost:3008',
-  //   reuseExistingServer: !process.env.CI,
-  //   timeout: 120000,
-  // },
+  // webServer is disabled - use existing dev server on port 3002
+  // Run with: cd apps/web && pnpm dev
   outputDir: 'reports/screenshots',
 });

@@ -32,7 +32,7 @@ const sentimentColors: Record<string, string> = {
   negative: 'text-red-400 bg-red-500/10',
   neutral: 'text-foreground-muted bg-background-tertiary',
   positive: 'text-emerald-400 bg-emerald-500/10',
-};
+} as const;
 
 const statusColors: Record<string, string> = {
   open: 'bg-background-tertiary text-foreground-secondary',
@@ -61,7 +61,6 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
     postContent: selectedPost?.excerpt || '',
     postTitle: selectedPost?.title || '',
     authorName: selectedPost?.author?.name,
-    categoryName: selectedPost?.category?.name,
   });
 
   // Ref to store cancelStreaming function for cleanup without triggering re-renders
@@ -471,15 +470,15 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
                 <div className="bg-background-tertiary rounded-lg p-3 border border-border">
                   <div className="flex items-center gap-2">
                     {selectedPost.sentiment === 'negative' && (
-                      <AlertCircle size={16} className={sentimentColors.negative.split(' ')[0].replace('text-', 'text-')} />
+                      <AlertCircle size={16} className={(sentimentColors.negative?.split(' ')?.[0] || '').replace('text-', 'text-')} />
                     )}
                     {selectedPost.sentiment === 'positive' && (
-                      <CheckCircle2 size={16} className={sentimentColors.positive.split(' ')[0].replace('text-', 'text-')} />
+                      <CheckCircle2 size={16} className={(sentimentColors.positive?.split(' ')?.[0] || '').replace('text-', 'text-')} />
                     )}
                     {selectedPost.sentiment === 'neutral' && (
-                      <MessageSquare size={16} className={sentimentColors.neutral.split(' ')[0].replace('text-', 'text-')} />
+                      <MessageSquare size={16} className={(sentimentColors.neutral?.split(' ')?.[0] || '').replace('text-', 'text-')} />
                     )}
-                    <span className={cn('text-sm font-medium', sentimentColors[selectedPost.sentiment].split(' ')[0])}>
+                    <span className={cn('text-sm font-medium', sentimentColors[selectedPost.sentiment]?.split(' ')?.[0])}>
                       {selectedPost.sentiment.charAt(0).toUpperCase() + selectedPost.sentiment.slice(1)} Sentiment
                     </span>
                   </div>

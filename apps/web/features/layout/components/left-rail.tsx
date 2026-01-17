@@ -56,12 +56,7 @@ export function LeftRail() {
       </div>
 
       {/* Agent Status Indicator */}
-      <AgentStatusIndicator
-        data-testid="agent-status"
-        onStatusChange={(status) => {
-          // TODO: Persist status to backend/database
-        }}
-      />
+      <AgentStatusIndicator data-testid="agent-status" />
 
       {/* Navigation */}
       <nav className="flex-1 flex flex-col items-center gap-2 w-full">

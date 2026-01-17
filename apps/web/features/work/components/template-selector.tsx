@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { FileText, ChevronDown, X } from 'lucide-react';
+import { FileText, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export interface Template {

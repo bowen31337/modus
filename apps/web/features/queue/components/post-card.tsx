@@ -28,7 +28,6 @@ export interface PostCardProps {
   createdAt: string;
   responseCount?: number;
   isSelected?: boolean;
-  isAssigned?: boolean;
   isKeyboardFocused?: boolean;
   onClick?: () => void;
   viewMode?: ViewMode;
@@ -67,7 +66,6 @@ export function PostCard({
   createdAt,
   responseCount = 0,
   isSelected = false,
-  isAssigned = false,
   isKeyboardFocused = false,
   onClick,
   viewMode = 'list',

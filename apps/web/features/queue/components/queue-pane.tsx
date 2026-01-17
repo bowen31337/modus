@@ -10,7 +10,6 @@ import { ViewToggle, type ViewMode } from './view-toggle';
 interface QueuePaneProps {
   onPostSelect?: (post: PostCardProps) => void;
   selectedPostId?: string | null;
-  assignedPosts?: Set<string>;
 }
 
 // Mock data for initial development
@@ -85,7 +84,7 @@ const mockPosts: PostCardProps[] = [
   },
 ];
 
-export function QueuePane({ onPostSelect, selectedPostId, assignedPosts }: QueuePaneProps) {
+export function QueuePane({ onPostSelect, selectedPostId }: QueuePaneProps) {
   const [filters, setFilters] = useState<FilterState>({
     category: 'all',
     status: 'all',
@@ -317,7 +316,6 @@ export function QueuePane({ onPostSelect, selectedPostId, assignedPosts }: Queue
                   key={post.id}
                   {...post}
                   isSelected={selectedPostId === post.id}
-                  isAssigned={assignedPosts?.has(post.id) ?? false}
                   isKeyboardFocused={isFocused}
                   onClick={() => {
                     setFocusedIndex(index);

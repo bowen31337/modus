@@ -6,7 +6,6 @@ interface UseAiSuggestionProps {
   postContent: string;
   postTitle: string;
   authorName?: string;
-  categoryName?: string;
 }
 
 interface AiSuggestionState {
@@ -23,7 +22,6 @@ export function useAiSuggestion({
   postContent,
   postTitle,
   authorName,
-  categoryName,
 }: UseAiSuggestionProps) {
   const [state, setState] = useState<AiSuggestionState>({
     isStreaming: false,

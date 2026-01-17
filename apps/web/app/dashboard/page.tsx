@@ -74,7 +74,6 @@ export default function DashboardPage() {
       <QueuePane
         onPostSelect={handlePostSelect}
         selectedPostId={selectedPost?.id ?? null}
-        assignedPosts={assignedPosts}
       />
 
       {/* Work Pane - Flexible, fills remaining space */}

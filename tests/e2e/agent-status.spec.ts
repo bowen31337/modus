@@ -1,19 +1,20 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Agent Status Management', () => {
-  test.beforeEach(async ({ page }) => {
-    // Navigate to login page
-    await page.goto('/login');
+  test.beforeEach(async ({ page, context }) => {
+    // Set demo session cookie directly on the browser context
+    await context.addCookies([{
+      name: 'modus_demo_session',
+      value: 'active',
+      domain: 'localhost',
+      path: '/',
+    }]);
 
-    // Fill in login form (demo mode)
-    await page.fill('input[name="email"]', 'demo@example.com');
-    await page.fill('input[name="password"]', 'demo123');
+    // Navigate directly to dashboard
+    await page.goto('/dashboard');
 
-    // Submit login form
-    await page.click('button[type="submit"]');
-
-    // Wait for navigation to dashboard
-    await page.waitForURL('/dashboard', { timeout: 5000 });
+    // Wait for the queue to load (indicates dashboard is ready)
+    await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
   });
 
   test('should display agent status indicator in left rail', async ({ page }) => {

@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { createClient } from '@/lib/supabase/client';
 import { Button } from '@modus/ui';
 import { Input } from '@modus/ui';
-import { useState, useTransition } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { demoLogin } from '@/lib/auth-actions';
 
@@ -21,7 +21,6 @@ export function LoginForm() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [isPending, startTransition] = [false, (cb: () => void) => cb()];
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     mode: 'all',
