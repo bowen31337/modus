@@ -11,8 +11,8 @@ test.describe.serial('Keyboard Navigation - Queue', () => {
       path: '/',
     }]);
 
-    // Navigate directly to dashboard with hard reload
-    await page.goto('/dashboard', { waitUntil: 'networkidle' });
+    // Navigate directly to dashboard
+    await page.goto('/dashboard');
 
     // Wait for the queue pane to be visible
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
@@ -29,6 +29,11 @@ test.describe.serial('Keyboard Navigation - Queue', () => {
 
     // Wait for the first post to be visible and have keyboard focus
     await page.waitForSelector('[data-testid^="post-card-"]', { timeout: 5000 });
+
+    // Wait for the keyboard handler to be attached
+    await page.waitForFunction(() => {
+      return !!document.getElementById('keyboard-handler-attached');
+    }, { timeout: 5000 });
   });
 
   test('should navigate down in queue with J key', async ({ page }) => {

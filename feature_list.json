@@ -1394,14 +1394,11 @@
       "Step 5: Verify focus order is logical and sequential"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 0,
-    "dev_failure_count": 1,
-    "last_dev_failure_at": "2026-01-17T20:51:24.554596Z",
-    "dev_failure_reasons": [
-      "Worker session timed out"
-    ]
+    "dev_failure_count": 0,
+    "dev_completed_at": "2026-01-17T21:18:33.299520Z"
   },
   {
     "category": "functional",
@@ -1454,7 +1451,9 @@
     "passes": false,
     "is_dev_done": true,
     "is_qa_passed": false,
-    "dev_completed_at": "1768684358"
+    "dev_completed_at": "2026-01-17T21:13:32.163025Z",
+    "qa_retry_count": 0,
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -1469,7 +1468,13 @@
     "passes": false,
     "is_dev_done": true,
     "is_qa_passed": false,
-    "dev_completed_at": "1768684358"
+    "dev_completed_at": "1768684358",
+    "qa_retry_count": 0,
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-17T21:36:04.060690Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -1485,7 +1490,13 @@
     "passes": false,
     "is_dev_done": true,
     "is_qa_passed": false,
-    "dev_completed_at": "1768684358"
+    "dev_completed_at": "1768684358",
+    "qa_retry_count": 0,
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-17T21:39:36.842877Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -1528,8 +1539,11 @@
       "Step 5: Verify empty search returns appropriate response"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T21:26:14.857918Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -1542,8 +1556,11 @@
       "Step 5: Verify is_internal_note flag is respected"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T21:46:16.968896Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -1556,8 +1573,11 @@
       "Step 5: Verify RAG retrieval provides similar responses as context"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T21:31:55.040007Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",

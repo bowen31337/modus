@@ -15,37 +15,42 @@ test.describe('Command Palette - Console Debug', () => {
     // Navigate to dashboard
     await page.goto('/dashboard');
 
-    // Wait for the page to load
+    // Wait for the page to load and keyboard listener to be attached
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
+    // Wait for the keyboard listener marker to be present
+    await page.waitForSelector('#cmd-k-listener-attached', { timeout: 10000 });
   });
 
   test('should capture console logs and check keyboard events', async ({ page }) => {
-    // Collect console logs
-    const logs: string[] = [];
+    // Collect ALL console logs (not just 'log' type)
+    const logs: { type: string; text: string }[] = [];
     page.on('console', msg => {
-      if (msg.type() === 'log') {
-        logs.push(msg.text());
-        console.log('Browser console:', msg.text());
-      }
+      const text = msg.text();
+      const type = msg.type();
+      logs.push({ type, text });
+      console.log(`Browser console [${type}]:`, text);
     });
 
-    // Verify listener is attached
-    await page.waitForTimeout(1000);
-    console.log('Console logs after page load:', logs);
+    // Wait for React to hydrate and useEffect to run
+    await page.waitForTimeout(2000);
+    console.log('Console logs after page load:', JSON.stringify(logs, null, 2));
+
+    // Check if command palette is initially hidden
+    const commandPalette = page.getByTestId('command-palette');
+    const initiallyVisible = await commandPalette.isVisible().catch(() => false);
+    console.log('Command palette initially visible:', initiallyVisible);
 
     // Press Cmd+K
     await page.keyboard.press('Meta+k');
 
-    // Wait for potential state updates
-    await page.waitForTimeout(500);
+    // Wait for React state update
+    await page.waitForTimeout(1000);
 
-    // Check logs
-    console.log('Console logs after keyboard press:', logs);
+    // Check logs after keyboard press
+    console.log('Console logs after keyboard press:', JSON.stringify(logs, null, 2));
 
     // Check if command palette opened
-    const commandPalette = page.getByTestId('command-palette');
     const isOpen = await commandPalette.isVisible().catch(() => false);
-
-    console.log('Command palette is open:', isOpen);
+    console.log('Command palette is open after Cmd+K:', isOpen);
   });
 });

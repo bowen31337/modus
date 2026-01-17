@@ -1,0 +1,124 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [active]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - navigation [ref=e7]:
+            - button "previous" [disabled] [ref=e8]:
+              - img "previous" [ref=e9]
+            - generic [ref=e11]:
+              - generic [ref=e12]: 1/
+              - text: "1"
+            - button "next" [disabled] [ref=e13]:
+              - img "next" [ref=e14]
+          - img
+        - generic [ref=e16]:
+          - link "Next.js 15.5.9 (outdated) Webpack" [ref=e17] [cursor=pointer]:
+            - /url: https://nextjs.org/docs/messages/version-staleness
+            - img [ref=e18]
+            - generic "An outdated version detected (latest is 16.1.3), upgrade is highly recommended!" [ref=e20]: Next.js 15.5.9 (outdated)
+            - generic [ref=e21]: Webpack
+          - img
+      - generic [ref=e22]:
+        - dialog "Runtime UnrecognizedActionError" [ref=e23]:
+          - generic [ref=e26]:
+            - generic [ref=e27]:
+              - generic [ref=e28]:
+                - generic [ref=e30]: Runtime UnrecognizedActionError
+                - generic [ref=e31]:
+                  - button "Copy Error Info" [ref=e32] [cursor=pointer]:
+                    - img [ref=e33]
+                  - link "Go to related documentation" [ref=e35] [cursor=pointer]:
+                    - /url: https://nextjs.org/docs/messages/failed-to-find-server-action
+                    - img [ref=e36]
+                  - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools" [ref=e38] [cursor=pointer]:
+                    - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+                    - img [ref=e39]
+              - paragraph [ref=e48]:
+                - text: "Server Action \"008a1df00de5d6e188315eb6b1dbe2834b93a91189\" was not found on the server. Read more:"
+                - link "https://nextjs.org/docs/messages/failed-to-find-server-action" [ref=e49] [cursor=pointer]:
+                  - /url: https://nextjs.org/docs/messages/failed-to-find-server-action
+            - generic [ref=e50]:
+              - generic [ref=e51]:
+                - paragraph [ref=e53]:
+                  - img [ref=e55]
+                  - generic [ref=e59]: lib/auth-actions.ts (35:23) @ demoLoginAction
+                  - button "Open in editor" [ref=e60] [cursor=pointer]:
+                    - img [ref=e62]
+                - generic [ref=e65]:
+                  - generic [ref=e66]: 33 | * This is a wrapper that can be used directly with form's action prop
+                  - generic [ref=e67]: 34 | */
+                  - generic [ref=e68]: "> 35 | export async function demoLoginAction(): Promise<void> {"
+                  - generic [ref=e69]: "| ^"
+                  - generic [ref=e70]: 36 | await demoLogin();
+                  - generic [ref=e71]: "37 | }"
+                  - generic [ref=e72]: 38 |
+              - generic [ref=e73]:
+                - generic [ref=e74]:
+                  - paragraph [ref=e75]:
+                    - text: Call Stack
+                    - generic [ref=e76]: "52"
+                  - button "Show 44 ignore-listed frame(s)" [ref=e77] [cursor=pointer]:
+                    - text: Show 44 ignore-listed frame(s)
+                    - img [ref=e78]
+                - generic [ref=e80]:
+                  - generic [ref=e81]:
+                    - text: demoLoginAction
+                    - button "Open demoLoginAction in editor" [ref=e82] [cursor=pointer]:
+                      - img [ref=e83]
+                  - text: lib/auth-actions.ts (35:23)
+                - generic [ref=e85]:
+                  - generic [ref=e86]: (app-pages-browser)/../../node_modules/.pnpm/next@15.5.9_@opentelemetry+api@1.9.0_@playwright+test@1.57.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/client/app-next-dev.js
+                  - text: .next/static/chunks/main-app.js (182:1)
+                - generic [ref=e87]:
+                  - generic [ref=e88]: __webpack_exec__
+                  - text: .next/static/chunks/main-app.js (1889:67)
+                - generic [ref=e89]:
+                  - generic [ref=e90]: <unknown>
+                  - text: .next/static/chunks/main-app.js (1890:282)
+                - generic [ref=e91]:
+                  - generic [ref=e92]: <unknown>
+                  - text: .next/static/chunks/main-app.js (9:61)
+                - generic [ref=e93]:
+                  - generic [ref=e94]: form
+                  - text: unknown (0:0)
+                - generic [ref=e95]:
+                  - generic [ref=e96]:
+                    - text: LoginForm
+                    - button "Open LoginForm in editor" [ref=e97] [cursor=pointer]:
+                      - img [ref=e98]
+                  - text: features/auth/components/login-form.tsx (61:7)
+                - generic [ref=e100]:
+                  - generic [ref=e101]:
+                    - text: LoginPage
+                    - button "Open LoginPage in editor" [ref=e102] [cursor=pointer]:
+                      - img [ref=e103]
+                  - text: app/login/page.tsx (38:9)
+          - generic [ref=e105]:
+            - generic [ref=e106]: "1"
+            - generic [ref=e107]: "2"
+        - contentinfo [ref=e108]:
+          - region "Error feedback" [ref=e109]:
+            - paragraph [ref=e110]:
+              - link "Was this helpful?" [ref=e111] [cursor=pointer]:
+                - /url: https://nextjs.org/telemetry#error-feedback
+            - button "Mark as helpful" [ref=e112] [cursor=pointer]:
+              - img [ref=e113]
+            - button "Mark as not helpful" [ref=e116] [cursor=pointer]:
+              - img [ref=e117]
+    - generic [ref=e123] [cursor=pointer]:
+      - button "Open Next.js Dev Tools" [ref=e124]:
+        - img [ref=e125]
+      - generic [ref=e129]:
+        - button "Open issues overlay" [ref=e130]:
+          - generic [ref=e131]:
+            - generic [ref=e132]: "0"
+            - generic [ref=e133]: "1"
+          - generic [ref=e134]: Issue
+        - button "Collapse issues badge" [ref=e135]:
+          - img [ref=e136]
+  - 'heading "Application error: a client-side exception has occurred while loading localhost (see the browser console for more information)." [level=2] [ref=e140]'
+```

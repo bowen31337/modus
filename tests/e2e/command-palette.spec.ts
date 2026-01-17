@@ -12,21 +12,13 @@ test.describe('Command Palette', () => {
       },
     ]);
 
-    // Navigate to dashboard
+    // Navigate to dashboard (fresh page for each test)
     await page.goto('/dashboard');
 
-    // Wait for the page to load
+    // Wait for the page to load and keyboard listener to be attached
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
-
-    // Ensure command palette is closed by pressing Escape multiple times
-    // (in case it's open from a previous test)
-    for (let i = 0; i < 3; i++) {
-      await page.keyboard.press('Escape');
-      await page.waitForTimeout(100);
-    }
-
-    // Verify command palette is closed
-    await expect(page.getByTestId('command-palette')).toBeHidden();
+    // Wait for the keyboard listener marker to be present
+    await page.waitForSelector('#cmd-k-listener-attached', { timeout: 10000 });
 
     // Blur any focused inputs to ensure keyboard events go to document
     await page.evaluate(() => {

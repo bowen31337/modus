@@ -267,6 +267,13 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
 
   // Keyboard navigation handler - uses refs to avoid stale closures
   useEffect(() => {
+    console.log('[QueuePane] Keyboard event listener ATTACHED!');
+    // Add a marker to the DOM for testing
+    const marker = document.createElement('div');
+    marker.id = 'keyboard-handler-attached';
+    marker.style.display = 'none';
+    document.body.appendChild(marker);
+
     const handleKeyDown = (e: KeyboardEvent) => {
       // Don't handle keyboard navigation if user is typing in an input
       const target = e.target as HTMLElement;
@@ -330,7 +337,12 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      // Remove the marker
+      const m = document.getElementById('keyboard-handler-attached');
+      if (m) m.remove();
+    };
   }, []);
 
   // Reset focused index when filters change

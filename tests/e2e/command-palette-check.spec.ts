@@ -15,8 +15,10 @@ test.describe('Command Palette - DOM Check', () => {
     // Navigate to dashboard
     await page.goto('/dashboard');
 
-    // Wait for the page to load
+    // Wait for the page to load and keyboard listener to be attached
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
+    // Wait for the keyboard listener marker to be present
+    await page.waitForSelector('#cmd-k-listener-attached', { timeout: 10000 });
   });
 
   test('should check if command-palette test-id exists in DOM', async ({ page }) => {

@@ -1,0 +1,90 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - button "Open Next.js Dev Tools" [ref=e7] [cursor=pointer]:
+    - img [ref=e8]
+  - alert [ref=e11]
+  - generic [ref=e12]:
+    - complementary [ref=e13]:
+      - generic [ref=e14]: m
+      - 'button "Status: Online" [ref=e16] [cursor=pointer]':
+        - img [ref=e17]
+        - img [ref=e19]
+      - navigation [ref=e21]:
+        - link "Home" [ref=e22] [cursor=pointer]:
+          - /url: /dashboard
+          - img [ref=e23]
+        - link "Queue" [ref=e26] [cursor=pointer]:
+          - /url: /dashboard/queue
+          - img [ref=e27]
+        - link "Assigned" [ref=e30] [cursor=pointer]:
+          - /url: /dashboard/assigned
+          - img [ref=e31]
+        - link "Settings" [ref=e34] [cursor=pointer]:
+          - /url: /dashboard/settings
+          - img [ref=e35]
+      - button "Logout" [ref=e38] [cursor=pointer]:
+        - img [ref=e39]
+    - complementary [ref=e42]:
+      - generic [ref=e43]:
+        - heading "Moderation Queue" [level=2] [ref=e44]
+        - generic [ref=e45]:
+          - img [ref=e46]
+          - searchbox "Search posts..." [ref=e49]
+      - generic [ref=e50]:
+        - generic [ref=e51]:
+          - button "Filters 1" [ref=e52] [cursor=pointer]:
+            - img [ref=e53]
+            - text: Filters
+            - generic [ref=e55]: "1"
+            - img [ref=e56]
+          - generic [ref=e59]:
+            - generic [ref=e60]:
+              - generic [ref=e61]: Filters
+              - button "Clear all" [ref=e62] [cursor=pointer]:
+                - img [ref=e63]
+                - text: Clear all
+            - button "Category" [ref=e67] [cursor=pointer]:
+              - generic [ref=e68]: Category
+              - img [ref=e69]
+            - button "Status" [ref=e72] [cursor=pointer]:
+              - generic [ref=e73]: Status
+              - img [ref=e74]
+            - generic [ref=e76]:
+              - button "Priority" [ref=e77] [cursor=pointer]:
+                - generic [ref=e78]: Priority
+                - img [ref=e79]
+              - generic [ref=e81]:
+                - button "All Priorities" [ref=e82] [cursor=pointer]
+                - button "P1" [ref=e83] [cursor=pointer]
+                - button "P2" [active] [ref=e84] [cursor=pointer]
+                - button "P3" [ref=e85] [cursor=pointer]
+                - button "P4" [ref=e86] [cursor=pointer]
+                - button "P5" [ref=e87] [cursor=pointer]
+            - button "Date Range" [ref=e89] [cursor=pointer]:
+              - generic [ref=e90]: Date Range
+              - img [ref=e91]
+            - generic [ref=e93]: 0 posts found
+        - 'button "Sort : Priority" [ref=e95] [cursor=pointer]':
+          - img [ref=e96]
+          - text: Sort
+          - generic [ref=e99]: ": Priority"
+          - img [ref=e100]
+        - generic [ref=e103]:
+          - button "List view" [ref=e104] [cursor=pointer]:
+            - img [ref=e105]
+          - button "Grid view" [ref=e106] [cursor=pointer]:
+            - img [ref=e107]
+      - generic [ref=e113]:
+        - generic [ref=e115]: +
+        - paragraph [ref=e116]: No posts match your filters
+        - paragraph [ref=e117]: Try adjusting your search or filters
+      - generic [ref=e119]:
+        - generic [ref=e120]: "Total: 0"
+        - generic [ref=e121]: "Open: 0"
+    - generic [ref=e122]:
+      - img [ref=e124]
+      - heading "No Post Selected" [level=3] [ref=e126]
+      - paragraph [ref=e127]: Select a post from the queue to begin moderation
+```

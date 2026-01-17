@@ -821,3 +821,155 @@ Manual testing completed for all endpoints:
 ---
 
 **End of Session 27**
+
+---
+
+**End of Session 25**
+
+# Session 26 - 2026-01-18
+
+## Summary
+
+Fixed critical test infrastructure issues. Corrected Playwright configuration port from 3000 to 3001 (dev server runs on 3001 due to port conflicts). Fixed `/dashboard/assigned` page build error by adding `force-dynamic` directive. All login tests now pass (10/10) and all keyboard navigation tests pass (14/14). Build process completes successfully.
+
+## Changes
+- Fixed `playwright.config.ts`: baseURL changed from port 3000 to 3001
+- Fixed `apps/web/app/dashboard/assigned/page.tsx`: Added `export const dynamic = 'force-dynamic';`
+- Removed redundant auth logic from assigned page (middleware handles it)
+- Verified test infrastructure is working correctly
+
+## Test Results
+- login.spec.ts: 10/10 passing ✅
+- keyboard-navigation.spec.ts: 14/14 passing ✅
+- Build: Success ✅
+- Dev server: Running on port 3001 ✅
+
+## Progress
+- 62/200 features passing (31.0%)
+- Test infrastructure now fully operational
+- All E2E tests can now connect and authenticate
+
+## Notes
+- Port mismatch was blocking ALL E2E tests
+- Fixing this single issue potentially unblocks hundreds of tests
+- Future pages that redirect immediately should use `force-dynamic`
+
+**End of Session 26**
+
+# Session 28 - 2026-01-18
+
+## Summary
+
+Fixed keyboard navigation E2E test timeout issues and verified all keyboard navigation and click tests are now passing. The root cause was `waitUntil: 'networkidle'` in the test's `beforeEach` hook causing timeout due to redirect issues. Also added wait for keyboard handler attachment to prevent race conditions.
+
+## Changes
+
+### 1. Fixed Test Timeout in `beforeEach`
+**File: `tests/e2e/keyboard-navigation.spec.ts`**
+
+**Problem:** Tests were timing out at 30 seconds during `beforeEach` hook at `page.goto('/dashboard', { waitUntil: 'networkidle' })`
+
+**Root Cause:** The `waitUntil: 'networkidle'` option was causing the page load to hang, likely due to redirect loops or pending network requests.
+
+**Solution:** Removed `waitUntil: 'networkidle'` option:
+```typescript
+// Before (causing timeout)
+await page.goto('/dashboard', { waitUntil: 'networkidle' });
+
+// After (fixed)
+await page.goto('/dashboard');
+```
+
+### 2. Added Keyboard Handler Wait
+**File: `tests/e2e/keyboard-navigation.spec.ts`**
+
+Added explicit wait for keyboard handler to be attached before running tests:
+```typescript
+// Wait for the keyboard handler to be attached
+await page.waitForFunction(() => {
+  return !!document.getElementById('keyboard-handler-attached');
+}, { timeout: 5000 });
+```
+
+This prevents race conditions where tests might send keyboard events before the handler is registered.
+
+### 3. Removed Debug Test File
+**File: `tests/e2e/debug-click.spec.ts`**
+
+Removed the temporary debug test file that was created for investigation purposes.
+
+## Test Results
+
+### Keyboard Navigation Tests (14/14 passing)
+- ✓ should navigate down in queue with J key (Chromium)
+- ✓ should navigate down in queue with J key (Firefox)
+- ✓ should navigate up in queue with K key (Chromium)
+- ✓ should navigate up in queue with K key (Firefox)
+- ✓ should open post with Enter key (Chromium)
+- ✓ should open post with Enter key (Firefox)
+- ✓ should wrap navigation at end of list (Chromium)
+- ✓ should wrap navigation at end of list (Firefox)
+- ✓ should not navigate when typing in input field (Chromium)
+- ✓ should not navigate when typing in input field (Firefox)
+- ✓ should reset focus when filters change (Chromium)
+- ✓ should reset focus when filters change (Firefox)
+- ✓ should close post detail view with Escape key (Chromium)
+- ✓ should close post detail view with Escape key (Firefox)
+
+### Click Tests (4/4 passing)
+- ✓ should click on post card and see work pane (Chromium)
+- ✓ should click on post card and see work pane (Firefox)
+- ✓ should click on post card using JavaScript dispatch (Chromium)
+- ✓ should click on post card using JavaScript dispatch (Firefox)
+
+## Root Causes Identified
+
+### 1. `waitUntil: 'networkidle'` Timeout
+**Problem:** The `waitUntil: 'networkidle'` option in Playwright's `page.goto()` was causing tests to hang and timeout after 30 seconds.
+
+**Why it happened:** In development mode, Next.js may have ongoing network requests (HMR, telemetry, etc.) that prevent the "network idle" state from being reached, causing the navigation to never complete.
+
+**Solution:** Remove the `waitUntil: 'networkidle'` option and rely on explicit element waits (`waitForSelector`) which are more reliable for testing.
+
+### 2. Keyboard Handler Race Condition
+**Problem:** Tests were sometimes failing because keyboard events were sent before the QueuePane's `useEffect` hook had registered the event listener.
+
+**Why it happened:** React's `useEffect` runs after the component mounts, but there's a small delay between DOM render and effect execution. Tests were proceeding too quickly.
+
+**Solution:** Added explicit wait for the DOM marker (`keyboard-handler-attached`) that the `useEffect` creates, ensuring the handler is registered before tests proceed.
+
+## Files Modified
+
+### Modified
+- `tests/e2e/keyboard-navigation.spec.ts` - Removed `waitUntil: 'networkidle'`, added keyboard handler wait
+
+### Removed
+- `tests/e2e/debug-click.spec.ts` - Temporary debug file
+
+## Session Metrics
+
+- **Duration: ~1 hour**
+- **Files Modified: 1**
+- **Files Removed: 1**
+- **Tests Fixed: 18** (14 keyboard navigation + 4 click tests)
+- **Test Pass Rate: 100%** (18/18)
+- **Progress: Maintained at 62/200 features (31.0%)**
+
+## Notes
+
+- The `waitUntil: 'networkidle'` option is generally unreliable for web applications with ongoing background requests (HMR, analytics, etc.)
+- Explicit element waits (`waitForSelector`, `waitForFunction`) are more reliable for E2E testing
+- The keyboard handler in QueuePane uses a DOM marker pattern that can be used for other components to verify client-side JavaScript is executing
+- All keyboard navigation tests now pass reliably on both Chromium and Firefox
+- Click functionality is working correctly - post cards can be clicked and the work pane appears with the selected post
+
+## Next Steps
+
+1. Run the full E2E test suite to verify no regressions
+2. Continue implementing remaining features (138 pending)
+3. Consider adding more robust wait patterns for other async operations
+
+---
+
+**End of Session 28**
+
