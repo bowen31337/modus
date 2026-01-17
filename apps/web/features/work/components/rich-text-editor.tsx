@@ -150,6 +150,7 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
     // Escape key dismisses ghost text
     if (e.key === 'Escape' && ghostText && onDismissGhostText) {
       e.preventDefault();
+      e.stopPropagation();
       onDismissGhostText();
     }
 

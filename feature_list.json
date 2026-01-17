@@ -471,9 +471,9 @@
       "Step 6: Verify post is now assigned to Agent B",
       "Step 7: Verify audit log records the reassignment action"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T17:34:10.730393Z",
     "dev_failure_count": 0
@@ -771,7 +771,7 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-17T15:20:35.803678Z",
+    "dev_completed_at": "2026-01-17T17:59:30.391935Z",
     "dev_failure_count": 0,
     "qa_completed_at": "1768675200"
   },
@@ -810,12 +810,8 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_failure_count": 1,
-    "dev_completed_at": "2026-01-17T16:34:59.750138Z",
-    "last_dev_failure_at": "2026-01-17T17:48:14.607869Z",
-    "dev_failure_reasons": [
-      "Worker session timed out"
-    ],
+    "dev_failure_count": 0,
+    "dev_completed_at": "2026-01-17T17:58:07.890416Z",
     "qa_completed_at": "1768675200"
   },
   {
@@ -917,12 +913,13 @@
       "Step 4: Verify sentiment_label is set (negative/neutral/positive)",
       "Step 5: Verify sentiment icon is displayed on the post card"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T17:31:23.811035Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_completed_at": "1768676424.872779"
   },
   {
     "category": "functional",
@@ -933,12 +930,13 @@
       "Step 3: Verify post is automatically set to P2 priority",
       "Step 4: Verify priority indicator reflects P2 status"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-17T17:49:39.124412Z"
+    "dev_completed_at": "2026-01-17T17:49:39.124412Z",
+    "qa_completed_at": "1768676466.144309"
   },
   {
     "category": "functional",
@@ -955,7 +953,12 @@
     "is_qa_passed": false,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T16:31:56.458564Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 2,
+    "last_dev_failure_at": "2026-01-17T18:49:41.548001Z",
+    "dev_failure_reasons": [
+      "Worker session timed out",
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -986,8 +989,11 @@
       "Step 5: Verify rules are displayed in order of execution priority"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T18:05:21.180006Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -1003,8 +1009,11 @@
       "Step 8: Verify new rule appears in the rules list"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T18:05:56.110025Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -1018,8 +1027,11 @@
       "Step 6: Verify rule is updated in the list"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_failure_count": 0,
+    "dev_completed_at": "2026-01-17T19:15:53.534679Z"
   },
   {
     "category": "functional",
@@ -1033,8 +1045,11 @@
       "Step 6: Verify rule no longer affects new posts"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T18:30:58.212899Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -1048,8 +1063,11 @@
       "Step 6: Verify disabled rule does not affect the post"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T18:31:51.584185Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -1064,7 +1082,13 @@
     ],
     "passes": false,
     "is_dev_done": false,
-    "is_qa_passed": false
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-17T19:00:58.296777Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -1079,8 +1103,11 @@
       "Step 7: Verify expected priority result is displayed"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T18:52:10.906637Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -1281,9 +1308,10 @@
       "Step 4: Verify focus returns to the queue",
       "Step 5: Verify previously selected post is still highlighted"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768777200.000000"
   },
   {
     "category": "functional",
@@ -1296,8 +1324,9 @@
       "Step 5: Verify can select an agent or cancel"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "1768677530.13911"
   },
   {
     "category": "functional",

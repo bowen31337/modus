@@ -78,8 +78,11 @@ test.describe('Keyboard Shortcuts', () => {
     await expect(page.locator('text=This is a test response')).toBeVisible();
     await expect(page.locator('text=Activity History')).toBeVisible();
 
-    // Verify the agent name is shown
-    await expect(page.locator('text=Demo Agent')).toBeVisible();
+    // Verify the agent name is shown within the response element
+    const responseElement = page.locator('[data-testid^="response-"]').filter({
+      hasText: 'This is a test response'
+    });
+    await expect(responseElement.locator('text=Agent A')).toBeVisible();
   });
 
   test('should not submit with Cmd+Enter when textarea is empty', async ({ page }) => {

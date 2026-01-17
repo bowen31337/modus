@@ -75,11 +75,12 @@ test.describe('Template Management', () => {
       'Hi {{authorName}},\n\nThank you for reporting this bug about "{{title}}". Our development team has been notified and will investigate the issue.\n\nWe\'ll keep you updated on the progress.\n\nBest regards,\n{{agentName}}'
     );
 
-    // Verify placeholders are detected
-    await expect(page.getByText('Detected Placeholders:')).toBeVisible();
-    await expect(page.getByText('{{authorName}}', { exact: true })).toBeVisible();
-    await expect(page.getByText('{{title}}', { exact: true })).toBeVisible();
-    await expect(page.getByText('{{agentName}}', { exact: true })).toBeVisible();
+    // Verify placeholders are detected within the modal
+    const modal = page.getByTestId('create-template-modal');
+    await expect(modal.getByTestId('detected-placeholders')).toBeVisible();
+    await expect(modal.getByTestId('detected-placeholder-authorName')).toBeVisible();
+    await expect(modal.getByTestId('detected-placeholder-title')).toBeVisible();
+    await expect(modal.getByTestId('detected-placeholder-agentName')).toBeVisible();
 
     // Click Save
     await page.getByTestId('save-create-template').click();
@@ -186,9 +187,10 @@ test.describe('Template Management', () => {
     await page.getByTestId('delete-template-5').click();
 
     // Verify delete confirmation modal is displayed
-    await expect(page.getByTestId('delete-template-modal')).toBeVisible();
-    await expect(page.getByText('Delete Template')).toBeVisible();
-    await expect(page.getByText(/Escalation Notice/)).toBeVisible();
+    const modal = page.getByTestId('delete-template-modal');
+    await expect(modal).toBeVisible();
+    await expect(modal.getByRole('heading', { name: 'Delete Template' })).toBeVisible();
+    await expect(modal.getByText(/Escalation Notice/)).toBeVisible();
 
     // Click confirm delete
     await page.getByTestId('confirm-delete-template').click();
@@ -297,10 +299,11 @@ test.describe('Template Management', () => {
       'Hi {{username}}, regarding your post {{postId}} in category {{category}}'
     );
 
-    // Verify all placeholders are detected - use exact match and look within the modal
-    await expect(page.getByText('{{username}}', { exact: true })).toBeVisible();
-    await expect(page.getByText('{{postId}}', { exact: true })).toBeVisible();
-    await expect(page.getByText('{{category}}', { exact: true })).toBeVisible();
+    // Verify all placeholders are detected - use test IDs for specificity
+    const modal = page.getByTestId('create-template-modal');
+    await expect(modal.getByTestId('detected-placeholder-username')).toBeVisible();
+    await expect(modal.getByTestId('detected-placeholder-postId')).toBeVisible();
+    await expect(modal.getByTestId('detected-placeholder-category')).toBeVisible();
   });
 
   test('should handle template with no placeholders', async ({ page }) => {
@@ -335,11 +338,12 @@ test.describe('Template Management', () => {
       'Hi {{authorName}},\n\nRe: {{title}} in {{category}}\n\nFrom: {{agentName}}'
     );
 
-    // Verify all placeholders detected - use exact match
-    await expect(page.getByText('{{authorName}}', { exact: true })).toBeVisible();
-    await expect(page.getByText('{{title}}', { exact: true })).toBeVisible();
-    await expect(page.getByText('{{category}}', { exact: true })).toBeVisible();
-    await expect(page.getByText('{{agentName}}', { exact: true })).toBeVisible();
+    // Verify all placeholders detected - use test IDs for specificity
+    const modal = page.getByTestId('create-template-modal');
+    await expect(modal.getByTestId('detected-placeholder-authorName')).toBeVisible();
+    await expect(modal.getByTestId('detected-placeholder-title')).toBeVisible();
+    await expect(modal.getByTestId('detected-placeholder-category')).toBeVisible();
+    await expect(modal.getByTestId('detected-placeholder-agentName')).toBeVisible();
 
     // Save template
     await page.getByTestId('save-create-template').click();

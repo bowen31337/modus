@@ -1,15 +1,17 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Release Assignment', () => {
-  test.beforeEach(async ({ page }) => {
-    // Log in with demo credentials
-    await page.goto('/login');
-    await page.fill('input[name="email"]', 'demo@example.com');
-    await page.fill('input[name="password"]', 'demo123');
-    await page.click('button[type="submit"]');
+  test.beforeEach(async ({ page, context }) => {
+    // Set demo session cookie directly on the browser context
+    await context.addCookies([{
+      name: 'modus_demo_session',
+      value: 'active',
+      domain: 'localhost',
+      path: '/',
+    }]);
 
-    // Wait for navigation to dashboard
-    await page.waitForURL(/.*dashboard/);
+    // Navigate directly to dashboard
+    await page.goto('/dashboard');
 
     // Wait for queue pane to be visible
     await expect(page.getByTestId('queue-pane')).toBeVisible();

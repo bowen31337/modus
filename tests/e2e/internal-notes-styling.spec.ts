@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Internal Notes Styling', () => {
   test.beforeEach(async ({ page }) => {
     // Log in with demo credentials
-    await page.goto('http://localhost:3008/login');
+    await page.goto('/login');
     await page.fill('input[name="email"]', 'demo@example.com');
     await page.fill('input[name="password"]', 'demo123');
     await page.click('button[type="submit"]');

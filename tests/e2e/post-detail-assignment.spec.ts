@@ -45,11 +45,10 @@ test.describe('Post Detail View and Assignment', () => {
     const assignedIndicator = workPane.getByText('Assigned to you').first();
     await expect(assignedIndicator).toBeVisible();
 
-    // Verify assign button shows "Assigned" state
-    const assignButton = page.getByTestId('assign-to-me-button');
-    await expect(assignButton).toBeVisible();
-    await expect(assignButton).toBeDisabled();
-    await expect(assignButton).toContainText('Assigned');
+    // Verify release button is visible (post is auto-assigned on click)
+    const releaseButton = page.getByTestId('release-button');
+    await expect(releaseButton).toBeVisible();
+    await expect(releaseButton).toContainText('Release');
   });
 
   test('should display full post content in content section', async ({ page }) => {
@@ -127,17 +126,15 @@ test.describe('Post Detail View and Assignment', () => {
     await expect(sidebar).toContainText('Assigned to you');
   });
 
-  test('should allow manual assignment via assign button', async ({ page }) => {
-    // Click on a post
+  test('should show release button after auto-assignment', async ({ page }) => {
+    // Click on a post (auto-assigns on click)
     const postCard = page.getByTestId('post-card-1');
     await postCard.click();
 
-    // Click assign button (should be disabled after auto-assignment)
-    const assignButton = page.getByTestId('assign-to-me-button');
-    await expect(assignButton).toBeDisabled();
-
-    // Verify it shows "Assigned" state
-    await expect(assignButton).toContainText('Assigned');
+    // Verify release button is visible (post is assigned)
+    const releaseButton = page.getByTestId('release-button');
+    await expect(releaseButton).toBeVisible();
+    await expect(releaseButton).toContainText('Release');
   });
 
   test('should display response editor with all controls', async ({ page }) => {
@@ -148,10 +145,10 @@ test.describe('Post Detail View and Assignment', () => {
     // Verify response textarea is visible
     const responseTextarea = page.getByTestId('response-textarea');
     await expect(responseTextarea).toBeVisible();
-    await expect(responseTextarea).toHaveAttribute('placeholder', 'Type your response here...');
+    await expect(responseTextarea).toHaveAttribute('placeholder', 'Type your response here... (Press R to focus)');
 
     // Verify template button is visible
-    const templateButton = page.getByTestId('use-template-button');
+    const templateButton = page.getByTestId('template-trigger-button');
     await expect(templateButton).toBeVisible();
 
     // Verify AI suggest button is visible
@@ -182,10 +179,10 @@ test.describe('Post Detail View and Assignment', () => {
     const postCard1 = page.getByTestId('post-card-1');
     await postCard1.click();
 
-    // Verify first post is assigned
-    let assignButton = page.getByTestId('assign-to-me-button');
-    await expect(assignButton).toBeDisabled();
-    await expect(assignButton).toContainText('Assigned');
+    // Verify first post is assigned (release button visible)
+    let releaseButton = page.getByTestId('release-button');
+    await expect(releaseButton).toBeVisible();
+    await expect(releaseButton).toContainText('Release');
 
     // Verify first post card shows as selected
     await expect(postCard1).toHaveAttribute('aria-pressed', 'true');
@@ -195,9 +192,9 @@ test.describe('Post Detail View and Assignment', () => {
     await postCard2.click();
 
     // Verify second post is also assigned (auto-assign on click)
-    assignButton = page.getByTestId('assign-to-me-button');
-    await expect(assignButton).toBeDisabled();
-    await expect(assignButton).toContainText('Assigned');
+    releaseButton = page.getByTestId('release-button');
+    await expect(releaseButton).toBeVisible();
+    await expect(releaseButton).toContainText('Release');
 
     // Verify second post card shows as selected
     await expect(postCard2).toHaveAttribute('aria-pressed', 'true');

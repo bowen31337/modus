@@ -20,7 +20,7 @@ test.describe('Response Submission', () => {
 
   test('should enable Send Response button when textarea has content', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid^="post-card-\"]:first-child');
+    await page.click('[data-testid^="post-card-"]:first-child');
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]');
@@ -39,7 +39,7 @@ test.describe('Response Submission', () => {
 
   test('should post a public response to community', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid^="post-card-\"]:first-child');
+    await page.click('[data-testid^="post-card-"]:first-child');
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]');
@@ -77,7 +77,7 @@ test.describe('Response Submission', () => {
 
   test('should add internal note not visible to community', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid^="post-card-\"]:first-child');
+    await page.click('[data-testid^="post-card-"]:first-child');
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]');
@@ -101,22 +101,22 @@ test.describe('Response Submission', () => {
     // Verify note appears in activity history
     await expect(page.locator('text=This is an internal note for moderators only')).toBeVisible();
 
-    // Verify it has "Internal Note" badge (check within the response element)
+    // Verify it has "Internal" badge (check within the response element)
     const noteElement = page.locator('[data-testid^="response-"]').filter({
       hasText: 'This is an internal note for moderators only'
     });
     await expect(noteElement).toBeVisible();
-    const badge = noteElement.loc('span.text-xs.px-2.py-0.5.rounded.bg-yellow-500/20.text-yellow-400');
+    const badge = noteElement.locator('span:has-text("Internal")').first();
     await expect(badge).toBeVisible();
-    await expect(badge).toHaveText("Internal Note");
+    await expect(badge).toHaveText('Internal');
 
-    // Verify note has different styling (yellow background)
-    await expect(noteElement).toHaveClass(/bg-yellow-500/);
+    // Verify note has different styling (amber background)
+    await expect(noteElement).toHaveClass(/bg-amber-500/);
   });
 
   test('should toggle between public response and internal note', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid^="post-card-\"]:first-child');
+    await page.click('[data-testid^="post-card-"]:first-child');
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]');
@@ -138,7 +138,7 @@ test.describe('Response Submission', () => {
 
   test('should display multiple responses in activity history', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid^="post-card-\"]:first-child');
+    await page.click('[data-testid^="post-card-"]:first-child');
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]');
@@ -165,16 +165,17 @@ test.describe('Response Submission', () => {
     await expect(page.locator('text=Internal moderator note')).toBeVisible();
     await expect(page.locator('text=Second public response')).toBeVisible();
 
-    // Verify only one has "Internal Note" badge
+    // Verify only one has "Internal" badge
     // Count badges within response elements (not in other places like post cards)
+    // Use a more specific selector to find only the badge span, not any text containing "Internal"
     const responseElements = page.locator('[data-testid^="response-"]');
-    const internalNoteBadges = responseElements.locator('text=Internal Note');
+    const internalNoteBadges = responseElements.locator('span:has-text("Internal")');
     await expect(internalNoteBadges).toHaveCount(1);
   });
 
   test('should show timestamp for each response', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid^="post-card-\"]:first-child');
+    await page.click('[data-testid^="post-card-"]:first-child');
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]');
@@ -203,7 +204,7 @@ test.describe('Response Submission', () => {
 
   test('should show agent name for each response', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid^="post-card-\"]:first-child');
+    await page.click('[data-testid^="post-card-"]:first-child');
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]');
@@ -226,7 +227,7 @@ test.describe('Response Submission', () => {
 
   test('should clear textarea after sending response', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid^="post-card-\"]:first-child');
+    await page.click('[data-testid^="post-card-"]:first-child');
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]');
@@ -248,7 +249,7 @@ test.describe('Response Submission', () => {
 
   test('should not submit response with only whitespace', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid^="post-card-\"]:first-child');
+    await page.click('[data-testid^="post-card-"]:first-child');
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]');
@@ -267,7 +268,7 @@ test.describe('Response Submission', () => {
 
   test('should preserve responses when switching between posts', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid^="post-card-\"]:first-child');
+    await page.click('[data-testid^="post-card-"]:first-child');
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]');
@@ -282,7 +283,7 @@ test.describe('Response Submission', () => {
     await expect(page.locator('text=Response for first post')).toBeVisible();
 
     // Switch to second post
-    await page.click('[data-testid^="post-card-\"]:nth-child(2)');
+    await page.click('[data-testid^="post-card-"]:nth-child(2)');
 
     // Wait for work pane to update
     await page.waitForTimeout(500);
@@ -294,7 +295,7 @@ test.describe('Response Submission', () => {
     await expect(page.locator('text=Response for first post')).toBeVisible();
 
     // Switch back to first post
-    await page.click('[data-testid^="post-card-\"]:first-child');
+    await page.click('[data-testid^="post-card-"]:first-child');
 
     // Wait for work pane to update
     await page.waitForTimeout(500);

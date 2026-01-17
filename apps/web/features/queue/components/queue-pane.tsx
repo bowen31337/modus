@@ -104,6 +104,20 @@ export function QueuePane({ onPostSelect, selectedPostId, assignedPosts }: Queue
   const [focusedIndex, setFocusedIndex] = useState<number>(0);
   const queueContainerRef = useRef<HTMLDivElement>(null);
 
+  // Use refs to avoid stale closures in keyboard handler
+  const focusedIndexRef = useRef<number>(0);
+  const filteredAndSortedPostsRef = useRef<PostCardProps[]>([]);
+  const onPostSelectRef = useRef(onPostSelect);
+
+  // Update refs when values change
+  useEffect(() => {
+    focusedIndexRef.current = focusedIndex;
+  }, [focusedIndex]);
+
+  useEffect(() => {
+    onPostSelectRef.current = onPostSelect;
+  }, [onPostSelect]);
+
   // Blur search input on mount to prevent it from capturing keyboard events
   useEffect(() => {
     const searchInput = document.querySelector('input[type="search"]');
@@ -177,7 +191,12 @@ export function QueuePane({ onPostSelect, selectedPostId, assignedPosts }: Queue
     return posts;
   }, [filters, sort]);
 
-  // Keyboard navigation handler
+  // Update filteredAndSortedPostsRef after filteredAndSortedPosts is computed
+  useEffect(() => {
+    filteredAndSortedPostsRef.current = filteredAndSortedPosts;
+  }, [filteredAndSortedPosts]);
+
+  // Keyboard navigation handler - uses refs to avoid stale closures
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Don't handle keyboard navigation if user is typing in an input
@@ -189,44 +208,57 @@ export function QueuePane({ onPostSelect, selectedPostId, assignedPosts }: Queue
       // J key: navigate down
       if (e.key === 'j' || e.key === 'J') {
         e.preventDefault();
-        setFocusedIndex(prev => {
-          const newIndex = (prev + 1) % filteredAndSortedPosts.length;
-          // Scroll the focused item into view
-          const cardElement = document.querySelector(`[data-testid="post-card-${filteredAndSortedPosts[newIndex]?.id}"]`);
-          if (cardElement) {
-            cardElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }
-          return newIndex;
-        });
+        const currentPosts = filteredAndSortedPostsRef.current;
+        const currentIndex = focusedIndexRef.current;
+        const newIndex = (currentIndex + 1) % currentPosts.length;
+
+        console.log(`[J key] currentIndex: ${currentIndex}, newIndex: ${newIndex}, posts length: ${currentPosts.length}`);
+
+        // Scroll the focused item into view
+        const cardElement = document.querySelector(`[data-testid="post-card-${currentPosts[newIndex]?.id}"]`);
+        if (cardElement) {
+          cardElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        setFocusedIndex(newIndex);
       }
 
       // K key: navigate up
       if (e.key === 'k' || e.key === 'K') {
         e.preventDefault();
-        setFocusedIndex(prev => {
-          const newIndex = prev <= 0 ? filteredAndSortedPosts.length - 1 : prev - 1;
-          // Scroll the focused item into view
-          const cardElement = document.querySelector(`[data-testid="post-card-${filteredAndSortedPosts[newIndex]?.id}"]`);
-          if (cardElement) {
-            cardElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }
-          return newIndex;
-        });
+        const currentPosts = filteredAndSortedPostsRef.current;
+        const currentIndex = focusedIndexRef.current;
+        const newIndex = currentIndex <= 0 ? currentPosts.length - 1 : currentIndex - 1;
+
+        console.log(`[K key] currentIndex: ${currentIndex}, newIndex: ${newIndex}, posts length: ${currentPosts.length}`);
+
+        // Scroll the focused item into view
+        const cardElement = document.querySelector(`[data-testid="post-card-${currentPosts[newIndex]?.id}"]`);
+        if (cardElement) {
+          cardElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        setFocusedIndex(newIndex);
       }
 
       // Enter key: select the focused post
-      if (e.key === 'Enter' && filteredAndSortedPosts.length > 0) {
-        e.preventDefault();
-        const focusedPost = filteredAndSortedPosts[focusedIndex];
-        if (focusedPost) {
-          onPostSelect?.(focusedPost);
+      if (e.key === 'Enter') {
+        const currentPosts = filteredAndSortedPostsRef.current;
+        console.log(`[Enter key] posts length: ${currentPosts.length}, focusedIndex: ${focusedIndexRef.current}`);
+        if (currentPosts.length > 0) {
+          e.preventDefault();
+          const focusedPost = currentPosts[focusedIndexRef.current];
+          console.log(`[Enter key] focusedPost: ${focusedPost?.id}, onPostSelect exists: ${!!onPostSelectRef.current}`);
+          if (focusedPost && onPostSelectRef.current) {
+            onPostSelectRef.current(focusedPost);
+          }
         }
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [filteredAndSortedPosts, focusedIndex, onPostSelect]);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // Reset focused index when filters change
   useEffect(() => {

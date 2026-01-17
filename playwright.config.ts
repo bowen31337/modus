@@ -11,7 +11,7 @@ export default defineConfig({
     ['json', { outputFile: 'reports/test-results/results.json' }],
   ],
   use: {
-    baseURL: 'http://localhost:3008',
+    baseURL: 'http://localhost:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },

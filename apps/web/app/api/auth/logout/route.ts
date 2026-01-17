@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { isDemoMode } from '@/lib/demo-session';
 import { createServerSideClient } from '@/lib/supabase/server';
 
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   const isSupabaseConfigured =
     process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 

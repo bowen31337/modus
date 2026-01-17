@@ -76,9 +76,13 @@ export default function SettingsPage() {
 
     // Extract placeholders from content
     const placeholderRegex = /\{\{(\w+)\}\}/g;
-    const placeholders = Array.from(formData.content.matchAll(placeholderRegex)).map(
-      (match) => match[1]
-    );
+    const placeholders: string[] = [];
+    let match;
+    while ((match = placeholderRegex.exec(formData.content)) !== null) {
+      if (match[1]) {
+        placeholders.push(match[1]);
+      }
+    }
 
     const newTemplate: Template = {
       id: Date.now().toString(),
@@ -98,9 +102,13 @@ export default function SettingsPage() {
 
     // Extract placeholders from content
     const placeholderRegex = /\{\{(\w+)\}\}/g;
-    const placeholders = Array.from(formData.content.matchAll(placeholderRegex)).map(
-      (match) => match[1]
-    );
+    const placeholders: string[] = [];
+    let match;
+    while ((match = placeholderRegex.exec(formData.content)) !== null) {
+      if (match[1]) {
+        placeholders.push(match[1]);
+      }
+    }
 
     const updatedTemplates = templates.map((template) =>
       template.id === selectedTemplate.id
@@ -237,7 +245,7 @@ export default function SettingsPage() {
                   </div>
 
                   {/* Preview */}
-                  <div className="bg-background-tertiary rounded-md p-3 border border-border">
+                  <div className="bg-background-tertiary rounded-md p-3 border border-border" data-testid="detected-placeholders">
                     <p className="text-sm text-foreground-secondary whitespace-pre-wrap line-clamp-3">
                       {template.content}
                     </p>
@@ -319,14 +327,14 @@ export default function SettingsPage() {
 
                 {/* Preview detected placeholders */}
                 {formData.content && (
-                  <div className="bg-background-tertiary rounded-md p-3 border border-border">
+                  <div className="bg-background-tertiary rounded-md p-3 border border-border" data-testid="detected-placeholders">
                     <p className="text-xs font-medium text-foreground mb-2">Detected Placeholders:</p>
-                    <div className="flex flex-wrap gap-1.5">
+                    <div className="flex flex-wrap gap-1.5" data-testid="detected-placeholders-list">
                       {Array.from(formData.content.matchAll(/\{\{(\w+)\}\}/g)).length > 0 ? (
                         Array.from(formData.content.matchAll(/\{\{(\w+)\}\}/g)).map((match, index) => (
                           <span
                             key={index}
-                            className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-md font-mono"
+                            className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-md font-mono" data-testid={`detected-placeholder-${match[1]}`}
                           >
                             {match[0]}
                           </span>
@@ -425,14 +433,14 @@ export default function SettingsPage() {
 
                 {/* Preview detected placeholders */}
                 {formData.content && (
-                  <div className="bg-background-tertiary rounded-md p-3 border border-border">
+                  <div className="bg-background-tertiary rounded-md p-3 border border-border" data-testid="detected-placeholders">
                     <p className="text-xs font-medium text-foreground mb-2">Detected Placeholders:</p>
-                    <div className="flex flex-wrap gap-1.5">
+                    <div className="flex flex-wrap gap-1.5" data-testid="detected-placeholders-list">
                       {Array.from(formData.content.matchAll(/\{\{(\w+)\}\}/g)).length > 0 ? (
                         Array.from(formData.content.matchAll(/\{\{(\w+)\}\}/g)).map((match, index) => (
                           <span
                             key={index}
-                            className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-md font-mono"
+                            className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-md font-mono" data-testid={`detected-placeholder-${match[1]}`}
                           >
                             {match[0]}
                           </span>

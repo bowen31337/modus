@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { MessageSquare, User, Clock, AlertCircle, CheckCircle2, Hash, Loader2, EyeOff, MessageCircle } from 'lucide-react';
+import { MessageSquare, User, Clock, AlertCircle, CheckCircle2, Hash, Loader2, EyeOff, MessageCircle, ArrowRightLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { PostCardProps } from '@/features/queue/components/post-card';
 import { RichTextEditor, type RichTextEditorRef } from './rich-text-editor';
 import { TemplateSelector } from './template-selector';
 import { useAiSuggestion } from '../hooks/use-ai-suggestion';
+import { ReassignDialog } from './reassign-dialog';
 
 interface WorkPaneProps {
   selectedPost: PostCardProps | null;
@@ -15,6 +16,8 @@ interface WorkPaneProps {
   onAssignToMe: () => void;
   onRelease: () => void;
   onResolve: () => void;
+  onCloseDetail: () => void;
+  onReassign?: (postId: string, toAgentId: string) => void;
 }
 
 const priorityColors: Record<string, string> = {
@@ -37,12 +40,21 @@ const statusColors: Record<string, string> = {
   resolved: 'bg-emerald-500/20 text-emerald-400',
 };
 
-export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignToMe, onRelease, onResolve }: WorkPaneProps) {
+export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignToMe, onRelease, onResolve, onCloseDetail, onReassign }: WorkPaneProps) {
   const [responseContent, setResponseContent] = useState('');
   const [responses, setResponses] = useState<Array<{ id: string; content: string; isInternalNote: boolean; agent: string; createdAt: string }>>([]);
   const [isInternalNote, setIsInternalNote] = useState(false);
+  const [isReassignModalOpen, setIsReassignModalOpen] = useState(false);
   const editorRef = useRef<RichTextEditorRef>(null);
   const isAssignedToMe = selectedPost ? assignedPosts.has(selectedPost.id) : false;
+
+  // Mock agents for reassignment
+  const mockAgents = [
+    { id: '550e8400-e29b-41d4-a716-446655440001', name: 'Agent A', status: 'online' as const },
+    { id: '550e8400-e29b-41d4-a716-446655440002', name: 'Agent B', status: 'online' as const },
+    { id: '550e8400-e29b-41d4-a716-446655440003', name: 'Agent C', status: 'busy' as const },
+    { id: '550e8400-e29b-41d4-a716-446655440004', name: 'Agent D', status: 'offline' as const },
+  ];
 
   // AI Suggestion hook
   const aiSuggestion = useAiSuggestion({
@@ -60,7 +72,7 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
     cancelStreamingRef.current = aiSuggestion.cancelStreaming;
   }, [aiSuggestion.cancelStreaming]);
 
-  // Keyboard shortcut: R key focuses the response editor
+  // Keyboard shortcut: R key focuses the response editor, Escape closes detail view, Cmd+Shift+A opens reassign
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Cmd+Enter posts response and resolves (works even when typing in textarea)
@@ -69,6 +81,33 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
           e.preventDefault();
           handleSendResponse();
           onResolve();
+        }
+        return;
+      }
+
+      // Cmd+Shift+A opens reassign modal
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && (e.key === 'a' || e.key === 'A')) {
+        if (selectedPost) {
+          e.preventDefault();
+          setIsReassignModalOpen(true);
+        }
+        return;
+      }
+
+      // Escape key closes detail view and returns to queue
+      // Note: RichTextEditor handles Escape for dismissing ghost text when ghost text is present
+      // The RichTextEditor will call stopPropagation() to prevent this handler from running
+      if (e.key === 'Escape') {
+        // Close reassign modal if open
+        if (isReassignModalOpen) {
+          e.preventDefault();
+          setIsReassignModalOpen(false);
+          return;
+        }
+        // Only close detail view if not typing in textarea (RichTextEditor handles Escape there)
+        if (selectedPost && !(e.target instanceof HTMLTextAreaElement)) {
+          e.preventDefault();
+          onCloseDetail();
         }
         return;
       }
@@ -94,7 +133,7 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [selectedPost, responseContent]);
+  }, [selectedPost, responseContent, onRelease, onCloseDetail, isReassignModalOpen]);
 
   // Cleanup AI streaming on unmount
   useEffect(() => {
@@ -142,6 +181,12 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
 
   const handleAiSuggest = () => {
     aiSuggestion.startStreaming();
+  };
+
+  const handleReassign = (toAgentId: string) => {
+    if (selectedPost && onReassign) {
+      onReassign(selectedPost.id, toAgentId);
+    }
   };
 
   if (!selectedPost) {
@@ -197,14 +242,26 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
                 Assign to Me
               </button>
             ) : (
-              <button
-                type="button"
-                onClick={onRelease}
-                className="px-3 py-1.5 bg-background-tertiary hover:bg-background-tertiary/80 text-foreground text-sm rounded-md transition-colors border border-border"
-                data-testid="release-button"
-              >
-                Release
-              </button>
+              <>
+                <button
+                  type="button"
+                  onClick={() => setIsReassignModalOpen(true)}
+                  className="px-3 py-1.5 bg-background-tertiary hover:bg-background-tertiary/80 text-foreground text-sm rounded-md transition-colors border border-border flex items-center gap-2"
+                  data-testid="reassign-button"
+                  title="Reassign to another agent (Cmd+Shift+A)"
+                >
+                  <ArrowRightLeft size={14} />
+                  Reassign
+                </button>
+                <button
+                  type="button"
+                  onClick={onRelease}
+                  className="px-3 py-1.5 bg-background-tertiary hover:bg-background-tertiary/80 text-foreground text-sm rounded-md transition-colors border border-border"
+                  data-testid="release-button"
+                >
+                  Release
+                </button>
+              </>
             )}
             <button
               type="button"
@@ -480,6 +537,16 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
           </aside>
         </div>
       </div>
+
+      {/* Reassign Dialog */}
+      <ReassignDialog
+        isOpen={isReassignModalOpen}
+        onClose={() => setIsReassignModalOpen(false)}
+        onReassign={handleReassign}
+        currentAgentId={currentAgent.id}
+        agents={mockAgents}
+        postTitle={selectedPost.title}
+      />
     </main>
   );
 }

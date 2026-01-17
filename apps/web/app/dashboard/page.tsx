@@ -38,10 +38,31 @@ export default function DashboardPage() {
         return newSet;
       });
     }
+    // Keep the detail view open so user can reassign
+  };
+
+  const handleCloseDetail = () => {
+    // Close the detail view and return to queue (called by Escape key)
+    setSelectedPost(null);
   };
 
   const handleResolve = () => {
     // In a real app, this would update the post status via API
+  };
+
+  const handleReassign = (postId: string, toAgentId: string) => {
+    // Remove from current agent's assigned posts
+    setAssignedPosts(prev => {
+      const newSet = new Set(prev);
+      newSet.delete(postId);
+      return newSet;
+    });
+
+    // In a real app, this would:
+    // 1. Update the post's assigned_to field in the database
+    // 2. Send a notification to the new agent
+    // 3. Log the reassignment in the audit trail
+    console.log(`Reassigned post ${postId} to agent ${toAgentId}`);
   };
 
   return (
@@ -64,6 +85,8 @@ export default function DashboardPage() {
         onAssignToMe={handleAssignToMe}
         onRelease={handleRelease}
         onResolve={handleResolve}
+        onCloseDetail={handleCloseDetail}
+        onReassign={handleReassign}
       />
     </div>
   );

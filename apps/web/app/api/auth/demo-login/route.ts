@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isDemoMode } from '@/lib/demo-session';
 
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   // Only allow in demo mode
   if (!isDemoMode()) {
     return NextResponse.json(

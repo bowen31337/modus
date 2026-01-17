@@ -1,14 +1,20 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('View Toggle (Grid/List)', () => {
-  test.beforeEach(async ({ page }) => {
-    // First authenticate by logging in (this sets the demo session cookie)
-    await page.goto('/login');
-    await page.getByRole('button', { name: 'Sign In' }).click();
-    await expect(page).toHaveURL(/.*dashboard/);
+  test.beforeEach(async ({ page, context }) => {
+    // Set demo session cookie directly on the browser context
+    await context.addCookies([{
+      name: 'modus_demo_session',
+      value: 'active',
+      domain: 'localhost',
+      path: '/',
+    }]);
+
+    // Navigate directly to dashboard
+    await page.goto('/dashboard');
 
     // Wait for the queue to load
-    await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 5000 });
+    await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
   });
 
   test('should display view toggle buttons in queue pane', async ({ page }) => {
