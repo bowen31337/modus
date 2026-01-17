@@ -14,7 +14,7 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-17T12:46:01.822497Z",
+    "dev_completed_at": "1768657233.308225",
     "dev_failure_count": 0
   },
   {
@@ -33,7 +33,7 @@
     "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-17T13:04:29.541307Z"
+    "dev_completed_at": "1768657233.308288"
   },
   {
     "category": "functional",
@@ -50,10 +50,12 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_failure_count": 0,
-    "last_dev_failure_at": null,
-    "dev_failure_reasons": [],
-    "dev_completed_at": "2026-01-17T12:49:20.116134+00:00"
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-17T13:17:30.465373Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ],
+    "dev_completed_at": "1768657233.308329"
   },
   {
     "category": "functional",
@@ -102,8 +104,14 @@
     ],
     "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "dev_completed_at": "2026-01-17T23:55:00Z"
+    "is_qa_passed": true,
+    "dev_completed_at": "1768657233.308447",
+    "qa_retry_count": 0,
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-17T13:16:01.918423Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -121,8 +129,8 @@
     ],
     "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "dev_completed_at": "2026-01-17T13:02:05.427883Z",
+    "is_qa_passed": true,
+    "dev_completed_at": "1768657233.308488",
     "qa_retry_count": 0,
     "dev_failure_count": 0
   },
@@ -140,8 +148,8 @@
     ],
     "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "dev_completed_at": "2026-01-17T23:55:00Z"
+    "is_qa_passed": true,
+    "dev_completed_at": "1768657233.308528"
   },
   {
     "category": "functional",
@@ -157,8 +165,8 @@
     ],
     "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "dev_completed_at": "2026-01-17T23:58:00Z"
+    "is_qa_passed": true,
+    "dev_completed_at": "1768657233.308567"
   },
   {
     "category": "functional",
@@ -175,8 +183,8 @@
     ],
     "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "dev_completed_at": "2026-01-17T23:58:00Z"
+    "is_qa_passed": true,
+    "dev_completed_at": "1768657233.30864"
   },
   {
     "category": "functional",
@@ -193,8 +201,8 @@
     ],
     "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "dev_completed_at": "2026-01-17T23:58:00Z"
+    "is_qa_passed": true,
+    "dev_completed_at": "1768657233.30868"
   },
   {
     "category": "functional",
@@ -209,8 +217,11 @@
       "Step 7: Verify posts outside the range are not shown"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T13:15:44.034676Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -224,9 +235,12 @@
       "Step 6: Verify non-matching posts are filtered out",
       "Step 7: Clear search and verify all posts return"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "1768657233.308755",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -257,7 +271,7 @@
     "passes": true,
     "is_dev_done": true,
     "is_qa_passed": true,
-    "dev_completed_at": "2026-01-17T13:13:56Z",
+    "dev_completed_at": "1768657233.308829",
     "qa_completed_at": "2026-01-17T13:13:56Z"
   },
   {
@@ -273,7 +287,7 @@
     "passes": true,
     "is_dev_done": true,
     "is_qa_passed": true,
-    "dev_completed_at": "2026-01-17T13:13:56Z",
+    "dev_completed_at": "1768657233.30887",
     "qa_completed_at": "2026-01-17T13:13:56Z"
   },
   {
@@ -289,7 +303,7 @@
     "passes": true,
     "is_dev_done": true,
     "is_qa_passed": true,
-    "dev_completed_at": "2026-01-17T13:13:56Z",
+    "dev_completed_at": "1768657233.308909",
     "qa_completed_at": "2026-01-17T13:13:56Z"
   },
   {
@@ -304,8 +318,8 @@
     ],
     "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "dev_completed_at": "2026-01-17T23:58:00Z"
+    "is_qa_passed": true,
+    "dev_completed_at": "1768657233.308949"
   },
   {
     "category": "functional",
@@ -319,8 +333,8 @@
     ],
     "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "dev_completed_at": "2026-01-17T23:58:00Z"
+    "is_qa_passed": true,
+    "dev_completed_at": "1768657233.308997"
   },
   {
     "category": "functional",
@@ -333,8 +347,8 @@
     ],
     "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "dev_completed_at": "2026-01-17T23:58:00Z"
+    "is_qa_passed": true,
+    "dev_completed_at": "1768657233.309036"
   },
   {
     "category": "functional",
@@ -349,9 +363,10 @@
       "Step 7: Verify the assigned_at timestamp is set",
       "Step 8: Verify the post card in queue shows assignment indicator"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768657233.309075"
   },
   {
     "category": "functional",
@@ -365,9 +380,10 @@
       "Step 6: Verify post metadata (author, date, category) is visible",
       "Step 7: Verify any attachments are displayed or linked"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768657233.309114"
   },
   {
     "category": "functional",
@@ -380,9 +396,10 @@
       "Step 5: Verify author's total post count is displayed",
       "Step 6: Verify context information helps agent understand user's situation"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768657233.309153"
   },
   {
     "category": "functional",
@@ -394,9 +411,10 @@
       "Step 4: Verify each entry shows action type, agent, and timestamp",
       "Step 5: Verify responses and internal notes are listed in timeline"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768657233.309192"
   },
   {
     "category": "functional",
