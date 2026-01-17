@@ -6,7 +6,8 @@
  */
 
 import { v4 as uuidv4 } from 'uuid';
-import type { ModerationPost, Response } from '@modus/logic';
+import type { ModerationPost, Response, PriorityRule } from '@modus/logic';
+import { RulesEngine } from '@modus/logic/rules';
 
 // ============================================================================
 // Types
@@ -44,9 +45,120 @@ export interface UpdatePostInput {
   priority?: 'P1' | 'P2' | 'P3' | 'P4' | 'P5';
 }
 
+export interface CreateRuleInput {
+  name: string;
+  description?: string;
+  condition_type: string;
+  condition_value: string;
+  action_type: string;
+  action_value: string;
+  is_active?: boolean;
+}
+
+export interface UpdateRuleInput {
+  name?: string;
+  description?: string;
+  condition_type?: string;
+  condition_value?: string;
+  action_type?: string;
+  action_value?: string;
+  is_active?: boolean;
+}
+
+export interface TestRuleInput {
+  title: string;
+  body_content: string;
+  author_post_count: number;
+  sentiment_score?: number;
+  category_id?: string;
+  created_at?: string;
+}
+
+export interface TestRuleResult {
+  matched_rules: Array<{
+    rule_id: string;
+    rule_name: string;
+    action_type: string;
+    action_value: string;
+  }>;
+  calculated_priority: string;
+}
+
 // ============================================================================
 // Initial Mock Data
 // ============================================================================
+
+// ============================================================================
+// Initial Mock Rules
+// ============================================================================
+
+const mockRules: PriorityRule[] = [
+  {
+    id: 'rule-1',
+    name: 'First Time Poster Escalation',
+    description: 'Escalate posts from first-time posters to P2 priority',
+    condition_type: 'first_time_poster',
+    condition_value: '2',
+    action_type: 'set_priority',
+    action_value: 'P2',
+    position: 1,
+    is_active: true,
+    created_at: '2025-01-17T18:00:00Z',
+    updated_at: '2025-01-17T18:00:00Z',
+  },
+  {
+    id: 'rule-2',
+    name: 'Negative Sentiment Escalation',
+    description: 'Escalate posts with negative sentiment to higher priority',
+    condition_type: 'sentiment_negative',
+    condition_value: '-0.3',
+    action_type: 'escalate',
+    action_value: '1',
+    position: 2,
+    is_active: true,
+    created_at: '2025-01-17T18:00:00Z',
+    updated_at: '2025-01-17T18:00:00Z',
+  },
+  {
+    id: 'rule-3',
+    name: 'SLA Exceeded Escalation',
+    description: 'Escalate posts that have been open for more than 2 hours',
+    condition_type: 'sla_exceeded',
+    condition_value: '2',
+    action_type: 'escalate',
+    action_value: '1',
+    position: 3,
+    is_active: true,
+    created_at: '2025-01-17T18:00:00Z',
+    updated_at: '2025-01-17T18:00:00Z',
+  },
+  {
+    id: 'rule-4',
+    name: 'Keyword Match: Urgent',
+    description: 'Escalate posts containing urgent keywords',
+    condition_type: 'keyword_match',
+    condition_value: 'urgent,urgently,asap,immediately',
+    action_type: 'set_priority',
+    action_value: 'P1',
+    position: 4,
+    is_active: true,
+    created_at: '2025-01-17T18:00:00Z',
+    updated_at: '2025-01-17T18:00:00Z',
+  },
+  {
+    id: 'rule-5',
+    name: 'Bug Report Category',
+    description: 'Set P2 priority for bug reports',
+    condition_type: 'category_match',
+    condition_value: 'cat-3',
+    action_type: 'set_priority',
+    action_value: 'P2',
+    position: 5,
+    is_active: true,
+    created_at: '2025-01-17T18:00:00Z',
+    updated_at: '2025-01-17T18:00:00Z',
+  },
+];
 
 const mockPosts: PostWithRelations[] = [
   {
@@ -189,11 +301,15 @@ const mockPosts: PostWithRelations[] = [
 class DataStore {
   private posts: Map<string, PostWithRelations> = new Map();
   private responses: Map<string, Response> = new Map();
+  private rules: Map<string, PriorityRule> = new Map();
 
   constructor() {
     // Initialize with mock data
     mockPosts.forEach(post => {
       this.posts.set(post.id, { ...post });
+    });
+    mockRules.forEach(rule => {
+      this.rules.set(rule.id, { ...rule });
     });
   }
 
@@ -300,6 +416,10 @@ class DataStore {
   // Response Operations
   // ============================================================================
 
+  getAllResponses(): Response[] {
+    return Array.from(this.responses.values());
+  }
+
   getResponsesByPostId(postId: string): Response[] {
     return Array.from(this.responses.values()).filter(r => r.post_id === postId);
   }
@@ -324,6 +444,121 @@ class DataStore {
     this.responses.set(response.id, response);
     return response;
   }
+
+  // ============================================================================
+  // Rules CRUD Operations
+  // ============================================================================
+
+  getAllRules(): PriorityRule[] {
+    return Array.from(this.rules.values()).sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
+  }
+
+  getRuleById(id: string): PriorityRule | null {
+    return this.rules.get(id) || null;
+  }
+
+  createRule(input: CreateRuleInput): PriorityRule {
+    const now = new Date().toISOString();
+    const allRules = this.getAllRules();
+    const newPosition = allRules.length > 0 ? Math.max(...allRules.map(r => r.position ?? 0)) + 1 : 1;
+
+    const rule: PriorityRule = {
+      id: uuidv4(),
+      name: input.name,
+      description: input.description || '',
+      condition_type: input.condition_type,
+      condition_value: input.condition_value,
+      action_type: input.action_type,
+      action_value: input.action_value,
+      position: newPosition,
+      is_active: input.is_active !== false,
+      created_at: now,
+      updated_at: now,
+    };
+
+    this.rules.set(rule.id, rule);
+    return rule;
+  }
+
+  updateRule(id: string, input: UpdateRuleInput): PriorityRule | null {
+    const rule = this.rules.get(id);
+    if (!rule) return null;
+
+    const now = new Date().toISOString();
+    const updated: PriorityRule = {
+      ...rule,
+      ...input,
+      updated_at: now,
+    };
+
+    this.rules.set(id, updated);
+    return updated;
+  }
+
+  deleteRule(id: string): boolean {
+    return this.rules.delete(id);
+  }
+
+  reorderRules(ruleIds: string[]): PriorityRule[] {
+    // Update position for each rule based on the order in the array
+    const now = new Date().toISOString();
+    ruleIds.forEach((ruleId, index) => {
+      const rule = this.rules.get(ruleId);
+      if (rule) {
+        const updated: PriorityRule = {
+          ...rule,
+          position: index + 1,
+          updated_at: now,
+        };
+        this.rules.set(ruleId, updated);
+      }
+    });
+    return this.getAllRules();
+  }
+
+  testRule(input: TestRuleInput, ruleId?: string): TestRuleResult {
+    // Create a temporary post for testing
+    const testPost: ModerationPost = {
+      id: 'test-post',
+      title: input.title,
+      body_content: input.body_content,
+      category_id: input.category_id,
+      status: 'open',
+      priority: 'P4', // Start with default priority
+      sentiment_score: input.sentiment_score ?? 0,
+      sentiment_label: input.sentiment_score !== undefined
+        ? (input.sentiment_score < -0.2 ? 'negative' : input.sentiment_score > 0.2 ? 'positive' : 'neutral')
+        : null,
+      author_user_id: 'test-user',
+      author_post_count: input.author_post_count,
+      assigned_to_id: null,
+      assigned_at: null,
+      created_at: input.created_at || new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      resolved_at: null,
+    };
+
+    // Get rules to test (either specific rule or all active rules)
+    const rulesToTest = ruleId
+      ? [this.getRuleById(ruleId)].filter((r): r is PriorityRule => r !== null)
+      : this.getAllRules().filter(r => r.is_active);
+
+    // Use RulesEngine to evaluate rules
+    const rulesEngine = new RulesEngine(rulesToTest);
+    const evaluationResults = rulesEngine.evaluate({ post: testPost });
+    const calculatedPriority = rulesEngine.calculatePriority({ post: testPost });
+
+    return {
+      matched_rules: evaluationResults.map(r => ({
+        rule_id: r.rule.id,
+        rule_name: r.rule.name,
+        action_type: r.appliedAction?.type ?? '',
+        action_value: r.appliedAction?.value ?? '',
+      })),
+      calculated_priority: calculatedPriority,
+    };
+  }
+
 
   // ============================================================================
   // Helper Methods

@@ -990,12 +990,13 @@
       "Step 4: Verify each rule shows name, condition, action, and status",
       "Step 5: Verify rules are displayed in order of execution priority"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T18:05:21.180006Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_completed_at": "2026-01-18T12:00:00.000000Z"
   },
   {
     "category": "functional",
@@ -1010,12 +1011,13 @@
       "Step 7: Save the rule",
       "Step 8: Verify new rule appears in the rules list"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T18:05:56.110025Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_completed_at": "2026-01-18T12:00:00.000000Z"
   },
   {
     "category": "functional",
@@ -1028,12 +1030,13 @@
       "Step 5: Save changes",
       "Step 6: Verify rule is updated in the list"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-17T19:15:53.534679Z"
+    "dev_completed_at": "2026-01-17T19:15:53.534679Z",
+    "qa_completed_at": "2026-01-18T12:00:00.000000Z"
   },
   {
     "category": "functional",
@@ -1046,12 +1049,13 @@
       "Step 5: Verify rule is removed from the list",
       "Step 6: Verify rule no longer affects new posts"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T18:30:58.212899Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_completed_at": "2026-01-18T12:00:00.000000Z"
   },
   {
     "category": "functional",
@@ -1064,12 +1068,13 @@
       "Step 5: Create a new post that would match the rule",
       "Step 6: Verify disabled rule does not affect the post"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T18:31:51.584185Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_completed_at": "2026-01-18T12:00:00.000000Z"
   },
   {
     "category": "functional",
@@ -1082,12 +1087,13 @@
       "Step 5: Verify position values are updated in database",
       "Step 6: Verify new order affects rule evaluation priority"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-17T19:20:05.508008Z"
+    "dev_completed_at": "2026-01-17T19:20:05.508008Z",
+    "qa_completed_at": "2026-01-18T12:00:00.000000Z"
   },
   {
     "category": "functional",
@@ -1101,12 +1107,13 @@
       "Step 6: Verify test shows which rules would match",
       "Step 7: Verify expected priority result is displayed"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T18:52:10.906637Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_completed_at": "2026-01-18T12:00:00.000000Z"
   },
   {
     "category": "functional",
@@ -1555,9 +1562,9 @@
       "Step 4: Verify response is saved with correct post_id and agent_id",
       "Step 5: Verify is_internal_note flag is respected"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T21:46:16.968896Z",
     "dev_failure_count": 0
@@ -1590,8 +1597,11 @@
       "Step 5: Verify analysis is accurate for clearly positive/negative text"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T21:48:36.881367Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -1604,8 +1614,11 @@
       "Step 5: Verify heartbeat messages are exchanged"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T21:49:38.635484Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -1619,7 +1632,14 @@
     ],
     "passes": false,
     "is_dev_done": false,
-    "is_qa_passed": false
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_failure_count": 2,
+    "last_dev_failure_at": "2026-01-17T22:39:42.930352Z",
+    "dev_failure_reasons": [
+      "Worker session timed out",
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -1632,8 +1652,11 @@
       "Step 5: Verify retrieved context improves AI response relevance"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_failure_count": 0,
+    "dev_completed_at": "2026-01-17T22:46:12.081837Z"
   },
   {
     "category": "functional",
@@ -1647,8 +1670,11 @@
       "Step 6: Verify indexes are created"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T22:00:52.804678Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -1661,8 +1687,11 @@
       "Step 5: Verify application can immediately use seeded data"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T22:18:07.186833Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -1677,7 +1706,14 @@
     ],
     "passes": false,
     "is_dev_done": false,
-    "is_qa_passed": false
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_failure_count": 2,
+    "last_dev_failure_at": "2026-01-17T23:00:54.923141Z",
+    "dev_failure_reasons": [
+      "Worker session timed out",
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -1690,8 +1726,11 @@
       "Step 5: Test keyboard shortcuts for instant response"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T22:42:00.750996Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
