@@ -451,9 +451,13 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_failure_count": 0,
+    "dev_failure_count": 1,
     "dev_completed_at": "1768668777",
-    "qa_completed_at": "1768668777"
+    "qa_completed_at": "1768668777",
+    "last_dev_failure_at": "2026-01-17T17:22:38.329458Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -468,10 +472,10 @@
       "Step 7: Verify audit log records the reassignment action"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-17T14:15:53.493243Z",
+    "dev_completed_at": "2026-01-17T17:34:10.730393Z",
     "dev_failure_count": 0
   },
   {
@@ -763,12 +767,13 @@
       "Step 7: Save the template",
       "Step 8: Verify template appears in the template library"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false,
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T15:20:35.803678Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_completed_at": "1768675200"
   },
   {
     "category": "functional",
@@ -782,12 +787,13 @@
       "Step 6: Save changes",
       "Step 7: Verify changes are reflected in template library"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false,
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-17T15:32:59.375937Z",
-    "dev_failure_count": 0
+    "dev_completed_at": "2026-01-17T17:21:43.918389Z",
+    "dev_failure_count": 0,
+    "qa_completed_at": "1768675200"
   },
   {
     "category": "functional",
@@ -800,12 +806,17 @@
       "Step 5: Confirm deletion in confirmation dialog",
       "Step 6: Verify template is removed from the library"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false,
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-17T16:34:59.750138Z"
+    "dev_failure_count": 1,
+    "dev_completed_at": "2026-01-17T16:34:59.750138Z",
+    "last_dev_failure_at": "2026-01-17T17:48:14.607869Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ],
+    "qa_completed_at": "1768675200"
   },
   {
     "category": "functional",
@@ -907,10 +918,10 @@
       "Step 5: Verify sentiment icon is displayed on the post card"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-17T16:13:41.614653Z",
+    "dev_completed_at": "2026-01-17T17:31:23.811035Z",
     "dev_failure_count": 0
   },
   {

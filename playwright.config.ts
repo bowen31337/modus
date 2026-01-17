@@ -11,7 +11,7 @@ export default defineConfig({
     ['json', { outputFile: 'reports/test-results/results.json' }],
   ],
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:3008',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
@@ -37,10 +37,9 @@ export default defineConfig({
       use: { ...devices['iPhone 12'] },
     },
   ],
-  // webServer disabled - run dev server manually with: pnpm dev
   // webServer: {
-  //   command: 'pnpm dev --port 3004',
-  //   url: 'http://localhost:3004',
+  //   command: 'cd apps/web && pnpm dev --port 3008',
+  //   url: 'http://localhost:3008',
   //   reuseExistingServer: !process.env.CI,
   //   timeout: 120000,
   // },

@@ -1,23 +1,25 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Keyboard Shortcuts', () => {
-  test.beforeEach(async ({ page }) => {
-    // Log in with demo credentials
-    await page.goto('http://localhost:3000/login');
-    await page.fill('input[name="email"]', 'demo@example.com');
-    await page.fill('input[name="password"]', 'demo123');
-    await page.click('button[type="submit"]');
+  test.beforeEach(async ({ page, context }) => {
+    // Set demo session cookie directly on the browser context
+    await context.addCookies([{
+      name: 'modus_demo_session',
+      value: 'active',
+      domain: 'localhost',
+      path: '/',
+    }]);
 
-    // Wait for navigation to dashboard
-    await page.waitForURL('http://localhost:3000/dashboard');
+    // Navigate directly to dashboard
+    await page.goto('/dashboard');
 
     // Wait for posts to load
-    await page.waitForSelector('[data-testid="post-card"]', { timeout: 5000 });
+    await page.waitForSelector('[data-testid^="post-card-"]', { timeout: 5000 });
   });
 
   test('should focus response editor when R key is pressed', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid="post-card"]:first-child');
+    await page.click('[data-testid^="post-card-"]:first-child');
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]');
@@ -32,7 +34,7 @@ test.describe('Keyboard Shortcuts', () => {
 
   test('should not focus editor when R is pressed while typing in textarea', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid="post-card"]:first-child');
+    await page.click('[data-testid^="post-card-"]:first-child');
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]');
@@ -59,7 +61,7 @@ test.describe('Keyboard Shortcuts', () => {
 
   test('should post response and resolve with Cmd+Enter', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid="post-card"]:first-child');
+    await page.click('[data-testid^="post-card-"]:first-child');
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]');
@@ -82,7 +84,7 @@ test.describe('Keyboard Shortcuts', () => {
 
   test('should not submit with Cmd+Enter when textarea is empty', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid="post-card"]:first-child');
+    await page.click('[data-testid^="post-card-"]:first-child');
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]');
@@ -98,7 +100,7 @@ test.describe('Keyboard Shortcuts', () => {
 
   test('should show keyboard shortcut hint in placeholder', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid="post-card"]:first-child');
+    await page.click('[data-testid^="post-card-"]:first-child');
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]');
@@ -110,7 +112,7 @@ test.describe('Keyboard Shortcuts', () => {
 
   test('should show Cmd+Enter tip below editor', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid="post-card"]:first-child');
+    await page.click('[data-testid^="post-card-"]:first-child');
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]');
@@ -122,7 +124,7 @@ test.describe('Keyboard Shortcuts', () => {
 
   test('should work with Ctrl+Enter on Windows/Linux', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid="post-card"]:first-child');
+    await page.click('[data-testid^="post-card-"]:first-child');
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]');
@@ -141,7 +143,7 @@ test.describe('Keyboard Shortcuts', () => {
 
   test('should maintain focus after sending response with Cmd+Enter', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid="post-card"]:first-child');
+    await page.click('[data-testid^="post-card-"]:first-child');
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]');

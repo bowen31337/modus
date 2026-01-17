@@ -142,12 +142,17 @@ test.describe('Search Body Content', () => {
     // Verify results - the bug report post should be visible
     await expect(page.locator('[data-testid="queue-pane"]')).toContainText('Bug: Images not loading');
 
-    // Change priority filter - P2 is the bug report's priority
+    // Open filter dropdown
     await page.getByRole('button', { name: /Filters/i }).click();
     await page.waitForTimeout(100);
 
-    // Click P2 filter option
-    await page.locator('[data-testid="queue-pane"]').getByText('P2').click();
+    // Expand Priority filter section
+    await page.locator('button:has-text("Priority")').first().click();
+    await page.waitForTimeout(100);
+
+    // Click P2 filter option - use the dropdown container to scope the selector
+    const dropdown = page.locator('div.z-50');
+    await dropdown.locator('button:has-text("P2")').click();
     await page.waitForTimeout(500);
 
     // Should still show the same post (Bug report with images)

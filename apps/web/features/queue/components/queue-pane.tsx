@@ -153,21 +153,25 @@ export function QueuePane({ onPostSelect, selectedPostId, assignedPosts }: Queue
         case 'priority':
           const priorityOrder = { P1: 1, P2: 2, P3: 3, P4: 4, P5: 5 };
           comparison = priorityOrder[a.priority] - priorityOrder[b.priority];
-          break;
+          // For priority: ascending = P1, P2, P3 (highest to lowest priority)
+          // descending = P3, P2, P1 (lowest to highest priority)
+          // But we want "desc" to mean highest priority first (P1, P2, P3)
+          // So we flip the logic for priority
+          return sort.order === 'asc' ? -comparison : comparison;
         case 'date':
           // Simple sort by createdAt string (in real app, use actual dates)
           comparison = a.createdAt.localeCompare(b.createdAt);
-          break;
+          return sort.order === 'asc' ? comparison : -comparison;
         case 'status':
           const statusOrder = { open: 1, in_progress: 2, resolved: 3 };
           comparison = statusOrder[a.status] - statusOrder[b.status];
-          break;
+          return sort.order === 'asc' ? comparison : -comparison;
         case 'response_count':
           comparison = (a.responseCount || 0) - (b.responseCount || 0);
-          break;
+          return sort.order === 'asc' ? comparison : -comparison;
       }
 
-      return sort.order === 'asc' ? comparison : -comparison;
+      return comparison;
     });
 
     return posts;

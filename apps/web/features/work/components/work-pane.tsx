@@ -63,7 +63,17 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
   // Keyboard shortcut: R key focuses the response editor
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Only trigger if not typing in an input/textarea
+      // Cmd+Enter posts response and resolves (works even when typing in textarea)
+      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+        if (selectedPost && responseContent.trim()) {
+          e.preventDefault();
+          handleSendResponse();
+          onResolve();
+        }
+        return;
+      }
+
+      // Only trigger R key if not typing in an input/textarea
       if (
         e.target instanceof HTMLInputElement ||
         e.target instanceof HTMLTextAreaElement
@@ -76,15 +86,6 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
         if (selectedPost) {
           e.preventDefault();
           editorRef.current?.focus();
-        }
-      }
-
-      // Cmd+Enter posts response and resolves
-      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
-        if (selectedPost && responseContent.trim()) {
-          e.preventDefault();
-          handleSendResponse();
-          onResolve();
         }
       }
     };
