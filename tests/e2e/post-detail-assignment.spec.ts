@@ -1,11 +1,19 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Post Detail View and Assignment', () => {
-  test.beforeEach(async ({ page }) => {
-    // First authenticate by logging in (this sets the demo session cookie)
-    await page.goto('/login');
-    await page.getByRole('button', { name: 'Sign In' }).click();
-    await expect(page).toHaveURL(/.*dashboard/);
+  test.beforeEach(async ({ page, context }) => {
+    // Set the demo session cookie directly to authenticate
+    // This bypasses the login form and directly establishes a session
+    await context.addCookies([{
+      name: 'modus_demo_session',
+      value: 'active',
+      path: '/',
+      domain: 'localhost',
+      httpOnly: true,
+    }]);
+
+    // Navigate directly to dashboard
+    await page.goto('/dashboard');
 
     // Wait for the queue to load
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 5000 });

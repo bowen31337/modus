@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { createServerSideClient } from '@/lib/supabase/server';
 import { LoginForm } from '@/features/auth/components/login-form';
+import { isDemoMode, hasDemoSession } from '@/lib/demo-session';
 
 export default async function LoginPage() {
   // Check if Supabase is configured
@@ -12,6 +13,12 @@ export default async function LoginPage() {
     const { data } = await supabase.auth.getUser();
 
     if (data.user) {
+      redirect('/dashboard');
+    }
+  } else {
+    // Demo mode: check if already logged in
+    const hasSession = await hasDemoSession();
+    if (hasSession) {
       redirect('/dashboard');
     }
   }
@@ -30,7 +37,7 @@ export default async function LoginPage() {
         </div>
         <LoginForm />
         <p className="text-center text-xs text-foreground-muted">
-          {isSupabaseConfigured ? 'Protected by Supabase Auth' : 'Demo Mode - Supabase not configured'}
+          {isDemoMode() ? 'Demo Mode - Supabase not configured' : 'Protected by Supabase Auth'}
         </p>
       </div>
     </main>

@@ -11,7 +11,7 @@ export default defineConfig({
     ['json', { outputFile: 'reports/test-results/results.json' }],
   ],
   use: {
-    baseURL: 'http://localhost:3002',
+    baseURL: 'http://localhost:3004',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
@@ -39,8 +39,8 @@ export default defineConfig({
   ],
   // webServer disabled - run dev server manually with: pnpm dev
   // webServer: {
-  //   command: 'pnpm dev',
-  //   url: 'http://localhost:3002',
+  //   command: 'pnpm dev --port 3004',
+  //   url: 'http://localhost:3004',
   //   reuseExistingServer: !process.env.CI,
   //   timeout: 120000,
   // },

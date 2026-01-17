@@ -3,10 +3,39 @@
 import { useState } from 'react';
 import { LeftRail } from '@/features/layout/components/left-rail';
 import { QueuePane } from '@/features/queue/components/queue-pane';
+import { WorkPane } from '@/features/work/components/work-pane';
 import { type PostCardProps } from '@/features/queue/components/post-card';
+
+// Mock current agent for demo purposes
+const CURRENT_AGENT = {
+  id: '550e8400-e29b-41d4-a716-446655440001',
+  name: 'Agent A',
+};
 
 export default function DashboardPage() {
   const [selectedPost, setSelectedPost] = useState<PostCardProps | null>(null);
+  const [assignedPosts, setAssignedPosts] = useState<Set<string>>(new Set());
+
+  const handlePostSelect = (post: PostCardProps) => {
+    // Auto-assign on click if not already assigned
+    if (!assignedPosts.has(post.id)) {
+      setAssignedPosts(prev => new Set(prev).add(post.id));
+    }
+    setSelectedPost(post);
+  };
+
+  const handleAssignToMe = () => {
+    if (selectedPost) {
+      setAssignedPosts(prev => new Set(prev).add(selectedPost.id));
+    }
+  };
+
+  const handleResolve = () => {
+    // In a real app, this would update the post status via API
+    if (selectedPost) {
+      console.log('Resolving post:', selectedPost.id);
+    }
+  };
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -15,30 +44,19 @@ export default function DashboardPage() {
 
       {/* Queue Pane - 320-400px fixed width */}
       <QueuePane
-        onPostSelect={setSelectedPost}
+        onPostSelect={handlePostSelect}
         selectedPostId={selectedPost?.id ?? null}
+        assignedPosts={assignedPosts}
       />
 
       {/* Work Pane - Flexible, fills remaining space */}
-      {selectedPost ? (
-        <div className="flex-1 flex flex-col p-6 overflow-y-auto">
-          <div className="max-w-4xl w-full mx-auto">
-            <h1 className="text-2xl font-semibold text-foreground mb-4">
-              {selectedPost.title}
-            </h1>
-            <div className="bg-background-secondary rounded-lg p-4 border border-border">
-              <p className="text-sm text-foreground-muted">{selectedPost.excerpt}</p>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="flex-1 flex flex-col items-center justify-center p-8 text-foreground-muted">
-          <div className="text-center space-y-2">
-            <h2 className="text-xl font-semibold text-foreground">Select a post</h2>
-            <p className="text-sm">Choose a post from the queue to view details and respond</p>
-          </div>
-        </div>
-      )}
+      <WorkPane
+        selectedPost={selectedPost}
+        currentAgent={CURRENT_AGENT}
+        assignedPosts={assignedPosts}
+        onAssignToMe={handleAssignToMe}
+        onResolve={handleResolve}
+      />
     </div>
   );
 }

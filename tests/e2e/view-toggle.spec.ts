@@ -2,8 +2,10 @@ import { test, expect } from '@playwright/test';
 
 test.describe('View Toggle (Grid/List)', () => {
   test.beforeEach(async ({ page }) => {
-    // Navigate to the dashboard (logged in state)
-    await page.goto('/dashboard');
+    // First authenticate by logging in (this sets the demo session cookie)
+    await page.goto('/login');
+    await page.getByRole('button', { name: 'Sign In' }).click();
+    await expect(page).toHaveURL(/.*dashboard/);
 
     // Wait for the queue to load
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 5000 });
@@ -136,24 +138,31 @@ test.describe('View Toggle (Grid/List)', () => {
     await dropdown.locator('button:has-text("Priority")').first().click();
     await dropdown.locator('button:has-text("P1")').first().click();
 
-    // Wait for filter to apply
+    // Close dropdown by pressing Escape (more reliable than clicking backdrop)
+    await page.keyboard.press('Escape');
+
+    // Wait for dropdown to close
     await page.waitForTimeout(500);
 
-    // Switch to grid view (the backdrop is z-40 but view toggle is z-50 so it should be clickable)
+    // Verify filter is active - check for the active styling on the filter button
+    // The filter button uses bg-primary/10 for active state
+    const filterButton = page.locator('button:has-text("Filters")').first();
+    await expect(filterButton).toHaveClass(/bg-primary\/10/);
+
+    // Switch to grid view - scroll the view toggle into view first to avoid overlay issues
     const gridViewButton = page.locator('[data-testid="view-toggle-grid"]');
+    await gridViewButton.scrollIntoViewIfNeeded();
     await gridViewButton.click();
 
-    // Verify filter is still active (badge count on filter button)
-    const filterButton = page.locator('button:has-text("Filters")').first();
-    const badgeCount = filterButton.locator('span').filter({ hasText: /^\d+$/ });
-    await expect(badgeCount).toBeVisible();
+    // Verify filter is still active (filter button has active styling)
+    await expect(filterButton).toHaveClass(/bg-primary\/10/);
 
     // Switch back to list view
     const listViewButton = page.locator('[data-testid="view-toggle-list"]');
     await listViewButton.click();
 
     // Verify filter is still active
-    await expect(badgeCount).toBeVisible();
+    await expect(filterButton).toHaveClass(/bg-primary\/10/);
   });
 
   test('should preserve sort order when switching views', async ({ page }) => {

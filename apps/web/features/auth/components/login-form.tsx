@@ -6,8 +6,9 @@ import { z } from 'zod';
 import { createClient } from '@/lib/supabase/client';
 import { Button } from '@modus/ui';
 import { Input } from '@modus/ui';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
+import { demoLogin } from '@/lib/auth-actions';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -20,6 +21,7 @@ export function LoginForm() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     mode: 'all',
@@ -34,14 +36,6 @@ export function LoginForm() {
     setError(null);
 
     try {
-      // Demo mode: redirect to dashboard without authentication
-      if (!isSupabaseConfigured) {
-        // Small delay to allow validation to process
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        router.push('/dashboard');
-        return;
-      }
-
       const supabase = createClient();
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: data.email,
@@ -60,6 +54,62 @@ export function LoginForm() {
       setLoading(false);
     }
   };
+
+  // For demo mode, use server action for proper cookie handling
+  // Using startTransition to allow the redirect to be handled properly
+  const handleDemoSubmit = () => {
+    setError(null);
+    startTransition(async () => {
+      try {
+        await demoLogin();
+      } catch (error: any) {
+        setError('Failed to create demo session');
+      }
+    });
+  };
+
+  // For demo mode, use a form with server action for proper cookie handling
+  if (!isSupabaseConfigured) {
+    return (
+      <form action={handleDemoSubmit} className="space-y-4">
+        <div className="space-y-2">
+          <label htmlFor="email" className="block text-sm font-medium text-foreground">
+            Email
+          </label>
+          <Input
+            id="email"
+            type="text"
+            placeholder="agent@example.com"
+            autoComplete="email"
+            name="email"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label htmlFor="password" className="block text-sm font-medium text-foreground">
+            Password
+          </label>
+          <Input
+            id="password"
+            type="password"
+            placeholder="••••••••"
+            autoComplete="current-password"
+            name="password"
+          />
+        </div>
+
+        {error && (
+          <div className="rounded-md bg-red-500/10 p-3 text-sm text-red-400">
+            {error}
+          </div>
+        )}
+
+        <Button type="submit" disabled={isPending} className="w-full">
+          {isPending ? 'Signing in...' : 'Sign In'}
+        </Button>
+      </form>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

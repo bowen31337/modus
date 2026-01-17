@@ -37,29 +37,18 @@ test.describe('Login Page', () => {
     await expect(page).toHaveURL(/.*dashboard/);
   });
 
-  test('should show validation errors for empty form', async ({ page }) => {
+  test('should redirect to dashboard even with empty form in demo mode', async ({ page }) => {
     await page.goto('/login');
 
     // In demo mode, the form redirects immediately without validation
-    // So we need to check if validation is shown before redirect happens
     // Click sign in without filling any fields
     await page.getByRole('button', { name: 'Sign In' }).click();
 
-    // Try to catch validation error before redirect (demo mode redirects quickly)
-    // If we're still on login page, validation should be visible
-    const validationError = page.getByText('Password is required');
-    const isVisible = await validationError.isVisible().catch(() => false);
-
-    if (isVisible) {
-      await expect(validationError).toBeVisible();
-    } else {
-      // In demo mode without validation, it redirects immediately
-      // This is expected behavior - verify we're on dashboard
-      await expect(page).toHaveURL(/.*dashboard/);
-    }
+    // In demo mode, it redirects immediately
+    await expect(page).toHaveURL(/.*dashboard/);
   });
 
-  test('should show validation error for invalid email format', async ({ page }) => {
+  test('should redirect to dashboard even with invalid email in demo mode', async ({ page }) => {
     await page.goto('/login');
 
     // Fill with invalid email format
@@ -69,24 +58,8 @@ test.describe('Login Page', () => {
     // Click sign in
     await page.getByRole('button', { name: 'Sign In' }).click();
 
-    // Wait for form submission attempt and validation to process
-    await page.waitForTimeout(500);
-
-    // Check current URL
-    const currentUrl = page.url();
-
-    // In demo mode with invalid email, the form should either:
-    // 1. Show validation error and stay on login page, OR
-    // 2. Redirect to dashboard (demo mode bypasses validation)
-    if (currentUrl.includes('/login')) {
-      // Still on login page - validation error should be visible
-      // Look for the specific email validation error message
-      const validationError = page.locator('text=/invalid email/i');
-      await expect(validationError).toBeVisible();
-    } else {
-      // Redirected to dashboard - in demo mode this is acceptable
-      // since demo mode may bypass validation
-      await expect(page).toHaveURL(/.*dashboard/);
-    }
+    // In demo mode with invalid email, the form redirects to dashboard
+    // since demo mode bypasses validation
+    await expect(page).toHaveURL(/.*dashboard/);
   });
 });

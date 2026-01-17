@@ -2,11 +2,7 @@ import { redirect } from 'next/navigation';
 import { createServerSideClient } from '@/lib/supabase/server';
 import { isDemoMode, hasDemoSession } from '@/lib/demo-session';
 
-export default async function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function SettingsPage() {
   // Check if Supabase is configured
   const isSupabaseConfigured =
     process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -27,5 +23,6 @@ export default async function DashboardLayout({
     }
   }
 
-  return <>{children}</>;
+  // Redirect to main dashboard since settings is a client-side view
+  redirect('/dashboard');
 }

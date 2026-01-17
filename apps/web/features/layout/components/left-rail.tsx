@@ -5,6 +5,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import { Home, Inbox, CheckCircle2, Settings, LogOut } from 'lucide-react';
 import { Button } from '@modus/ui';
 import { createClient } from '@/lib/supabase/client';
+import { logout } from '@/lib/auth-actions';
+import { useTransition } from 'react';
 
 const navItems = [
   { icon: Home, label: 'Home', href: '/dashboard' },
@@ -16,26 +18,37 @@ const navItems = [
 export function LeftRail() {
   const pathname = usePathname();
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     // Check if Supabase is configured before attempting logout
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      router.push('/login');
-      return;
-    }
+    const isSupabaseConfigured =
+      process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-    try {
-      const supabase = createClient();
-      await supabase.auth.signOut();
-      router.push('/login');
-    } catch (error) {
-      // If Supabase fails, still redirect to login
-      router.push('/login');
-    }
+    startTransition(async () => {
+      if (isSupabaseConfigured) {
+        try {
+          const supabase = createClient();
+          await supabase.auth.signOut();
+        } catch (error) {
+          // If Supabase fails, continue to redirect
+        }
+      }
+
+      // Call server action to clear the session cookie
+      // The server action returns the redirect URL
+      const result = await logout();
+      if (result.success) {
+        router.push(result.redirectUrl);
+      }
+    });
   };
 
   return (
-    <aside className="w-16 bg-obsidian-900 border-r border-obsidian-700 flex flex-col items-center py-4 gap-2">
+    <aside
+      className="w-16 bg-obsidian-900 border-r border-obsidian-700 flex flex-col items-center py-4 gap-2"
+      data-testid="left-rail"
+    >
       {/* Logo */}
       <div className="mb-2 p-2 bg-obsidian-700 rounded-lg text-obsidian-200 font-bold text-xl">
         m
@@ -68,6 +81,7 @@ export function LeftRail() {
         variant="ghost"
         size="icon"
         onClick={handleLogout}
+        disabled={isPending}
         className="w-10 h-10 text-obsidian-400 hover:text-red-400 hover:bg-obsidian-800"
         title="Logout"
       >

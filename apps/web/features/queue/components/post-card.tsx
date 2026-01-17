@@ -27,6 +27,7 @@ export interface PostCardProps {
   createdAt: string;
   responseCount?: number;
   isSelected?: boolean;
+  isAssigned?: boolean;
   onClick?: () => void;
   viewMode?: ViewMode;
 }
@@ -64,6 +65,7 @@ export function PostCard({
   createdAt,
   responseCount = 0,
   isSelected = false,
+  isAssigned = false,
   onClick,
   viewMode = 'list',
 }: PostCardProps) {

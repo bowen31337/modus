@@ -1,0 +1,13 @@
+
+> modus@ test /media/DATA/projects/autonomous-coding-modus/modus
+> vitest "tests/e2e/post-detail-assignment.spec.ts"
+
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+ DEV  v2.1.9 /media/DATA/projects/autonomous-coding-modus/modus
+
+filter:  tests/e2e/post-detail-assignment.spec.ts
+include: **/*.{test,spec}.{ts,tsx}
+exclude:  **/node_modules/**, **/dist/**, **/e2e/**
+
+No test files found, exiting with code 1
