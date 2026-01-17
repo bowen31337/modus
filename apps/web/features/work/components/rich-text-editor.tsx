@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, forwardRef, useImperativeHandle } from 'react';
 import { Bold, Italic, Link, List, ListOrdered } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -11,10 +11,22 @@ interface RichTextEditorProps {
   className?: string;
 }
 
-export function RichTextEditor({ placeholder = 'Type your response here...', value = '', onChange, className }: RichTextEditorProps) {
+export interface RichTextEditorRef {
+  focus: () => void;
+}
+
+export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(
+  ({ placeholder = 'Type your response here...', value = '', onChange, className }, ref) => {
   const [isBoldActive, setIsBoldActive] = useState(false);
   const [isItalicActive, setIsItalicActive] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Expose focus method to parent component
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      textareaRef.current?.focus();
+    },
+  }));
 
   const insertFormatting = (prefix: string, suffix: string = '', placeholder: string = '') => {
     const textarea = textareaRef.current;
@@ -206,4 +218,7 @@ export function RichTextEditor({ placeholder = 'Type your response here...', val
       </div>
     </div>
   );
-}
+  }
+);
+
+RichTextEditor.displayName = 'RichTextEditor';

@@ -30,19 +30,23 @@ export async function demoLogin() {
 
 /**
  * Server action for logout
- * Clears the demo session cookie and returns the redirect URL
- * The client should handle the actual redirect
+ * Clears the demo session cookie
+ * The client should handle navigation to the login page
  */
-export async function logout(): Promise<{ success: boolean; redirectUrl: string }> {
+export async function logout() {
   const cookieStore = await cookies();
 
   if (isDemoMode()) {
-    // Demo mode: delete demo session cookie
-    cookieStore.delete(DEMO_SESSION_COOKIE);
+    // Demo mode: delete demo session cookie by setting maxAge to 0
+    // Using set() instead of delete() for better browser compatibility
+    cookieStore.set(DEMO_SESSION_COOKIE, '', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 0, // Expire immediately
+      path: '/',
+    });
   }
-
-  // Return the redirect URL for client-side navigation
-  return { success: true, redirectUrl: '/login' };
 }
 
 /**

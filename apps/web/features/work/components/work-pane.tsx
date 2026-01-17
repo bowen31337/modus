@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { MessageSquare, User, Clock, AlertCircle, CheckCircle2, Hash } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { PostCardProps } from '@/features/queue/components/post-card';
-import { RichTextEditor } from './rich-text-editor';
+import { RichTextEditor, type RichTextEditorRef } from './rich-text-editor';
 
 interface WorkPaneProps {
   selectedPost: PostCardProps | null;
@@ -36,7 +36,59 @@ const statusColors: Record<string, string> = {
 
 export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignToMe, onResolve }: WorkPaneProps) {
   const [responseContent, setResponseContent] = useState('');
+  const [responses, setResponses] = useState<Array<{ id: string; content: string; isInternalNote: boolean; agent: string; createdAt: string }>>([]);
+  const [isInternalNote, setIsInternalNote] = useState(false);
+  const editorRef = useRef<RichTextEditorRef>(null);
   const isAssignedToMe = selectedPost ? assignedPosts.has(selectedPost.id) : false;
+
+  // Keyboard shortcut: R key focuses the response editor
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Only trigger if not typing in an input/textarea
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement
+      ) {
+        return;
+      }
+
+      // R key focuses editor (when a post is selected)
+      if (e.key === 'r' || e.key === 'R') {
+        if (selectedPost) {
+          e.preventDefault();
+          editorRef.current?.focus();
+        }
+      }
+
+      // Cmd+Enter posts response and resolves
+      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+        if (selectedPost && responseContent.trim()) {
+          e.preventDefault();
+          handleSendResponse();
+          onResolve();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedPost, responseContent]);
+
+  const handleSendResponse = () => {
+    if (!responseContent.trim() || !selectedPost) return;
+
+    const newResponse = {
+      id: `response-${Date.now()}`,
+      content: responseContent,
+      isInternalNote,
+      agent: currentAgent.name,
+      createdAt: new Date().toISOString(),
+    };
+
+    setResponses([...responses, newResponse]);
+    setResponseContent('');
+    setIsInternalNote(false);
+  };
 
   if (!selectedPost) {
     return (
@@ -128,13 +180,26 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
 
               {/* Response Editor */}
               <section className="bg-background-secondary rounded-lg border border-border p-4">
-                <h2 className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wide">
-                  Response
-                </h2>
+                <div className="flex items-center justify-between mb-3">
+                  <h2 className="text-sm font-semibold text-foreground uppercase tracking-wide">
+                    Response
+                  </h2>
+                  <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={isInternalNote}
+                      onChange={(e) => setIsInternalNote(e.target.checked)}
+                      className="w-4 h-4 rounded border-border bg-background-tertiary text-primary focus:ring-2 focus:ring-primary"
+                      data-testid="internal-note-checkbox"
+                    />
+                    <span>Internal Note</span>
+                  </label>
+                </div>
                 <RichTextEditor
+                  ref={editorRef}
                   value={responseContent}
                   onChange={setResponseContent}
-                  placeholder="Type your response here..."
+                  placeholder="Type your response here... (Press R to focus)"
                 />
                 <div className="flex items-center justify-between mt-3">
                   <div className="flex items-center gap-2">
@@ -152,13 +217,61 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
                     </button>
                   </div>
                   <button
-                    className="px-4 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-sm rounded-md transition-colors"
+                    onClick={handleSendResponse}
+                    disabled={!responseContent.trim()}
+                    className={cn(
+                      'px-4 py-1.5 text-white text-sm rounded-md transition-colors',
+                      responseContent.trim()
+                        ? 'bg-emerald-500 hover:bg-emerald-600'
+                        : 'bg-emerald-500/50 cursor-not-allowed'
+                    )}
                     data-testid="send-response-button"
                   >
-                    Send Response
+                    {isInternalNote ? 'Add Note' : 'Send Response'}
                   </button>
                 </div>
+                <div className="text-xs text-muted-foreground mt-2">
+                  Tip: Press <kbd className="px-1 py-0.5 bg-background-tertiary rounded text-foreground">Cmd+Enter</kbd> to {isInternalNote ? 'add note' : 'send response'} and resolve
+                </div>
               </section>
+
+              {/* Activity History */}
+              {responses.length > 0 && (
+                <section className="bg-background-secondary rounded-lg border border-border p-4">
+                  <h2 className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wide">
+                    Activity History
+                  </h2>
+                  <div className="space-y-3">
+                    {responses.map((response) => (
+                      <div
+                        key={response.id}
+                        className={cn(
+                          'p-3 rounded-md border',
+                          response.isInternalNote
+                            ? 'bg-yellow-500/10 border-yellow-500/30'
+                            : 'bg-background-tertiary border-border'
+                        )}
+                        data-testid={`response-${response.id}`}
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-foreground">{response.agent}</span>
+                            {response.isInternalNote && (
+                              <span className="text-xs px-2 py-0.5 rounded bg-yellow-500/20 text-yellow-400">
+                                Internal Note
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-xs text-muted-foreground">
+                            {new Date(response.createdAt).toLocaleString()}
+                          </span>
+                        </div>
+                        <p className="text-sm text-foreground-secondary whitespace-pre-wrap">{response.content}</p>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
             </div>
           </div>
 

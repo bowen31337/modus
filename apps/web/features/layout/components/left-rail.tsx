@@ -6,7 +6,6 @@ import { Home, Inbox, CheckCircle2, Settings, LogOut } from 'lucide-react';
 import { Button } from '@modus/ui';
 import { createClient } from '@/lib/supabase/client';
 import { logout } from '@/lib/auth-actions';
-import { useTransition } from 'react';
 
 const navItems = [
   { icon: Home, label: 'Home', href: '/dashboard' },
@@ -17,32 +16,32 @@ const navItems = [
 
 export function LeftRail() {
   const pathname = usePathname();
-  const [isPending, startTransition] = useTransition();
 
-  const handleLogout = () => {
-    startTransition(async () => {
-      // Check if Supabase is configured before attempting logout
-      const isSupabaseConfigured =
-        process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const handleLogout = async () => {
+    // Check if Supabase is configured before attempting logout
+    const isSupabaseConfigured =
+      process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-      if (isSupabaseConfigured) {
-        try {
-          const supabase = createClient();
-          await supabase.auth.signOut();
-        } catch (error) {
-          // If Supabase fails, continue to redirect
-        }
+    if (isSupabaseConfigured) {
+      try {
+        const supabase = createClient();
+        await supabase.auth.signOut();
+      } catch (error) {
+        // If Supabase fails, continue to redirect
       }
+    }
 
+    try {
       // Call server action to clear the session cookie
-      // The server action returns the redirect URL
-      const result = await logout();
-      if (result.success) {
-        // Use window.location for a full page reload to ensure cookie is cleared
-        // before the next request is made
-        window.location.href = result.redirectUrl;
-      }
-    });
+      await logout();
+    } catch (error) {
+      // Log error but continue with navigation
+      console.error('Logout error:', error);
+    }
+
+    // Navigate to login page using replace() to prevent going back to dashboard
+    // This triggers a full page navigation
+    window.location.replace('/login');
   };
 
   return (
@@ -82,7 +81,6 @@ export function LeftRail() {
         variant="ghost"
         size="icon"
         onClick={handleLogout}
-        disabled={isPending}
         className="w-10 h-10 text-obsidian-400 hover:text-red-400 hover:bg-obsidian-800"
         title="Logout"
       >

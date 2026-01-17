@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { Search } from 'lucide-react';
 import { PostCard, type PostCardProps } from './post-card';
 import { FilterControls, type FilterState } from './filter-controls';
@@ -99,6 +99,10 @@ export function QueuePane({ onPostSelect, selectedPostId, assignedPosts }: Queue
 
   const [viewMode, setViewMode] = useState<ViewMode>('list');
 
+  // Keyboard navigation state
+  const [focusedIndex, setFocusedIndex] = useState<number>(0);
+  const queueContainerRef = useRef<HTMLDivElement>(null);
+
   // Filter and sort posts
   const filteredAndSortedPosts = useMemo(() => {
     let posts = [...mockPosts];
@@ -153,6 +157,62 @@ export function QueuePane({ onPostSelect, selectedPostId, assignedPosts }: Queue
     return posts;
   }, [filters, sort]);
 
+  // Keyboard navigation handler
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't handle keyboard navigation if user is typing in an input
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+        return;
+      }
+
+      // J key: navigate down
+      if (e.key === 'j' || e.key === 'J') {
+        e.preventDefault();
+        setFocusedIndex(prev => {
+          const newIndex = Math.min(prev + 1, filteredAndSortedPosts.length - 1);
+          // Scroll the focused item into view
+          const cardElement = document.querySelector(`[data-testid="post-card-${filteredAndSortedPosts[newIndex]?.id}"]`);
+          if (cardElement) {
+            cardElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+          return newIndex;
+        });
+      }
+
+      // K key: navigate up
+      if (e.key === 'k' || e.key === 'K') {
+        e.preventDefault();
+        setFocusedIndex(prev => {
+          const newIndex = Math.max(prev - 1, 0);
+          // Scroll the focused item into view
+          const cardElement = document.querySelector(`[data-testid="post-card-${filteredAndSortedPosts[newIndex]?.id}"]`);
+          if (cardElement) {
+            cardElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+          return newIndex;
+        });
+      }
+
+      // Enter key: select the focused post
+      if (e.key === 'Enter' && filteredAndSortedPosts.length > 0) {
+        e.preventDefault();
+        const focusedPost = filteredAndSortedPosts[focusedIndex];
+        if (focusedPost) {
+          onPostSelect?.(focusedPost);
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [filteredAndSortedPosts, focusedIndex, onPostSelect]);
+
+  // Reset focused index when filters change
+  useEffect(() => {
+    setFocusedIndex(0);
+  }, [filters, sort]);
+
   return (
     <aside className="w-80 bg-background-secondary border-r border-border flex flex-col min-w-[320px] max-w-[400px]" data-testid="queue-pane">
       {/* Queue Header */}
@@ -195,16 +255,20 @@ export function QueuePane({ onPostSelect, selectedPostId, assignedPosts }: Queue
       </div>
 
       {/* Queue List */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto" ref={queueContainerRef}>
         {filteredAndSortedPosts.length > 0 ? (
           <div className={viewMode === 'grid' ? 'grid grid-cols-2 gap-3 p-3' : ''} data-testid="queue-container">
-            {filteredAndSortedPosts.map((post) => (
+            {filteredAndSortedPosts.map((post, index) => (
               <PostCard
                 key={post.id}
                 {...post}
                 isSelected={selectedPostId === post.id}
                 isAssigned={assignedPosts?.has(post.id) ?? false}
-                onClick={() => onPostSelect?.(post)}
+                isKeyboardFocused={index === focusedIndex}
+                onClick={() => {
+                  setFocusedIndex(index);
+                  onPostSelect?.(post);
+                }}
                 viewMode={viewMode}
               />
             ))}

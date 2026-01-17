@@ -29,6 +29,7 @@ export interface PostCardProps {
   responseCount?: number;
   isSelected?: boolean;
   isAssigned?: boolean;
+  isKeyboardFocused?: boolean;
   onClick?: () => void;
   viewMode?: ViewMode;
 }
@@ -67,6 +68,7 @@ export function PostCard({
   responseCount = 0,
   isSelected = false,
   isAssigned = false,
+  isKeyboardFocused = false,
   onClick,
   viewMode = 'list',
 }: PostCardProps) {
@@ -84,7 +86,8 @@ export function PostCard({
         data-testid={`post-card-${id}`}
         className={cn(
           'group relative flex flex-col w-full bg-background-secondary hover:bg-background-tertiary transition-colors cursor-pointer text-left border border-border rounded-lg overflow-hidden',
-          isSelected && 'ring-2 ring-primary'
+          isSelected && 'ring-2 ring-primary',
+          isKeyboardFocused && 'ring-2 ring-primary ring-offset-2 ring-offset-background'
         )}
       >
         {/* Priority Strip (top) */}
@@ -184,7 +187,8 @@ export function PostCard({
       data-testid={`post-card-${id}`}
       className={cn(
         'group relative flex w-full border-b border-border bg-background-secondary hover:bg-background-tertiary transition-colors cursor-pointer text-left',
-        isSelected && 'bg-background-tertiary ring-1 ring-primary inset-0'
+        isSelected && 'bg-background-tertiary ring-1 ring-primary inset-0',
+        isKeyboardFocused && 'ring-2 ring-primary ring-offset-2 ring-offset-background'
       )}
     >
       {/* Priority Strip */}

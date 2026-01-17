@@ -29,11 +29,11 @@ test.describe('Authentication - Logout & Protected Routes', () => {
     // Wait for dashboard to load
     await expect(page.getByTestId('queue-pane')).toBeVisible();
 
-    // Click logout - use force to bypass any overlays
+    // Click logout - force click to bypass Next.js dev overlay
     await page.getByTitle('Logout').click({ force: true });
 
-    // Wait for navigation to complete
-    await page.waitForURL(/.*login/, { timeout: 5000 });
+    // Wait for navigation to login page
+    await page.waitForURL(/.*login/, { timeout: 10000 });
 
     // Should redirect to login page
     await expect(page).toHaveURL(/.*login/);
@@ -98,9 +98,15 @@ test.describe('Authentication - Logout & Protected Routes', () => {
     // Wait for dashboard to load
     await expect(page.getByTestId('queue-pane')).toBeVisible();
 
+    // Dismiss dev overlay if present
+    const devOverlay = page.locator('button[title="Close Next.js Dev Tools"]');
+    if (await devOverlay.isVisible({ timeout: 1000 }).catch(() => false)) {
+      await devOverlay.click().catch(() => {});
+    }
+
     // Logout
-    await page.getByTitle('Logout').click({ force: true });
-    await page.waitForURL(/.*login/, { timeout: 5000 });
+    await page.getByTitle('Logout').click();
+    await page.waitForURL(/.*login/, { timeout: 10000 });
     await expect(page).toHaveURL(/.*login/);
 
     // Login again

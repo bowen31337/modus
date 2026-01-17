@@ -56,16 +56,16 @@ export function LoginForm() {
   };
 
   // For demo mode, use server action for proper cookie handling
-  // Using startTransition to allow the redirect to be handled properly
-  const handleDemoSubmit = () => {
+  // The server action handles the redirect directly
+  const handleDemoSubmit = async () => {
     setError(null);
-    startTransition(async () => {
-      try {
-        await demoLogin();
-      } catch (error: any) {
-        setError('Failed to create demo session');
-      }
-    });
+    setLoading(true);
+    try {
+      await demoLogin();
+    } catch (error: any) {
+      setError('Failed to create demo session');
+      setLoading(false);
+    }
   };
 
   // For demo mode, use a form with server action for proper cookie handling
@@ -104,8 +104,8 @@ export function LoginForm() {
           </div>
         )}
 
-        <Button type="submit" disabled={isPending} className="w-full">
-          {isPending ? 'Signing in...' : 'Sign In'}
+        <Button type="submit" disabled={loading} className="w-full">
+          {loading ? 'Signing in...' : 'Sign In'}
         </Button>
       </form>
     );

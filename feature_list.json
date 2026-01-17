@@ -446,14 +446,11 @@
       "Step 6: Verify post appears in the unassigned queue for other agents"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 0,
-    "dev_failure_count": 1,
-    "last_dev_failure_at": "2026-01-17T14:16:07.953817Z",
-    "dev_failure_reasons": [
-      "Worker session timed out"
-    ]
+    "dev_failure_count": 0,
+    "dev_completed_at": "2026-01-17T14:30:01.827488Z"
   },
   {
     "category": "functional",
@@ -506,7 +503,13 @@
     ],
     "passes": false,
     "is_dev_done": false,
-    "is_qa_passed": false
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-17T14:38:13.606014Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -644,9 +647,10 @@
       "Step 4: Verify response editor receives focus",
       "Step 5: Verify cursor is positioned ready for typing"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768660631.557023"
   },
   {
     "category": "functional",
@@ -659,9 +663,10 @@
       "Step 5: Verify response appears in the activity timeline",
       "Step 6: Verify response is marked as not internal (visible to community)"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768660631.557053"
   },
   {
     "category": "functional",
@@ -674,9 +679,10 @@
       "Step 5: Verify note appears in activity timeline with internal indicator",
       "Step 6: Verify note has is_internal_note flag set to true"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768660631.557072"
   },
   {
     "category": "functional",
@@ -690,9 +696,10 @@
       "Step 6: Verify resolved_at timestamp is set",
       "Step 7: Verify post moves to resolved section in queue"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768660631.55709"
   },
   {
     "category": "functional",

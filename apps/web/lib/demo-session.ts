@@ -42,7 +42,14 @@ export async function createDemoSession(): Promise<void> {
  */
 export async function destroyDemoSession(): Promise<void> {
   const cookieStore = await cookies();
-  cookieStore.delete(DEMO_SESSION_COOKIE);
+  // Use set() with maxAge=0 for better browser compatibility
+  cookieStore.set(DEMO_SESSION_COOKIE, '', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 0, // Expire immediately
+    path: '/',
+  });
 }
 
 /**
