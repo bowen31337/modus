@@ -66,6 +66,7 @@ export function FilterControls({ filters, onFiltersChange, postCount }: FilterCo
           hasActiveFilters && 'bg-primary/10 text-primary border-primary/30'
         )}
         onClick={() => setShowDropdown(!showDropdown)}
+        data-testid="filter-controls-button"
       >
         <Filter size={12} />
         Filters
@@ -125,6 +126,7 @@ export function FilterControls({ filters, onFiltersChange, postCount }: FilterCo
                           ? 'bg-primary/10 text-primary'
                           : 'hover:bg-background-tertiary text-foreground-secondary'
                       )}
+                      data-testid={`filter-category-${cat === 'all' ? 'All' : cat}`}
                     >
                       <span
                         className="w-2 h-2 rounded-full flex-shrink-0"

@@ -63,6 +63,11 @@ export function LoginForm() {
     try {
       await demoLogin();
     } catch (error: any) {
+      // Check if this is a NEXT_REDIRECT error (which is expected)
+      if (error?.message?.includes('NEXT_REDIRECT') || error?.digest?.includes('NEXT_REDIRECT')) {
+        // The redirect is handled by Next.js, don't show error
+        return;
+      }
       setError('Failed to create demo session');
       setLoading(false);
     }

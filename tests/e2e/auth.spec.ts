@@ -29,8 +29,16 @@ test.describe('Authentication - Logout & Protected Routes', () => {
     // Wait for dashboard to load
     await expect(page.getByTestId('queue-pane')).toBeVisible();
 
-    // Click logout - force click to bypass Next.js dev overlay
-    await page.getByTitle('Logout').click({ force: true });
+    // Remove Next.js dev overlay using JavaScript
+    await page.evaluate(() => {
+      const overlay = document.querySelector('nextjs-portal');
+      if (overlay) {
+        overlay.remove();
+      }
+    });
+
+    // Click logout button normally
+    await page.getByTitle('Logout').click();
 
     // Wait for navigation to login page
     await page.waitForURL(/.*login/, { timeout: 10000 });
@@ -98,11 +106,13 @@ test.describe('Authentication - Logout & Protected Routes', () => {
     // Wait for dashboard to load
     await expect(page.getByTestId('queue-pane')).toBeVisible();
 
-    // Dismiss dev overlay if present
-    const devOverlay = page.locator('button[title="Close Next.js Dev Tools"]');
-    if (await devOverlay.isVisible({ timeout: 1000 }).catch(() => false)) {
-      await devOverlay.click().catch(() => {});
-    }
+    // Remove Next.js dev overlay using JavaScript
+    await page.evaluate(() => {
+      const overlay = document.querySelector('nextjs-portal');
+      if (overlay) {
+        overlay.remove();
+      }
+    });
 
     // Logout
     await page.getByTitle('Logout').click();

@@ -170,7 +170,7 @@ export function QueuePane({ onPostSelect, selectedPostId, assignedPosts }: Queue
       if (e.key === 'j' || e.key === 'J') {
         e.preventDefault();
         setFocusedIndex(prev => {
-          const newIndex = Math.min(prev + 1, filteredAndSortedPosts.length - 1);
+          const newIndex = (prev + 1) % filteredAndSortedPosts.length;
           // Scroll the focused item into view
           const cardElement = document.querySelector(`[data-testid="post-card-${filteredAndSortedPosts[newIndex]?.id}"]`);
           if (cardElement) {
@@ -184,7 +184,7 @@ export function QueuePane({ onPostSelect, selectedPostId, assignedPosts }: Queue
       if (e.key === 'k' || e.key === 'K') {
         e.preventDefault();
         setFocusedIndex(prev => {
-          const newIndex = Math.max(prev - 1, 0);
+          const newIndex = prev <= 0 ? filteredAndSortedPosts.length - 1 : prev - 1;
           // Scroll the focused item into view
           const cardElement = document.querySelector(`[data-testid="post-card-${filteredAndSortedPosts[newIndex]?.id}"]`);
           if (cardElement) {

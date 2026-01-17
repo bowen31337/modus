@@ -68,12 +68,13 @@
       "Step 5: Attempt to access protected route",
       "Step 6: Verify redirect back to login page confirming session is terminated"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T12:42:24.479608Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_completed_at": "1768661612.449"
   },
   {
     "category": "functional",
@@ -484,9 +485,10 @@
     "is_dev_done": false,
     "is_qa_passed": false,
     "qa_retry_count": 0,
-    "dev_failure_count": 1,
-    "last_dev_failure_at": "2026-01-17T14:17:45.050296Z",
+    "dev_failure_count": 2,
+    "last_dev_failure_at": "2026-01-17T14:48:01.538263Z",
     "dev_failure_reasons": [
+      "Worker session timed out",
       "Worker session timed out"
     ]
   },
@@ -523,7 +525,13 @@
     ],
     "passes": false,
     "is_dev_done": false,
-    "is_qa_passed": false
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-17T14:46:00.633360Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -538,8 +546,11 @@
       "Step 7: Verify the viewing indicator disappears for Agent B"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T14:39:17.073153Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",

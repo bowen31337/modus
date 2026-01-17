@@ -5,6 +5,7 @@ export * from './Card';
 export * from './Input';
 export * from './Badge';
 export * from './Separator';
+export * from './dropdown-menu';
 
 // Export lucide icons
 export * from './Icon';

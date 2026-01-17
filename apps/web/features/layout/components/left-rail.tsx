@@ -6,6 +6,7 @@ import { Home, Inbox, CheckCircle2, Settings, LogOut } from 'lucide-react';
 import { Button } from '@modus/ui';
 import { createClient } from '@/lib/supabase/client';
 import { logout } from '@/lib/auth-actions';
+import { AgentStatusIndicator } from './agent-status-indicator';
 
 const navItems = [
   { icon: Home, label: 'Home', href: '/dashboard' },
@@ -39,8 +40,8 @@ export function LeftRail() {
       console.error('Logout error:', error);
     }
 
-    // Navigate to login page using replace() to prevent going back to dashboard
-    // This triggers a full page navigation
+    // Force a hard navigation to login page
+    // This ensures the page fully reloads and picks up the cookie changes
     window.location.replace('/login');
   };
 
@@ -53,6 +54,15 @@ export function LeftRail() {
       <div className="mb-2 p-2 bg-obsidian-700 rounded-lg text-obsidian-200 font-bold text-xl">
         m
       </div>
+
+      {/* Agent Status Indicator */}
+      <AgentStatusIndicator
+        data-testid="agent-status"
+        onStatusChange={(status) => {
+          // TODO: Persist status to backend/database
+          console.log('Status changed to:', status);
+        }}
+      />
 
       {/* Navigation */}
       <nav className="flex-1 flex flex-col items-center gap-2 w-full">
