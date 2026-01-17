@@ -19,6 +19,7 @@ const mockPosts: PostCardProps[] = [
     id: '1',
     title: 'Unable to access my account after password reset',
     excerpt: 'I reset my password yesterday but still can\'t log in. The system keeps saying my credentials are invalid...',
+    bodyContent: 'I reset my password yesterday but still can\'t log in. The system keeps saying my credentials are invalid. I\'ve tried clearing my cache, using incognito mode, and even a different browser, but nothing works. I need to access my account urgently for work purposes. Please help me resolve this issue as soon as possible.',
     priority: 'P1',
     status: 'open',
     sentiment: 'negative',
@@ -31,6 +32,7 @@ const mockPosts: PostCardProps[] = [
     id: '2',
     title: 'Feature request: Dark mode for mobile app',
     excerpt: 'Would love to see a dark mode option in the mobile application. My eyes get tired using the app at night...',
+    bodyContent: 'Would love to see a dark mode option in the mobile application. My eyes get tired using the app at night, and the bright white background is really uncomfortable. Many other apps have this feature now, and it would be great if you could implement it. Maybe you could also add an automatic option that switches based on system settings.',
     priority: 'P3',
     status: 'open',
     sentiment: 'positive',
@@ -43,6 +45,7 @@ const mockPosts: PostCardProps[] = [
     id: '3',
     title: 'Bug: Images not loading in posts',
     excerpt: 'Since the last update, images in community posts are not loading. Just shows a broken image icon...',
+    bodyContent: 'Since the last update, images in community posts are not loading. Just shows a broken image icon where the images should be. This is happening on both desktop and mobile versions. I\'ve tried on different internet connections and the issue persists. It\'s really frustrating because images are a big part of the community experience.',
     priority: 'P2',
     status: 'in_progress',
     sentiment: 'negative',
@@ -56,6 +59,7 @@ const mockPosts: PostCardProps[] = [
     id: '4',
     title: 'Spam account posting promotional content',
     excerpt: 'This user keeps posting links to dubious websites. Multiple reports from community members...',
+    bodyContent: 'This user keeps posting links to dubious websites. Multiple reports from community members. The posts are clearly spam and contain affiliate links to questionable products. They\'re posting multiple times per day and it\'s cluttering up the community feed. Please take action immediately.',
     priority: 'P1',
     status: 'open',
     sentiment: 'negative',
@@ -68,6 +72,7 @@ const mockPosts: PostCardProps[] = [
     id: '5',
     title: 'Harassment in community chat',
     excerpt: 'User is repeatedly sending abusive messages to other members. Need immediate intervention...',
+    bodyContent: 'User is repeatedly sending abusive messages to other members. Need immediate intervention. This has been going on for days now and multiple users have reported feeling unsafe. The harassment includes personal attacks, threats, and hate speech. We need to ban this user before more people get hurt.',
     priority: 'P1',
     status: 'resolved',
     sentiment: 'negative',
@@ -115,7 +120,8 @@ export function QueuePane({ onPostSelect, selectedPostId, assignedPosts }: Queue
       const searchLower = filters.search.toLowerCase();
       posts = posts.filter(p =>
         p.title.toLowerCase().includes(searchLower) ||
-        p.excerpt.toLowerCase().includes(searchLower)
+        p.excerpt.toLowerCase().includes(searchLower) ||
+        (p.bodyContent && p.bodyContent.toLowerCase().includes(searchLower))
       );
     }
 

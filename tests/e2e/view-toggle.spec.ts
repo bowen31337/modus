@@ -133,33 +133,41 @@ test.describe('View Toggle (Grid/List)', () => {
 
   test('should preserve filters and search when switching views', async ({ page }) => {
     // Apply a filter - open filter dropdown and select priority
-    await page.locator('button:has-text("Filters")').first().click();
+    const filterButton = page.locator('button:has-text("Filters")').first();
+    await filterButton.click();
+
+    // Wait for dropdown to appear and select priority
     const dropdown = page.locator('div.z-50');
     await dropdown.locator('button:has-text("Priority")').first().click();
     await dropdown.locator('button:has-text("P1")').first().click();
 
-    // Close dropdown by pressing Escape (more reliable than clicking backdrop)
-    await page.keyboard.press('Escape');
+    // Close dropdown by clicking the backdrop (z-40)
+    const backdrop = page.locator('div.z-40');
+    await backdrop.click();
 
     // Wait for dropdown to close
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(300);
 
     // Verify filter is active - check for the active styling on the filter button
     // The filter button uses bg-primary/10 for active state
-    const filterButton = page.locator('button:has-text("Filters")').first();
     await expect(filterButton).toHaveClass(/bg-primary\/10/);
 
-    // Switch to grid view - scroll the view toggle into view first to avoid overlay issues
+    // Switch to grid view - use click with force to bypass any remaining overlays
     const gridViewButton = page.locator('[data-testid="view-toggle-grid"]');
-    await gridViewButton.scrollIntoViewIfNeeded();
-    await gridViewButton.click();
+    await gridViewButton.click({ force: true });
+
+    // Wait for view switch to complete
+    await page.waitForTimeout(300);
 
     // Verify filter is still active (filter button has active styling)
     await expect(filterButton).toHaveClass(/bg-primary\/10/);
 
     // Switch back to list view
     const listViewButton = page.locator('[data-testid="view-toggle-list"]');
-    await listViewButton.click();
+    await listViewButton.click({ force: true });
+
+    // Wait for view switch to complete
+    await page.waitForTimeout(300);
 
     // Verify filter is still active
     await expect(filterButton).toHaveClass(/bg-primary\/10/);

@@ -37,7 +37,7 @@ export async function logout(): Promise<{ success: boolean; redirectUrl: string 
   const cookieStore = await cookies();
 
   if (isDemoMode()) {
-    // Demo mode: clear demo session cookie
+    // Demo mode: delete demo session cookie
     cookieStore.delete(DEMO_SESSION_COOKIE);
   }
 

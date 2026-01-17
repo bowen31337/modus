@@ -12,6 +12,7 @@ export interface PostCardProps {
   id: string;
   title: string;
   excerpt: string;
+  bodyContent?: string;
   priority: PriorityLevel;
   status: PostStatus;
   sentiment?: SentimentLabel;

@@ -32,6 +32,9 @@ test.describe('Authentication - Logout & Protected Routes', () => {
     // Click logout - use force to bypass any overlays
     await page.getByTitle('Logout').click({ force: true });
 
+    // Wait for navigation to complete
+    await page.waitForURL(/.*login/, { timeout: 5000 });
+
     // Should redirect to login page
     await expect(page).toHaveURL(/.*login/);
   });
@@ -97,6 +100,7 @@ test.describe('Authentication - Logout & Protected Routes', () => {
 
     // Logout
     await page.getByTitle('Logout').click({ force: true });
+    await page.waitForURL(/.*login/, { timeout: 5000 });
     await expect(page).toHaveURL(/.*login/);
 
     // Login again

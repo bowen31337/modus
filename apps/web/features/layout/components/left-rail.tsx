@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { Home, Inbox, CheckCircle2, Settings, LogOut } from 'lucide-react';
 import { Button } from '@modus/ui';
 import { createClient } from '@/lib/supabase/client';
@@ -17,15 +17,14 @@ const navItems = [
 
 export function LeftRail() {
   const pathname = usePathname();
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const handleLogout = () => {
-    // Check if Supabase is configured before attempting logout
-    const isSupabaseConfigured =
-      process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
     startTransition(async () => {
+      // Check if Supabase is configured before attempting logout
+      const isSupabaseConfigured =
+        process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
       if (isSupabaseConfigured) {
         try {
           const supabase = createClient();
@@ -39,7 +38,9 @@ export function LeftRail() {
       // The server action returns the redirect URL
       const result = await logout();
       if (result.success) {
-        router.push(result.redirectUrl);
+        // Use window.location for a full page reload to ensure cookie is cleared
+        // before the next request is made
+        window.location.href = result.redirectUrl;
       }
     });
   };
