@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { Search } from 'lucide-react';
 import { PostCard, type PostCardProps } from './post-card';
-import { FilterControls, type FilterState } from './filter-controls';
+import { FilterControls, type FilterState, isDateInRange } from './filter-controls';
 import { SortControls, type SortState } from './sort-controls';
 import { ViewToggle, type ViewMode } from './view-toggle';
 
@@ -14,6 +14,7 @@ interface QueuePaneProps {
 }
 
 // Mock data for initial development
+// Using ISO date format for proper date filtering
 const mockPosts: PostCardProps[] = [
   {
     id: '1',
@@ -25,7 +26,7 @@ const mockPosts: PostCardProps[] = [
     sentiment: 'negative',
     category: { name: 'Account Issues', color: '#eab308' },
     author: { name: 'john_doe', postCount: 1 },
-    createdAt: '30m ago',
+    createdAt: '2025-01-18T10:30:00Z',
     responseCount: 0,
   },
   {
@@ -38,7 +39,7 @@ const mockPosts: PostCardProps[] = [
     sentiment: 'positive',
     category: { name: 'Feature Request', color: '#8b5cf6' },
     author: { name: 'sarah_w', postCount: 5 },
-    createdAt: '2h ago',
+    createdAt: '2025-01-17T14:15:00Z',
     responseCount: 0,
   },
   {
@@ -52,7 +53,7 @@ const mockPosts: PostCardProps[] = [
     category: { name: 'Bug Reports', color: '#ef4444' },
     author: { name: 'tech_user', postCount: 12 },
     assignedTo: 'Agent A',
-    createdAt: '5h ago',
+    createdAt: '2025-01-16T09:45:00Z',
     responseCount: 2,
   },
   {
@@ -65,7 +66,7 @@ const mockPosts: PostCardProps[] = [
     sentiment: 'negative',
     category: { name: 'Spam', color: '#ec4899' },
     author: { name: 'spammer123', postCount: 15 },
-    createdAt: '10m ago',
+    createdAt: '2025-01-18T02:20:00Z',
     responseCount: 0,
   },
   {
@@ -79,7 +80,7 @@ const mockPosts: PostCardProps[] = [
     category: { name: 'Harassment', color: '#f97316' },
     author: { name: 'concerned_user', postCount: 8 },
     assignedTo: 'Agent B',
-    createdAt: '1d ago',
+    createdAt: '2025-01-10T16:30:00Z',
     responseCount: 5,
   },
 ];
@@ -102,6 +103,14 @@ export function QueuePane({ onPostSelect, selectedPostId, assignedPosts }: Queue
   // Keyboard navigation state
   const [focusedIndex, setFocusedIndex] = useState<number>(0);
   const queueContainerRef = useRef<HTMLDivElement>(null);
+
+  // Blur search input on mount to prevent it from capturing keyboard events
+  useEffect(() => {
+    const searchInput = document.querySelector('input[type="search"]');
+    if (searchInput instanceof HTMLInputElement) {
+      searchInput.blur();
+    }
+  }, []);
 
   // Filter and sort posts
   const filteredAndSortedPosts = useMemo(() => {
@@ -126,6 +135,13 @@ export function QueuePane({ onPostSelect, selectedPostId, assignedPosts }: Queue
         p.title.toLowerCase().includes(searchLower) ||
         p.excerpt.toLowerCase().includes(searchLower) ||
         (p.bodyContent && p.bodyContent.toLowerCase().includes(searchLower))
+      );
+    }
+
+    // Apply date range filter
+    if (filters.dateRange?.startDate || filters.dateRange?.endDate) {
+      posts = posts.filter(p =>
+        isDateInRange(p.createdAt, filters.dateRange?.startDate, filters.dateRange?.endDate)
       );
     }
 
@@ -258,20 +274,27 @@ export function QueuePane({ onPostSelect, selectedPostId, assignedPosts }: Queue
       <div className="flex-1 overflow-y-auto" ref={queueContainerRef}>
         {filteredAndSortedPosts.length > 0 ? (
           <div className={viewMode === 'grid' ? 'grid grid-cols-2 gap-3 p-3' : ''} data-testid="queue-container">
-            {filteredAndSortedPosts.map((post, index) => (
-              <PostCard
-                key={post.id}
-                {...post}
-                isSelected={selectedPostId === post.id}
-                isAssigned={assignedPosts?.has(post.id) ?? false}
-                isKeyboardFocused={index === focusedIndex}
-                onClick={() => {
-                  setFocusedIndex(index);
-                  onPostSelect?.(post);
-                }}
-                viewMode={viewMode}
-              />
-            ))}
+            {filteredAndSortedPosts.map((post, index) => {
+              const isFocused = index === focusedIndex;
+              // Debug logging
+              if (typeof window !== 'undefined') {
+                console.log(`Post ${index} (id=${post.id}): isKeyboardFocused=${isFocused}, focusedIndex=${focusedIndex}`);
+              }
+              return (
+                <PostCard
+                  key={post.id}
+                  {...post}
+                  isSelected={selectedPostId === post.id}
+                  isAssigned={assignedPosts?.has(post.id) ?? false}
+                  isKeyboardFocused={isFocused}
+                  onClick={() => {
+                    setFocusedIndex(index);
+                    onPostSelect?.(post);
+                  }}
+                  viewMode={viewMode}
+                />
+              );
+            })}
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center h-64 p-6 text-center">

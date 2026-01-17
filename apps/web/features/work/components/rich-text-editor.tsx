@@ -9,6 +9,9 @@ interface RichTextEditorProps {
   value?: string;
   onChange?: (value: string) => void;
   className?: string;
+  ghostText?: string; // AI suggestion ghost text
+  onAcceptGhostText?: () => void; // Callback when Tab is pressed to accept ghost text
+  onDismissGhostText?: () => void; // Callback when ghost text should be dismissed
 }
 
 export interface RichTextEditorRef {
@@ -16,10 +19,11 @@ export interface RichTextEditorRef {
 }
 
 export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(
-  ({ placeholder = 'Type your response here...', value = '', onChange, className }, ref) => {
+  ({ placeholder = 'Type your response here...', value = '', onChange, className, ghostText, onAcceptGhostText, onDismissGhostText }, ref) => {
   const [isBoldActive, setIsBoldActive] = useState(false);
   const [isItalicActive, setIsItalicActive] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Expose focus method to parent component
   useImperativeHandle(ref, () => ({
@@ -129,10 +133,29 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    // Tab key handling for accessibility
+    // Tab key handling - accept ghost text if present, otherwise insert spaces
     if (e.key === 'Tab') {
       e.preventDefault();
+
+      // If ghost text is present, accept it
+      if (ghostText && onAcceptGhostText) {
+        onAcceptGhostText();
+        return;
+      }
+
+      // Otherwise, insert spaces for indentation
       insertFormatting('  ', '', '');
+    }
+
+    // Escape key dismisses ghost text
+    if (e.key === 'Escape' && ghostText && onDismissGhostText) {
+      e.preventDefault();
+      onDismissGhostText();
+    }
+
+    // Any key press other than Tab dismisses ghost text (user starts typing)
+    if (ghostText && onDismissGhostText && !e.ctrlKey && !e.metaKey && e.key.length === 1 && !e.altKey) {
+      onDismissGhostText();
     }
   };
 
@@ -197,24 +220,54 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
         </button>
       </div>
 
-      {/* Text Area */}
-      <textarea
-        ref={textareaRef}
-        value={value}
-        onChange={(e) => onChange?.(e.target.value)}
-        onKeyDown={handleKeyDown}
-        className={cn(
-          'w-full min-h-32 bg-background border border-border rounded-md p-3 text-foreground text-sm',
-          'focus:outline-none focus:ring-2 focus:ring-primary resize-y',
-          'font-mono leading-relaxed'
+      {/* Text Area with Ghost Text */}
+      <div ref={containerRef} className="relative">
+        <textarea
+          ref={textareaRef}
+          value={value}
+          onChange={(e) => onChange?.(e.target.value)}
+          onKeyDown={handleKeyDown}
+          className={cn(
+            'w-full min-h-32 bg-background border border-border rounded-md p-3 text-foreground text-sm',
+            'focus:outline-none focus:ring-2 focus:ring-primary resize-y',
+            'font-mono leading-relaxed',
+            ghostText && 'border-primary/50'
+          )}
+          placeholder={placeholder}
+          data-testid="response-textarea"
+        />
+
+        {/* Ghost Text Overlay */}
+        {ghostText && (
+          <div
+            className={cn(
+              'absolute top-0 left-0 w-full h-full p-3 text-sm font-mono leading-relaxed pointer-events-none overflow-hidden',
+              'text-muted-foreground/50 bg-transparent whitespace-pre-wrap break-words'
+            )}
+            data-testid="ghost-text-overlay"
+            style={{
+              marginTop: '0',
+              marginLeft: '0',
+              paddingTop: '0.75rem',
+              paddingLeft: '0.75rem',
+            }}
+          >
+            {value}
+            <span className="text-primary/60 font-semibold">{ghostText}</span>
+          </div>
         )}
-        placeholder={placeholder}
-        data-testid="response-textarea"
-      />
+      </div>
 
       {/* Help Text */}
       <div className="text-xs text-muted-foreground">
-        <span className="font-medium">Tip:</span> Use the toolbar above for formatting, or use keyboard shortcuts (Ctrl+B for bold, Ctrl+I for italic)
+        <span className="font-medium">Tip:</span>{' '}
+        {ghostText ? (
+          <>
+            Press <kbd className="px-1 py-0.5 bg-background-tertiary rounded text-foreground">Tab</kbd> to accept AI suggestion, <kbd className="px-1 py-0.5 bg-background-tertiary rounded text-foreground">Esc</kbd> to dismiss
+          </>
+        ) : (
+          <>Use the toolbar above for formatting, or use keyboard shortcuts (Ctrl+B for bold, Ctrl+I for italic)</>
+        )}
       </div>
     </div>
   );

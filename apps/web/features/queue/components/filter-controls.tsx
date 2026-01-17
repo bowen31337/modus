@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Filter, X, ChevronDown } from 'lucide-react';
+import { Filter, X, ChevronDown, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@modus/ui';
 
@@ -9,11 +9,17 @@ export type CategoryFilter = 'all' | 'Account Issues' | 'Feature Request' | 'Bug
 export type StatusFilter = 'all' | 'open' | 'in_progress' | 'resolved';
 export type PriorityFilter = 'all' | 'P1' | 'P2' | 'P3' | 'P4' | 'P5';
 
+export interface DateRangeFilter {
+  startDate: string;
+  endDate: string;
+}
+
 export interface FilterState {
   category: CategoryFilter;
   status: StatusFilter;
   priority: PriorityFilter;
   search: string;
+  dateRange?: DateRangeFilter;
 }
 
 interface FilterControlsProps {
@@ -21,6 +27,57 @@ interface FilterControlsProps {
   onFiltersChange: (filters: FilterState) => void;
   postCount?: number;
 }
+
+// Helper to format date for input (YYYY-MM-DD)
+const formatDateForInput = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+// Helper to parse date string and compare (ignoring time)
+export const isDateInRange = (dateStr: string, startDate?: string, endDate?: string): boolean => {
+  if (!startDate && !endDate) return true;
+
+  // Parse the date string - handles both ISO format and relative time strings
+  const postDate = new Date(dateStr);
+
+  // If the date string is not a valid ISO date, try to parse relative time
+  if (isNaN(postDate.getTime())) {
+    const now = new Date();
+
+    if (dateStr.includes('m ago')) {
+      const minutes = parseInt(dateStr);
+      postDate.setTime(now.getTime() - minutes * 60000);
+    } else if (dateStr.includes('h ago')) {
+      const hours = parseInt(dateStr);
+      postDate.setTime(now.getTime() - hours * 3600000);
+    } else if (dateStr.includes('d ago')) {
+      const days = parseInt(dateStr);
+      postDate.setTime(now.getTime() - days * 86400000);
+    } else {
+      // Unable to parse, include the post
+      return true;
+    }
+  }
+
+  if (startDate) {
+    const start = new Date(startDate);
+    // Set to start of day for comparison
+    start.setHours(0, 0, 0, 0);
+    if (postDate < start) return false;
+  }
+
+  if (endDate) {
+    const end = new Date(endDate);
+    // Include posts on the end date (set to end of day)
+    end.setHours(23, 59, 59, 999);
+    if (postDate > end) return false;
+  }
+
+  return true;
+};
 
 const categoryColors: Record<CategoryFilter, string> = {
   all: '#94a3b8',
@@ -34,13 +91,15 @@ const categoryColors: Record<CategoryFilter, string> = {
 
 export function FilterControls({ filters, onFiltersChange, postCount }: FilterControlsProps) {
   const [showDropdown, setShowDropdown] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<'category' | 'status' | 'priority' | null>(null);
+  const [activeDropdown, setActiveDropdown] = useState<'category' | 'status' | 'priority' | 'date' | null>(null);
 
   const activeFilterCount = [
     filters.category !== 'all',
     filters.status !== 'all',
     filters.priority !== 'all',
     filters.search.length > 0,
+    filters.dateRange?.startDate,
+    filters.dateRange?.endDate,
   ].filter(Boolean).length;
 
   const handleClearAll = () => {
@@ -49,8 +108,14 @@ export function FilterControls({ filters, onFiltersChange, postCount }: FilterCo
       status: 'all',
       priority: 'all',
       search: '',
+      dateRange: undefined,
     });
     setActiveDropdown(null);
+  };
+
+  const handleDateRangeChange = (start: string | null, end: string | null) => {
+    const newDateRange = start || end ? { startDate: start || '', endDate: end || '' } : undefined;
+    onFiltersChange({ ...filters, dateRange: newDateRange });
   };
 
   const hasActiveFilters = activeFilterCount > 0;
@@ -200,6 +265,51 @@ export function FilterControls({ filters, onFiltersChange, postCount }: FilterCo
                       {priority === 'all' ? 'All Priorities' : priority}
                     </button>
                   ))}
+                </div>
+              )}
+            </div>
+
+            {/* Date Range Filter */}
+            <div>
+              <button
+                onClick={() => setActiveDropdown(activeDropdown === 'date' ? null : 'date')}
+                className="w-full flex items-center justify-between text-xs text-foreground-secondary hover:text-foreground transition-colors py-1"
+              >
+                <span>Date Range</span>
+                <ChevronDown size={12} className={cn('transition-transform', activeDropdown === 'date' && 'rotate-180')} />
+              </button>
+              {activeDropdown === 'date' && (
+                <div className="mt-2 space-y-2">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs text-muted-foreground">Start Date</label>
+                    <input
+                      type="date"
+                      value={filters.dateRange?.startDate || ''}
+                      onChange={(e) => handleDateRangeChange(e.target.value || null, filters.dateRange?.endDate || null)}
+                      className="w-full bg-background-tertiary border border-border rounded px-2 py-1.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      data-testid="date-start-input"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs text-muted-foreground">End Date</label>
+                    <input
+                      type="date"
+                      value={filters.dateRange?.endDate || ''}
+                      onChange={(e) => handleDateRangeChange(filters.dateRange?.startDate || null, e.target.value || null)}
+                      className="w-full bg-background-tertiary border border-border rounded px-2 py-1.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      data-testid="date-end-input"
+                    />
+                  </div>
+                  {(filters.dateRange?.startDate || filters.dateRange?.endDate) && (
+                    <button
+                      onClick={() => handleDateRangeChange(null, null)}
+                      className="w-full text-xs text-primary hover:text-primary/80 flex items-center justify-center gap-1 py-1"
+                      data-testid="clear-date-filter"
+                    >
+                      <X size={12} />
+                      Clear date filter
+                    </button>
+                  )}
                 </div>
               )}
             </div>

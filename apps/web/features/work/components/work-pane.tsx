@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { MessageSquare, User, Clock, AlertCircle, CheckCircle2, Hash } from 'lucide-react';
+import { MessageSquare, User, Clock, AlertCircle, CheckCircle2, Hash, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { PostCardProps } from '@/features/queue/components/post-card';
 import { RichTextEditor, type RichTextEditorRef } from './rich-text-editor';
+import { TemplateSelector } from './template-selector';
+import { useAiSuggestion } from '../hooks/use-ai-suggestion';
 
 interface WorkPaneProps {
   selectedPost: PostCardProps | null;
@@ -41,6 +43,14 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
   const editorRef = useRef<RichTextEditorRef>(null);
   const isAssignedToMe = selectedPost ? assignedPosts.has(selectedPost.id) : false;
 
+  // AI Suggestion hook
+  const aiSuggestion = useAiSuggestion({
+    postContent: selectedPost?.excerpt || '',
+    postTitle: selectedPost?.title || '',
+    authorName: selectedPost?.author?.name,
+    categoryName: selectedPost?.category?.name,
+  });
+
   // Keyboard shortcut: R key focuses the response editor
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -71,8 +81,12 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedPost, responseContent]);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      // Clean up AI streaming on unmount
+      aiSuggestion.cancelStreaming();
+    };
+  }, [selectedPost, responseContent, aiSuggestion]);
 
   const handleSendResponse = () => {
     if (!responseContent.trim() || !selectedPost) return;
@@ -88,6 +102,31 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
     setResponses([...responses, newResponse]);
     setResponseContent('');
     setIsInternalNote(false);
+  };
+
+  const handleTemplateSelect = (content: string) => {
+    setResponseContent(content);
+    // Dismiss AI suggestion when template is selected
+    aiSuggestion.dismissSuggestion();
+  };
+
+  const handleAcceptGhostText = () => {
+    const acceptedText = aiSuggestion.acceptSuggestion();
+    if (acceptedText) {
+      setResponseContent(acceptedText);
+      // Focus editor after accepting
+      setTimeout(() => {
+        editorRef.current?.focus();
+      }, 0);
+    }
+  };
+
+  const handleDismissGhostText = () => {
+    aiSuggestion.dismissSuggestion();
+  };
+
+  const handleAiSuggest = () => {
+    aiSuggestion.startStreaming();
   };
 
   if (!selectedPost) {
@@ -200,20 +239,41 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
                   value={responseContent}
                   onChange={setResponseContent}
                   placeholder="Type your response here... (Press R to focus)"
+                  ghostText={aiSuggestion.ghostText}
+                  onAcceptGhostText={handleAcceptGhostText}
+                  onDismissGhostText={handleDismissGhostText}
                 />
                 <div className="flex items-center justify-between mt-3">
                   <div className="flex items-center gap-2">
+                    <TemplateSelector
+                      onSelect={handleTemplateSelect}
+                      postContext={{
+                        title: selectedPost.title,
+                        authorName: selectedPost.author?.name,
+                        category: selectedPost.category?.name,
+                      }}
+                    />
                     <button
-                      className="px-3 py-1.5 bg-background-tertiary hover:bg-background-tertiary/80 text-foreground text-sm rounded-md transition-colors border border-border"
-                      data-testid="use-template-button"
-                    >
-                      Use Template
-                    </button>
-                    <button
-                      className="px-3 py-1.5 bg-background-tertiary hover:bg-background-tertiary/80 text-foreground text-sm rounded-md transition-colors border border-border"
+                      onClick={handleAiSuggest}
+                      disabled={aiSuggestion.isStreaming}
+                      className={cn(
+                        'px-3 py-1.5 text-foreground text-sm rounded-md transition-colors border flex items-center gap-2',
+                        aiSuggestion.isStreaming
+                          ? 'bg-primary/20 cursor-wait'
+                          : 'bg-background-tertiary hover:bg-background-tertiary/80 border-border'
+                      )}
                       data-testid="ai-suggest-button"
                     >
-                      AI Suggest
+                      {aiSuggestion.isStreaming ? (
+                        <>
+                          <Loader2 size={14} className="animate-spin" />
+                          Generating...
+                        </>
+                      ) : (
+                        <>
+                          ✨ AI Suggest
+                        </>
+                      )}
                     </button>
                   </div>
                   <button

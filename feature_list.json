@@ -218,12 +218,13 @@
       "Step 6: Verify only posts within the date range are displayed",
       "Step 7: Verify posts outside the range are not shown"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T13:15:44.034676Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_completed_at": "2026-01-18T17:30:00.000000Z"
   },
   {
     "category": "functional",
@@ -726,7 +727,7 @@
     "is_qa_passed": true,
     "qa_retry_count": 1,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-18T16:00:00.000000Z",
+    "dev_completed_at": "2026-01-17T15:20:20.416055Z",
     "qa_completed_at": "2026-01-18T16:00:00.000000Z"
   },
   {
@@ -762,8 +763,11 @@
       "Step 8: Verify template appears in the template library"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T15:20:35.803678Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -778,8 +782,11 @@
       "Step 7: Verify changes are reflected in template library"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T15:32:59.375937Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",

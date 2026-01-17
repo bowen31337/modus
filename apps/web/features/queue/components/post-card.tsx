@@ -188,7 +188,7 @@ export function PostCard({
       className={cn(
         'group relative flex w-full border-b border-border bg-background-secondary hover:bg-background-tertiary transition-colors cursor-pointer text-left',
         isSelected && 'bg-background-tertiary ring-1 ring-primary inset-0',
-        isKeyboardFocused && 'ring-2 ring-primary ring-offset-2 ring-offset-background'
+        isKeyboardFocused && 'outline-none ring-2 ring-primary ring-offset-2 ring-offset-background'
       )}
     >
       {/* Priority Strip */}
