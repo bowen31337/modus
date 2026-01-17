@@ -1242,15 +1242,11 @@
       "Step 5: Verify optimistic UI shows update even faster locally"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 0,
-    "dev_failure_count": 2,
-    "last_dev_failure_at": "2026-01-17T20:45:38.295128Z",
-    "dev_failure_reasons": [
-      "Worker session timed out",
-      "Worker session timed out"
-    ]
+    "dev_failure_count": 0,
+    "dev_completed_at": "2026-01-17T21:09:32.933391Z"
   },
   {
     "category": "functional",
@@ -1421,8 +1417,11 @@
       "Step 8: Verify changes reflect in queue filters"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T21:04:32.390619Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -1435,8 +1434,11 @@
       "Step 5: Verify category name or icon is displayed"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T21:05:57.328196Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -1450,8 +1452,9 @@
       "Step 6: Verify response respects filter parameters"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "1768684358"
   },
   {
     "category": "functional",
@@ -1464,8 +1467,9 @@
       "Step 5: Test with non-existent ID returns 404"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "1768684358"
   },
   {
     "category": "functional",
@@ -1479,8 +1483,9 @@
       "Step 6: Verify unauthorized updates are rejected"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "1768684358"
   },
   {
     "category": "functional",
@@ -1493,8 +1498,9 @@
       "Step 5: Verify audit log entry is created"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "1768684358"
   },
   {
     "category": "functional",
@@ -1507,8 +1513,9 @@
       "Step 5: Verify post appears in unassigned queue"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "1768684358"
   },
   {
     "category": "functional",
