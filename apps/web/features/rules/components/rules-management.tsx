@@ -224,7 +224,7 @@ export function RulesManagement() {
     setSelectedRule(rule);
     setFormData({
       name: rule.name,
-      description: rule.description,
+      description: rule.description ?? '',
       condition_type: rule.condition_type,
       condition_value: rule.condition_value,
       action_type: rule.action_type,

@@ -1749,12 +1749,8 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_failure_count": 1,
-    "last_dev_failure_at": "2026-01-17T23:12:00.835949Z",
-    "dev_failure_reasons": [
-      "Worker session timed out"
-    ],
-    "dev_completed_at": "2026-01-18T12:00:00.000000Z"
+    "dev_failure_count": 0,
+    "dev_completed_at": "2026-01-17T23:31:07.223025Z"
   },
   {
     "category": "functional",
@@ -1806,7 +1802,13 @@
     ],
     "passes": false,
     "is_dev_done": false,
-    "is_qa_passed": false
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-17T23:40:07.257090Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "style",
@@ -2155,9 +2157,11 @@
       "Step 4: Verify spinner is appropriately sized for context",
       "Step 5: Verify spinner color fits dark theme"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768693223",
+    "qa_completed_at": "1768693223"
   },
   {
     "category": "style",

@@ -9,6 +9,7 @@ import { TemplateSelector } from './template-selector';
 import { useAiSuggestion } from '../hooks/use-ai-suggestion';
 import { ReassignDialog } from './reassign-dialog';
 import { InlineError } from '@/components/ui/error-state';
+import { ResponseSkeleton } from './response-skeleton';
 
 interface WorkPaneProps {
   selectedPost: PostCardProps | null;
@@ -47,6 +48,8 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
   const [isInternalNote, setIsInternalNote] = useState(false);
   const [isReassignModalOpen, setIsReassignModalOpen] = useState(false);
   const [responseError, setResponseError] = useState<string | null>(null);
+  const [loadingResponses, setLoadingResponses] = useState(false);
+  const [submittingResponse, setSubmittingResponse] = useState(false);
   const editorRef = useRef<RichTextEditorRef>(null);
   const isAssignedToMe = selectedPost ? assignedPosts.has(selectedPost.id) : false;
 
@@ -161,6 +164,7 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
 
     const loadResponses = async () => {
       try {
+        setLoadingResponses(true);
         setResponseError(null);
         const response = await fetch(`/api/v1/posts/${selectedPost.id}/responses`);
         if (response.ok) {
@@ -179,6 +183,8 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
       } catch (error) {
         console.error('Error loading responses:', error);
         setResponseError('Failed to load responses');
+      } finally {
+        setLoadingResponses(false);
       }
     };
 
@@ -189,6 +195,7 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
     if (!responseContent.trim() || !selectedPost) return;
 
     try {
+      setSubmittingResponse(true);
       setResponseError(null);
       const response = await fetch(`/api/v1/posts/${selectedPost.id}/responses`, {
         method: 'POST',
@@ -220,6 +227,8 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
     } catch (error) {
       console.error('Error submitting response:', error);
       setResponseError('Failed to send response');
+    } finally {
+      setSubmittingResponse(false);
     }
   };
 
@@ -424,16 +433,23 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
                   </div>
                   <button
                     onClick={handleSendResponse}
-                    disabled={!responseContent.trim()}
+                    disabled={!responseContent.trim() || submittingResponse}
                     className={cn(
-                      'px-4 py-1.5 text-white text-sm rounded-md transition-colors',
-                      responseContent.trim()
+                      'px-4 py-1.5 text-white text-sm rounded-md transition-colors flex items-center gap-2',
+                      responseContent.trim() && !submittingResponse
                         ? 'bg-emerald-500 hover:bg-emerald-600'
                         : 'bg-emerald-500/50 cursor-not-allowed'
                     )}
                     data-testid="send-response-button"
                   >
-                    {isInternalNote ? 'Add Note' : 'Send Response'}
+                    {submittingResponse ? (
+                      <>
+                        <Loader2 size={16} className="animate-spin" />
+                        {isInternalNote ? 'Adding...' : 'Sending...'}
+                      </>
+                    ) : (
+                      isInternalNote ? 'Add Note' : 'Send Response'
+                    )}
                   </button>
                 </div>
                 <div className="text-xs text-muted-foreground mt-2">
@@ -471,23 +487,31 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
                   />
                 </div>
               )}
-              {responses.length > 0 && (
+              {(responses.length > 0 || loadingResponses) && (
                 <section className="bg-background-secondary rounded-lg border border-border p-4">
                   <h2 className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wide">
                     Activity History
                   </h2>
                   <div className="space-y-3">
-                    {responses.map((response) => (
-                      <div
-                        key={response.id}
-                        className={cn(
-                          'p-4 rounded-lg border transition-all',
-                          response.isInternalNote
-                            ? 'bg-amber-500/5 border-amber-500/20 border-l-4 border-l-amber-500/60'
-                            : 'bg-background-tertiary border-border hover:border-border/80'
-                        )}
-                        data-testid={`response-${response.id}`}
-                      >
+                    {loadingResponses ? (
+                      <>
+                        {/* Show 2 skeleton loaders while loading */}
+                        <ResponseSkeleton />
+                        <ResponseSkeleton />
+                      </>
+                    ) : (
+                      <>
+                        {responses.map((response) => (
+                          <div
+                            key={response.id}
+                            className={cn(
+                              'p-4 rounded-lg border transition-all',
+                              response.isInternalNote
+                                ? 'bg-amber-500/5 border-amber-500/20 border-l-4 border-l-amber-500/60'
+                                : 'bg-background-tertiary border-border hover:border-border/80'
+                            )}
+                            data-testid={`response-${response.id}`}
+                          >
                         <div className="flex items-start justify-between mb-3">
                           <div className="flex items-center gap-2">
                             <div className={cn(
@@ -529,6 +553,8 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
                         </div>
                       </div>
                     ))}
+                    </>
+                  )}
                   </div>
                 </section>
               )}
