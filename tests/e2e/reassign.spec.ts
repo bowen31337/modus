@@ -114,8 +114,8 @@ test.describe('Post Reassignment', () => {
     const currentAgentOption = page.getByTestId('agent-option-550e8400-e29b-41d4-a716-446655440001');
     await expect(currentAgentOption).toContainText('(Current)');
 
-    // Verify clicking current agent doesn't select it
-    await currentAgentOption.click();
+    // Verify current agent option is disabled (not clickable)
+    await expect(currentAgentOption).toBeDisabled();
 
     // Confirm button should still be disabled
     const confirmButton = page.getByTestId('confirm-reassign-button');
@@ -176,7 +176,7 @@ test.describe('Post Reassignment', () => {
     await page.getByTestId('reassign-button').click();
 
     // Verify modal is open
-    await expect(page.getBy-testid('reassign-modal')).toBeVisible();
+    await expect(page.getByTestId('reassign-modal')).toBeVisible();
 
     // Press Escape
     await page.keyboard.press('Escape');
