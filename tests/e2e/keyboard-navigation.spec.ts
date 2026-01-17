@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Keyboard Navigation - Queue', () => {
+// Run tests sequentially to avoid interference between keyboard navigation tests
+test.describe.serial('Keyboard Navigation - Queue', () => {
   test.beforeEach(async ({ page, context }) => {
     // Set demo session cookie directly on the browser context
     await context.addCookies([{
@@ -164,13 +165,53 @@ test.describe('Keyboard Navigation - Queue', () => {
     await expect(firstPost).toHaveClass(/ring-2/);
     await expect(firstPost).toHaveClass(/ring-primary/);
 
+    // Debug: Check the state before pressing Enter
+    const debugState = await page.evaluate(() => {
+      const posts = document.querySelectorAll('[data-testid^="post-card-"]');
+      return {
+        postCount: posts.length,
+        firstPostHasRing: posts[0]?.classList.contains('ring-2'),
+        firstPostId: posts[0]?.getAttribute('data-testid'),
+      };
+    });
+    console.log('Before Enter:', JSON.stringify(debugState, null, 2));
+
+    // Add console listener to capture logs from the browser
+    page.on('console', msg => console.log('Browser console:', msg.text()));
+
     // Press Enter to open the first post
     await page.keyboard.press('Enter');
+
+    // Wait a moment for React to process the event
+    await page.waitForTimeout(1000);
+
+    // Debug: Check if work pane is visible
+    const workPaneVisible = await page.locator('[data-testid="work-pane"]').isVisible().catch(() => false);
+    console.log('Work pane visible after Enter:', workPaneVisible);
+
+    // Debug: Check if selectedPost state changed
+    const selectedPostState = await page.evaluate(() => {
+      // Try to find the work pane content
+      const workPane = document.querySelector('[data-testid="work-pane"]');
+      const postTitle = document.querySelector('[data-testid="post-title"]');
+      return {
+        workPaneExists: !!workPane,
+        postTitleExists: !!postTitle,
+        postTitleText: postTitle?.textContent || null,
+        bodyHasWorkPane: document.body.innerHTML.includes('data-testid="work-pane"'),
+      };
+    });
+    console.log('Work pane state:', JSON.stringify(selectedPostState, null, 2));
 
     // Verify work pane shows the post detail
     // The work-pane testid is only present when a post is selected
     await page.waitForSelector('[data-testid="work-pane"]', { timeout: 10000 });
     await expect(page.locator('[data-testid="post-title"]')).toBeVisible();
+
+    // Close the detail view to clean up for the next test
+    await page.keyboard.press('Escape');
+    await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
+    await expect(page.locator('[data-testid="work-pane"]')).toBeHidden();
   });
 
   test('should wrap navigation at end of list', async ({ page }) => {
@@ -183,6 +224,12 @@ test.describe('Keyboard Navigation - Queue', () => {
     const count = await allPosts.count();
     console.log(`Total posts for wrap test: ${count}`);
 
+    // Ensure body has focus for keyboard events
+    await page.evaluate(() => {
+      document.body.focus();
+      window.focus();
+    });
+
     for (let i = 0; i < 4; i++) {
       await page.keyboard.press('J');
       await page.waitForTimeout(1000);
@@ -194,6 +241,17 @@ test.describe('Keyboard Navigation - Queue', () => {
         if (posts.length <= idx) return false;
         return posts[idx].classList.contains('ring-2');
       }, expectedIndex, { timeout: 10000 });
+
+      // Debug: log the state after each press
+      const state = await page.evaluate(() => {
+        const posts = document.querySelectorAll('[data-testid^="post-card-"]');
+        return Array.from(posts).map((p, i) => ({
+          index: i,
+          testId: p.getAttribute('data-testid'),
+          hasRing: p.classList.contains('ring-2'),
+        }));
+      });
+      console.log(`After J press ${i + 1}:`, JSON.stringify(state, null, 2));
     }
 
     // Verify the last post in sorted order (index 4, id:2 - P3) is focused
@@ -238,11 +296,40 @@ test.describe('Keyboard Navigation - Queue', () => {
   });
 
   test('should reset focus when filters change', async ({ page }) => {
+    // Ensure body has focus for keyboard events
+    await page.evaluate(() => {
+      document.body.focus();
+      window.focus();
+    });
+
     // Navigate down (with WebKit-friendly waits)
     await page.keyboard.press('J');
     await page.waitForTimeout(800);
+
+    // Debug: Check state after first J
+    const stateAfterFirstJ = await page.evaluate(() => {
+      const posts = document.querySelectorAll('[data-testid^="post-card-"]');
+      return Array.from(posts).map((p, i) => ({
+        index: i,
+        testId: p.getAttribute('data-testid'),
+        hasRing: p.classList.contains('ring-2'),
+      }));
+    });
+    console.log('State after first J:', JSON.stringify(stateAfterFirstJ, null, 2));
+
     await page.keyboard.press('J');
     await page.waitForTimeout(800);
+
+    // Debug: Check state after second J
+    const stateAfterSecondJ = await page.evaluate(() => {
+      const posts = document.querySelectorAll('[data-testid^="post-card-"]');
+      return Array.from(posts).map((p, i) => ({
+        index: i,
+        testId: p.getAttribute('data-testid'),
+        hasRing: p.classList.contains('ring-2'),
+      }));
+    });
+    console.log('State after second J:', JSON.stringify(stateAfterSecondJ, null, 2));
 
     // Wait for focus to move to third post
     await page.waitForFunction(() => {

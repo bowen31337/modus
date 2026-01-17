@@ -9,6 +9,7 @@ import { ViewToggle, type ViewMode } from './view-toggle';
 import { analyzeSentiment, RulesEngine, RuleConditionType, RuleActionType } from '@modus/logic';
 
 interface QueuePaneProps {
+  forceReset?: number;
   onPostSelect?: (post: PostCardProps) => void;
   selectedPostId?: string | null;
 }
@@ -65,7 +66,7 @@ const rawMockPosts: Omit<PostCardProps, 'sentiment' | 'priority'>[] = [
     id: '5',
     title: 'Harassment in community chat',
     excerpt: 'User is repeatedly sending abusive messages to other members. Need immediate intervention...',
-    bodyContent: 'User is repeatedly sending abusive messages to other members. Need immediate intervention. This has been going on for days now and multiple users have reported feeling unsafe. The harassment includes personal attacks, threats, and hate speech. We need to ban this user before more people get hurt.',
+    bodyContent: 'URGENT: User is repeatedly sending extremely abusive and threatening messages to other members. This is completely unacceptable and needs immediate intervention. I am terrified for my safety and the safety of others. The harassment includes violent threats, hate speech, and personal attacks. This is the worst harassment I have ever seen. We need to ban this dangerous user immediately before someone gets seriously hurt.',
     status: 'resolved',
     category: { name: 'Harassment', color: '#f97316' },
     author: { name: 'concerned_user', postCount: 8 },
@@ -79,25 +80,37 @@ const rawMockPosts: Omit<PostCardProps, 'sentiment' | 'priority'>[] = [
 const priorityRules = [
   {
     id: 'rule-1',
-    name: 'Sentiment-based Escalation',
-    description: 'Escalate posts with negative sentiment to P2',
+    name: 'Critical Sentiment Escalation',
+    description: 'Escalate posts with very negative sentiment to P1',
     condition_type: RuleConditionType.SENTIMENT_NEGATIVE,
-    condition_value: '-0.3',
+    condition_value: '-0.7',
     action_type: RuleActionType.SET_PRIORITY,
-    action_value: 'P2',
+    action_value: 'P1',
     position: 1,
     is_active: true,
     created_at: new Date().toISOString(),
   },
   {
     id: 'rule-2',
+    name: 'Sentiment-based Escalation',
+    description: 'Escalate posts with negative sentiment to P2',
+    condition_type: RuleConditionType.SENTIMENT_NEGATIVE,
+    condition_value: '-0.3',
+    action_type: RuleActionType.SET_PRIORITY,
+    action_value: 'P2',
+    position: 2,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'rule-3',
     name: 'First-time Poster Priority',
     description: 'Escalate posts from first-time posters to P2',
     condition_type: RuleConditionType.FIRST_TIME_POSTER,
     condition_value: '2',
     action_type: RuleActionType.SET_PRIORITY,
     action_value: 'P2',
-    position: 2,
+    position: 3,
     is_active: true,
     created_at: new Date().toISOString(),
   },
@@ -134,7 +147,7 @@ const mockPosts: PostCardProps[] = rawMockPosts.map((post) => {
   };
 });
 
-export function QueuePane({ onPostSelect, selectedPostId }: QueuePaneProps) {
+export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePaneProps) {
   const [filters, setFilters] = useState<FilterState>({
     category: 'all',
     status: 'all',
@@ -152,6 +165,13 @@ export function QueuePane({ onPostSelect, selectedPostId }: QueuePaneProps) {
   // Keyboard navigation state
   const [focusedIndex, setFocusedIndex] = useState<number>(0);
   const queueContainerRef = useRef<HTMLDivElement>(null);
+
+  // Reset focused index when forceReset changes (e.g., when closing detail view)
+  useEffect(() => {
+    if (forceReset && forceReset > 0) {
+      setFocusedIndex(0);
+    }
+  }, [forceReset]);
 
   // Use refs to avoid stale closures in keyboard handler
   const focusedIndexRef = useRef<number>(0);
@@ -261,7 +281,11 @@ export function QueuePane({ onPostSelect, selectedPostId }: QueuePaneProps) {
         const currentIndex = focusedIndexRef.current;
         const newIndex = (currentIndex + 1) % currentPosts.length;
 
-        console.log(`[J key] currentIndex: ${currentIndex}, newIndex: ${newIndex}, posts length: ${currentPosts.length}`);
+        console.log('[QueuePane] J key pressed', {
+          currentPostsLength: currentPosts.length,
+          currentIndex,
+          newIndex,
+        });
 
         // Scroll the focused item into view
         const cardElement = document.querySelector(`[data-testid="post-card-${currentPosts[newIndex]?.id}"]`);
@@ -272,8 +296,8 @@ export function QueuePane({ onPostSelect, selectedPostId }: QueuePaneProps) {
         setFocusedIndex(newIndex);
       }
 
-      // K key: navigate up
-      if (e.key === 'k' || e.key === 'K') {
+      // K key: navigate up (but not when Cmd/Ctrl is pressed - that's a shortcut)
+      if ((e.key === 'k' || e.key === 'K') && !e.metaKey && !e.ctrlKey) {
         e.preventDefault();
         const currentPosts = filteredAndSortedPostsRef.current;
         const currentIndex = focusedIndexRef.current;

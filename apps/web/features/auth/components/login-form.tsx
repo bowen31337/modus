@@ -8,7 +8,7 @@ import { Button } from '@modus/ui';
 import { Input } from '@modus/ui';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { demoLogin } from '@/lib/auth-actions';
+import { demoLoginAction } from '@/lib/auth-actions';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -54,34 +54,11 @@ export function LoginForm() {
     }
   };
 
-  // For demo mode, use server action for proper cookie handling
-  // The server action handles the redirect directly
-  const handleDemoSubmit = async () => {
-    setError(null);
-    setLoading(true);
-    try {
-      await demoLogin();
-      // Server action should redirect, but if it doesn't (e.g., in tests),
-      // navigate manually after a short delay
-      setTimeout(() => {
-        router.push('/dashboard');
-      }, 100);
-    } catch (error: any) {
-      // Check if this is a NEXT_REDIRECT error (which is expected)
-      if (error?.message?.includes('NEXT_REDIRECT') || error?.digest?.includes('NEXT_REDIRECT')) {
-        // The redirect is handled by Next.js, don't show error
-        // Re-throw to let Next.js handle the redirect
-        throw error;
-      }
-      setError('Failed to create demo session');
-      setLoading(false);
-    }
-  };
-
   // For demo mode, use a form with server action for proper cookie handling
+  // demoLoginAction is a server action that handles the redirect directly
   if (!isSupabaseConfigured) {
     return (
-      <form action={handleDemoSubmit} className="space-y-4">
+      <form action={demoLoginAction} className="space-y-4">
         <div className="space-y-2">
           <label htmlFor="email" className="block text-sm font-medium text-foreground">
             Email

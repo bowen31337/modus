@@ -17,6 +17,7 @@ export default function DashboardPage() {
   const [selectedPost, setSelectedPost] = useState<PostCardProps | null>(null);
   const [assignedPosts, setAssignedPosts] = useState<Set<string>>(new Set());
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+  const [forceReset, setForceReset] = useState(0);
 
   // Cmd+K keyboard shortcut to open command palette
   useEffect(() => {

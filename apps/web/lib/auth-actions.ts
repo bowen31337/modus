@@ -29,6 +29,14 @@ export async function demoLogin() {
 }
 
 /**
+ * Server action for demo mode login - to be used directly as form action
+ * This is a wrapper that can be used directly with form's action prop
+ */
+export async function demoLoginAction(): Promise<void> {
+  await demoLogin();
+}
+
+/**
  * Server action for logout
  * Clears the demo session cookie
  * The client should handle navigation to the login page
