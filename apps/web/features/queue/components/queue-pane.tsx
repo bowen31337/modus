@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Search, Loader2 } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { PostCard, type PostCardProps } from './post-card';
 import { PostCardSkeleton } from './post-card-skeleton';
 import { FilterControls, type FilterState, isDateInRange } from './filter-controls';
 import { SortControls, type SortState } from './sort-controls';
 import { ViewToggle, type ViewMode } from './view-toggle';
+import { ErrorState } from '@/components/ui/error-state';
 
 interface QueuePaneProps {
   forceReset?: number;
@@ -75,6 +76,7 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
   // API state
   const [posts, setPosts] = useState<PostCardProps[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPosts, setTotalPosts] = useState(0);
@@ -147,6 +149,7 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
     if (loadingRef.current) return;
 
     setLoading(true);
+    setError(null); // Clear previous errors
     try {
       // Build query parameters
       const params = new URLSearchParams({
@@ -190,6 +193,9 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
       setCurrentPage(page);
     } catch (error) {
       console.error('Error fetching posts:', error);
+      // Set user-friendly error message
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load posts';
+      setError(errorMessage);
       // On error, keep existing posts or show empty state
       if (reset) {
         setPosts([]);
@@ -206,7 +212,12 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
     setCurrentPage(1);
     setHasMore(true);
     fetchPosts(1, true);
-  }, [filters, sort, fetchPosts]);
+    // Note: fetchPosts is intentionally not in the dependency array
+    // to prevent infinite loops. The function internally uses filters/sort
+    // which are already in the deps, and we only want to refetch when
+    // those values change, not when the callback is recreated.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters, sort]);
 
   // Keyboard navigation handler
   useEffect(() => {
@@ -400,13 +411,20 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
 
       {/* Queue List */}
       <div className="flex-1 overflow-y-auto" ref={queueContainerRef}>
-        {loading && posts.length === 0 ? (
+        {loading && posts.length === 0 && !error ? (
           <div className={viewMode === 'grid' ? 'grid grid-cols-2 gap-3 p-3' : ''}>
             {/* Show 5 skeleton cards during initial load */}
             {Array.from({ length: 5 }).map((_, index) => (
               <PostCardSkeleton key={`skeleton-${index}`} viewMode={viewMode} />
             ))}
           </div>
+        ) : error && posts.length === 0 ? (
+          <ErrorState
+            message="Failed to load posts"
+            details="There was a problem loading the moderation queue. Please check your connection and try again."
+            onRetry={() => fetchPosts(1, true)}
+            showRetry
+          />
         ) : sortedPosts.length > 0 ? (
           <>
             <div className={viewMode === 'grid' ? 'grid grid-cols-2 gap-3 p-3' : ''} data-testid="queue-container">

@@ -1,6 +1,5 @@
 'use client';
 
-import { cn } from '@/lib/utils';
 import type { ViewMode } from './view-toggle';
 
 interface PostCardSkeletonProps {

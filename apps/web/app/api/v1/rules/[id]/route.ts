@@ -7,7 +7,7 @@ import { dataStore, type UpdateRuleInput } from '@/lib/data-store';
  * Returns a specific priority rule by ID.
  */
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -96,7 +96,7 @@ export async function PATCH(
  * Deletes a priority rule.
  */
 export async function DELETE(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {

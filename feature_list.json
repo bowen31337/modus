@@ -1766,9 +1766,16 @@
       "Step 4: Verify technical details are not exposed to user",
       "Step 5: Verify application doesn't crash on errors"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-17T23:16:14.160906Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ],
+    "dev_completed_at": "1768692623"
   },
   {
     "category": "functional",
@@ -1781,8 +1788,11 @@
       "Step 5: Test empty state for new accounts with no activity"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T23:13:47.907388Z",
+    "dev_failure_count": 0
   },
   {
     "category": "style",

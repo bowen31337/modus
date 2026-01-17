@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { createServerSideClient } from '@/lib/supabase/server';
-import { isDemoMode, hasDemoSession } from '@/lib/demo-session';
+import { hasDemoSession } from '@/lib/demo-session';
 
 // Force dynamic rendering for this page
 export const dynamic = 'force-dynamic';

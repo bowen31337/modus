@@ -44,10 +44,10 @@ test.describe('Rules Management', () => {
     const ruleCards = page.getByTestId(/rule-card-/);
     await expect(ruleCards.first()).toBeVisible();
 
-    // Verify specific rule is displayed
-    await expect(page.getByText('First Time Poster Escalation')).toBeVisible();
-    await expect(page.getByText('Negative Sentiment Escalation')).toBeVisible();
-    await expect(page.getByText('Keyword Match: Urgent')).toBeVisible();
+    // Verify specific rule is displayed (use heading role to avoid matching condition value span)
+    await expect(page.getByRole('heading', { name: 'First Time Poster Escalation' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Negative Sentiment Escalation' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Keyword Match: Urgent' })).toBeVisible();
   });
 
   test('should display rule details correctly', async ({ page }) => {

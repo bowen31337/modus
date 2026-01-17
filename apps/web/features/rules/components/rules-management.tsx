@@ -7,7 +7,6 @@ import {
   Edit,
   Trash2,
   Play,
-  GripVertical,
   ChevronDown,
   ChevronUp,
   X,
@@ -92,7 +91,7 @@ export function RulesManagement() {
   const filteredRules = rules.filter(
     (rule) =>
       rule.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      rule.description.toLowerCase().includes(searchTerm.toLowerCase())
+      rule.description?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleCreateRule = async () => {
@@ -182,14 +181,22 @@ export function RulesManagement() {
   const moveRule = (index: number, direction: 'up' | 'down') => {
     if (direction === 'up' && index > 0) {
       const newRules = [...rules];
-      [newRules[index - 1], newRules[index]] = [newRules[index], newRules[index - 1]];
-      setRules(newRules);
-      handleReorder(newRules.map((r) => r.id));
+      const prevRule = newRules[index - 1];
+      const currRule = newRules[index];
+      if (prevRule && currRule) {
+        [newRules[index - 1], newRules[index]] = [currRule, prevRule];
+        setRules(newRules);
+        handleReorder(newRules.map((r) => r.id));
+      }
     } else if (direction === 'down' && index < rules.length - 1) {
       const newRules = [...rules];
-      [newRules[index], newRules[index + 1]] = [newRules[index + 1], newRules[index]];
-      setRules(newRules);
-      handleReorder(newRules.map((r) => r.id));
+      const currRule = newRules[index];
+      const nextRule = newRules[index + 1];
+      if (currRule && nextRule) {
+        [newRules[index], newRules[index + 1]] = [nextRule, currRule];
+        setRules(newRules);
+        handleReorder(newRules.map((r) => r.id));
+      }
     }
   };
 

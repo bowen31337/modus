@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { buildSentimentPrompt, parseSentimentResult, type SentimentResult } from '@modus/logic';
+import { type SentimentResult } from '@modus/logic';
 import { z } from 'zod';
 
 // ============================================================================
@@ -34,11 +34,12 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const validatedInput = sentimentInputSchema.parse(body) as SentimentInput;
 
-    // Build the prompt
-    const prompt = buildSentimentPrompt(validatedInput.text);
-
     // TODO: Integrate with actual AI provider (OpenAI, Anthropic, etc.)
     // For now, use rule-based sentiment analysis as a mock
+    // In production, you would do:
+    // const prompt = buildSentimentPrompt(validatedInput.text);
+    // const aiResult = await openai.chat.completions.create(...);
+    // const sentimentResult = parseSentimentResult(aiResult);
     const sentimentResult = analyzeSentimentMock(validatedInput.text);
 
     return NextResponse.json(

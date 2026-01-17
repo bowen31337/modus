@@ -8,6 +8,7 @@ import { RichTextEditor, type RichTextEditorRef } from './rich-text-editor';
 import { TemplateSelector } from './template-selector';
 import { useAiSuggestion } from '../hooks/use-ai-suggestion';
 import { ReassignDialog } from './reassign-dialog';
+import { InlineError } from '@/components/ui/error-state';
 
 interface WorkPaneProps {
   selectedPost: PostCardProps | null;
@@ -45,6 +46,7 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
   const [responses, setResponses] = useState<Array<{ id: string; content: string; isInternalNote: boolean; agent: string; createdAt: string }>>([]);
   const [isInternalNote, setIsInternalNote] = useState(false);
   const [isReassignModalOpen, setIsReassignModalOpen] = useState(false);
+  const [responseError, setResponseError] = useState<string | null>(null);
   const editorRef = useRef<RichTextEditorRef>(null);
   const isAssignedToMe = selectedPost ? assignedPosts.has(selectedPost.id) : false;
 
@@ -153,11 +155,13 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
   useEffect(() => {
     if (!selectedPost) {
       setResponses([]);
+      setResponseError(null);
       return;
     }
 
     const loadResponses = async () => {
       try {
+        setResponseError(null);
         const response = await fetch(`/api/v1/posts/${selectedPost.id}/responses`);
         if (response.ok) {
           const result = await response.json();
@@ -169,9 +173,12 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
             createdAt: r.created_at,
           }));
           setResponses(transformedResponses);
+        } else {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
       } catch (error) {
         console.error('Error loading responses:', error);
+        setResponseError('Failed to load responses');
       }
     };
 
@@ -182,6 +189,7 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
     if (!responseContent.trim() || !selectedPost) return;
 
     try {
+      setResponseError(null);
       const response = await fetch(`/api/v1/posts/${selectedPost.id}/responses`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -205,10 +213,13 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
         setResponseContent('');
         setIsInternalNote(false);
       } else {
-        console.error('Failed to submit response:', await response.text());
+        const errorText = await response.text();
+        console.error('Failed to submit response:', errorText);
+        setResponseError('Failed to send response');
       }
     } catch (error) {
       console.error('Error submitting response:', error);
+      setResponseError('Failed to send response');
     }
   };
 
@@ -431,6 +442,35 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
               </section>
 
               {/* Activity History */}
+              {responseError && (
+                <div className="mb-4">
+                  <InlineError
+                    message={responseError}
+                    onRetry={() => {
+                      if (selectedPost) {
+                        // Reload responses
+                        fetch(`/api/v1/posts/${selectedPost.id}/responses`)
+                          .then(res => {
+                            if (res.ok) return res.json();
+                            throw new Error('Failed to reload');
+                          })
+                          .then(result => {
+                            const transformed = result.data.map((r: any) => ({
+                              id: r.id,
+                              content: r.content,
+                              isInternalNote: r.is_internal_note,
+                              agent: currentAgent.name,
+                              createdAt: r.created_at,
+                            }));
+                            setResponses(transformed);
+                            setResponseError(null);
+                          })
+                          .catch(() => setResponseError('Failed to reload responses'));
+                      }
+                    }}
+                  />
+                </div>
+              )}
               {responses.length > 0 && (
                 <section className="bg-background-secondary rounded-lg border border-border p-4">
                   <h2 className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wide">
