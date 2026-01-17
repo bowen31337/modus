@@ -5,18 +5,14 @@ test.describe('AI Suggest Functionality', () => {
     // Navigate to login page
     await page.goto('/login');
 
-    // Fill in login form
-    await page.fill('input[name="email"]', 'demo@example.com');
-    await page.fill('input[name="password"]', 'demo123');
+    // Click sign in button (demo mode bypasses credentials)
+    await page.getByRole('button', { name: 'Sign In' }).click();
 
-    // Submit login form
-    await page.click('button[type="submit"]');
+    // Wait for navigation to dashboard with longer timeout
+    await page.waitForURL(/.*dashboard/, { timeout: 10000 });
 
-    // Wait for navigation to dashboard
-    await page.waitForURL('/dashboard');
-
-    // Wait for page to fully load
-    await page.waitForLoadState('networkidle');
+    // Wait for queue pane to be visible
+    await expect(page.getByTestId('queue-pane')).toBeVisible();
   });
 
   test('should display AI Suggest button in response editor', async ({ page }) => {
