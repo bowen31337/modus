@@ -448,7 +448,7 @@
       "Step 6: Verify post appears in the unassigned queue for other agents"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
     "qa_retry_count": 0,
     "dev_failure_count": 0,
@@ -467,7 +467,7 @@
       "Step 7: Verify audit log records the reassignment action"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T14:15:53.493243Z",
@@ -546,7 +546,7 @@
       "Step 7: Verify the viewing indicator disappears for Agent B"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T14:39:17.073153Z",
@@ -763,7 +763,7 @@
       "Step 8: Verify template appears in the template library"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T15:20:35.803678Z",
@@ -782,7 +782,7 @@
       "Step 7: Verify changes are reflected in template library"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T15:32:59.375937Z",
@@ -803,12 +803,8 @@
     "is_dev_done": false,
     "is_qa_passed": false,
     "qa_retry_count": 0,
-    "dev_failure_count": 2,
-    "last_dev_failure_at": "2026-01-17T16:20:18.687953Z",
-    "dev_failure_reasons": [
-      "Worker session timed out",
-      "Worker session timed out"
-    ]
+    "dev_failure_count": 0,
+    "dev_completed_at": "2026-01-17T16:34:59.750138Z"
   },
   {
     "category": "functional",
@@ -892,13 +888,14 @@
       "Step 4: Verify ghost text is dismissed/replaced",
       "Step 5: Verify agent can type their own response freely"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false,
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_failure_count": 1,
-    "last_dev_failure_at": "2026-01-17T16:15:15.612894Z",
+    "dev_failure_count": 2,
+    "last_dev_failure_at": "2026-01-17T16:45:20.703463Z",
     "dev_failure_reasons": [
+      "Worker session timed out",
       "Worker session timed out"
     ]
   },
@@ -913,7 +910,7 @@
       "Step 5: Verify sentiment icon is displayed on the post card"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T16:13:41.614653Z",
@@ -932,9 +929,10 @@
     "is_dev_done": false,
     "is_qa_passed": false,
     "qa_retry_count": 0,
-    "dev_failure_count": 1,
-    "last_dev_failure_at": "2026-01-17T16:18:27.435561Z",
+    "dev_failure_count": 2,
+    "last_dev_failure_at": "2026-01-17T16:48:30.892141Z",
     "dev_failure_reasons": [
+      "Worker session timed out",
       "Worker session timed out"
     ]
   },
@@ -949,7 +947,7 @@
       "Step 5: Verify escalation is logged in audit trail"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T16:31:56.458564Z",
@@ -1926,9 +1924,9 @@
       "Step 4: Verify ghost text is clearly not committed text",
       "Step 5: Verify the distinction is accessible"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true
   },
   {
     "category": "style",

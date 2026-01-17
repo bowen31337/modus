@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 
 interface UseAiSuggestionProps {
   postContent: string;
@@ -30,7 +30,15 @@ export function useAiSuggestion({
     ghostText: '',
     suggestion: '',
   });
+
+  // Use a ref to store the current state for synchronous access
+  const stateRef = useRef<AiSuggestionState>(state);
   const streamingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Keep ref in sync with state
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
 
   /**
    * Generates a contextual AI suggestion based on post content
@@ -46,35 +54,78 @@ export function useAiSuggestion({
     // Sentiment-based suggestions
     if (postContent.toLowerCase().includes('frustrating') || postContent.toLowerCase().includes('angry')) {
       templates.push(
-        `Hi ${authorName || 'there'},\n\nI understand your frustration with ${postTitle || 'this issue'}. I'm sorry you're experiencing this problem. I'd like to help resolve this for you.\n\nCould you please provide more details about when this started happening? This will help me investigate the root cause and find the best solution for you.\n\nThank you for your patience.\n\nBest regards`
+        `Hi ${authorName || 'there'},
+
+I understand your frustration with ${postTitle || 'this issue'}. I'm sorry you're experiencing this problem. I'd like to help resolve this for you.
+
+Could you please provide more details about when this started happening? This will help me investigate the root cause and find the best solution for you.
+
+Thank you for your patience.
+
+Best regards`
       );
     }
 
     // Question-based suggestions
     if (postContent.includes('?')) {
       templates.push(
-        `Hi ${authorName || 'there'},\n\nThank you for reaching out about ${postTitle || 'your question'}. That's a great question!\n\n${postContent.length > 100 ? 'I can see you\'ve provided detailed context, which is really helpful.' : 'To give you the most accurate answer, could you provide a bit more detail about what you\'re trying to achieve?'}\n\nLet me look into this and get back to you with a comprehensive answer.\n\nBest regards`
+        `Hi ${authorName || 'there'},
+
+Thank you for reaching out about ${postTitle || 'your question'}. That's a great question!
+
+${postContent.length > 100 ? "I can see you've provided detailed context, which is really helpful." : "To give you the most accurate answer, could you provide a bit more detail about what you're trying to achieve?"}
+
+Let me look into this and get back to you with a comprehensive answer.
+
+Best regards`
       );
     }
 
     // Feature request suggestions
     if (postTitle.toLowerCase().includes('feature') || postTitle.toLowerCase().includes('request')) {
       templates.push(
-        `Hi ${authorName || 'there'},\n\nThank you for your feature request regarding ${postTitle || 'this topic'}! We really appreciate feedback from our community members.\n\nI've logged your request and shared it with our product team. While I can't promise a specific timeline, we do review all feature requests and consider them for our roadmap.\n\nIs there anything specific about this feature that would be most valuable to your workflow? Understanding your use case helps us prioritize effectively.\n\nBest regards`
+        `Hi ${authorName || 'there'},
+
+Thank you for your feature request regarding ${postTitle || 'this topic'}! We really appreciate feedback from our community members.
+
+I've logged your request and shared it with our product team. While I can't promise a specific timeline, we do review all feature requests and consider them for our roadmap.
+
+Is there anything specific about this feature that would be most valuable to your workflow? Understanding your use case helps us prioritize effectively.
+
+Best regards`
       );
     }
 
     // Bug report suggestions
     if (postTitle.toLowerCase().includes('bug') || postContent.toLowerCase().includes('error')) {
       templates.push(
-        `Hi ${authorName || 'there'},\n\nThank you for reporting this issue with ${postTitle || 'your experience'}. I'm sorry you're encountering this problem.\n\nI'd like to help troubleshoot this. Could you please share:\n1. Steps to reproduce the issue\n2. Expected vs actual behavior\n3. Any error messages you're seeing\n\nThis information will help me identify the cause and find a solution quickly.\n\nBest regards`
+        `Hi ${authorName || 'there'},
+
+Thank you for reporting this issue with ${postTitle || 'your experience'}. I'm sorry you're encountering this problem.
+
+I'd like to help troubleshoot this. Could you please share:
+1. Steps to reproduce the issue
+2. Expected vs actual behavior
+3. Any error messages you're seeing
+
+This information will help me identify the cause and find a solution quickly.
+
+Best regards`
       );
     }
 
     // Default suggestion
     if (templates.length === 0) {
       templates.push(
-        `Hi ${authorName || 'there'},\n\nThank you for your post about ${postTitle || 'this topic'}.\n\nI've reviewed your message and I'm here to help. Could you provide a bit more context about what you're trying to achieve? This will help me give you the most helpful response.\n\nLooking forward to assisting you!\n\nBest regards`
+        `Hi ${authorName || 'there'},
+
+Thank you for your post about ${postTitle || 'this topic'}.
+
+I've reviewed your message and I'm here to help. Could you provide a bit more context about what you're trying to achieve? This will help me give you the most helpful response.
+
+Looking forward to assisting you!
+
+Best regards`
       );
     }
 
@@ -142,6 +193,7 @@ export function useAiSuggestion({
 
   /**
    * Accepts the current AI suggestion
+   * Uses stateRef to get the current state synchronously
    */
   const acceptSuggestion = useCallback(() => {
     // Clear the streaming interval to prevent ghost text from being overwritten
@@ -150,22 +202,20 @@ export function useAiSuggestion({
       streamingIntervalRef.current = null;
     }
 
-    // Accept from either suggestion (completed stream) or ghostText (currently streaming)
-    // Use functional update to get the latest state
-    let acceptedText: string | null = null;
-    setState((prev) => {
-      acceptedText = prev.suggestion || prev.ghostText;
-      if (!acceptedText) {
-        return prev;
-      }
-      return {
+    // Get the current state from the ref (synchronous access)
+    const currentState = stateRef.current;
+    const acceptedText = currentState.suggestion || currentState.ghostText;
+
+    if (acceptedText) {
+      // Clear the state
+      setState({
         isStreaming: false,
         ghostText: '',
         suggestion: '',
-      };
-    });
+      });
+    }
 
-    return acceptedText;
+    return acceptedText || null;
   }, []);
 
   /**

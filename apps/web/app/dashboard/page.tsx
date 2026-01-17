@@ -30,6 +30,16 @@ export default function DashboardPage() {
     }
   };
 
+  const handleRelease = () => {
+    if (selectedPost) {
+      setAssignedPosts(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(selectedPost.id);
+        return newSet;
+      });
+    }
+  };
+
   const handleResolve = () => {
     // In a real app, this would update the post status via API
     if (selectedPost) {
@@ -55,6 +65,7 @@ export default function DashboardPage() {
         currentAgent={CURRENT_AGENT}
         assignedPosts={assignedPosts}
         onAssignToMe={handleAssignToMe}
+        onRelease={handleRelease}
         onResolve={handleResolve}
       />
     </div>

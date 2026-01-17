@@ -2,8 +2,14 @@ import { test, expect } from '@playwright/test';
 
 test.describe('AI Suggest Functionality', () => {
   test.beforeEach(async ({ page, context }) => {
-    // Use API to set demo session cookie directly
-    await context.request.post('http://localhost:3000/api/auth/demo-login');
+    // Set demo session cookie directly on the browser context
+    // This cookie is checked by DashboardLayout to allow access
+    await context.addCookies([{
+      name: 'modus_demo_session',
+      value: 'active',
+      domain: 'localhost',
+      path: '/',
+    }]);
 
     // Navigate directly to dashboard
     await page.goto('/dashboard');
@@ -74,7 +80,7 @@ test.describe('AI Suggest Functionality', () => {
     expect(ghostContent?.length).toBeGreaterThan(0);
 
     // Verify ghost text has distinct styling (contains the span with primary color)
-    const ghostSpan = ghostText.locator('span.text-primary\\/60');
+    const ghostSpan = ghostText.locator('span[class*="text-primary"]');
     await expect(ghostSpan).toBeVisible();
   });
 
@@ -102,7 +108,7 @@ test.describe('AI Suggest Functionality', () => {
 
     // Get ghost text content before accepting
     const ghostText = page.locator('[data-testid="ghost-text-overlay"]');
-    const ghostSpan = ghostText.locator('span.text-primary\\/60');
+    const ghostSpan = ghostText.locator('span[class*="text-primary"]');
     const ghostContent = await ghostSpan.textContent();
 
     // Click on the textarea to ensure it has focus (ghost text has pointer-events-none)

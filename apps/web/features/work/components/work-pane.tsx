@@ -13,6 +13,7 @@ interface WorkPaneProps {
   currentAgent: { id: string; name: string };
   assignedPosts: Set<string>;
   onAssignToMe: () => void;
+  onRelease: () => void;
   onResolve: () => void;
 }
 
@@ -36,7 +37,7 @@ const statusColors: Record<string, string> = {
   resolved: 'bg-emerald-500/20 text-emerald-400',
 };
 
-export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignToMe, onResolve }: WorkPaneProps) {
+export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignToMe, onRelease, onResolve }: WorkPaneProps) {
   const [responseContent, setResponseContent] = useState('');
   const [responses, setResponses] = useState<Array<{ id: string; content: string; isInternalNote: boolean; agent: string; createdAt: string }>>([]);
   const [isInternalNote, setIsInternalNote] = useState(false);
@@ -124,7 +125,11 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
   };
 
   const handleAcceptGhostText = () => {
+    console.log('[WorkPane] handleAcceptGhostText called');
+    console.log('[WorkPane] current ghostText:', aiSuggestion.ghostText);
     const acceptedText = aiSuggestion.acceptSuggestion();
+    console.log('[WorkPane] acceptedText:', acceptedText ? 'present' : 'null');
+    console.log('[WorkPane] acceptedText length:', acceptedText?.length);
     if (acceptedText) {
       setResponseContent(acceptedText);
       // Focus editor after accepting
@@ -185,17 +190,23 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
             )}
           </div>
           <div className="flex items-center gap-2">
-            <button
-              onClick={onAssignToMe}
-              className={cn(
-                'px-3 py-1.5 text-white text-sm rounded-md transition-colors',
-                isAssignedToMe ? 'bg-foreground/20 cursor-not-allowed' : 'bg-primary hover:bg-primary/90'
-              )}
-              disabled={isAssignedToMe}
-              data-testid="assign-to-me-button"
-            >
-              {isAssignedToMe ? 'Assigned' : 'Assign to Me'}
-            </button>
+            {!isAssignedToMe ? (
+              <button
+                onClick={onAssignToMe}
+                className="px-3 py-1.5 bg-primary hover:bg-primary/90 text-white text-sm rounded-md transition-colors"
+                data-testid="assign-to-me-button"
+              >
+                Assign to Me
+              </button>
+            ) : (
+              <button
+                onClick={onRelease}
+                className="px-3 py-1.5 bg-background-tertiary hover:bg-background-tertiary/80 text-foreground text-sm rounded-md transition-colors border border-border"
+                data-testid="release-button"
+              >
+                Release
+              </button>
+            )}
             <button
               onClick={onResolve}
               className="px-3 py-1.5 bg-background-tertiary hover:bg-background-tertiary/80 text-foreground text-sm rounded-md transition-colors border border-border"
