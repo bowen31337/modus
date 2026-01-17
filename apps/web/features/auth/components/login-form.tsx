@@ -62,6 +62,11 @@ export function LoginForm() {
     setLoading(true);
     try {
       await demoLogin();
+      // Server action should redirect, but if it doesn't (e.g., in tests),
+      // navigate manually after a short delay
+      setTimeout(() => {
+        router.push('/dashboard');
+      }, 100);
     } catch (error: any) {
       // Check if this is a NEXT_REDIRECT error (which is expected)
       if (error?.message?.includes('NEXT_REDIRECT') || error?.digest?.includes('NEXT_REDIRECT')) {

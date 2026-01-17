@@ -51,6 +51,14 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
     categoryName: selectedPost?.category?.name,
   });
 
+  // Ref to store cancelStreaming function for cleanup without triggering re-renders
+  const cancelStreamingRef = useRef(aiSuggestion.cancelStreaming);
+
+  // Update ref when the function changes
+  useEffect(() => {
+    cancelStreamingRef.current = aiSuggestion.cancelStreaming;
+  }, [aiSuggestion.cancelStreaming]);
+
   // Keyboard shortcut: R key focuses the response editor
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -83,10 +91,15 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
-      // Clean up AI streaming on unmount
-      aiSuggestion.cancelStreaming();
     };
-  }, [selectedPost, responseContent, aiSuggestion]);
+  }, [selectedPost, responseContent]);
+
+  // Cleanup AI streaming on unmount
+  useEffect(() => {
+    return () => {
+      cancelStreamingRef.current();
+    };
+  }, []);
 
   const handleSendResponse = () => {
     if (!responseContent.trim() || !selectedPost) return;

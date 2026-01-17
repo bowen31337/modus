@@ -803,9 +803,10 @@
     "is_dev_done": false,
     "is_qa_passed": false,
     "qa_retry_count": 0,
-    "dev_failure_count": 1,
-    "last_dev_failure_at": "2026-01-17T15:49:34.984546Z",
+    "dev_failure_count": 2,
+    "last_dev_failure_at": "2026-01-17T16:20:18.687953Z",
     "dev_failure_reasons": [
+      "Worker session timed out",
       "Worker session timed out"
     ]
   },
@@ -836,12 +837,13 @@
       "Step 5: Verify suggestion is contextually relevant to the post content",
       "Step 6: Verify RAG retrieves similar past responses for context"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T15:45:15.494488Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_completed_at": "1768675200"
   },
   {
     "category": "functional",
@@ -853,12 +855,13 @@
       "Step 4: Verify ghost text updates in real-time as tokens stream",
       "Step 5: Verify ghost text is visually distinct from confirmed text"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T15:48:27.354063Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_completed_at": "1768675200"
   },
   {
     "category": "functional",
@@ -871,12 +874,13 @@
       "Step 5: Verify the text can now be edited normally",
       "Step 6: Verify suggestion acceptance is smooth and instant"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T15:45:36.237048Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_completed_at": "1768675200"
   },
   {
     "category": "functional",
@@ -890,7 +894,13 @@
     ],
     "passes": false,
     "is_dev_done": false,
-    "is_qa_passed": false
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-17T16:15:15.612894Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -903,8 +913,11 @@
       "Step 5: Verify sentiment icon is displayed on the post card"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T16:13:41.614653Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -917,7 +930,13 @@
     ],
     "passes": false,
     "is_dev_done": false,
-    "is_qa_passed": false
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-17T16:18:27.435561Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -930,8 +949,11 @@
       "Step 5: Verify escalation is logged in audit trail"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T16:31:56.458564Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",

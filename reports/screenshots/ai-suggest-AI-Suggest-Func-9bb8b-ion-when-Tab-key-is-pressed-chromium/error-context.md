@@ -1,11 +1,215 @@
 # Page snapshot
 
 ```yaml
-- main [ref=e2]:
-  - generic [ref=e3]:
-    - heading "404" [level=1] [ref=e4]
-    - heading "Page Not Found" [level=2] [ref=e5]
-    - paragraph [ref=e6]: The page you're looking for doesn't exist or has been moved.
-    - link "Go Home" [ref=e7] [cursor=pointer]:
-      - /url: /
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]: m
+      - 'button "Status: Online" [ref=e6] [cursor=pointer]':
+        - img [ref=e7]
+        - img [ref=e9]
+      - navigation [ref=e11]:
+        - link "Home" [ref=e12] [cursor=pointer]:
+          - /url: /dashboard
+          - img [ref=e13]
+        - link "Queue" [ref=e16] [cursor=pointer]:
+          - /url: /dashboard/queue
+          - img [ref=e17]
+        - link "Assigned" [ref=e20] [cursor=pointer]:
+          - /url: /dashboard/assigned
+          - img [ref=e21]
+        - link "Settings" [ref=e24] [cursor=pointer]:
+          - /url: /dashboard/settings
+          - img [ref=e25]
+      - button "Logout" [ref=e28] [cursor=pointer]:
+        - img [ref=e29]
+    - complementary [ref=e32]:
+      - generic [ref=e33]:
+        - heading "Moderation Queue" [level=2] [ref=e34]
+        - generic [ref=e35]:
+          - img [ref=e36]
+          - searchbox "Search posts..." [ref=e39]
+      - generic [ref=e40]:
+        - button "Filters" [ref=e42] [cursor=pointer]:
+          - img [ref=e43]
+          - text: Filters
+          - img [ref=e45]
+        - 'button "Sort : Priority" [ref=e48] [cursor=pointer]':
+          - img [ref=e49]
+          - text: Sort
+          - generic [ref=e52]: ": Priority"
+          - img [ref=e53]
+        - generic [ref=e56]:
+          - button "List view" [ref=e57] [cursor=pointer]:
+            - img [ref=e58]
+          - button "Grid view" [ref=e59] [cursor=pointer]:
+            - img [ref=e60]
+      - generic [ref=e66]:
+        - 'button "Feature request: Dark mode for mobile app Open Would love to see a dark mode option in the mobile application. My eyes get tired using the app at night... P3 Feature Request sarah_w 2025-01-17T14:15:00Z Open" [ref=e67] [cursor=pointer]':
+          - generic [ref=e69]:
+            - generic [ref=e70]:
+              - 'heading "Feature request: Dark mode for mobile app" [level=3] [ref=e71]'
+              - generic [ref=e72]: Open
+            - paragraph [ref=e73]: Would love to see a dark mode option in the mobile application. My eyes get tired using the app at night...
+            - generic [ref=e74]:
+              - generic [ref=e75]: P3
+              - img [ref=e77]
+              - generic [ref=e80]: Feature Request
+              - generic [ref=e81]:
+                - img [ref=e82]
+                - text: sarah_w
+              - generic [ref=e85]:
+                - img [ref=e86]
+                - text: 2025-01-17T14:15:00Z
+          - generic [ref=e90]: Open
+        - 'button "Bug: Images not loading in posts In Progress Since the last update, images in community posts are not loading. Just shows a broken image icon... P2 Bug Reports tech_user 2 2025-01-16T09:45:00Z Assigned to Agent A Open" [ref=e91] [cursor=pointer]':
+          - generic [ref=e93]:
+            - generic [ref=e94]:
+              - 'heading "Bug: Images not loading in posts" [level=3] [ref=e95]'
+              - generic [ref=e96]: In Progress
+            - paragraph [ref=e97]: Since the last update, images in community posts are not loading. Just shows a broken image icon...
+            - generic [ref=e98]:
+              - generic [ref=e99]: P2
+              - img [ref=e101]
+              - generic [ref=e103]: Bug Reports
+              - generic [ref=e104]:
+                - img [ref=e105]
+                - text: tech_user
+              - generic [ref=e108]:
+                - img [ref=e109]
+                - text: "2"
+              - generic [ref=e111]:
+                - img [ref=e112]
+                - text: 2025-01-16T09:45:00Z
+            - generic [ref=e115]: Assigned to Agent A
+          - generic [ref=e118]: Open
+        - button "Unable to access my account after password reset Open I reset my password yesterday but still can't log in. The system keeps saying my credentials are invalid... P1 Account Issues john_doe 2025-01-18T10:30:00Z Open" [pressed] [ref=e119] [cursor=pointer]:
+          - generic [ref=e121]:
+            - generic [ref=e122]:
+              - heading "Unable to access my account after password reset" [level=3] [ref=e123]
+              - generic [ref=e124]: Open
+            - paragraph [ref=e125]: I reset my password yesterday but still can't log in. The system keeps saying my credentials are invalid...
+            - generic [ref=e126]:
+              - generic [ref=e127]: P1
+              - img [ref=e129]
+              - generic [ref=e131]: Account Issues
+              - generic [ref=e132]:
+                - img [ref=e133]
+                - text: john_doe
+              - generic [ref=e136]:
+                - img [ref=e137]
+                - text: 2025-01-18T10:30:00Z
+          - generic [ref=e141]: Open
+        - button "Spam account posting promotional content Open This user keeps posting links to dubious websites. Multiple reports from community members... P1 Spam spammer123 2025-01-18T02:20:00Z Open" [ref=e142] [cursor=pointer]:
+          - generic [ref=e144]:
+            - generic [ref=e145]:
+              - heading "Spam account posting promotional content" [level=3] [ref=e146]
+              - generic [ref=e147]: Open
+            - paragraph [ref=e148]: This user keeps posting links to dubious websites. Multiple reports from community members...
+            - generic [ref=e149]:
+              - generic [ref=e150]: P1
+              - img [ref=e152]
+              - generic [ref=e154]: Spam
+              - generic [ref=e155]:
+                - img [ref=e156]
+                - text: spammer123
+              - generic [ref=e159]:
+                - img [ref=e160]
+                - text: 2025-01-18T02:20:00Z
+          - generic [ref=e164]: Open
+        - button "Harassment in community chat Resolved User is repeatedly sending abusive messages to other members. Need immediate intervention... P1 Harassment concerned_user 5 2025-01-10T16:30:00Z Assigned to Agent B Open" [ref=e165] [cursor=pointer]:
+          - generic [ref=e167]:
+            - generic [ref=e168]:
+              - heading "Harassment in community chat" [level=3] [ref=e169]
+              - generic [ref=e170]: Resolved
+            - paragraph [ref=e171]: User is repeatedly sending abusive messages to other members. Need immediate intervention...
+            - generic [ref=e172]:
+              - generic [ref=e173]: P1
+              - img [ref=e175]
+              - generic [ref=e177]: Harassment
+              - generic [ref=e178]:
+                - img [ref=e179]
+                - text: concerned_user
+              - generic [ref=e182]:
+                - img [ref=e183]
+                - text: "5"
+              - generic [ref=e185]:
+                - img [ref=e186]
+                - text: 2025-01-10T16:30:00Z
+            - generic [ref=e189]: Assigned to Agent B
+          - generic [ref=e192]: Open
+      - generic [ref=e194]:
+        - generic [ref=e195]: "Total: 5"
+        - generic [ref=e196]: "Open: 3"
+    - main [ref=e197]:
+      - generic [ref=e198]:
+        - generic [ref=e199]:
+          - generic [ref=e200]:
+            - generic [ref=e201]: P1
+            - generic [ref=e202]: Open
+            - generic [ref=e203]: Assigned to you
+          - generic [ref=e205]:
+            - button "Assigned" [disabled] [ref=e206]
+            - button "Resolve" [ref=e207] [cursor=pointer]
+        - heading "Unable to access my account after password reset" [level=1] [ref=e208]
+      - generic [ref=e210]:
+        - generic [ref=e212]:
+          - generic [ref=e213]:
+            - heading "Content" [level=2] [ref=e214]
+            - paragraph [ref=e216]: I reset my password yesterday but still can't log in. The system keeps saying my credentials are invalid...
+          - generic [ref=e217]:
+            - generic [ref=e218]:
+              - heading "Response" [level=2] [ref=e219]
+              - generic [ref=e220] [cursor=pointer]:
+                - checkbox "Internal Note" [ref=e221]
+                - generic [ref=e222]: Internal Note
+            - generic [ref=e223]:
+              - generic [ref=e224]:
+                - button "Bold (Ctrl+B)" [ref=e225] [cursor=pointer]:
+                  - img [ref=e226]
+                - button "Italic (Ctrl+I)" [ref=e228] [cursor=pointer]:
+                  - img [ref=e229]
+                - button "Insert Link" [ref=e232] [cursor=pointer]:
+                  - img [ref=e233]
+                - button "Bulleted List" [ref=e237] [cursor=pointer]:
+                  - img [ref=e238]
+                - button "Numbered List" [ref=e239] [cursor=pointer]:
+                  - img [ref=e240]
+              - textbox "Type your response here... (Press R to focus)" [active] [ref=e244]
+              - generic [ref=e245]: "Tip: Use the toolbar above for formatting, or use keyboard shortcuts (Ctrl+B for bold, Ctrl+I for italic)"
+            - generic [ref=e246]:
+              - generic [ref=e247]:
+                - button "Templates" [ref=e249] [cursor=pointer]:
+                  - img [ref=e250]
+                  - text: Templates
+                  - img [ref=e253]
+                - button "✨ AI Suggest" [ref=e255] [cursor=pointer]
+              - button "Send Response" [disabled] [ref=e256]
+            - generic [ref=e257]: "Tip: Press Cmd+Enter to send response and resolve"
+        - complementary [ref=e258]:
+          - generic [ref=e259]:
+            - heading "User Context" [level=2] [ref=e260]
+            - generic [ref=e262]:
+              - img [ref=e264]
+              - generic [ref=e267]:
+                - paragraph [ref=e268]: john_doe
+                - paragraph [ref=e269]: Author
+            - generic [ref=e271]:
+              - img [ref=e272]
+              - generic [ref=e274]: Negative Sentiment
+            - generic [ref=e276]:
+              - generic [ref=e277]: Post History
+              - generic [ref=e278]: 1 posts
+            - generic [ref=e279]:
+              - generic [ref=e280]:
+                - img [ref=e281]
+                - generic [ref=e284]: "Post ID: 1"
+              - generic [ref=e285]:
+                - img [ref=e286]
+                - generic [ref=e289]: "Created: 2025-01-18T10:30:00Z"
+              - generic [ref=e292]: Account Issues
+            - generic [ref=e293]:
+              - heading "Assignment" [level=3] [ref=e294]
+              - generic [ref=e295]: Assigned to you
+  - alert [ref=e296]
 ```

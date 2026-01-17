@@ -79,16 +79,26 @@ export function useAiSuggestion({
     }
 
     // Return a random template to add variety
-    return templates[Math.floor(Math.random() * templates.length)];
+    return templates[Math.floor(Math.random() * templates.length)] as string;
   }, [postContent, postTitle, authorName]);
 
   /**
    * Starts streaming an AI suggestion with ghost text effect
    */
   const startStreaming = useCallback(async () => {
-    if (state.isStreaming) return;
+    // Check if already streaming using the current state reference
+    if (streamingIntervalRef.current) {
+      return;
+    }
 
-    setState((prev) => ({ ...prev, isStreaming: true, ghostText: '', suggestion: '' }));
+    // Set streaming state immediately - use functional update to get latest state
+    setState((prev) => {
+      // If already streaming, don't start again
+      if (prev.isStreaming) {
+        return prev;
+      }
+      return { ...prev, isStreaming: true, ghostText: '', suggestion: '' };
+    });
 
     // Get the full suggestion
     const fullSuggestion = await generateSuggestion();
@@ -98,15 +108,24 @@ export function useAiSuggestion({
     let index = 0;
 
     streamingIntervalRef.current = setInterval(() => {
+      // Check if streaming was cancelled (interval cleared)
+      if (streamingIntervalRef.current === null) {
+        return;
+      }
+
       if (index < fullSuggestion.length) {
         currentText += fullSuggestion[index];
+        // Check again in case streaming was cancelled during the async update
+        if (streamingIntervalRef.current === null) {
+          return;
+        }
         setState((prev) => ({
           ...prev,
           ghostText: currentText,
         }));
         index++;
       } else {
-        // Streaming complete
+        // Streaming complete - keep ghost text visible for user to review
         if (streamingIntervalRef.current) {
           clearInterval(streamingIntervalRef.current);
           streamingIntervalRef.current = null;
@@ -115,27 +134,39 @@ export function useAiSuggestion({
           ...prev,
           isStreaming: false,
           suggestion: currentText,
-          ghostText: '',
+          // Keep ghostText visible so user can see and accept the suggestion
         }));
       }
     }, 20); // 20ms per character = ~50 chars/second
-  }, [state.isStreaming, generateSuggestion]);
+  }, [generateSuggestion]);
 
   /**
    * Accepts the current AI suggestion
    */
   const acceptSuggestion = useCallback(() => {
-    if (!state.suggestion) return null;
+    // Clear the streaming interval to prevent ghost text from being overwritten
+    if (streamingIntervalRef.current) {
+      clearInterval(streamingIntervalRef.current);
+      streamingIntervalRef.current = null;
+    }
 
-    const acceptedText = state.suggestion;
-    setState({
-      isStreaming: false,
-      ghostText: '',
-      suggestion: '',
+    // Accept from either suggestion (completed stream) or ghostText (currently streaming)
+    // Use functional update to get the latest state
+    let acceptedText: string | null = null;
+    setState((prev) => {
+      acceptedText = prev.suggestion || prev.ghostText;
+      if (!acceptedText) {
+        return prev;
+      }
+      return {
+        isStreaming: false,
+        ghostText: '',
+        suggestion: '',
+      };
     });
 
     return acceptedText;
-  }, [state.suggestion]);
+  }, []);
 
   /**
    * Dismisses the current AI suggestion
