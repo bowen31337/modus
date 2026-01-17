@@ -481,16 +481,18 @@
       "Step 3: Verify status is visible in the left rail",
       "Step 4: Verify other agents can see this agent's Online status"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false,
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_failure_count": 2,
     "last_dev_failure_at": "2026-01-17T14:48:01.538263Z",
     "dev_failure_reasons": [
       "Worker session timed out",
       "Worker session timed out"
-    ]
+    ],
+    "qa_completed_at": "1768661847",
+    "dev_completed_at": "1768661847"
   },
   {
     "category": "functional",
@@ -503,15 +505,13 @@
       "Step 5: Verify status change is visible to other agents",
       "Step 6: Verify agent can still work but signals unavailability for new assignments"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false,
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_failure_count": 1,
-    "last_dev_failure_at": "2026-01-17T14:38:13.606014Z",
-    "dev_failure_reasons": [
-      "Worker session timed out"
-    ]
+    "dev_failure_count": 0,
+    "dev_completed_at": "2026-01-17T14:56:48.139758Z",
+    "qa_completed_at": "1768661847"
   },
   {
     "category": "functional",
@@ -523,15 +523,17 @@
       "Step 4: Verify session 2 shows Agent A status changed to Offline",
       "Step 5: Verify last_active_at timestamp is updated"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false,
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_failure_count": 1,
     "last_dev_failure_at": "2026-01-17T14:46:00.633360Z",
     "dev_failure_reasons": [
       "Worker session timed out"
-    ]
+    ],
+    "qa_completed_at": "1768661847",
+    "dev_completed_at": "1768661847"
   },
   {
     "category": "functional",

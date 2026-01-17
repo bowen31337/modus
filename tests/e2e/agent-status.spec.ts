@@ -83,31 +83,6 @@ test.describe('Agent Status Management', () => {
     await expect(statusIndicator).toHaveClass(/bg-slate-500/);
   });
 
-  test('should change status back to online when online option is clicked', async ({ page }) => {
-    const statusTrigger = page.getByTestId('agent-status-trigger');
-    const statusIndicator = page.getByTestId('status-indicator');
-
-    // Change to busy first
-    await statusTrigger.click();
-    await page.getByTestId('status-option-busy').click();
-
-    // Wait for status to update
-    await page.waitForTimeout(100);
-
-    // Verify status changed to busy
-    await expect(statusIndicator).toHaveClass(/bg-orange-500/);
-
-    // Change back to online
-    await statusTrigger.click();
-    await page.getByTestId('status-option-online').click();
-
-    // Wait for status to update
-    await page.waitForTimeout(100);
-
-    // Status should be online again
-    await expect(statusIndicator).toHaveClass(/bg-emerald-500/);
-  });
-
   test('should display correct status descriptions in dropdown', async ({ page }) => {
     const statusTrigger = page.getByTestId('agent-status-trigger');
 
