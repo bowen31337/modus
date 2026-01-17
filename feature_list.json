@@ -2776,5 +2776,108 @@
     "passes": false,
     "is_dev_done": false,
     "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Supabase Realtime reconnects after network interruption",
+    "steps": [
+      "Step 1: Load the moderation queue with active Realtime connection",
+      "Step 2: Simulate network disconnection (disable network)",
+      "Step 3: Wait 5-10 seconds",
+      "Step 4: Re-enable network connection",
+      "Step 5: Verify Realtime subscription automatically reconnects",
+      "Step 6: Verify updates resume flowing without manual refresh"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Multiple filters can be combined simultaneously",
+    "steps": [
+      "Step 1: Navigate to the moderation queue",
+      "Step 2: Apply a category filter",
+      "Step 3: Add a priority filter (P1 and P2)",
+      "Step 4: Add a status filter (Open only)",
+      "Step 5: Verify all filters are applied together (AND logic)",
+      "Step 6: Verify only posts matching ALL criteria are shown",
+      "Step 7: Clear one filter and verify remaining filters still apply"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Response history shows all responses in chronological order",
+    "steps": [
+      "Step 1: Open a post with multiple responses",
+      "Step 2: Scroll through the response history section",
+      "Step 3: Verify responses are displayed in chronological order (oldest first)",
+      "Step 4: Verify each response shows agent name, timestamp, and content",
+      "Step 5: Verify internal notes are visually distinguished from public responses"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Pane dividers are draggable for custom sizing",
+    "steps": [
+      "Step 1: Locate the divider between queue pane and work pane",
+      "Step 2: Click and drag the divider",
+      "Step 3: Verify panes resize smoothly during drag",
+      "Step 4: Release and verify new sizes persist",
+      "Step 5: Verify minimum pane widths are enforced"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Keyboard shortcut hints are displayed in UI elements",
+    "steps": [
+      "Step 1: Hover over main action buttons",
+      "Step 2: Verify tooltip shows keyboard shortcut hint",
+      "Step 3: Verify command palette shows shortcuts next to commands",
+      "Step 4: Verify shortcuts are displayed in monospace font (Geist Mono)"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent can edit their previously submitted response",
+    "steps": [
+      "Step 1: Navigate to a post where the current agent has submitted a response",
+      "Step 2: Locate the response in the activity history",
+      "Step 3: Click the edit button on the response",
+      "Step 4: Modify the response content",
+      "Step 5: Save the changes",
+      "Step 6: Verify the response is updated",
+      "Step 7: Verify the updated_at timestamp reflects the change"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Agent can delete their own response with confirmation",
+    "steps": [
+      "Step 1: Navigate to a post where the current agent has submitted a response",
+      "Step 2: Click the delete button on the response",
+      "Step 3: Verify confirmation dialog appears",
+      "Step 4: Confirm deletion",
+      "Step 5: Verify response is removed from the history",
+      "Step 6: Verify audit log records the deletion"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
   }
 ]
