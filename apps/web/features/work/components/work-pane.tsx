@@ -1,8 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import { MessageSquare, User, Clock, AlertCircle, CheckCircle2, Hash } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { PostCardProps } from '@/features/queue/components/post-card';
+import { RichTextEditor } from './rich-text-editor';
 
 interface WorkPaneProps {
   selectedPost: PostCardProps | null;
@@ -33,6 +35,7 @@ const statusColors: Record<string, string> = {
 };
 
 export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignToMe, onResolve }: WorkPaneProps) {
+  const [responseContent, setResponseContent] = useState('');
   const isAssignedToMe = selectedPost ? assignedPosts.has(selectedPost.id) : false;
 
   if (!selectedPost) {
@@ -128,10 +131,10 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
                 <h2 className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wide">
                   Response
                 </h2>
-                <textarea
-                  className="w-full h-32 bg-background border border-border rounded-md p-3 text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                <RichTextEditor
+                  value={responseContent}
+                  onChange={setResponseContent}
                   placeholder="Type your response here..."
-                  data-testid="response-textarea"
                 />
                 <div className="flex items-center justify-between mt-3">
                   <div className="flex items-center gap-2">
