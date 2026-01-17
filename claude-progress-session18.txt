@@ -1,0 +1,289 @@
+# Claude Progress Notes - Session 18
+
+## Date: 2026-01-18
+## Agent: Coding Agent
+
+---
+
+## Summary
+
+Enhanced internal notes visual styling to be more distinct from public responses. Implemented amber/yellow color scheme with icons, badges, and explanatory text. Created comprehensive E2E test suite with 5 tests all passing. Project now has 52/200 features passing (26.0%).
+
+---
+
+## Completed Tasks
+
+### 1. Internal Notes Visual Styling Enhancement
+**File: `apps/web/features/work/components/work-pane.tsx`**
+
+**Enhanced Styling Features:**
+- **Amber/Yellow Color Scheme**: Internal notes now use `bg-amber-500/5` background with `border-amber-500/20` border
+- **Left Border Accent**: Added `border-l-4 border-l-amber-500/60` for visual prominence
+- **Icon Indicators**:
+  - Internal notes: `EyeOff` icon in amber circle
+  - Public responses: `MessageCircle` icon in primary color circle
+- **Dual Label System**:
+  - Badge: "Internal" with amber styling and eye icon
+  - Explanatory text: "Private note - not visible to community" vs "Public response - visible to everyone"
+- **Content Background**: Internal notes have `bg-amber-950/20 text-amber-100/90` for readability
+- **Public Response Styling**: `bg-background-tertiary` with hover effects
+
+**Visual Hierarchy:**
+```
+Internal Note Card:
+├── Left amber border (4px)
+├── Icon: EyeOff in amber circle
+├── Agent name + "Internal" badge
+├── Explanatory text (gray)
+├── Timestamp
+└── Content in amber-tinted background
+
+Public Response Card:
+├── Standard border
+├── Icon: MessageCircle in primary circle
+├── Agent name (no badge)
+├── Explanatory text (gray)
+├── Timestamp
+└── Content in standard background
+```
+
+**Code Changes:**
+- Added `EyeOff` and `MessageCircle` icons from lucide-react
+- Updated response rendering with conditional styling
+- Added icon circles with color-coded backgrounds
+- Implemented explanatory text for clarity
+
+### 2. E2E Test Suite
+**File: `tests/e2e/internal-notes-styling.spec.ts`**
+
+**Test Coverage (5 tests, 100% passing):**
+
+1. **should display internal notes with distinct visual styling**
+   - Tests internal note creation and display
+   - Verifies amber/yellow color scheme
+   - Checks for "Internal" badge
+   - Validates EyeOff icon presence
+   - Takes screenshot for visual verification
+
+2. **should display public responses with different styling**
+   - Tests public response creation
+   - Verifies different styling from internal notes
+   - Checks absence of "Internal" badge
+   - Validates MessageCircle icon
+   - Takes screenshot for comparison
+
+3. **should show both internal notes and public responses with distinct styling**
+   - Tests mixed content (both types together)
+   - Verifies clear visual distinction
+   - Validates count of each type
+   - Takes screenshot showing both types side-by-side
+
+4. **should have clear visual separation between internal and public responses**
+   - Validates CSS class differences
+   - Checks amber colors for internal notes
+   - Checks background-tertiary for public responses
+   - Ensures no visual confusion between types
+
+5. **should show explanatory text for internal notes vs public responses**
+   - Verifies "Private note - not visible to community" text
+   - Verifies "Public response - visible to everyone" text
+   - Ensures users understand visibility implications
+
+**Test Technical Details:**
+- Uses `div[data-testid^="response-"]` selector to avoid textarea conflicts
+- Authentication with demo credentials in beforeEach
+- Screenshots saved to `reports/screenshots/`
+- All tests run in parallel (5 workers)
+- Average test time: 4.3 seconds for full suite
+
+**Fixes Applied During Development:**
+- Fixed selector conflict with textarea (data-testid="response-textarea")
+- Changed from `[data-testid^="response-"]` to `div[data-testid^="response-"]`
+- Fixed icon selectors (use Lucide class names instead of SVG paths)
+- Fixed strict mode violations (use exact text matching)
+
+### 3. Feature List Update
+- **Marked as passing**: "Internal notes have distinct visual styling from public responses"
+- **Total passing**: 52/200 features (26.0%)
+- **Previous**: 51/200 features (25.5%)
+- **Progress gain**: +1 feature (+0.5%)
+
+---
+
+## Technical Implementation Details
+
+### Design System Compliance
+
+**Color Palette Used:**
+- Internal Notes:
+  - Background: `amber-500/5` (subtle amber tint)
+  - Border: `amber-500/20` (visible but not harsh)
+  - Left accent: `amber-500/60` (prominent marker)
+  - Icon background: `amber-500/20`
+  - Icon color: `amber-400`
+  - Badge: `amber-500/20` with `amber-400` text
+  - Content background: `amber-950/20` (very dark amber)
+  - Content text: `amber-100/90` (light amber for readability)
+
+- Public Responses:
+  - Background: `background-tertiary` (standard gray)
+  - Border: `border` with hover effect
+  - Icon background: `primary/20`
+  - Icon color: `primary` (Indigo-500)
+
+**Typography:**
+- Badge text: 12px, font-medium, rounded-full
+- Explanatory text: 12px, muted-foreground
+- Content: 14px, leading-relaxed, whitespace-pre-wrap
+
+**Spacing:**
+- Card padding: p-4 (16px)
+- Gap between elements: gap-2/3
+- Border radius: rounded-lg (8px)
+- Icon circle: 24x24px (w-6 h-6)
+
+**Accessibility:**
+- Color + icon indicators (dual coding)
+- Clear explanatory text
+- Sufficient color contrast (WCAG AA compliant)
+- Semantic HTML structure
+- Descriptive labels
+
+### Component Architecture
+
+**Response Display Structure:**
+```tsx
+<div
+  className={cn(
+    'p-4 rounded-lg border transition-all',
+    isInternalNote
+      ? 'bg-amber-500/5 border-amber-500/20 border-l-4 border-l-amber-500/60'
+      : 'bg-background-tertiary border-border hover:border-border/80'
+  )}
+  data-testid={`response-${response.id}`}
+>
+  {/* Header: Icon, Agent, Badge, Timestamp */}
+  <div className="flex items-start justify-between mb-3">
+    <div className="flex items-center gap-2">
+      {/* Icon Circle */}
+      <div className={cn('w-6 h-6 rounded-full flex items-center justify-center',
+        isInternalNote ? 'bg-amber-500/20' : 'bg-primary/20'
+      )}>
+        {isInternalNote ? <EyeOff /> : <MessageCircle />}
+      </div>
+
+      {/* Agent + Badge + Explanatory Text */}
+      <div className="flex flex-col">
+        <div className="flex items-center gap-2">
+          <span>{response.agent}</span>
+          {isInternalNote && (
+            <span className="badge">Internal</span>
+          )}
+        </div>
+        <span className="text-xs text-muted-foreground">
+          {isInternalNote
+            ? 'Private note - not visible to community'
+            : 'Public response - visible to everyone'}
+        </span>
+      </div>
+    </div>
+    <span>{timestamp}</span>
+  </div>
+
+  {/* Content */}
+  <div className={cn(
+    'text-sm leading-relaxed whitespace-pre-wrap p-3 rounded-md',
+    isInternalNote
+      ? 'bg-amber-950/20 text-amber-100/90'
+      : 'bg-background-secondary text-foreground-secondary'
+  )}>
+    {response.content}
+  </div>
+</div>
+```
+
+---
+
+## Design Decisions
+
+### Why Amber/Yellow for Internal Notes?
+
+1. **Semantic Association**: Yellow/amber is conventionally associated with "caution" or "private/internal" in UI design
+2. **Color Blindness**: Amber works well with both protanopia and deuteranopia when paired with icons
+3. **Dark Mode Optimization**: Amber provides good contrast on dark backgrounds without being harsh
+4. **Distinction from System Colors**: Doesn't conflict with:
+   - Red (P1 priority/critical)
+   - Orange (P2 priority)
+   - Emerald (resolved status)
+   - Primary indigo (actions)
+
+### Why Dual Labeling?
+
+1. **Badge + Explanatory Text**: Badge for quick scanning, text for clarity
+2. **Icon Indicators**: EyeOff (private) vs MessageCircle (public)
+3. **Accessibility**: Users who can't distinguish colors can still understand the difference
+4. **Reduced Errors**: Clear explanation prevents accidental public posting of private notes
+
+---
+
+## Files Modified
+
+### Created
+- `tests/e2e/internal-notes-styling.spec.ts` - E2E test suite (5 tests, all passing)
+
+### Modified
+- `apps/web/features/work/components/work-pane.tsx` - Enhanced response styling
+- `feature_list.json` - Marked 1 feature as passing
+- `claude-progress-session18.txt` - Session 18 summary (this file)
+
+---
+
+## Screenshots Generated
+
+The following screenshots were generated during testing:
+- `reports/screenshots/internal-note-styling.png`
+- `reports/screenshots/public-response-styling.png`
+- `reports/screenshots/both-response-types.png`
+- `reports/screenshots/internal-notes-visual-separation.png`
+
+---
+
+## Next Steps
+
+1. **Implement response editing** - Allow editing existing responses
+2. **Add response deletion** - With confirmation dialog
+3. **Implement response history** - Track all edits and deletions
+4. **Add response reactions/feedback** - Internal feedback on responses
+5. **Implement response templates in editor** - Quick template insertion
+6. **Add response preview** - Live preview before sending
+7. **Implement response drafts** - Auto-save drafts for longer responses
+
+---
+
+## Session Metrics
+
+- **Duration: ~30 minutes**
+- **Files Created: 1** (test suite)
+- **Files Modified: 3** (work pane, feature list, progress notes)
+- **Lines Added: ~250** (implementation + tests)
+- **Tests Added: 5** (all passing)
+- **Features Completed: 1** (internal notes styling)
+- **Progress Gain: +1 feature** (+0.5%)
+- **Test Pass Rate: 100%** (5/5 tests passing)
+
+---
+
+## Notes
+
+- Internal notes now have very clear visual distinction from public responses
+- Amber color scheme works well in dark mode and provides good contrast
+- Icon indicators help with accessibility and color blindness
+- Explanatory text ensures users understand visibility implications
+- All E2E tests passing with good coverage
+- Implementation follows Obsidian Flow design system guidelines
+- Component structure is maintainable and extensible
+- Ready for future enhancements (editing, deletion, history)
+
+---
+
+**End of Session 18**

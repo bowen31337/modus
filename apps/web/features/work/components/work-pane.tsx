@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { MessageSquare, User, Clock, AlertCircle, CheckCircle2, Hash, Loader2 } from 'lucide-react';
+import { MessageSquare, User, Clock, AlertCircle, CheckCircle2, Hash, Loader2, EyeOff, MessageCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { PostCardProps } from '@/features/queue/components/post-card';
 import { RichTextEditor, type RichTextEditorRef } from './rich-text-editor';
@@ -330,27 +330,52 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
                       <div
                         key={response.id}
                         className={cn(
-                          'p-3 rounded-md border',
+                          'p-4 rounded-lg border transition-all',
                           response.isInternalNote
-                            ? 'bg-yellow-500/10 border-yellow-500/30'
-                            : 'bg-background-tertiary border-border'
+                            ? 'bg-amber-500/5 border-amber-500/20 border-l-4 border-l-amber-500/60'
+                            : 'bg-background-tertiary border-border hover:border-border/80'
                         )}
                         data-testid={`response-${response.id}`}
                       >
-                        <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-start justify-between mb-3">
                           <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium text-foreground">{response.agent}</span>
-                            {response.isInternalNote && (
-                              <span className="text-xs px-2 py-0.5 rounded bg-yellow-500/20 text-yellow-400">
-                                Internal Note
+                            <div className={cn(
+                              'w-6 h-6 rounded-full flex items-center justify-center',
+                              response.isInternalNote ? 'bg-amber-500/20' : 'bg-primary/20'
+                            )}>
+                              {response.isInternalNote ? (
+                                <EyeOff size={12} className="text-amber-400" />
+                              ) : (
+                                <MessageCircle size={12} className="text-primary" />
+                              )}
+                            </div>
+                            <div className="flex flex-col">
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm font-medium text-foreground">{response.agent}</span>
+                                {response.isInternalNote && (
+                                  <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 font-medium border border-amber-500/30 flex items-center gap-1">
+                                    <EyeOff size={10} />
+                                    Internal
+                                  </span>
+                                )}
+                              </div>
+                              <span className="text-xs text-muted-foreground">
+                                {response.isInternalNote ? 'Private note - not visible to community' : 'Public response - visible to everyone'}
                               </span>
-                            )}
+                            </div>
                           </div>
                           <span className="text-xs text-muted-foreground">
                             {new Date(response.createdAt).toLocaleString()}
                           </span>
                         </div>
-                        <p className="text-sm text-foreground-secondary whitespace-pre-wrap">{response.content}</p>
+                        <div className={cn(
+                          'text-sm leading-relaxed whitespace-pre-wrap p-3 rounded-md',
+                          response.isInternalNote
+                            ? 'bg-amber-950/20 text-amber-100/90'
+                            : 'bg-background-secondary text-foreground-secondary'
+                        )}>
+                          {response.content}
+                        </div>
                       </div>
                     ))}
                   </div>

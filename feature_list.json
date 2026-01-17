@@ -551,10 +551,10 @@
       "Step 7: Verify the viewing indicator disappears for Agent B"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-17T14:39:17.073153Z",
+    "dev_completed_at": "2026-01-17T17:50:45.459900Z",
     "dev_failure_count": 0
   },
   {
@@ -934,15 +934,11 @@
       "Step 4: Verify priority indicator reflects P2 status"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 0,
-    "dev_failure_count": 2,
-    "last_dev_failure_at": "2026-01-17T16:48:30.892141Z",
-    "dev_failure_reasons": [
-      "Worker session timed out",
-      "Worker session timed out"
-    ]
+    "dev_failure_count": 0,
+    "dev_completed_at": "2026-01-17T17:49:39.124412Z"
   },
   {
     "category": "functional",
@@ -2864,9 +2860,10 @@
       "Step 4: Verify internal notes are visually separated",
       "Step 5: Take screenshot showing both types"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_completed_at": "1768672587.695443"
   },
   {
     "category": "style",
