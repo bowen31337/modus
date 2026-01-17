@@ -192,6 +192,7 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
           <div className="flex items-center gap-2">
             {!isAssignedToMe ? (
               <button
+                type="button"
                 onClick={onAssignToMe}
                 className="px-3 py-1.5 bg-primary hover:bg-primary/90 text-white text-sm rounded-md transition-colors"
                 data-testid="assign-to-me-button"
@@ -200,6 +201,7 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
               </button>
             ) : (
               <button
+                type="button"
                 onClick={onRelease}
                 className="px-3 py-1.5 bg-background-tertiary hover:bg-background-tertiary/80 text-foreground text-sm rounded-md transition-colors border border-border"
                 data-testid="release-button"
@@ -208,6 +210,7 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
               </button>
             )}
             <button
+              type="button"
               onClick={onResolve}
               className="px-3 py-1.5 bg-background-tertiary hover:bg-background-tertiary/80 text-foreground text-sm rounded-md transition-colors border border-border"
               data-testid="resolve-button"
