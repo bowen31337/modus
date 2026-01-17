@@ -1,0 +1,335 @@
+{
+  "generated_at": "2026-01-17T12:17:28.228745Z",
+  "project_dir": "modus",
+  "structure": {
+    "directories": [
+      {
+        "name": "apps",
+        "path": "apps",
+        "depth": 3,
+        "subdirectories": [
+          {
+            "name": "web",
+            "path": "apps/web",
+            "depth": 3,
+            "subdirectories": [
+              {
+                "name": "app",
+                "path": "apps/web/app",
+                "depth": 3,
+                "subdirectories": [],
+                "file_count": 5,
+                "key_files": []
+              },
+              {
+                "name": "components",
+                "path": "apps/web/components",
+                "depth": 3,
+                "subdirectories": [],
+                "file_count": 0,
+                "key_files": []
+              },
+              {
+                "name": "features",
+                "path": "apps/web/features",
+                "depth": 3,
+                "subdirectories": [],
+                "file_count": 0,
+                "key_files": []
+              },
+              {
+                "name": "hooks",
+                "path": "apps/web/hooks",
+                "depth": 3,
+                "subdirectories": [],
+                "file_count": 0,
+                "key_files": []
+              },
+              {
+                "name": "lib",
+                "path": "apps/web/lib",
+                "depth": 3,
+                "subdirectories": [],
+                "file_count": 0,
+                "key_files": []
+              }
+            ],
+            "file_count": 5,
+            "key_files": [
+              "next.config.ts",
+              "postcss.config.mjs",
+              "tailwind.config.ts",
+              "tsconfig.json"
+            ]
+          }
+        ],
+        "file_count": 0,
+        "key_files": []
+      },
+      {
+        "name": "docs",
+        "path": "docs",
+        "depth": 1,
+        "subdirectories": [],
+        "file_count": 0,
+        "key_files": []
+      },
+      {
+        "name": "packages",
+        "path": "packages",
+        "depth": 3,
+        "subdirectories": [
+          {
+            "name": "logic",
+            "path": "packages/logic",
+            "depth": 3,
+            "subdirectories": [
+              {
+                "name": "ai",
+                "path": "packages/logic/ai",
+                "depth": 3,
+                "subdirectories": [],
+                "file_count": 0,
+                "key_files": []
+              },
+              {
+                "name": "rules",
+                "path": "packages/logic/rules",
+                "depth": 3,
+                "subdirectories": [],
+                "file_count": 0,
+                "key_files": []
+              },
+              {
+                "name": "src",
+                "path": "packages/logic/src",
+                "depth": 3,
+                "subdirectories": [],
+                "file_count": 1,
+                "key_files": [
+                  "index.ts"
+                ]
+              },
+              {
+                "name": "validation",
+                "path": "packages/logic/validation",
+                "depth": 3,
+                "subdirectories": [],
+                "file_count": 0,
+                "key_files": []
+              }
+            ],
+            "file_count": 2,
+            "key_files": [
+              "tsconfig.json"
+            ]
+          },
+          {
+            "name": "ui",
+            "path": "packages/ui",
+            "depth": 3,
+            "subdirectories": [
+              {
+                "name": "src",
+                "path": "packages/ui/src",
+                "depth": 3,
+                "subdirectories": [],
+                "file_count": 6,
+                "key_files": [
+                  "index.ts"
+                ]
+              }
+            ],
+            "file_count": 2,
+            "key_files": [
+              "tsconfig.json"
+            ]
+          }
+        ],
+        "file_count": 0,
+        "key_files": []
+      },
+      {
+        "name": "scripts",
+        "path": "scripts",
+        "depth": 1,
+        "subdirectories": [],
+        "file_count": 0,
+        "key_files": []
+      },
+      {
+        "name": "supabase",
+        "path": "supabase",
+        "depth": 2,
+        "subdirectories": [
+          {
+            "name": "functions",
+            "path": "supabase/functions",
+            "depth": 2,
+            "subdirectories": [],
+            "file_count": 0,
+            "key_files": []
+          },
+          {
+            "name": "migrations",
+            "path": "supabase/migrations",
+            "depth": 2,
+            "subdirectories": [],
+            "file_count": 2,
+            "key_files": []
+          }
+        ],
+        "file_count": 1,
+        "key_files": []
+      },
+      {
+        "name": "tests",
+        "path": "tests",
+        "depth": 2,
+        "subdirectories": [
+          {
+            "name": "e2e",
+            "path": "tests/e2e",
+            "depth": 2,
+            "subdirectories": [],
+            "file_count": 0,
+            "key_files": []
+          }
+        ],
+        "file_count": 0,
+        "key_files": []
+      }
+    ],
+    "root_files": [
+      {
+        "name": ".gitignore",
+        "size": 551,
+        "type": "other"
+      },
+      {
+        "name": "README.md",
+        "size": 4612,
+        "type": "markdown"
+      },
+      {
+        "name": "app_spec.txt",
+        "size": 18521,
+        "type": "text"
+      },
+      {
+        "name": "biome.json",
+        "size": 1095,
+        "type": "config"
+      },
+      {
+        "name": "claude-progress.txt",
+        "size": 6499,
+        "type": "text"
+      },
+      {
+        "name": "feature_list.json",
+        "size": 101827,
+        "type": "config"
+      },
+      {
+        "name": "init.sh",
+        "size": 5249,
+        "type": "shell"
+      },
+      {
+        "name": "package.json",
+        "size": 1177,
+        "type": "config"
+      },
+      {
+        "name": "playwright.config.ts",
+        "size": 1113,
+        "type": "typescript"
+      },
+      {
+        "name": "pnpm-workspace.yaml",
+        "size": 40,
+        "type": "config"
+      },
+      {
+        "name": "token-consumption-report.json",
+        "size": 1359,
+        "type": "config"
+      },
+      {
+        "name": "tsconfig.json",
+        "size": 860,
+        "type": "config"
+      },
+      {
+        "name": "turbo.json",
+        "size": 677,
+        "type": "config"
+      },
+      {
+        "name": "vitest.config.ts",
+        "size": 524,
+        "type": "typescript"
+      }
+    ],
+    "depth": 3
+  },
+  "components": {
+    "components": [],
+    "services": [],
+    "utilities": [],
+    "routes": [],
+    "models": [],
+    "hooks": []
+  },
+  "file_stats": {
+    "typescript": {
+      "count": 18,
+      "total_size": 34413
+    },
+    "javascript": {
+      "count": 1,
+      "total_size": 105
+    },
+    "css": {
+      "count": 1,
+      "total_size": 2404
+    },
+    "config": {
+      "count": 14,
+      "total_size": 112426
+    }
+  },
+  "recent_changes": {
+    "available": true,
+    "recent_commits": [
+      {
+        "hash": "1cb5cad",
+        "message": "Update progress notes with commit history"
+      },
+      {
+        "hash": "840c883",
+        "message": "Add 7 more test cases to reach 200 features"
+      },
+      {
+        "hash": "7008822",
+        "message": "Add claude-progress.txt with session 1 summary"
+      },
+      {
+        "hash": "e459da0",
+        "message": "Initial setup: feature_list.json, init.sh, and project structure"
+      }
+    ],
+    "files_changed_recently": []
+  },
+  "dependencies": {
+    "npm": [
+      "@playwright/test",
+      "@vitest/coverage-v8",
+      "typescript",
+      "vitest"
+    ],
+    "python": []
+  },
+  "estimated_tokens": 1941
+}

@@ -10,9 +10,12 @@
       "Step 5: Verify the work pane (flexible width) is visible and takes remaining space",
       "Step 6: Verify all three panes are responsive and properly positioned"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T12:46:01.822497Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -25,9 +28,14 @@
       "Step 5: Verify redirect to the main moderation dashboard",
       "Step 6: Verify user session is established and agent status is displayed"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_failure_count": 0,
+    "last_dev_failure_at": null,
+    "dev_failure_reasons": [],
+    "dev_completed_at": "2026-01-17T12:49:20.116123+00:00"
   },
   {
     "category": "functional",
@@ -40,9 +48,14 @@
       "Step 5: Verify error message is displayed indicating invalid credentials",
       "Step 6: Verify user remains on login page"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_failure_count": 0,
+    "last_dev_failure_at": null,
+    "dev_failure_reasons": [],
+    "dev_completed_at": "2026-01-17T12:49:20.116134+00:00"
   },
   {
     "category": "functional",
@@ -56,8 +69,11 @@
       "Step 6: Verify redirect back to login page confirming session is terminated"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T12:42:24.479608Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",

@@ -1,0 +1,53 @@
+{
+  "project_name": "modus",
+  "project_dir": "modus",
+  "report_generated": "2026-01-17T12:06:28.995473+00:00",
+  "summary": {
+    "total_sessions": 2,
+    "total_api_calls": 2,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_tokens": 0,
+    "total_duration_seconds": 1048.354395866394,
+    "estimated_cost_usd": 0.0
+  },
+  "endpoint_breakdown": {
+    "https://api.anthropic.com": {
+      "calls": 2,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0,
+      "estimated_cost_usd": 0.0
+    }
+  },
+  "sessions": [
+    {
+      "session_id": 2,
+      "start_time": "2026-01-17T11:48:59.868462+00:00",
+      "end_time": "2026-01-17T12:06:28.995383+00:00",
+      "endpoint": "https://api.anthropic.com",
+      "model": "claude-opus-4-5-20251101",
+      "total_calls": 1,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0,
+      "successful_calls": 1,
+      "failed_calls": 0,
+      "duration_seconds": 1047.612455368042
+    }
+  ],
+  "calls": [
+    {
+      "timestamp": "2026-01-17T12:06:28.965668+00:00",
+      "endpoint": "https://api.anthropic.com",
+      "model": "claude-opus-4-5-20251101",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0,
+      "session_id": 2,
+      "duration_seconds": 1047.612455368042,
+      "success": true,
+      "error": null
+    }
+  ]
+}

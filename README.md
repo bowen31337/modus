@@ -1,4 +1,4 @@
-# m - Community Moderation System
+# Modus - Community Moderation System
 
 A lightweight, high-efficiency community moderation platform for agents to discover, manage, and respond to community posts. Features intelligent prioritization rules, LLM-assisted drafting with RAG, click-to-assign workflow, and real-time synchronization.
 

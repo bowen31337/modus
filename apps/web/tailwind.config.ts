@@ -44,6 +44,7 @@ const config: Config = {
           DEFAULT: '#0f172a', // slate-900
           secondary: '#1e293b', // slate-800
           tertiary: '#334155', // slate-700
+          hover: '#3f4a5a', // slightly lighter than tertiary
         },
         // Text colors
         foreground: {
@@ -55,6 +56,11 @@ const config: Config = {
         border: {
           DEFAULT: '#334155', // slate-700
           muted: '#1e293b', // slate-800
+        },
+        // Aliases for shadcn compatibility
+        muted: {
+          DEFAULT: '#1e293b',
+          foreground: '#94a3b8',
         },
       },
       fontFamily: {

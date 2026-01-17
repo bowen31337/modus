@@ -1,0 +1,78 @@
+'use client';
+
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { Home, Inbox, CheckCircle2, Settings, LogOut } from 'lucide-react';
+import { Button } from '@modus/ui';
+import { createClient } from '@/lib/supabase/client';
+
+const navItems = [
+  { icon: Home, label: 'Home', href: '/dashboard' },
+  { icon: Inbox, label: 'Queue', href: '/dashboard/queue' },
+  { icon: CheckCircle2, label: 'Assigned', href: '/dashboard/assigned' },
+  { icon: Settings, label: 'Settings', href: '/dashboard/settings' },
+];
+
+export function LeftRail() {
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    // Check if Supabase is configured before attempting logout
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      router.push('/login');
+      return;
+    }
+
+    try {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+      router.push('/login');
+    } catch (error) {
+      // If Supabase fails, still redirect to login
+      router.push('/login');
+    }
+  };
+
+  return (
+    <aside className="w-16 bg-obsidian-900 border-r border-obsidian-700 flex flex-col items-center py-4 gap-2">
+      {/* Logo */}
+      <div className="mb-2 p-2 bg-obsidian-700 rounded-lg text-obsidian-200 font-bold text-xl">
+        m
+      </div>
+
+      {/* Navigation */}
+      <nav className="flex-1 flex flex-col items-center gap-2 w-full">
+        {navItems.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <Link
+              key={item.href}
+              href={item.href as never}
+              className={`w-10 h-10 flex items-center justify-center rounded-lg transition-colors ${
+                isActive
+                  ? 'bg-obsidian-600 text-white'
+                  : 'text-obsidian-400 hover:bg-obsidian-800 hover:text-obsidian-200'
+              }`}
+              title={item.label}
+              aria-label={item.label}
+            >
+              <item.icon size={20} />
+            </Link>
+          );
+        })}
+      </nav>
+
+      {/* Logout button */}
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={handleLogout}
+        className="w-10 h-10 text-obsidian-400 hover:text-red-400 hover:bg-obsidian-800"
+        title="Logout"
+      >
+        <LogOut size={20} />
+      </Button>
+    </aside>
+  );
+}
