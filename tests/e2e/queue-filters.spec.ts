@@ -78,14 +78,15 @@ test.describe('Queue Filtering and Sorting', () => {
     // Click on Status dropdown to expand
     await page.locator('button:has-text("Status")').first().click();
 
-    // Select "In Progress" status
-    await page.locator('button:has-text("In Progress")').nth(1).click();
+    // Select "In Progress" status - use the dropdown container to scope the selector
+    const dropdown = page.locator('div.z-50');
+    await dropdown.locator('button:has-text("In Progress")').click();
 
     // Wait for filtering to apply
     await page.waitForTimeout(500);
 
     // Verify filtered results show only "In Progress" posts
-    const inProgressPosts = page.locator('aside').nth(1).locator('button[type="button"]');
+    const inProgressPosts = page.locator('aside').nth(1).locator('[role="button"][tabindex="0"]');
     const count = await inProgressPosts.count();
 
     expect(count).toBeGreaterThan(0);

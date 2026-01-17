@@ -22,6 +22,7 @@ export function LoginForm() {
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
+    mode: 'all',
   });
 
   // Check if Supabase is configured
@@ -35,6 +36,8 @@ export function LoginForm() {
     try {
       // Demo mode: redirect to dashboard without authentication
       if (!isSupabaseConfigured) {
+        // Small delay to allow validation to process
+        await new Promise((resolve) => setTimeout(resolve, 100));
         router.push('/dashboard');
         return;
       }

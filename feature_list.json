@@ -124,7 +124,9 @@
     "passes": true,
     "is_dev_done": true,
     "is_qa_passed": false,
-    "dev_completed_at": "2026-01-17T23:55:00Z"
+    "dev_completed_at": "2026-01-17T13:02:05.427883Z",
+    "qa_retry_count": 0,
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
