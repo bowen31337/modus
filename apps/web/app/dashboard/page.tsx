@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { LeftRail } from '@/features/layout/components/left-rail';
 import { QueuePane } from '@/features/queue/components/queue-pane';
 import { WorkPane } from '@/features/work/components/work-pane';
+import { CommandPalette } from '@/features/layout/components/command-palette';
 import { type PostCardProps } from '@/features/queue/components/post-card';
 
 // Mock current agent for demo purposes
@@ -15,6 +16,23 @@ const CURRENT_AGENT = {
 export default function DashboardPage() {
   const [selectedPost, setSelectedPost] = useState<PostCardProps | null>(null);
   const [assignedPosts, setAssignedPosts] = useState<Set<string>>(new Set());
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+
+  // Cmd+K keyboard shortcut to open command palette
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Cmd+K (Mac) or Ctrl+K (Windows/Linux) opens command palette
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsCommandPaletteOpen(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   const handlePostSelect = (post: PostCardProps) => {
     // Auto-assign on click if not already assigned
@@ -44,6 +62,8 @@ export default function DashboardPage() {
   const handleCloseDetail = () => {
     // Close the detail view and return to queue (called by Escape key)
     setSelectedPost(null);
+    // Force QueuePane to reset its keyboard focus state
+    setForceReset(prev => prev + 1);
   };
 
   const handleResolve = () => {
@@ -65,6 +85,19 @@ export default function DashboardPage() {
     console.log(`Reassigned post ${postId} to agent ${toAgentId}`);
   };
 
+  const handleCommandPaletteNavigate = (path: string) => {
+    // Handle navigation from command palette
+    if (path === '/dashboard/settings') {
+      // Navigate to settings
+      console.log('Navigating to settings');
+    } else if (path === '/login') {
+      // Handle logout
+      console.log('Logging out');
+    } else {
+      console.log('Navigating to:', path);
+    }
+  };
+
   return (
     <div className="flex h-screen overflow-hidden">
       {/* Left Rail - 64px fixed width */}
@@ -72,6 +105,7 @@ export default function DashboardPage() {
 
       {/* Queue Pane - 320-400px fixed width */}
       <QueuePane
+        forceReset={forceReset}
         onPostSelect={handlePostSelect}
         selectedPostId={selectedPost?.id ?? null}
       />
@@ -86,6 +120,13 @@ export default function DashboardPage() {
         onResolve={handleResolve}
         onCloseDetail={handleCloseDetail}
         onReassign={handleReassign}
+      />
+
+      {/* Command Palette */}
+      <CommandPalette
+        isOpen={isCommandPaletteOpen}
+        onClose={() => setIsCommandPaletteOpen(false)}
+        onNavigate={handleCommandPaletteNavigate}
       />
     </div>
   );
