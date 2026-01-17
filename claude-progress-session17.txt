@@ -1,0 +1,136 @@
+# Claude Progress Notes - Session 17
+
+## Date: 2026-01-18
+## Agent: Coding Agent
+
+---
+
+## Summary
+
+Investigation session to understand project state and identify next steps. Discovered test infrastructure issues that need to be resolved before continuing feature development.
+
+---
+
+## Issues Discovered
+
+### 1. Playwright Configuration Mismatch
+- **Problem**: Playwright config was set to `baseURL: 'http://localhost:3008'` but dev server runs on port 3000
+- **Fix Applied**: Updated `playwright.config.ts` to use port 3000
+- **Impact**: All tests were failing with connection refused errors
+
+### 2. Server Management
+- **Problem**: Multiple dev servers running on different ports
+- **Action Taken**: Killed all existing servers and started single dev server on port 3000
+- **Current State**: Dev server running on port 3000
+
+### 3. Test Authentication Flow
+- **Observation**: Tests use demo mode with cookie-based authentication
+- **Issue**: Demo login uses server action which may not be working properly in test environment
+- **Status**: Needs investigation
+
+---
+
+## Current Project Status
+
+- **Total Features**: 200
+- **Passing Features**: 49/200 (24.5%)
+- **Dev Complete**: 53/200 (26.5%)
+- **QA Pending**: 4 features dev-done but not passing
+
+### Features Dev-Done But Not Passing (4):
+1. Supervisor can manually reassign post to another agent
+2. Real-time presence shows which agent is viewing a post
+3. SLA-based escalation raises priority for overdue posts
+4. Admin can view and manage priority rules
+
+### Features Ready for Implementation:
+- Response template CRUD (create, edit, delete) - Features #51-53
+- Priority rules management UI - Features #92-97
+- Sentiment analysis integration - Feature #54
+- First-time poster auto-priority - Feature #55
+
+---
+
+## Test Status
+
+### Last Known Status (Session 16):
+- **110 tests passing** on Chromium
+- AI Suggest tests: 9/9 passing (100%)
+- Response Templates: 11/11 passing (100%)
+- Agent Status: 7/7 passing (100%)
+- Date Range Filter: 10/10 passing (100%)
+- Rich Text Editor: 10/10 passing (100%)
+
+### Current Session Observations:
+- Tests unable to run due to infrastructure issues
+- Server responding but authentication flow may be broken
+- Need to verify existing passing tests still pass
+
+---
+
+## Files Modified
+
+### Modified
+- `playwright.config.ts` - Changed baseURL from localhost:3008 to localhost:3000
+
+---
+
+## Next Steps for Session 18
+
+### Priority 1: Fix Test Infrastructure
+1. Verify dev server is running correctly on port 3000
+2. Run a simple smoke test (e.g., three-pane-layout.spec.ts)
+3. Debug authentication flow if tests fail
+4. Verify all 48 passing features from Session 16 still pass
+
+### Priority 2: Fix QA Queue (4 features)
+1. Implement missing reassignment functionality
+2. Add real-time presence indicators
+3. Implement SLA-based escalation
+4. Build priority rules management UI
+
+### Priority 3: Continue Feature Development
+1. Implement response template CRUD operations
+2. Add backend API endpoints for templates
+3. Implement sentiment analysis
+4. Add first-time poster priority rule
+
+---
+
+## Technical Notes
+
+### Demo Mode Authentication
+The application uses a demo mode with cookie-based authentication:
+- Cookie name: `modus_demo_session`
+- Server action: `demoLogin()` in `apps/web/lib/auth-actions.ts`
+- Tests set cookie directly using `context.addCookies()`
+
+### Dev Server Management
+- Start command: `cd apps/web && pnpm dev`
+- Default port: 3000
+- Logs: Should be written to `logs/web-dev.log` (not currently implemented)
+
+### Test Execution
+- Run all tests: `pnpm test:e2e`
+- Run specific test: `pnpm exec playwright test <test-file>`
+- Test directory: `tests/e2e/`
+
+---
+
+## Commit History
+
+1. `TBD` - Fix Playwright config port mismatch (Session 17)
+
+---
+
+## Notes
+
+- Session focused on investigation and infrastructure setup
+- No new features implemented
+- Playwright config updated to match dev server port
+- Test authentication flow needs further investigation
+- Server is running but tests may need additional fixes
+- Recommend running smoke tests in next session to verify baseline
+- Progress stalled at 49/200 features (24.5%)
+
+---
