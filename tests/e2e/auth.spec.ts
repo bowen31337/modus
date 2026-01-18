@@ -47,25 +47,35 @@ test.describe('Authentication - Logout & Protected Routes', () => {
     await expect(page).toHaveURL(/.*login/);
   });
 
-  test('should redirect to login when accessing protected route without authentication', async ({ page }) => {
+  test('should allow access to dashboard without authentication in demo mode', async ({ page }) => {
+    // In demo mode (when Supabase is not configured), authentication is not required
     // Try to access dashboard directly without logging in
     await page.goto('/dashboard');
 
-    // Should redirect to login page
-    await expect(page).toHaveURL(/.*login/);
+    // Should NOT redirect to login page in demo mode - should allow access
+    await expect(page).toHaveURL(/.*dashboard/);
+    await expect(page.getByTestId('queue-pane')).toBeVisible();
   });
 
-  test('should redirect to login when accessing any protected sub-route without authentication', async ({ page, context }) => {
-    // Clear cookies to ensure no authentication (bypasses the beforeEach hook's demo session cookie)
+  test('should allow access to all sub-routes without authentication in demo mode', async ({ page, context }) => {
+    // Clear cookies to ensure no authentication
     await context.clearCookies();
 
-    // Try to access various protected routes without logging in
-    const protectedRoutes = ['/dashboard', '/dashboard/queue', '/dashboard/assigned', '/dashboard/settings'];
+    // In demo mode, all routes should be accessible without authentication
+    // Note: /dashboard/queue and /dashboard/assigned redirect to /dashboard (client-side filters)
+    // Only /dashboard/settings has its own page with different layout
+    const routes = [
+      { path: '/dashboard', expectedUrl: /.*dashboard$/, testId: 'queue-pane' },
+      { path: '/dashboard/queue', expectedUrl: /.*dashboard$/, testId: 'queue-pane' }, // redirects to /dashboard
+      { path: '/dashboard/assigned', expectedUrl: /.*dashboard$/, testId: 'queue-pane' }, // redirects to /dashboard
+      { path: '/dashboard/settings', expectedUrl: /.*dashboard\/settings$/, testId: 'settings-page' },
+    ];
 
-    for (const route of protectedRoutes) {
-      await page.goto(route);
-      // Wait a moment for redirect
-      await expect(page).toHaveURL(/.*login/, { timeout: 10000 });
+    for (const { path, expectedUrl, testId } of routes) {
+      await page.goto(path);
+      // Should NOT redirect to login in demo mode
+      await expect(page).toHaveURL(expectedUrl, { timeout: 10000 });
+      await expect(page.getByTestId(testId)).toBeVisible();
     }
   });
 

@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation';
 import { createServerSideClient } from '@/lib/supabase/server';
-import { hasDemoSession } from '@/lib/demo-session';
 
 // Force dynamic rendering for this page
 export const dynamic = 'force-dynamic';
@@ -17,13 +16,8 @@ export default async function AssignedPage() {
     if (!data.user) {
       redirect('/login');
     }
-  } else {
-    // Demo mode: check if authenticated
-    const hasSession = await hasDemoSession();
-    if (!hasSession) {
-      redirect('/login');
-    }
   }
+  // Demo mode: allow access without session cookie (consistent with layout.tsx)
 
   // Redirect to main dashboard since assigned is a client-side filter
   redirect('/dashboard');

@@ -1,0 +1,226 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]: m
+      - 'button "Status: Online" [ref=e6] [cursor=pointer]':
+        - img [ref=e7]
+        - img [ref=e9]
+      - navigation [ref=e11]:
+        - link "Home" [ref=e12] [cursor=pointer]:
+          - /url: /dashboard
+          - img [ref=e13]
+        - link "Queue" [ref=e16] [cursor=pointer]:
+          - /url: /dashboard/queue
+          - img [ref=e17]
+        - link "Assigned" [ref=e20] [cursor=pointer]:
+          - /url: /dashboard/assigned
+          - img [ref=e21]
+        - link "Settings" [ref=e24] [cursor=pointer]:
+          - /url: /dashboard/settings
+          - img [ref=e25]
+      - button "Logout" [ref=e28] [cursor=pointer]:
+        - img [ref=e29]
+    - complementary [ref=e33]:
+      - generic [ref=e34]:
+        - heading "Moderation Queue" [level=2] [ref=e35]
+        - generic [ref=e36]:
+          - img [ref=e37]
+          - searchbox "Search posts..." [ref=e40]
+      - generic [ref=e41]:
+        - button "Filters" [ref=e43] [cursor=pointer]:
+          - img [ref=e44]
+          - text: Filters
+          - img [ref=e46]
+        - 'button "Sort : Priority" [ref=e49] [cursor=pointer]':
+          - img [ref=e50]
+          - text: Sort
+          - generic [ref=e55]: ": Priority"
+          - img [ref=e56]
+        - generic [ref=e59]:
+          - button "List view" [ref=e60] [cursor=pointer]:
+            - img [ref=e61]
+          - button "Grid view" [ref=e68] [cursor=pointer]:
+            - img [ref=e69]
+      - generic [ref=e74]:
+        - generic [ref=e75]:
+          - 'button "Bug: Images not loading in posts In Progress Since the last update, images in community posts are not loading. Just shows a broken image icon... P1 Bug Reports user-3 2025-01-17T13:45:00Z Open" [pressed] [ref=e76] [cursor=pointer]':
+            - generic [ref=e78]:
+              - generic [ref=e79]:
+                - 'heading "Bug: Images not loading in posts" [level=3] [ref=e80]'
+                - generic [ref=e81]: In Progress
+              - paragraph [ref=e82]: Since the last update, images in community posts are not loading. Just shows a broken image icon...
+              - generic [ref=e83]:
+                - generic [ref=e84]: P1
+                - img [ref=e86]
+                - generic [ref=e90]: Bug Reports
+                - generic [ref=e91]:
+                  - img [ref=e92]
+                  - text: user-3
+                - generic [ref=e95]:
+                  - img [ref=e96]
+                  - text: 2025-01-17T13:45:00Z
+            - generic [ref=e100]: Open
+          - button "Unable to access my account after password reset Open I reset my password yesterday but still can't log in. The system keeps saying my credentials are invalid... P2 Account Issues user-1 2025-01-18T10:30:00Z Open" [ref=e101] [cursor=pointer]:
+            - generic [ref=e103]:
+              - generic [ref=e104]:
+                - heading "Unable to access my account after password reset" [level=3] [ref=e105]
+                - generic [ref=e106]: Open
+              - paragraph [ref=e107]: I reset my password yesterday but still can't log in. The system keeps saying my credentials are invalid...
+              - generic [ref=e108]:
+                - generic [ref=e109]: P2
+                - img [ref=e111]
+                - generic [ref=e115]: Account Issues
+                - generic [ref=e116]:
+                  - img [ref=e117]
+                  - text: user-1
+                - generic [ref=e120]:
+                  - img [ref=e121]
+                  - text: 2025-01-18T10:30:00Z
+            - generic [ref=e125]: Open
+          - 'button "Feature request: Dark mode for mobile app Open Would love to see a dark mode option in the mobile application. My eyes get tired using the app at night... P3 Feature Request user-2 2025-01-17T14:15:00Z Open" [ref=e126] [cursor=pointer]':
+            - generic [ref=e128]:
+              - generic [ref=e129]:
+                - 'heading "Feature request: Dark mode for mobile app" [level=3] [ref=e130]'
+                - generic [ref=e131]: Open
+              - paragraph [ref=e132]: Would love to see a dark mode option in the mobile application. My eyes get tired using the app at night...
+              - generic [ref=e133]:
+                - generic [ref=e134]: P3
+                - img [ref=e136]
+                - generic [ref=e139]: Feature Request
+                - generic [ref=e140]:
+                  - img [ref=e141]
+                  - text: user-2
+                - generic [ref=e144]:
+                  - img [ref=e145]
+                  - text: 2025-01-17T14:15:00Z
+            - generic [ref=e149]: Open
+          - button "Community guidelines clarification needed Resolved I'm a bit confused about the community guidelines regarding self-promotion... P3 Policy & Guidelines user-5 2025-01-16T09:30:00Z Assigned to Agent B Open" [ref=e150] [cursor=pointer]:
+            - generic [ref=e152]:
+              - generic [ref=e153]:
+                - heading "Community guidelines clarification needed" [level=3] [ref=e154]
+                - generic [ref=e155]: Resolved
+              - paragraph [ref=e156]: I'm a bit confused about the community guidelines regarding self-promotion...
+              - generic [ref=e157]:
+                - generic [ref=e158]: P3
+                - img [ref=e160]
+                - generic [ref=e162]: Policy & Guidelines
+                - generic [ref=e163]:
+                  - img [ref=e164]
+                  - text: user-5
+                - generic [ref=e167]:
+                  - img [ref=e168]
+                  - text: 2025-01-16T09:30:00Z
+              - generic [ref=e171]: Assigned to Agent B
+            - generic [ref=e174]: Open
+          - button "How do I change my email notification settings? Open I've been looking everywhere but can't find where to change my email notification preferences... P4 Help & Support user-4 2025-01-17T11:20:00Z Open" [ref=e175] [cursor=pointer]:
+            - generic [ref=e177]:
+              - generic [ref=e178]:
+                - heading "How do I change my email notification settings?" [level=3] [ref=e179]
+                - generic [ref=e180]: Open
+              - paragraph [ref=e181]: I've been looking everywhere but can't find where to change my email notification preferences...
+              - generic [ref=e182]:
+                - generic [ref=e183]: P4
+                - img [ref=e185]
+                - generic [ref=e187]: Help & Support
+                - generic [ref=e188]:
+                  - img [ref=e189]
+                  - text: user-4
+                - generic [ref=e192]:
+                  - img [ref=e193]
+                  - text: 2025-01-17T11:20:00Z
+            - generic [ref=e197]: Open
+        - generic [ref=e198]: End of list
+      - generic [ref=e200]:
+        - generic [ref=e201]: "Total: 5"
+        - generic [ref=e202]: "Loaded: 5"
+    - main [ref=e203]:
+      - generic [ref=e204]:
+        - generic [ref=e205]:
+          - generic [ref=e206]:
+            - generic [ref=e207]: P1
+            - generic [ref=e208]: In Progress
+            - generic [ref=e209]: Assigned to you
+          - generic [ref=e211]:
+            - button "Reassign" [ref=e212] [cursor=pointer]:
+              - img [ref=e213]
+              - text: Reassign
+            - button "Release" [ref=e218] [cursor=pointer]
+            - button "Resolve" [ref=e219] [cursor=pointer]
+        - 'heading "Bug: Images not loading in posts" [level=1] [ref=e220]'
+      - generic [ref=e222]:
+        - generic [ref=e224]:
+          - generic [ref=e225]:
+            - heading "Content" [level=2] [ref=e226]
+            - paragraph [ref=e228]: Since the last update, images in community posts are not loading. Just shows a broken image icon...
+          - generic [ref=e229]:
+            - generic [ref=e230]:
+              - heading "Response" [level=2] [ref=e231]
+              - generic [ref=e232] [cursor=pointer]:
+                - checkbox "Internal Note" [ref=e233]
+                - generic [ref=e234]: Internal Note
+            - generic [ref=e235]:
+              - generic [ref=e236]:
+                - button "Bold (Ctrl+B)" [ref=e237] [cursor=pointer]:
+                  - img [ref=e238]
+                - button "Italic (Ctrl+I)" [ref=e240] [cursor=pointer]:
+                  - img [ref=e241]
+                - button "Insert Link" [ref=e246] [cursor=pointer]:
+                  - img [ref=e247]
+                - button "Bulleted List" [ref=e251] [cursor=pointer]:
+                  - img [ref=e252]
+                - button "Numbered List" [ref=e259] [cursor=pointer]:
+                  - img [ref=e260]
+              - textbox "Type your response here... (Press R to focus)" [active] [ref=e268]
+              - generic [ref=e269]: "Tip: Use the toolbar above for formatting, or use keyboard shortcuts (Ctrl+B for bold, Ctrl+I for italic)"
+            - generic [ref=e270]:
+              - generic [ref=e271]:
+                - button "Templates" [ref=e273] [cursor=pointer]:
+                  - img [ref=e274]
+                  - text: Templates
+                  - img [ref=e280]
+                - button "✨ AI Suggest" [ref=e282] [cursor=pointer]
+              - button "Send Response" [disabled] [ref=e283]
+            - generic [ref=e284]: "Tip: Press Cmd+Enter to send response and resolve"
+          - generic [ref=e285]:
+            - heading "Activity History" [level=2] [ref=e286]
+            - generic [ref=e288]:
+              - generic [ref=e289]:
+                - generic [ref=e290]:
+                  - img [ref=e292]
+                  - generic [ref=e294]:
+                    - generic [ref=e296]: Agent A
+                    - generic [ref=e297]: Public response - visible to everyone
+                - generic [ref=e298]: 1/18/2026, 11:38:52 AM
+              - generic [ref=e299]: This is a public response to the community
+        - complementary [ref=e300]:
+          - generic [ref=e301]:
+            - heading "User Context" [level=2] [ref=e302]
+            - generic [ref=e304]:
+              - img [ref=e306]
+              - generic [ref=e309]:
+                - paragraph [ref=e310]: user-3
+                - paragraph [ref=e311]: Author
+            - generic [ref=e313]:
+              - img [ref=e314]
+              - generic [ref=e318]: Negative Sentiment
+            - generic [ref=e320]:
+              - generic [ref=e321]: Post History
+              - generic [ref=e322]: 12 posts
+            - generic [ref=e323]:
+              - generic [ref=e324]:
+                - img [ref=e325]
+                - generic [ref=e330]: "Post ID: 3"
+              - generic [ref=e331]:
+                - img [ref=e332]
+                - generic [ref=e335]: "Created: 2025-01-17T13:45:00Z"
+              - generic [ref=e338]: Bug Reports
+            - generic [ref=e339]:
+              - heading "Assignment" [level=3] [ref=e340]
+              - generic [ref=e341]: Assigned to you
+  - button "Open Next.js Dev Tools" [ref=e347] [cursor=pointer]:
+    - img [ref=e348]
+  - alert [ref=e352]: "Bug: Images not loading in posts"
+```

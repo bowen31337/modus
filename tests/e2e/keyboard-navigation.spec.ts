@@ -465,14 +465,8 @@ test.describe.serial('Keyboard Navigation - Queue', () => {
     await page.waitForSelector('[data-testid="work-pane"]', { timeout: 10000 });
     await expect(page.locator('[data-testid="post-title"]')).toBeVisible();
 
-    // Close the detail view
-    await page.keyboard.press('Escape');
-    await page.waitForTimeout(800);
-
-    // Verify URL no longer has post parameter
-    await expect(page).toHaveURL(/dashboard$/);
-
-    // Click on the second post to open it
+    // Click on the second post to open it (while first post is still open)
+    // This uses router.push() so both entries are in history
     await secondPost.click();
     await page.waitForTimeout(1000);
 
@@ -484,7 +478,7 @@ test.describe.serial('Keyboard Navigation - Queue', () => {
     await page.waitForSelector('[data-testid="work-pane"]', { timeout: 10000 });
     await expect(page.locator('[data-testid="post-title"]')).toBeVisible();
 
-    // Press browser back button
+    // Press browser back button - should go back to first post
     await page.goBack();
     await page.waitForTimeout(1000);
 
@@ -506,13 +500,11 @@ test.describe.serial('Keyboard Navigation - Queue', () => {
     // Verify work pane shows the second post again
     await page.waitForSelector('[data-testid="work-pane"]', { timeout: 10000 });
 
-    // Press browser back twice to return to queue
-    await page.goBack();
-    await page.waitForTimeout(800);
-    await page.goBack();
+    // Press Escape to close the detail view
+    await page.keyboard.press('Escape');
     await page.waitForTimeout(800);
 
-    // Verify URL is back to dashboard without post parameter
+    // Verify URL no longer has post parameter
     await expect(page).toHaveURL(/dashboard$/);
 
     // Verify work pane is hidden (back to queue)

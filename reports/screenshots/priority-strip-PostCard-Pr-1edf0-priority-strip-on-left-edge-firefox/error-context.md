@@ -1,0 +1,57 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - button "Open Next.js Dev Tools" [ref=e7] [cursor=pointer]:
+    - img [ref=e8]
+  - alert [ref=e12]
+  - generic [ref=e13]:
+    - complementary [ref=e14]:
+      - generic [ref=e15]: m
+      - 'button "Status: Online" [ref=e17] [cursor=pointer]':
+        - img [ref=e18]
+        - img [ref=e20]
+      - navigation [ref=e22]:
+        - link "Home" [ref=e23] [cursor=pointer]:
+          - /url: /dashboard
+          - img [ref=e24]
+        - link "Queue" [ref=e27] [cursor=pointer]:
+          - /url: /dashboard/queue
+          - img [ref=e28]
+        - link "Assigned" [ref=e31] [cursor=pointer]:
+          - /url: /dashboard/assigned
+          - img [ref=e32]
+        - link "Settings" [ref=e35] [cursor=pointer]:
+          - /url: /dashboard/settings
+          - img [ref=e36]
+      - button "Logout" [ref=e39] [cursor=pointer]:
+        - img [ref=e40]
+    - complementary [ref=e44]:
+      - generic [ref=e45]:
+        - heading "Moderation Queue" [level=2] [ref=e46]
+        - generic [ref=e47]:
+          - img [ref=e48]
+          - searchbox "Search posts..." [ref=e51]
+      - generic [ref=e52]:
+        - button "Filters" [ref=e54] [cursor=pointer]:
+          - img [ref=e55]
+          - text: Filters
+          - img [ref=e57]
+        - 'button "Sort : Priority" [ref=e60] [cursor=pointer]':
+          - img [ref=e61]
+          - text: Sort
+          - generic [ref=e66]: ": Priority"
+          - img [ref=e67]
+        - generic [ref=e70]:
+          - button "List view" [ref=e71] [cursor=pointer]:
+            - img [ref=e72]
+          - button "Grid view" [ref=e79] [cursor=pointer]:
+            - img [ref=e80]
+      - generic [ref=e168]:
+        - generic [ref=e169]: "Total: 0"
+        - generic [ref=e170]: "Loaded: 0"
+    - generic [ref=e171]:
+      - img [ref=e173]
+      - heading "No Post Selected" [level=3] [ref=e175]
+      - paragraph [ref=e176]: Select a post from the queue to begin moderation
+```

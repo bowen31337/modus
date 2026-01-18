@@ -5,7 +5,7 @@
  * Tests both /api/v1/ai/suggest and /api/v1/ai/analyze-sentiment
  */
 
-const BASE_URL = 'http://localhost:3006';
+const BASE_URL = 'http://localhost:3000';
 
 // ANSI color codes for output
 const colors = {

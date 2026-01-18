@@ -5,7 +5,7 @@
  * Tests assignment, release, and response submission workflows
  */
 
-const BASE_URL = 'http://localhost:3002';
+const BASE_URL = 'http://localhost:3000';
 
 // Colors for output
 const GREEN = '\x1b[32m';

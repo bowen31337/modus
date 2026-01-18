@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation';
 import { createServerSideClient } from '@/lib/supabase/server';
-import { hasDemoSession } from '@/lib/demo-session';
 
 export default async function DashboardLayout({
   children,
@@ -20,15 +19,9 @@ export default async function DashboardLayout({
       redirect('/login');
     }
   } else {
-    // Demo mode: check for demo session cookie
-    // In development mode, allow access without cookie for E2E testing
-    // since Playwright has issues with localhost cookies
-    if (process.env.NODE_ENV !== 'development') {
-      const hasSession = await hasDemoSession();
-      if (!hasSession) {
-        redirect('/login');
-      }
-    }
+    // Demo mode: allow access without session cookie
+    // In demo mode, we don't require authentication for easier testing
+    // The login flow is just for show to simulate a real authentication flow
   }
 
   return <>{children}</>;

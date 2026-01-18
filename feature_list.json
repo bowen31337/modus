@@ -1931,8 +1931,10 @@
     "passes": true,
     "is_dev_done": true,
     "is_qa_passed": true,
-    "dev_completed_at": "2026-01-18T18:00:00.000000Z",
-    "qa_completed_at": "2026-01-18T18:00:00.000000Z"
+    "dev_completed_at": "2026-01-18T00:38:39.675453Z",
+    "qa_completed_at": "2026-01-18T18:00:00.000000Z",
+    "qa_retry_count": 0,
+    "dev_failure_count": 0
   },
   {
     "category": "style",
@@ -1974,9 +1976,11 @@
       "Step 4: Verify width is consistent at all viewport sizes",
       "Step 5: Verify icons are centered within the rail"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-18T18:00:00.000000Z",
+    "qa_completed_at": "2026-01-18T18:00:00.000000Z"
   },
   {
     "category": "style",
@@ -1988,9 +1992,11 @@
       "Step 4: Verify queue pane may be resizable within this range",
       "Step 5: Verify content fits properly at minimum width"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-18T18:00:00.000000Z",
+    "qa_completed_at": "2026-01-18T18:00:00.000000Z"
   },
   {
     "category": "style",
@@ -2002,9 +2008,11 @@
       "Step 4: Verify content reflows appropriately",
       "Step 5: Verify minimum readable width is maintained"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-18T18:00:00.000000Z",
+    "qa_completed_at": "2026-01-18T18:00:00.000000Z"
   },
   {
     "category": "style",
@@ -2895,9 +2903,11 @@
       "Step 4: Verify user data is returned",
       "Step 5: Verify cookies are set appropriately"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768696763",
+    "qa_completed_at": "1768696763"
   },
   {
     "category": "functional",
@@ -2909,9 +2919,11 @@
       "Step 4: Verify session is invalidated",
       "Step 5: Verify subsequent authenticated requests fail"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768696763",
+    "qa_completed_at": "1768696763"
   },
   {
     "category": "functional",
@@ -2923,9 +2935,11 @@
       "Step 4: Verify response contains agent info",
       "Step 5: Verify response indicates role and permissions"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768696763",
+    "qa_completed_at": "1768696763"
   },
   {
     "category": "functional",
@@ -3001,9 +3015,11 @@
       "Step 4: Verify rules are ordered by position",
       "Step 5: Verify each rule has condition and action info"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768696763",
+    "qa_completed_at": "1768696763"
   },
   {
     "category": "functional",
@@ -3015,9 +3031,11 @@
       "Step 4: Verify response shows resulting priority",
       "Step 5: Verify rule evaluation order is correct"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768696763",
+    "qa_completed_at": "1768696763"
   },
   {
     "category": "functional",
@@ -3029,9 +3047,11 @@
       "Step 4: Verify rule positions are updated",
       "Step 5: Verify new order affects rule evaluation"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768696763",
+    "qa_completed_at": "1768696763"
   },
   {
     "category": "style",

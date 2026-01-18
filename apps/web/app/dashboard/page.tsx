@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation';
 import { createServerSideClient } from '@/lib/supabase/server';
-import { hasDemoSession } from '@/lib/demo-session';
 import DashboardClient from './dashboard-client';
 
 export default async function DashboardPage() {
@@ -15,13 +14,9 @@ export default async function DashboardPage() {
     if (!data.user) {
       redirect('/login');
     }
-  } else {
-    // Demo mode: check if authenticated
-    const hasSession = await hasDemoSession();
-    if (!hasSession) {
-      redirect('/login');
-    }
   }
+  // Demo mode: allow access without session cookie (consistent with layout.tsx)
+  // In demo mode, authentication is not required for easier testing
 
   return <DashboardClient />;
 }

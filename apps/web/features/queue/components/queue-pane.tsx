@@ -75,7 +75,7 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
 
   // API state
   const [posts, setPosts] = useState<PostCardProps[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -293,10 +293,12 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
       // Enter key: select the focused post
       if (e.key === 'Enter') {
         const currentPosts = postsRef.current;
-        console.log(`[Enter key] posts length: ${currentPosts.length}, focusedIndex: ${focusedIndexRef.current}`);
+        const currentIndex = focusedIndexRef.current;
+        console.log(`[Enter key] posts length: ${currentPosts.length}, focusedIndex: ${currentIndex}`);
+        console.log(`[Enter key] posts content:`, JSON.stringify(currentPosts.map(p => ({ id: p?.id, title: p?.title }))));
         if (currentPosts.length > 0) {
           e.preventDefault();
-          const focusedPost = currentPosts[focusedIndexRef.current];
+          const focusedPost = currentPosts[currentIndex];
           console.log(`[Enter key] focusedPost: ${focusedPost?.id}, onPostSelect exists: ${!!onPostSelectRef.current}`);
           if (focusedPost && onPostSelectRef.current) {
             onPostSelectRef.current(focusedPost);

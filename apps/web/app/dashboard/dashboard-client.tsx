@@ -119,6 +119,7 @@ export default function DashboardPage() {
   }, []);
 
   const handlePostSelect = async (post: PostCardProps) => {
+    console.log('[DashboardPage] handlePostSelect called with post:', post.id);
     // Auto-assign on click if not already assigned
     if (!assignedPosts.has(post.id)) {
       try {
@@ -142,6 +143,7 @@ export default function DashboardPage() {
     // Update URL with the selected post ID (push state for browser history)
     const params = new URLSearchParams(searchParams);
     params.set('post', post.id);
+    console.log('[DashboardPage] Updating URL to:', `/dashboard?${params.toString()}`);
     router.push(`/dashboard?${params.toString()}`, { scroll: false });
   };
 
@@ -196,10 +198,10 @@ export default function DashboardPage() {
     // Force QueuePane to reset its keyboard focus state
     setForceReset(prev => prev + 1);
 
-    // Remove post from URL (replace state to avoid adding extra history entry)
+    // Remove post from URL (push to history for proper back/forward navigation)
     const params = new URLSearchParams(searchParams);
     params.delete('post');
-    router.replace(`/dashboard?${params.toString()}`, { scroll: false });
+    router.push(`/dashboard?${params.toString()}`, { scroll: false });
   };
 
   const handleResolve = async () => {

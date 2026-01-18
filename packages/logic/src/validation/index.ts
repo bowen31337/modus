@@ -220,6 +220,24 @@ export const analyzeSentimentInputSchema = z.object({
 
 export type AnalyzeSentimentInput = z.infer<typeof analyzeSentimentInputSchema>;
 
+export const loginInputSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(8, 'Password must be at least 8 characters'),
+});
+
+export type LoginInput = z.infer<typeof loginInputSchema>;
+
+export const sessionSchema = z.object({
+  agent_id: z.string(),
+  email: z.string().email(),
+  display_name: z.string().min(1).max(100),
+  role: z.enum(['agent', 'supervisor', 'admin', 'moderator']),
+  status: z.enum(['online', 'offline', 'busy']),
+  expires_at: z.string().datetime(),
+});
+
+export type Session = z.infer<typeof sessionSchema>;
+
 // ============================================================================
 // Query/Filter Schemas
 // ============================================================================

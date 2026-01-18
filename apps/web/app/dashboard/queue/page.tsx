@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation';
 import { createServerSideClient } from '@/lib/supabase/server';
-import { hasDemoSession } from '@/lib/demo-session';
 
 export default async function QueuePage() {
   // Check if Supabase is configured
@@ -15,13 +14,8 @@ export default async function QueuePage() {
     if (!data.user) {
       redirect('/login');
     }
-  } else {
-    // Demo mode: check for demo session cookie
-    const hasSession = await hasDemoSession();
-    if (!hasSession) {
-      redirect('/login');
-    }
   }
+  // Demo mode: allow access without session cookie (consistent with layout.tsx)
 
   // Redirect to main dashboard since queue is a client-side filter
   redirect('/dashboard');

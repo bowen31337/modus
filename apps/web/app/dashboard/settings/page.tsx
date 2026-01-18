@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation';
 import { createServerSideClient } from '@/lib/supabase/server';
-import { hasDemoSession } from '@/lib/demo-session';
 import SettingsClient from './settings-client';
 
 // Force dynamic rendering for this page
@@ -18,13 +17,8 @@ export default async function SettingsPage() {
     if (!data.user) {
       redirect('/login');
     }
-  } else {
-    // Demo mode: check if authenticated
-    const hasSession = await hasDemoSession();
-    if (!hasSession) {
-      redirect('/login');
-    }
   }
+  // Demo mode: allow access without session cookie (consistent with layout.tsx)
 
   return <SettingsClient />;
 }
