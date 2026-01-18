@@ -314,3 +314,113 @@ export function sanitizeTemplate(content: string): string {
 export function sanitize(value: string): string {
   return sanitizeInput(value);
 }
+
+// ============================================================================
+// Upload Schemas
+// ============================================================================
+
+export const uploadRequestSchema = z.object({
+  filename: z.string().min(1).max(255),
+  mime_type: z.string().min(1).max(100),
+  size: z.number().int().positive(),
+  data: z.string().min(1), // base64 encoded
+  checksum: z.string().optional(),
+});
+
+export type UploadRequest = z.infer<typeof uploadRequestSchema>;
+
+export interface UploadResponse {
+  id: string;
+  filename: string;
+  mime_type: string;
+  size: number;
+  checksum?: string;
+  uploaded_at: string;
+  url: string;
+}
+
+export interface FileValidationResult {
+  isValid: boolean;
+  error?: string;
+}
+
+export function validateFileMetadata(metadata: {
+  filename: string;
+  mime_type: string;
+  size: number;
+}): FileValidationResult {
+  const { filename, mime_type, size } = metadata;
+
+  // Validate filename
+  if (!filename || filename.length === 0) {
+    return { isValid: false, error: 'Filename is required' };
+  }
+
+  if (filename.length > 255) {
+    return { isValid: false, error: 'Filename too long (max 255 characters)' };
+  }
+
+  // Check for path traversal attempts
+  if (filename.includes('..') || filename.includes('/') || filename.includes('\\')) {
+    return { isValid: false, error: 'Invalid filename' };
+  }
+
+  // Validate MIME type
+  const allowedMimeTypes = [
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/webp',
+    'image/svg+xml',
+    'application/pdf',
+    'text/plain',
+    'text/csv',
+    'application/json',
+  ];
+
+  if (!allowedMimeTypes.includes(mime_type)) {
+    return { isValid: false, error: `MIME type ${mime_type} is not allowed` };
+  }
+
+  // Validate file size (max 10MB)
+  const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+  if (size > maxSize) {
+    return { isValid: false, error: `File size exceeds maximum allowed size (${maxSize} bytes)` };
+  }
+
+  if (size <= 0) {
+    return { isValid: false, error: 'File size must be positive' };
+  }
+
+  return { isValid: true };
+}
+
+export function sanitizeFileMetadata(metadata: {
+  filename: string;
+  mime_type: string;
+  size: number;
+  checksum?: string;
+}): {
+  filename: string;
+  mime_type: string;
+  size: number;
+  checksum?: string;
+} {
+  // Sanitize filename - remove any potentially dangerous characters
+  let sanitized = metadata.filename
+    .replace(/[^\w\s-.]/g, '') // Remove special characters except word, space, hyphen, dot
+    .replace(/\s+/g, '_') // Replace spaces with underscores
+    .substring(0, 255); // Truncate to max length
+
+  // If filename becomes empty, use a default
+  if (!sanitized) {
+    sanitized = 'unnamed_file';
+  }
+
+  return {
+    filename: sanitized,
+    mime_type: metadata.mime_type.toLowerCase().trim(),
+    size: metadata.size,
+    checksum: metadata.checksum?.trim(),
+  };
+}
