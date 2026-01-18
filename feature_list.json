@@ -3040,8 +3040,11 @@
       "Step 5: Verify can search/filter agents"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-18T04:44:59.413102Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -3242,9 +3245,11 @@
       "Step 4: Verify secondary info has subdued styling",
       "Step 5: Verify sidebar integrates with overall layout"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-18T04:46:16.445Z",
+    "qa_passed_at": "2026-01-18T04:46:16.445Z"
   },
   {
     "category": "style",

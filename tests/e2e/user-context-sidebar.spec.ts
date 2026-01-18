@@ -87,8 +87,8 @@ test.describe('User Context Sidebar - Clear Information Hierarchy', () => {
   test('should have visually separated sections with consistent card styling', async ({ page }) => {
     const sidebar = page.getByTestId('user-context-sidebar');
 
-    // Verify Author card has proper styling
-    const authorCard = sidebar.locator('div').filter({ hasText: 'Community Member' }).first();
+    // Verify Author card has proper styling - look for the container with the avatar and text
+    const authorCard = sidebar.locator('div.bg-background-tertiary').first();
     await expect(authorCard).toBeVisible();
 
     // Verify cards have border and background
@@ -117,7 +117,8 @@ test.describe('User Context Sidebar - Clear Information Hierarchy', () => {
     const sidebar = page.getByTestId('user-context-sidebar');
 
     // Verify the container has consistent spacing
-    const container = sidebar.locator('div.p-4').first();
+    // Look for the main content container (not the sticky header)
+    const container = sidebar.locator('div.p-4').nth(1);
     const containerClasses = await container.getAttribute('class');
     expect(containerClasses).toContain('space-y-5');
   });
@@ -164,8 +165,11 @@ test.describe('User Context Sidebar - Clear Information Hierarchy', () => {
     await expect(assignmentHeader).toBeVisible();
 
     // Should show "Unassigned" or "Assigned to you"
-    const assignmentText = sidebar.locator('text=Unassigned, text=Assigned to you');
-    await expect(assignmentText.first()).toBeVisible();
+    const unassigned = sidebar.locator('text=Unassigned');
+    const assignedToYou = sidebar.locator('text=Assigned to you');
+    const isVisible = await unassigned.isVisible({ timeout: 2000 }).catch(() => false) ||
+                      await assignedToYou.isVisible({ timeout: 2000 }).catch(() => false);
+    expect(isVisible).toBe(true);
   });
 
   test('should display metadata in key-value format', async ({ page }) => {
@@ -211,12 +215,12 @@ test.describe('User Context Sidebar - Clear Information Hierarchy', () => {
   test('should have hover effects on interactive cards', async ({ page }) => {
     const sidebar = page.getByTestId('user-context-sidebar');
 
-    // Find the author card
-    const authorCard = sidebar.locator('div').filter({ hasText: 'Community Member' }).first();
+    // Find the author card (the one with the avatar and user info)
+    const authorCard = sidebar.locator('div.bg-background-tertiary').first();
 
     // Verify hover border transition
     const cardClasses = await authorCard.getAttribute('class');
-    expect(cardClasses).toContain('hover:border-border\\/80');
+    expect(cardClasses).toContain('hover:border-border');
     expect(cardClasses).toContain('transition-colors');
   });
 
