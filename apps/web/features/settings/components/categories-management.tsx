@@ -1,5 +1,6 @@
 'use client';
 
+import { useCsrf } from '@/hooks/use-csrf';
 import { Button } from '@modus/ui';
 import {
   ArrowDown,
@@ -33,6 +34,7 @@ interface CategoriesManagementProps {
 export function CategoriesManagement({
   initialCategories = [],
 }: CategoriesManagementProps) {
+  const { getCsrfToken } = useCsrf();
   const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [isLoading, setIsLoading] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -87,9 +89,13 @@ export function CategoriesManagement({
   const handleCreateCategory = async () => {
     setIsLoading(true);
     try {
+      const csrfToken = await getCsrfToken();
       const response = await fetch('/api/v1/categories', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-csrf-token': csrfToken,
+        },
         body: JSON.stringify(formData),
       });
 
@@ -115,9 +121,13 @@ export function CategoriesManagement({
   const handleUpdateCategory = async (categoryId: string) => {
     setIsLoading(true);
     try {
+      const csrfToken = await getCsrfToken();
       const response = await fetch(`/api/v1/categories/${categoryId}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-csrf-token': csrfToken,
+        },
         body: JSON.stringify(formData),
       });
 
@@ -137,8 +147,12 @@ export function CategoriesManagement({
 
     setIsLoading(true);
     try {
+      const csrfToken = await getCsrfToken();
       const response = await fetch(`/api/v1/categories/${selectedCategory.id}`, {
         method: 'DELETE',
+        headers: {
+          'x-csrf-token': csrfToken,
+        },
       });
 
       if (response.ok) {
@@ -164,9 +178,13 @@ export function CategoriesManagement({
     const categoryIds = newCategories.map((c) => c.id);
 
     try {
+      const csrfToken = await getCsrfToken();
       const response = await fetch('/api/v1/categories/reorder', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-csrf-token': csrfToken,
+        },
         body: JSON.stringify({ categoryIds }),
       });
 
@@ -189,9 +207,13 @@ export function CategoriesManagement({
     const categoryIds = newCategories.map((c) => c.id);
 
     try {
+      const csrfToken = await getCsrfToken();
       const response = await fetch('/api/v1/categories/reorder', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-csrf-token': csrfToken,
+        },
         body: JSON.stringify({ categoryIds }),
       });
 
