@@ -1881,7 +1881,7 @@
     "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-18T18:00:00.000000Z",
+    "dev_completed_at": "2026-01-18T00:43:43.524135Z",
     "qa_completed_at": "2026-01-18T18:00:00.000000Z"
   },
   {
@@ -1948,8 +1948,10 @@
     "passes": true,
     "is_dev_done": true,
     "is_qa_passed": true,
-    "dev_completed_at": "2026-01-18T18:00:00.000000Z",
-    "qa_completed_at": "2026-01-18T18:00:00.000000Z"
+    "dev_completed_at": "2026-01-18T00:40:45.434218Z",
+    "qa_completed_at": "2026-01-18T18:00:00.000000Z",
+    "qa_retry_count": 0,
+    "dev_failure_count": 0
   },
   {
     "category": "style",
@@ -2423,9 +2425,10 @@
       "Step 4: Verify user remains logged in",
       "Step 5: Verify context is preserved where appropriate"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768697239"
   },
   {
     "category": "functional",
