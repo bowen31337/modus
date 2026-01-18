@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+// Run tests serially to avoid state pollution
+test.describe.configure({ mode: 'serial' });
+
 test.describe('Template Management', () => {
   test.beforeEach(async ({ page }) => {
     // Log in with demo credentials
@@ -19,6 +22,9 @@ test.describe('Template Management', () => {
     // Click on Templates tab
     await page.getByTestId('tab-templates').click();
     await expect(page.getByTestId('tab-templates')).toHaveClass(/bg-background-tertiary/);
+
+    // Wait for templates to be visible
+    await page.waitForSelector('[data-testid="template-card-1"]', { timeout: 5000 });
   });
 
   test('should display template management page', async ({ page }) => {
