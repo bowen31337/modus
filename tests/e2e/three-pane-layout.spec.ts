@@ -101,24 +101,20 @@ test.describe('Three-Pane Layout', () => {
   });
 
   test('should display post cards in the queue with correct metadata', async ({ page }) => {
-    // Verify post cards are displayed (now using real button elements)
-    const postCards = page.getByRole('button').filter({ hasText: 'Unable to access' });
-    await expect(postCards.first()).toBeVisible();
+    // Verify post cards are displayed - look for the P1 post which should be first when sorted by priority
+    const p1Post = page.getByRole('button').filter({ hasText: 'Bug: Images not loading' });
+    await expect(p1Post.first()).toBeVisible();
 
-    // Verify first post has P1 priority
-    const firstPost = page.getByRole('button').filter({ hasText: 'Unable to access' }).first();
-    await expect(firstPost).toBeVisible();
-
-    // Check for priority badge
-    const priorityBadge = firstPost.locator('span:has-text("P1")');
+    // Check for P1 priority badge
+    const priorityBadge = p1Post.locator('span:has-text("P1")');
     await expect(priorityBadge).toBeVisible();
 
-    // Check for status badge
-    const statusBadge = firstPost.locator('span:has-text("Open")');
+    // Check for "In Progress" status badge (this P1 post has status "in_progress")
+    const statusBadge = p1Post.locator('span:has-text("In Progress")');
     await expect(statusBadge).toBeVisible();
 
-    // Check for sentiment indicator (negative sentiment should show AlertCircle)
-    const sentimentIndicator = firstPost.locator('svg').first();
+    // Check for sentiment indicator (negative sentiment should show AlertCircle icon)
+    const sentimentIndicator = p1Post.locator('svg').first();
     await expect(sentimentIndicator).toBeVisible();
   });
 
@@ -180,11 +176,11 @@ test.describe('Three-Pane Layout', () => {
   });
 
   test('should display queue stats at the bottom', async ({ page }) => {
-    // Verify queue stats are displayed
-    const totalPosts = page.locator('text=Total:');
+    // Verify queue stats are displayed at the bottom of the queue pane
+    const totalPosts = page.locator('text=Total:').first();
     await expect(totalPosts).toBeVisible();
 
-    const openPosts = page.locator('text=Open:');
-    await expect(openPosts).toBeVisible();
+    const loadedPosts = page.locator('text=Loaded:').first();
+    await expect(loadedPosts).toBeVisible();
   });
 });
