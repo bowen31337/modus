@@ -20,7 +20,7 @@ const statusConfig: Record<PostStatus, { bg: string; text: string; label: string
     label: 'Open',
   },
   in_progress: {
-    bg: 'bg-primary/40',
+    bg: 'bg-primary-600',
     text: 'text-foreground font-semibold',
     label: 'In Progress',
   },

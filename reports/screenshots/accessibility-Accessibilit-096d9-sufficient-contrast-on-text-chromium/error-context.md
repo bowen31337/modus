@@ -145,5 +145,5 @@
     - list
   - button "Open Next.js Dev Tools" [ref=e203] [cursor=pointer]:
     - img [ref=e204]
-  - alert [ref=e207]: m - Community Moderation System
+  - alert [ref=e207]
 ```

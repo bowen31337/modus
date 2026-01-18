@@ -2849,14 +2849,11 @@
       "Step 5: Verify output bundles are created"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 0,
-    "dev_failure_count": 1,
-    "last_dev_failure_at": "2026-01-18T04:38:02.803543Z",
-    "dev_failure_reasons": [
-      "Worker session timed out"
-    ]
+    "dev_failure_count": 0,
+    "dev_completed_at": "2026-01-18T04:48:14.788500Z"
   },
   {
     "category": "functional",
@@ -3276,9 +3273,11 @@
       "Step 4: Verify chips have remove (x) button",
       "Step 5: Verify chips visually represent filter type"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768712230",
+    "qa_completed_at": "1768712230"
   },
   {
     "category": "style",

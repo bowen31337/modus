@@ -25,7 +25,7 @@ test.describe('Filter Chips - Consistent Pill Styling', () => {
     // Wait for queue pane to load
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
     // Wait for posts to be visible (not loading skeleton)
-    await expect(page.locator('[data-testid="queue-container"]')).toBeVisible();
+    await page.waitForSelector('[data-testid^="post-card-"]', { timeout: 10000 });
   });
 
   test('should show filter chips when filters are applied', async ({ page }) => {
@@ -110,8 +110,8 @@ test.describe('Filter Chips - Consistent Pill Styling', () => {
     }
     await page.waitForTimeout(300);
 
-    // Get initial chip count
-    const chipsBefore = page.locator('span.inline-flex');
+    // Get initial chip count - filter chips are span.inline-flex that have a remove button child
+    const chipsBefore = page.locator('span.inline-flex').filter({ has: page.locator('button[data-testid^="remove-filter-"]') });
     const countBefore = await chipsBefore.count();
 
     // Click remove button on the first chip
@@ -120,7 +120,7 @@ test.describe('Filter Chips - Consistent Pill Styling', () => {
     await page.waitForTimeout(500);
 
     // Verify chip count decreased
-    const chipsAfter = page.locator('span.inline-flex');
+    const chipsAfter = page.locator('span.inline-flex').filter({ has: page.locator('button[data-testid^="remove-filter-"]') });
     const countAfter = await chipsAfter.count();
     expect(countAfter).toBeLessThan(countBefore);
   });
@@ -140,13 +140,20 @@ test.describe('Filter Chips - Consistent Pill Styling', () => {
     await page.locator('button:has-text("P1")').nth(0).click();
     await page.waitForTimeout(500);
 
-    // Get all chips
-    const chips = page.locator('span.inline-flex');
+    // Close the filter dropdown by clicking the backdrop
+    const backdrop = page.locator('div.fixed.inset-0.z-40').first();
+    if (await backdrop.isVisible()) {
+      await backdrop.click();
+    }
+    await page.waitForTimeout(300);
+
+    // Get all chips using filter method
+    const chips = page.locator('span.inline-flex').filter({ has: page.locator('button[data-testid^="remove-filter-"]') });
     const count = await chips.count();
     expect(count).toBeGreaterThanOrEqual(3);
 
-    // Verify chips have consistent gap class
-    const chipsContainer = page.locator('div:has(> span.inline-flex)').first();
+    // Verify chips have consistent gap class - find the container that wraps the chips
+    const chipsContainer = page.locator('div.flex.flex-wrap').filter({ has: page.locator('span.inline-flex') });
     const containerClass = await chipsContainer.getAttribute('class');
     expect(containerClass).toContain('gap-2');
   });
@@ -177,8 +184,8 @@ test.describe('Filter Chips - Consistent Pill Styling', () => {
     }
     await page.waitForTimeout(300);
 
-    // Get the first chip and verify it has background styling
-    const chip = page.locator('span.inline-flex').first();
+    // Get the first chip and verify it has background styling using filter method
+    const chip = page.locator('span.inline-flex').filter({ has: page.locator('button[data-testid^="remove-filter-"]') }).first();
     const chipClass = await chip.getAttribute('class');
 
     // Should have background color (bg-*/*), text color (text-*), and border color (border-*/*)
@@ -219,8 +226,8 @@ test.describe('Filter Chips - Consistent Pill Styling', () => {
     }
     await page.waitForTimeout(300);
 
-    // Verify chips are visible
-    const chipsBefore = page.locator('span.inline-flex');
+    // Verify chips are visible using filter method
+    const chipsBefore = page.locator('span.inline-flex').filter({ has: page.locator('button[data-testid^="remove-filter-"]') });
     const countBefore = await chipsBefore.count();
     expect(countBefore).toBeGreaterThan(0);
 
@@ -229,7 +236,7 @@ test.describe('Filter Chips - Consistent Pill Styling', () => {
     await page.waitForTimeout(500);
 
     // Verify chips are gone
-    const chipsAfter = page.locator('span.inline-flex');
+    const chipsAfter = page.locator('span.inline-flex').filter({ has: page.locator('button[data-testid^="remove-filter-"]') });
     const countAfter = await chipsAfter.count();
     expect(countAfter).toBe(0);
   });
