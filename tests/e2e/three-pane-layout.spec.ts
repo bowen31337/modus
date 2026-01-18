@@ -97,8 +97,8 @@ test.describe('Three-Pane Layout', () => {
     await expect(workPaneContent).toBeVisible();
 
     // Step 6: Verify all three panes are properly positioned
-    // Check that we have the main layout structure
-    const mainContainer = page.locator('div.flex.h-screen.overflow-hidden');
+    // Check that we have the main layout structure (main element with flex h-screen overflow-hidden)
+    const mainContainer = page.locator('main.flex.h-screen.overflow-hidden');
     await expect(mainContainer).toBeVisible();
   });
 
