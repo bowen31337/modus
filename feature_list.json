@@ -2943,11 +2943,15 @@
     "is_qa_passed": false,
     "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T03:19:08.669530Z",
-    "dev_failure_count": 0,
+    "dev_failure_count": 1,
     "qa_validated": true,
     "last_qa_run": "2026-01-18T07:31:24.389305Z",
     "qa_notes": "Failed: One or more gates failed",
-    "qa_report_path": "modus/qa-reports/feature-154-2026-01-18-07-31-24.json"
+    "qa_report_path": "modus/qa-reports/feature-154-2026-01-18-07-31-24.json",
+    "last_dev_failure_at": "2026-01-18T09:32:48.604742Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -3275,16 +3279,17 @@
       "Step 4: Verify agent status, role, and last active are shown",
       "Step 5: Verify can search/filter agents"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false,
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
     "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T04:44:59.413102Z",
     "dev_failure_count": 0,
     "qa_validated": true,
     "last_qa_run": "2026-01-18T07:31:24.607804Z",
     "qa_notes": "Failed: One or more gates failed",
-    "qa_report_path": "modus/qa-reports/feature-171-2026-01-18-07-31-24.json"
+    "qa_report_path": "modus/qa-reports/feature-171-2026-01-18-07-31-24.json",
+    "qa_completed_at": "2026-01-18T09:31:14.877Z"
   },
   {
     "category": "functional",
@@ -3725,10 +3730,10 @@
       "Step 5: Verify minimum pane widths are enforced"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 1,
-    "dev_completed_at": "2026-01-18T05:36:52.485651Z",
+    "dev_completed_at": "2026-01-18T09:41:41.264Z",
     "dev_failure_count": 0,
     "qa_validated": true,
     "last_qa_run": "2026-01-18T07:31:24.727019Z",

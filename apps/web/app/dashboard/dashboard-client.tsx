@@ -10,7 +10,8 @@ import { WorkPane } from '@/features/work/components/work-pane';
 import { useToast } from '@/hooks/use-toast';
 import type { AgentRole } from '@modus/logic';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable-panels';
 
 // Mock current agent for demo purposes
 const CURRENT_AGENT = {
@@ -30,6 +31,11 @@ export default function DashboardPage() {
   const [userRole, setUserRole] = useState<AgentRole | null>(null);
   const [metricsRefreshKey] = useState(0);
   const [isLoadingSession, setIsLoadingSession] = useState(true);
+
+  // Panel sizes (in percentage)
+  const [leftRailSize] = useState(6.4); // 64px ~ 6.4% of 1000px
+  const [queuePaneSize, setQueuePaneSize] = useState(32); // 320px ~ 32%
+  const workPaneSizeRef = useRef(100 - leftRailSize - queuePaneSize); // Remaining space
 
   // Load user session on mount to get user role
   useEffect(() => {
@@ -351,30 +357,60 @@ export default function DashboardPage() {
   // Check if user has permission to view team metrics (supervisor or admin)
   const canViewTeamMetrics = userRole === 'supervisor' || userRole === 'admin';
 
+  // Handle queue pane resize
+  const handleQueueResize = (deltaX: number) => {
+    const containerWidth = window.innerWidth;
+    const deltaPercent = (deltaX / containerWidth) * 100;
+
+    setQueuePaneSize((prev) => {
+      const newWidth = prev + deltaPercent;
+      const min = 20; // minimum 20%
+      const max = 50; // maximum 50%
+      return Math.max(min, Math.min(max, newWidth));
+    });
+  };
+
   return (
     <main className="flex h-screen overflow-hidden" role="main">
-      {/* Left Rail - 64px fixed width */}
-      <LeftRail />
+      <ResizablePanelGroup direction="horizontal" className="h-full w-full">
+        {/* Left Rail - 64px fixed width */}
+        <ResizablePanel defaultSize={leftRailSize} minSize={5} maxSize={10}>
+          <LeftRail />
+        </ResizablePanel>
 
-      {/* Queue Pane - 320-400px fixed width */}
-      <QueuePane
-        forceReset={forceReset}
-        onPostSelect={handlePostSelect}
-        selectedPostId={selectedPost?.id ?? null}
-        assignedPosts={assignedPosts}
-      />
+        <ResizableHandle direction="horizontal" onDrag={() => {}} />
 
-      {/* Work Pane - Flexible, fills remaining space */}
-      <WorkPane
-        selectedPost={selectedPost}
-        currentAgent={CURRENT_AGENT}
-        assignedPosts={assignedPosts}
-        onAssignToMe={handleAssignToMe}
-        onRelease={handleRelease}
-        onResolve={handleResolve}
-        onCloseDetail={handleCloseDetail}
-        onReassign={handleReassign}
-      />
+        {/* Queue Pane - 320-400px resizable */}
+        <ResizablePanel
+          defaultSize={queuePaneSize}
+          size={queuePaneSize}
+          minSize={20}
+          maxSize={50}
+        >
+          <QueuePane
+            forceReset={forceReset}
+            onPostSelect={handlePostSelect}
+            selectedPostId={selectedPost?.id ?? null}
+            assignedPosts={assignedPosts}
+          />
+        </ResizablePanel>
+
+        <ResizableHandle direction="horizontal" onDrag={handleQueueResize} />
+
+        {/* Work Pane - Flexible, fills remaining space */}
+        <ResizablePanel defaultSize={workPaneSizeRef.current} minSize={30} maxSize={80}>
+          <WorkPane
+            selectedPost={selectedPost}
+            currentAgent={CURRENT_AGENT}
+            assignedPosts={assignedPosts}
+            onAssignToMe={handleAssignToMe}
+            onRelease={handleRelease}
+            onResolve={handleResolve}
+            onCloseDetail={handleCloseDetail}
+            onReassign={handleReassign}
+          />
+        </ResizablePanel>
+      </ResizablePanelGroup>
 
       {/* Team Metrics - Visible to supervisors and admins */}
       {canViewTeamMetrics && !isLoadingSession && (
