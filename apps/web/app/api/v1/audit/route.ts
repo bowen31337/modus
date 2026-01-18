@@ -1,3 +1,4 @@
+import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -5,6 +6,7 @@ import { type NextRequest, NextResponse } from 'next/server';
  * GET /api/v1/audit
  *
  * Retrieves audit log entries with optional filtering and pagination.
+ * Requires admin role.
  *
  * Query Parameters:
  * - agent_id: Filter by agent ID
@@ -15,6 +17,12 @@ import { type NextRequest, NextResponse } from 'next/server';
  */
 export async function GET(request: NextRequest) {
   try {
+    // Check for admin role (demo mode defaults to admin)
+    const isAdmin = await checkRole('admin');
+    if (!isAdmin) {
+      return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
+
     const { searchParams } = new URL(request.url);
 
     const agentId = searchParams.get('agent_id');
@@ -56,6 +64,7 @@ export async function GET(request: NextRequest) {
  * Manually record an audit log entry.
  * This endpoint is primarily for testing or special cases where
  * audit logging needs to be triggered manually.
+ * Requires admin role.
  *
  * Request Body:
  * - agent_id: UUID of the agent performing the action (required)
@@ -67,6 +76,12 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
+    // Check for admin role (demo mode defaults to admin)
+    const isAdmin = await checkRole('admin');
+    if (!isAdmin) {
+      return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
+
     const body = await request.json();
 
     const { agent_id, action_type, post_id, action_details, previous_state, new_state } = body;

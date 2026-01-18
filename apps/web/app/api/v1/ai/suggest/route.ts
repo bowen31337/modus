@@ -1,3 +1,4 @@
+import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
 import { type SuggestContext, buildSuggestionPrompt } from '@modus/logic';
 import { type NextRequest, NextResponse } from 'next/server';
@@ -21,6 +22,7 @@ type SuggestInput = z.infer<typeof suggestInputSchema>;
 
 /**
  * Generate AI-powered response suggestion for a moderation post
+ * Requires agent role or higher.
  *
  * Request Body:
  * - post_id: UUID of the post to generate suggestion for
@@ -35,6 +37,12 @@ type SuggestInput = z.infer<typeof suggestInputSchema>;
  */
 export async function POST(request: NextRequest) {
   try {
+    // Check for agent role or higher
+    const hasAccess = await checkRole('agent');
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Forbidden: Agent access required' }, { status: 403 });
+    }
+
     // Parse and validate request body
     const body = await request.json();
     const validatedInput = suggestInputSchema.parse(body) as SuggestInput;

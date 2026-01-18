@@ -1,4 +1,5 @@
 import { csrfErrorResponse, requireCsrfProtection } from '@/lib/csrf';
+import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -9,6 +10,12 @@ import { type NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   try {
+    // Check for agent role or higher
+    const hasAccess = await checkRole('agent');
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Forbidden: Agent access required' }, { status: 403 });
+    }
+
     const searchParams = request.nextUrl.searchParams;
     const postId = searchParams.get('post_id');
 
@@ -35,6 +42,12 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    // Check for agent role or higher
+    const hasAccess = await checkRole('agent');
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Forbidden: Agent access required' }, { status: 403 });
+    }
+
     // Validate CSRF token for state-changing operation
     try {
       await requireCsrfProtection(request);

@@ -1,3 +1,4 @@
+import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -5,6 +6,7 @@ import { type NextRequest, NextResponse } from 'next/server';
  * GET /api/v1/posts/:id/audit
  *
  * Retrieves audit log entries for a specific post.
+ * Requires admin role.
  *
  * Path Parameters:
  * - id: Post UUID
@@ -16,6 +18,12 @@ import { type NextRequest, NextResponse } from 'next/server';
  */
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    // Check for admin role
+    const isAdmin = await checkRole('admin');
+    if (!isAdmin) {
+      return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
+
     const { id } = await params;
 
     if (!id) {

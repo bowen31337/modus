@@ -1,3 +1,4 @@
+import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -6,6 +7,7 @@ import { z } from 'zod';
  * GET /api/v1/templates/:id
  *
  * Returns a single template by ID.
+ * Requires supervisor or admin role.
  *
  * Response Format:
  * {
@@ -24,6 +26,12 @@ import { z } from 'zod';
  */
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    // Check for supervisor or admin role
+    const hasAccess = await checkRole('supervisor');
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Forbidden: Supervisor access required' }, { status: 403 });
+    }
+
     const { id } = await params;
 
     console.log('[GET /api/v1/templates/:id] Request received for template:', id);
@@ -89,6 +97,7 @@ const updateTemplateSchema = z
  * PATCH /api/v1/templates/:id
  *
  * Updates a template's name, content, placeholders, or category.
+ * Requires supervisor or admin role.
  *
  * Request Body:
  * {
@@ -116,6 +125,12 @@ const updateTemplateSchema = z
  */
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    // Check for supervisor or admin role
+    const hasAccess = await checkRole('supervisor');
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Forbidden: Supervisor access required' }, { status: 403 });
+    }
+
     const { id } = await params;
 
     console.log('[PATCH /api/v1/templates/:id] Request received for template:', id);
@@ -180,6 +195,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
  * DELETE /api/v1/templates/:id
  *
  * Deletes a template by ID.
+ * Requires supervisor or admin role.
  *
  * Response Format:
  * {
@@ -191,6 +207,12 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Check for supervisor or admin role
+    const hasAccess = await checkRole('supervisor');
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Forbidden: Supervisor access required' }, { status: 403 });
+    }
+
     const { id } = await params;
 
     console.log('[DELETE /api/v1/templates/:id] Request received for template:', id);

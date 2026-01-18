@@ -1,3 +1,4 @@
+import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -5,6 +6,7 @@ import { type NextRequest, NextResponse } from 'next/server';
  * POST /api/v1/rules/reorder
  *
  * Reorders priority rules based on the provided array of rule IDs.
+ * Requires admin role.
  *
  * Request Body:
  * {
@@ -13,6 +15,12 @@ import { type NextRequest, NextResponse } from 'next/server';
  */
 export async function POST(request: NextRequest) {
   try {
+    // Check for admin role (demo mode defaults to admin)
+    const isAdmin = await checkRole('admin');
+    if (!isAdmin) {
+      return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
+
     const body = await request.json();
     const { ruleIds } = body;
 

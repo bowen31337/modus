@@ -2812,17 +2812,21 @@
     "is_dev_done": false,
     "is_qa_passed": false,
     "qa_retry_count": 1,
-    "dev_failure_count": 2,
+    "dev_failure_count": 3,
     "dev_completed_at": "1768715565",
     "qa_validated": true,
     "last_qa_run": "2026-01-18T07:31:24.321435Z",
     "qa_notes": "Failed: One or more gates failed",
     "qa_report_path": "modus/qa-reports/feature-149-2026-01-18-07-31-24.json",
-    "last_dev_failure_at": "2026-01-18T09:42:45.019116Z",
+    "last_dev_failure_at": "2026-01-18T10:12:48.629849Z",
     "dev_failure_reasons": [
       "Worker session timed out",
+      "Worker session timed out",
       "Worker session timed out"
-    ]
+    ],
+    "is_stuck": true,
+    "stuck_reason": "Max DEV failures exceeded. Last errors: ['Worker session timed out', 'Worker session timed out']",
+    "stuck_at": "2026-01-18T10:12:56.943702Z"
   },
   {
     "category": "functional",
@@ -2864,20 +2868,15 @@
       "Step 5: Verify UI handles rate limit gracefully"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 1,
-    "dev_completed_at": "2026-01-18T02:55:53.128844Z",
-    "dev_failure_count": 2,
+    "dev_completed_at": "2026-01-18T10:10:37.847832Z",
+    "dev_failure_count": 0,
     "qa_validated": true,
     "last_qa_run": "2026-01-18T07:31:24.354992Z",
     "qa_notes": "Failed: One or more gates failed",
-    "qa_report_path": "modus/qa-reports/feature-151-2026-01-18-07-31-24.json",
-    "last_dev_failure_at": "2026-01-18T09:54:18.676141Z",
-    "dev_failure_reasons": [
-      "Worker session timed out",
-      "Worker session timed out"
-    ]
+    "qa_report_path": "modus/qa-reports/feature-151-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -3034,11 +3033,15 @@
     "is_qa_passed": false,
     "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T04:08:02.712414Z",
-    "dev_failure_count": 0,
+    "dev_failure_count": 1,
     "qa_validated": true,
     "last_qa_run": "2026-01-18T07:31:24.456625Z",
     "qa_notes": "Failed: One or more gates failed",
-    "qa_report_path": "modus/qa-reports/feature-158-2026-01-18-07-31-24.json"
+    "qa_report_path": "modus/qa-reports/feature-158-2026-01-18-07-31-24.json",
+    "last_dev_failure_at": "2026-01-18T10:16:05.053896Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -3072,10 +3075,10 @@
       "Step 5: Verify no server errors in logs"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 1,
-    "dev_completed_at": "2026-01-18T04:28:27.746471Z",
+    "dev_completed_at": "2026-01-18T10:19:19.831Z",
     "dev_failure_count": 0,
     "qa_validated": true,
     "last_qa_run": "2026-01-18T07:31:24.490360Z",
@@ -3093,11 +3096,11 @@
       "Step 5: Verify .env.example documents all required vars"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 1,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-18T05:18:58.114765Z",
+    "dev_completed_at": "2026-01-18T10:17:40.332Z",
     "qa_validated": true,
     "last_qa_run": "2026-01-18T07:31:24.506944Z",
     "qa_notes": "Failed: One or more gates failed",

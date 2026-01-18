@@ -23,7 +23,16 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "incremental": true
+    "incremental": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["apps/web/*"],
+      "@/components/*": ["apps/web/components/*"],
+      "@/features/*": ["apps/web/features/*"],
+      "@/lib/*": ["apps/web/lib/*"],
+      "@/hooks/*": ["apps/web/hooks/*"]
+    }
   },
-  "exclude": ["node_modules", "dist", ".next", "build", "coverage"]
+  "exclude": ["node_modules", "dist", ".next", "build", "coverage", "tests"]
 }

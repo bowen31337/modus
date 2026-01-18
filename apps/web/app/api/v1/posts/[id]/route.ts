@@ -1,3 +1,4 @@
+import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -5,12 +6,19 @@ import { type NextRequest, NextResponse } from 'next/server';
  * GET /api/v1/posts/:id
  *
  * Returns a single moderation post by ID.
+ * Requires agent role or higher.
  *
  * Path Parameters:
  * - id: Post UUID
  */
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    // Check for agent role or higher
+    const hasAccess = await checkRole('agent');
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Forbidden: Agent access required' }, { status: 403 });
+    }
+
     const { id } = await params;
 
     if (!id) {
@@ -37,6 +45,7 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
  * PATCH /api/v1/posts/:id
  *
  * Updates a single moderation post by ID.
+ * Requires agent role or higher.
  *
  * Path Parameters:
  * - id: Post UUID
@@ -47,6 +56,12 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
  */
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    // Check for agent role or higher
+    const hasAccess = await checkRole('agent');
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Forbidden: Agent access required' }, { status: 403 });
+    }
+
     const { id } = await params;
 
     if (!id) {

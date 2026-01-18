@@ -5,6 +5,7 @@ import { RulesManagement } from '@/features/rules/components/rules-management';
 import { AgentManagement } from '@/features/settings/components/agent-management';
 import { AuditLog } from '@/features/settings/components/audit-log';
 import { ProfileSettings } from '@/features/settings/components/profile-settings';
+import type { UserRole } from '@/lib/role-check';
 import { cn } from '@/lib/utils';
 import { Button } from '@modus/ui';
 import {
@@ -42,18 +43,27 @@ export interface Agent {
   created_at: string;
 }
 
-export default function SettingsClient() {
+interface SettingsClientProps {
+  userRole: UserRole;
+  currentUser: { id: string; role: UserRole; display_name: string } | null;
+}
+
+export default function SettingsClient({ userRole, currentUser }: SettingsClientProps) {
   const [activeTab, setActiveTab] = useState<
     'profile' | 'templates' | 'rules' | 'agents' | 'audit'
   >('profile');
 
+  // Check if user has admin access
+  const isAdmin = userRole === 'admin';
+  const isSupervisorOrAbove = userRole === 'admin' || userRole === 'supervisor';
+
   // Mock current agent (in real app, this would come from auth/session)
   const [currentAgent, setCurrentAgent] = useState<Agent>({
-    id: 'agent-1',
+    id: currentUser?.id || 'agent-1',
     user_id: 'user-agent-1',
-    display_name: 'Agent A',
+    display_name: currentUser?.display_name || 'Agent A',
     avatar_url: null,
-    role: 'admin', // Set to admin for testing role management
+    role: userRole, // Use actual user role from server
     status: 'online',
     last_active_at: new Date().toISOString(),
     created_at: '2025-01-01T00:00:00Z',
@@ -321,58 +331,66 @@ export default function SettingsClient() {
               <User size={16} />
               Profile
             </Button>
-            <Button
-              onClick={() => setActiveTab('templates')}
-              className={cn(
-                'px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-2',
-                activeTab === 'templates'
-                  ? 'bg-background-tertiary text-foreground font-medium'
-                  : 'text-muted-foreground hover:bg-background-tertiary/50'
-              )}
-              data-testid="tab-templates"
-            >
-              <FileText size={16} />
-              Templates
-            </Button>
-            <Button
-              onClick={() => setActiveTab('rules')}
-              className={cn(
-                'px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-2',
-                activeTab === 'rules'
-                  ? 'bg-background-tertiary text-foreground font-medium'
-                  : 'text-muted-foreground hover:bg-background-tertiary/50'
-              )}
-              data-testid="tab-rules"
-            >
-              <Shield size={16} />
-              Priority Rules
-            </Button>
-            <Button
-              onClick={() => setActiveTab('agents')}
-              className={cn(
-                'px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-2',
-                activeTab === 'agents'
-                  ? 'bg-background-tertiary text-foreground font-medium'
-                  : 'text-muted-foreground hover:bg-background-tertiary/50'
-              )}
-              data-testid="tab-agents"
-            >
-              <Users size={16} />
-              Agents
-            </Button>
-            <Button
-              onClick={() => setActiveTab('audit')}
-              className={cn(
-                'px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-2',
-                activeTab === 'audit'
-                  ? 'bg-background-tertiary text-foreground font-medium'
-                  : 'text-muted-foreground hover:bg-background-tertiary/50'
-              )}
-              data-testid="tab-audit"
-            >
-              <History size={16} />
-              Audit Log
-            </Button>
+            {isSupervisorOrAbove && (
+              <Button
+                onClick={() => setActiveTab('templates')}
+                className={cn(
+                  'px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-2',
+                  activeTab === 'templates'
+                    ? 'bg-background-tertiary text-foreground font-medium'
+                    : 'text-muted-foreground hover:bg-background-tertiary/50'
+                )}
+                data-testid="tab-templates"
+              >
+                <FileText size={16} />
+                Templates
+              </Button>
+            )}
+            {isAdmin && (
+              <Button
+                onClick={() => setActiveTab('rules')}
+                className={cn(
+                  'px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-2',
+                  activeTab === 'rules'
+                    ? 'bg-background-tertiary text-foreground font-medium'
+                    : 'text-muted-foreground hover:bg-background-tertiary/50'
+                )}
+                data-testid="tab-rules"
+              >
+                <Shield size={16} />
+                Priority Rules
+              </Button>
+            )}
+            {isAdmin && (
+              <Button
+                onClick={() => setActiveTab('agents')}
+                className={cn(
+                  'px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-2',
+                  activeTab === 'agents'
+                    ? 'bg-background-tertiary text-foreground font-medium'
+                    : 'text-muted-foreground hover:bg-background-tertiary/50'
+                )}
+                data-testid="tab-agents"
+              >
+                <Users size={16} />
+                Agents
+              </Button>
+            )}
+            {isAdmin && (
+              <Button
+                onClick={() => setActiveTab('audit')}
+                className={cn(
+                  'px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-2',
+                  activeTab === 'audit'
+                    ? 'bg-background-tertiary text-foreground font-medium'
+                    : 'text-muted-foreground hover:bg-background-tertiary/50'
+                )}
+                data-testid="tab-audit"
+              >
+                <History size={16} />
+                Audit Log
+              </Button>
+            )}
           </div>
         </div>
 

@@ -1,4 +1,5 @@
 import { csrfErrorResponse, requireCsrfProtection } from '@/lib/csrf';
+import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
 import { type PostsQuery, generatePostEmbedding, postsQuerySchema } from '@modus/logic';
 import { type NextRequest, NextResponse } from 'next/server';
@@ -8,6 +9,7 @@ import { z } from 'zod';
  * GET /api/v1/posts
  *
  * Returns a paginated list of moderation posts with filtering and sorting.
+ * Requires agent role or higher.
  *
  * Query Parameters:
  * - category_id: Filter by category UUID
@@ -24,6 +26,12 @@ import { z } from 'zod';
  */
 export async function GET(request: NextRequest) {
   try {
+    // Check for agent role or higher
+    const hasAccess = await checkRole('agent');
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Forbidden: Agent access required' }, { status: 403 });
+    }
+
     const searchParams = request.nextUrl.searchParams;
 
     // Debug logging
@@ -153,6 +161,7 @@ export async function GET(request: NextRequest) {
 
 /**
  * Create a new moderation post with automatic embedding generation
+ * Requires supervisor or admin role.
  *
  * Request Body:
  * - title: Post title (required, max 500 chars)
@@ -190,6 +199,12 @@ const createPostInputSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    // Check for supervisor or admin role
+    const hasAccess = await checkRole('supervisor');
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Forbidden: Supervisor access required' }, { status: 403 });
+    }
+
     // Validate CSRF token for state-changing operation
     try {
       await requireCsrfProtection(request);

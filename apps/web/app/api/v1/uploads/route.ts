@@ -1,3 +1,4 @@
+import { checkRole } from '@/lib/role-check';
 import {
   type UploadResponse,
   sanitizeFileMetadata,
@@ -13,7 +14,10 @@ import { z } from 'zod';
 // ============================================================================
 
 /**
+ * POST /api/v1/uploads
+ *
  * Upload a file with validation and sanitization
+ * Requires agent role or higher.
  *
  * Request Body (JSON with base64):
  * - filename: File name (required)
@@ -28,6 +32,11 @@ import { z } from 'zod';
  */
 export async function POST(request: NextRequest) {
   try {
+    // Check for agent role or higher
+    const hasAccess = await checkRole('agent');
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Forbidden: Agent access required' }, { status: 403 });
+    }
     // Check content type
     const contentType = request.headers.get('content-type') || '';
 
@@ -155,11 +164,19 @@ export async function POST(request: NextRequest) {
 // ============================================================================
 
 /**
+ * GET /api/v1/uploads/[id]
+ *
  * Get file upload information by ID
+ * Requires agent role or higher.
  * In production, this would return the actual file or redirect to the file URL
  */
 export async function GET(request: NextRequest) {
   try {
+    // Check for agent role or higher
+    const hasAccess = await checkRole('agent');
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Forbidden: Agent access required' }, { status: 403 });
+    }
     // Extract file ID from URL
     const url = new URL(request.url);
     const segments = url.pathname.split('/');

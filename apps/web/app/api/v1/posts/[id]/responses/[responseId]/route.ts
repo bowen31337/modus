@@ -1,4 +1,5 @@
 import { csrfErrorResponse, requireCsrfProtection } from '@/lib/csrf';
+import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
 import { updateResponseInputSchema } from '@modus/logic';
 import { type NextRequest, NextResponse } from 'next/server';
@@ -7,6 +8,7 @@ import { type NextRequest, NextResponse } from 'next/server';
  * PUT /api/v1/posts/:id/responses/:responseId
  *
  * Updates an existing response for a moderation post.
+ * Requires agent role or higher.
  *
  * Path Parameters:
  * - id: Post UUID
@@ -21,6 +23,12 @@ export async function PUT(
   { params }: { params: Promise<{ id: string; responseId: string }> }
 ) {
   try {
+    // Check for agent role or higher
+    const hasAccess = await checkRole('agent');
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Forbidden: Agent access required' }, { status: 403 });
+    }
+
     const { id, responseId } = await params;
 
     if (!id) {
@@ -88,6 +96,7 @@ export async function PUT(
  * DELETE /api/v1/posts/:id/responses/:responseId
  *
  * Deletes an existing response for a moderation post.
+ * Requires agent role or higher.
  *
  * Path Parameters:
  * - id: Post UUID
@@ -98,6 +107,12 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string; responseId: string }> }
 ) {
   try {
+    // Check for agent role or higher
+    const hasAccess = await checkRole('agent');
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Forbidden: Agent access required' }, { status: 403 });
+    }
+
     const { id, responseId } = await params;
 
     if (!id) {

@@ -1,3 +1,4 @@
+import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -6,6 +7,7 @@ import { z } from 'zod';
  * GET /api/v1/agents/:id
  *
  * Returns a single agent by ID.
+ * Requires admin role.
  *
  * Response Format:
  * {
@@ -23,6 +25,12 @@ import { z } from 'zod';
  */
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    // Check for admin role (demo mode defaults to admin)
+    const isAdmin = await checkRole('admin');
+    if (!isAdmin) {
+      return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
+
     const { id } = await params;
 
     console.log('[GET /api/v1/agents/:id] Request received for agent:', id);
@@ -132,14 +140,14 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     let message: string;
 
     if ('status' in body) {
-      // Status update
+      // Status update - any authenticated user can update their own status
       const validatedData = updateAgentStatusSchema.parse(body);
       console.log('[PATCH /api/v1/agents/:id] Updating status to:', validatedData.status);
 
       updatedAgent = dataStore.updateAgentStatus(id, validatedData.status);
       message = 'Agent status updated successfully';
     } else if ('display_name' in body || 'avatar_url' in body) {
-      // Profile update
+      // Profile update - any authenticated user can update their own profile
       const validatedData = updateAgentProfileSchema.parse(body);
       console.log('[PATCH /api/v1/agents/:id] Updating profile:', validatedData);
 
@@ -147,6 +155,11 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       message = 'Agent profile updated successfully';
     } else if ('role' in body) {
       // Role update (admin only)
+      const isAdmin = await checkRole('admin');
+      if (!isAdmin) {
+        return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+      }
+
       const validatedData = updateAgentRoleSchema.parse(body);
       console.log('[PATCH /api/v1/agents/:id] Updating role to:', validatedData.role);
 

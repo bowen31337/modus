@@ -1,3 +1,4 @@
+import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -6,6 +7,7 @@ import { z } from 'zod';
  * GET /api/v1/templates
  *
  * Returns a list of all response templates.
+ * Requires supervisor or admin role.
  *
  * Response Format:
  * {
@@ -29,6 +31,12 @@ import { z } from 'zod';
  */
 export async function GET(_request: NextRequest) {
   try {
+    // Check for supervisor or admin role
+    const hasAccess = await checkRole('supervisor');
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Forbidden: Supervisor access required' }, { status: 403 });
+    }
+
     console.log('[GET /api/v1/templates] Request received');
 
     // Get all templates from data store
@@ -71,6 +79,7 @@ const createTemplateSchema = z.object({
  * POST /api/v1/templates
  *
  * Creates a new response template.
+ * Requires supervisor or admin role.
  *
  * Request Body:
  * {
@@ -99,6 +108,12 @@ const createTemplateSchema = z.object({
  */
 export async function POST(_request: NextRequest) {
   try {
+    // Check for supervisor or admin role
+    const hasAccess = await checkRole('supervisor');
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Forbidden: Supervisor access required' }, { status: 403 });
+    }
+
     console.log('[POST /api/v1/templates] Request received');
 
     // Parse request body

@@ -10,17 +10,17 @@ async function testEditResponse() {
   try {
     // Navigate to the dashboard
     console.log('1. Navigating to dashboard...');
-    await page.goto('http://localhost:3002/dashboard');
+    await page.goto('http://localhost:3000/dashboard');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(1000);
 
     // Wait for posts to load
-    await page.waitForSelector('[data-testid="post-card"]', { timeout: 5000 });
+    await page.waitForSelector('[data-testid^="post-card-"]', { timeout: 5000 });
     console.log('   ✓ Dashboard loaded');
 
     // Click on the first post
     console.log('\n2. Clicking on first post...');
-    const firstPost = await page.locator('[data-testid="post-card"]').first();
+    const firstPost = await page.locator('[data-testid^="post-card-"]').first();
     await firstPost.click();
     await page.waitForTimeout(500);
     console.log('   ✓ Post selected');
@@ -80,7 +80,59 @@ async function testEditResponse() {
         }
       }
     } else {
-      console.log('\n⚠️  No edit buttons found - may need to create own response first');
+      console.log('\n⚠️  No edit buttons found - creating a new response first...');
+
+      // Create a new response
+      const textarea = page.locator('textarea[data-testid="response-textarea"]');
+      const textareaCount = await textarea.count();
+
+      if (textareaCount > 0) {
+        await textarea.first().fill('Test response to be edited');
+        await page.waitForTimeout(500);
+
+        const sendBtn = page.locator('button[data-testid="send-response-button"]');
+        await sendBtn.click();
+        await page.waitForTimeout(2000);
+
+        console.log('   ✓ New response created');
+
+        // Check for edit buttons again
+        const newEditCount = await page.locator('[data-testid^="edit-response-"]').count();
+        console.log(`   Edit buttons after creating: ${newEditCount}`);
+
+        if (newEditCount > 0) {
+          console.log('\n5. Testing edit functionality...');
+
+          await page.locator('[data-testid^="edit-response-"]').first().click();
+          await page.waitForTimeout(500);
+
+          const editInput = page.locator('textarea[placeholder*="Edit"]');
+          const editInputCount = await editInput.count();
+
+          if (editInputCount > 0) {
+            await editInput.first().fill('Edited response content - successfully updated!');
+            await page.waitForTimeout(500);
+
+            const saveBtn = page.locator('button:has-text("Save"), button:has-text("Update")');
+            await saveBtn.first().click();
+            await page.waitForTimeout(2000);
+
+            const responseContent = await page.locator('[data-testid^="response-content-"]').first().textContent();
+            if (responseContent?.includes('successfully updated')) {
+              console.log('\n✅ PASS: Agent can edit their previously submitted response!');
+            } else {
+              console.log('\n⚠️  Response edit may not have saved');
+              console.log('   Content:', responseContent?.substring(0, 100));
+            }
+          } else {
+            console.log('   ❌ Edit input not found');
+          }
+        } else {
+          console.log('   ❌ Still no edit buttons after creating response');
+        }
+      } else {
+        console.log('   ❌ Response textarea not found');
+      }
     }
 
   } catch (error) {

@@ -1,3 +1,4 @@
+import { checkRole } from '@/lib/role-check';
 import { type CreateRuleInput, dataStore } from '@/lib/data-store';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -5,9 +6,16 @@ import { type NextRequest, NextResponse } from 'next/server';
  * GET /api/v1/rules
  *
  * Returns all priority rules, sorted by position.
+ * Requires admin role.
  */
-export async function GET() {
+export async function GET(_request: NextRequest) {
   try {
+    // Check for admin role (demo mode defaults to admin)
+    const isAdmin = await checkRole('admin');
+    if (!isAdmin) {
+      return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
+
     const rules = dataStore.getAllRules();
 
     return NextResponse.json({
@@ -27,6 +35,7 @@ export async function GET() {
  * POST /api/v1/rules
  *
  * Creates a new priority rule.
+ * Requires admin role.
  *
  * Request Body:
  * {
@@ -41,6 +50,12 @@ export async function GET() {
  */
 export async function POST(request: NextRequest) {
   try {
+    // Check for admin role (demo mode defaults to admin)
+    const isAdmin = await checkRole('admin');
+    if (!isAdmin) {
+      return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
+
     const body = await request.json();
 
     const input: CreateRuleInput = {

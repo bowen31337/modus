@@ -1,3 +1,4 @@
+import { checkRole } from '@/lib/role-check';
 import { type TestRuleInput, dataStore } from '@/lib/data-store';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -5,6 +6,7 @@ import { type NextRequest, NextResponse } from 'next/server';
  * POST /api/v1/rules/test
  *
  * Tests a rule (or all active rules) against sample post data.
+ * Requires admin role.
  *
  * Request Body:
  * {
@@ -19,6 +21,12 @@ import { type NextRequest, NextResponse } from 'next/server';
  */
 export async function POST(request: NextRequest) {
   try {
+    // Check for admin role
+    const isAdmin = await checkRole('admin');
+    if (!isAdmin) {
+      return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
+
     const body = await request.json();
     const { ruleId, ...testInput } = body;
 

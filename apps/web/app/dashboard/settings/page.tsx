@@ -1,3 +1,4 @@
+import { getCurrentUser, getCurrentUserRole } from '@/lib/role-check';
 import { createServerSideClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import SettingsClient from './settings-client';
@@ -20,5 +21,9 @@ export default async function SettingsPage() {
   }
   // Demo mode: allow access without session cookie (consistent with layout.tsx)
 
-  return <SettingsClient />;
+  // Get user role for role-based access control
+  const userRole = await getCurrentUserRole();
+  const currentUser = await getCurrentUser();
+
+  return <SettingsClient userRole={userRole} currentUser={currentUser} />;
 }

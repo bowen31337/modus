@@ -1,3 +1,4 @@
+import { checkRole } from '@/lib/role-check';
 import type { SentimentResult } from '@modus/logic';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -18,6 +19,7 @@ type SentimentInput = z.infer<typeof sentimentInputSchema>;
 
 /**
  * Analyze sentiment of text using AI
+ * Requires agent role or higher.
  *
  * Request Body:
  * - text: Text to analyze (1-10000 characters)
@@ -30,6 +32,12 @@ type SentimentInput = z.infer<typeof sentimentInputSchema>;
  */
 export async function POST(request: NextRequest) {
   try {
+    // Check for agent role or higher
+    const hasAccess = await checkRole('agent');
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Forbidden: Agent access required' }, { status: 403 });
+    }
+
     // Parse and validate request body
     const body = await request.json();
     const validatedInput = sentimentInputSchema.parse(body) as SentimentInput;

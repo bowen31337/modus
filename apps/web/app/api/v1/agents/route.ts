@@ -1,3 +1,4 @@
+import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -5,6 +6,7 @@ import { type NextRequest, NextResponse } from 'next/server';
  * GET /api/v1/agents
  *
  * Returns a list of all agents with their current status.
+ * Requires admin role.
  *
  * Response Format:
  * {
@@ -27,6 +29,12 @@ import { type NextRequest, NextResponse } from 'next/server';
  */
 export async function GET(_request: NextRequest) {
   try {
+    // Check for admin role (demo mode defaults to admin)
+    const isAdmin = await checkRole('admin');
+    if (!isAdmin) {
+      return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
+
     console.log('[GET /api/v1/agents] Request received');
 
     // Get all agents from data store

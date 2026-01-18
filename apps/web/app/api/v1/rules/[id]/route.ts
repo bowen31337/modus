@@ -1,3 +1,4 @@
+import { checkRole } from '@/lib/role-check';
 import { type UpdateRuleInput, dataStore } from '@/lib/data-store';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -5,9 +6,16 @@ import { type NextRequest, NextResponse } from 'next/server';
  * GET /api/v1/rules/[id]
  *
  * Returns a specific priority rule by ID.
+ * Requires admin role.
  */
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    // Check for admin role (demo mode defaults to admin)
+    const isAdmin = await checkRole('admin');
+    if (!isAdmin) {
+      return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
+
     const { id } = await params;
     const rule = dataStore.getRuleById(id);
 
@@ -29,6 +37,7 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
  * PATCH /api/v1/rules/[id]
  *
  * Updates an existing priority rule.
+ * Requires admin role.
  *
  * Request Body:
  * {
@@ -43,6 +52,12 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
  */
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    // Check for admin role (demo mode defaults to admin)
+    const isAdmin = await checkRole('admin');
+    if (!isAdmin) {
+      return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
+
     const { id } = await params;
     const body = await request.json();
 
@@ -76,12 +91,19 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
  * DELETE /api/v1/rules/[id]
  *
  * Deletes a priority rule.
+ * Requires admin role.
  */
 export async function DELETE(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Check for admin role (demo mode defaults to admin)
+    const isAdmin = await checkRole('admin');
+    if (!isAdmin) {
+      return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
+
     const { id } = await params;
     const deleted = dataStore.deleteRule(id);
 

@@ -1,3 +1,4 @@
+import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -5,6 +6,7 @@ import { type NextRequest, NextResponse } from 'next/server';
  * POST /api/v1/posts/:id/assign
  *
  * Assigns a post to an agent.
+ * Requires agent role or higher.
  *
  * Path Parameters:
  * - id: Post UUID
@@ -14,6 +16,12 @@ import { type NextRequest, NextResponse } from 'next/server';
  */
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    // Check for agent role or higher
+    const hasAccess = await checkRole('agent');
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Forbidden: Agent access required' }, { status: 403 });
+    }
+
     const { id } = await params;
 
     if (!id) {
