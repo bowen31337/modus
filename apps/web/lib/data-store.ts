@@ -775,6 +775,24 @@ class DataStore {
     return updated;
   }
 
+  updateAgentProfile(
+    id: string,
+    updates: { display_name?: string; avatar_url?: string | null }
+  ): Agent | null {
+    const agent = this.agents.get(id);
+    if (!agent) return null;
+
+    const now = new Date().toISOString();
+    const updated: Agent = {
+      ...agent,
+      ...updates,
+      last_active_at: now,
+    };
+
+    this.agents.set(id, updated);
+    return updated;
+  }
+
   // ============================================================================
   // Templates CRUD Operations
   // ============================================================================

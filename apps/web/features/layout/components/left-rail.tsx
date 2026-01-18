@@ -87,6 +87,7 @@ export function LeftRail() {
         onClick={handleLogout}
         className="w-10 h-10 text-obsidian-400 hover:text-red-400 hover:bg-obsidian-800 transition-all duration-200"
         title="Logout"
+        aria-label="Logout from the application"
       >
         <LogOut size={20} className="transition-transform duration-200" />
       </Button>

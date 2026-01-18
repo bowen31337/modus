@@ -61,20 +61,32 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
   }
 }
 
-// Validation schema for PATCH request
+// Validation schema for PATCH request - Status Update
 const updateAgentStatusSchema = z.object({
   status: z.enum(['online', 'offline', 'busy']),
+});
+
+// Validation schema for PATCH request - Profile Update
+const updateAgentProfileSchema = z.object({
+  display_name: z.string().min(2).max(50).optional(),
+  avatar_url: z.string().url().nullable().optional(),
 });
 
 /**
  * PATCH /api/v1/agents/:id
  *
- * Updates an agent's status (online, offline, busy).
+ * Updates an agent's status or profile information.
  * Also updates the last_active_at timestamp.
  *
- * Request Body:
+ * Request Body (Status Update):
  * {
  *   "status": "online" | "offline" | "busy"
+ * }
+ *
+ * Request Body (Profile Update):
+ * {
+ *   "display_name": "Agent A",
+ *   "avatar_url": "https://example.com/avatar.jpg" | null
  * }
  *
  * Response Format:
@@ -89,7 +101,7 @@ const updateAgentStatusSchema = z.object({
  *     "last_active_at": "2025-01-17T10:00:00Z",
  *     "created_at": "2025-01-01T00:00:00Z"
  *   },
- *   "message": "Agent status updated successfully"
+ *   "message": "Agent updated successfully"
  * }
  */
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -101,13 +113,33 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     // Parse request body
     const body = await request.json();
 
-    // Validate request body
-    const validatedData = updateAgentStatusSchema.parse(body);
+    // Determine update type based on request body
+    let updatedAgent;
+    let message;
 
-    console.log('[PATCH /api/v1/agents/:id] Updating status to:', validatedData.status);
+    if ('status' in body) {
+      // Status update
+      const validatedData = updateAgentStatusSchema.parse(body);
+      console.log('[PATCH /api/v1/agents/:id] Updating status to:', validatedData.status);
 
-    // Update agent status in data store
-    const updatedAgent = dataStore.updateAgentStatus(id, validatedData.status);
+      updatedAgent = dataStore.updateAgentStatus(id, validatedData.status);
+      message = 'Agent status updated successfully';
+    } else if ('display_name' in body || 'avatar_url' in body) {
+      // Profile update
+      const validatedData = updateAgentProfileSchema.parse(body);
+      console.log('[PATCH /api/v1/agents/:id] Updating profile:', validatedData);
+
+      updatedAgent = dataStore.updateAgentProfile(id, validatedData);
+      message = 'Agent profile updated successfully';
+    } else {
+      return NextResponse.json(
+        {
+          error: 'Invalid request body',
+          details: 'Must provide either "status" or profile fields (display_name, avatar_url)',
+        },
+        { status: 400 }
+      );
+    }
 
     if (!updatedAgent) {
       console.log('[PATCH /api/v1/agents/:id] Agent not found:', id);
@@ -119,12 +151,12 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       );
     }
 
-    console.log('[PATCH /api/v1/agents/:id] Agent status updated:', updatedAgent.id);
+    console.log('[PATCH /api/v1/agents/:id] Agent updated:', updatedAgent.id);
 
     return NextResponse.json(
       {
         data: updatedAgent,
-        message: 'Agent status updated successfully',
+        message,
       },
       { status: 200 }
     );

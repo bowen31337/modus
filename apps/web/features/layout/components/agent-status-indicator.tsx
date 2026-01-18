@@ -60,6 +60,7 @@ export function AgentStatusIndicator({
             size="icon"
             className="w-10 h-10 relative"
             title={`Status: ${config.label}`}
+            aria-label={`Agent status: ${config.label}. ${config.description}`}
             data-testid="agent-status-trigger"
           >
             <Circle

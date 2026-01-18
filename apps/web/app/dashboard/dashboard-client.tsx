@@ -294,7 +294,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <main className="flex h-screen overflow-hidden" role="main">
       {/* Left Rail - 64px fixed width */}
       <LeftRail />
 
@@ -323,6 +323,6 @@ export default function DashboardPage() {
         onClose={() => setIsCommandPaletteOpen(false)}
         onNavigate={handleCommandPaletteNavigate}
       />
-    </div>
+    </main>
   );
 }

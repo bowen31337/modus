@@ -2794,8 +2794,11 @@
       "Step 5: Verify all files pass checks"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-18T04:09:29.244387Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -2809,7 +2812,13 @@
     ],
     "passes": false,
     "is_dev_done": false,
-    "is_qa_passed": false
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-18T04:19:12.052253Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -2822,8 +2831,11 @@
       "Step 5: Verify tests are deterministic (no flakiness)"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-18T04:08:02.712414Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",

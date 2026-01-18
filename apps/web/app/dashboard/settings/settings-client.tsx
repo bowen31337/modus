@@ -2,9 +2,10 @@
 
 import { LeftRail } from '@/features/layout/components/left-rail';
 import { RulesManagement } from '@/features/rules/components/rules-management';
+import { ProfileSettings } from '@/features/settings/components/profile-settings';
 import { cn } from '@/lib/utils';
 import { Button } from '@modus/ui';
-import { ArrowLeft, Edit, FileText, Plus, Search, Shield, Trash2 } from 'lucide-react';
+import { ArrowLeft, Edit, FileText, Plus, Search, Shield, Trash2, User } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -17,8 +18,59 @@ export interface Template {
   usage_count: number;
 }
 
+export interface Agent {
+  id: string;
+  user_id: string;
+  display_name: string;
+  avatar_url?: string | null;
+  role: 'agent' | 'supervisor' | 'admin' | 'moderator';
+  status: 'online' | 'offline' | 'busy';
+  last_active_at: string;
+  created_at: string;
+}
+
 export default function SettingsClient() {
-  const [activeTab, setActiveTab] = useState<'templates' | 'rules'>('templates');
+  const [activeTab, setActiveTab] = useState<'profile' | 'templates' | 'rules'>('profile');
+
+  // Mock current agent (in real app, this would come from auth/session)
+  const [currentAgent, setCurrentAgent] = useState<Agent>({
+    id: 'agent-1',
+    user_id: 'user-agent-1',
+    display_name: 'Agent A',
+    avatar_url: null,
+    role: 'agent',
+    status: 'online',
+    last_active_at: new Date().toISOString(),
+    created_at: '2025-01-01T00:00:00Z',
+  });
+
+  const handleUpdateAgent = async (agentId: string, updates: Partial<Agent>) => {
+    try {
+      const response = await fetch(`/api/v1/agents/${agentId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updates),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to update profile');
+      }
+
+      const result = await response.json();
+
+      // Update local state with the returned agent data
+      if (agentId === currentAgent.id) {
+        setCurrentAgent(result.data);
+      }
+    } catch (error) {
+      console.error('Failed to update agent:', error);
+      throw error;
+    }
+  };
+
   const [templates, setTemplates] = useState<Template[]>([
     {
       id: '1',
@@ -189,6 +241,19 @@ export default function SettingsClient() {
           {/* Tab Navigation */}
           <div className="flex items-center gap-2">
             <Button
+              onClick={() => setActiveTab('profile')}
+              className={cn(
+                'px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-2',
+                activeTab === 'profile'
+                  ? 'bg-background-tertiary text-foreground font-medium'
+                  : 'text-muted-foreground hover:bg-background-tertiary/50'
+              )}
+              data-testid="tab-profile"
+            >
+              <User size={16} />
+              Profile
+            </Button>
+            <Button
               onClick={() => setActiveTab('templates')}
               className={cn(
                 'px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-2',
@@ -216,6 +281,13 @@ export default function SettingsClient() {
             </Button>
           </div>
         </div>
+
+        {/* Profile Tab Content */}
+        {activeTab === 'profile' && (
+          <div className="flex-1 overflow-y-auto p-6">
+            <ProfileSettings agent={currentAgent} onUpdateAgent={handleUpdateAgent} />
+          </div>
+        )}
 
         {/* Templates Tab Content */}
         {activeTab === 'templates' && (

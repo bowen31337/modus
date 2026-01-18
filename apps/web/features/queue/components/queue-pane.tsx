@@ -577,7 +577,7 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
     >
       {/* Queue Header */}
       <div className="p-4 border-b border-border">
-        <h2 className="text-lg font-semibold text-foreground mb-3">Moderation Queue</h2>
+        <h1 className="text-lg font-semibold text-foreground mb-3">Moderation Queue</h1>
 
         {/* Search Bar */}
         <div className="relative">
