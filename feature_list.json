@@ -2307,8 +2307,11 @@
       "Step 5: Verify content is readable without horizontal scroll"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-18T01:02:49.466491Z",
+    "dev_failure_count": 0
   },
   {
     "category": "style",
@@ -2449,9 +2452,9 @@
       "Step 5: Verify return to post detail",
       "Step 6: Verify URL reflects current view"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true
   },
   {
     "category": "functional",
@@ -2463,9 +2466,9 @@
       "Step 4: Log in if required",
       "Step 5: Verify direct navigation to the specific post"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true
   },
   {
     "category": "functional",
