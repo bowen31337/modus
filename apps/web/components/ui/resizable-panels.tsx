@@ -57,6 +57,7 @@ export function ResizablePanel({
   useEffect(() => {
     if (panelRef.current) {
       panelRef.current.style.flex = `0 0 ${size}%`;
+      panelRef.current.setAttribute('data-panel-size', size.toString());
     }
   }, [size]);
 
@@ -65,7 +66,6 @@ export function ResizablePanel({
       ref={panelRef}
       className={cn('overflow-hidden', className)}
       style={style}
-      data-panel-size={size}
     >
       {children}
     </div>
@@ -112,10 +112,6 @@ export function ResizableHandle({
       } else {
         onDrag(deltaY);
       }
-
-      // Update start position to keep delta relative to previous position
-      // This prevents jumping when the resize handle moves quickly
-      startPos.current = { x: e.clientX, y: e.clientY };
     };
 
     const onMouseUp = () => {

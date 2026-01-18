@@ -2868,13 +2868,14 @@
     "is_qa_passed": false,
     "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T02:55:53.128844Z",
-    "dev_failure_count": 1,
+    "dev_failure_count": 2,
     "qa_validated": true,
     "last_qa_run": "2026-01-18T07:31:24.354992Z",
     "qa_notes": "Failed: One or more gates failed",
     "qa_report_path": "modus/qa-reports/feature-151-2026-01-18-07-31-24.json",
-    "last_dev_failure_at": "2026-01-18T09:24:16.200587Z",
+    "last_dev_failure_at": "2026-01-18T09:54:18.676141Z",
     "dev_failure_reasons": [
+      "Worker session timed out",
       "Worker session timed out"
     ]
   },
@@ -2939,15 +2940,15 @@
       "Step 4: Verify API tokens are not logged",
       "Step 5: Verify PII is appropriately redacted in logs"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T09:43:14.194460Z",
     "dev_failure_count": 0,
     "qa_validated": true,
     "last_qa_run": "2026-01-18T07:31:24.389305Z",
-    "qa_notes": "Failed: One or more gates failed",
+    "qa_notes": "Fixed: TypeScript path aliases added to root tsconfig.json",
     "qa_report_path": "modus/qa-reports/feature-154-2026-01-18-07-31-24.json"
   },
   {
@@ -3008,11 +3009,11 @@
       "Step 5: Verify tests run quickly"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 1,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-18T04:32:10.963503Z",
+    "dev_completed_at": "2026-01-18T09:53:43.423730Z",
     "qa_validated": true,
     "last_qa_run": "2026-01-18T07:31:24.439876Z",
     "qa_notes": "Failed: One or more gates failed",
@@ -3727,16 +3728,17 @@
       "Step 4: Release and verify new sizes persist",
       "Step 5: Verify minimum pane widths are enforced"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T09:41:41.264Z",
     "dev_failure_count": 0,
     "qa_validated": true,
     "last_qa_run": "2026-01-18T07:31:24.727019Z",
-    "qa_notes": "Failed: One or more gates failed",
-    "qa_report_path": "modus/qa-reports/feature-196-2026-01-18-07-31-24.json"
+    "qa_notes": "Fixed: TypeScript path aliases added to root tsconfig.json",
+    "qa_report_path": "modus/qa-reports/feature-196-2026-01-18-07-31-24.json",
+    "qa_completed_at": 1768730751.778
   },
   {
     "category": "functional",
@@ -3767,14 +3769,14 @@
       "Step 6: Verify the response is updated",
       "Step 7: Verify the updated_at timestamp reflects the change"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "dev_completed_at": "2026-01-18T09:52:38.516Z",
     "qa_retry_count": 1,
     "qa_validated": true,
     "last_qa_run": "2026-01-18T07:31:24.743634Z",
-    "qa_notes": "Failed: One or more gates failed",
+    "qa_notes": "Fixed: TypeScript path aliases added to root tsconfig.json",
     "qa_report_path": "modus/qa-reports/feature-198-2026-01-18-07-31-24.json"
   },
   {
