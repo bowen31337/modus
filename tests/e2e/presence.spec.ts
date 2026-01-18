@@ -4,13 +4,17 @@ test.describe('Real-time Presence Indicators', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to dashboard and login
     await page.goto('/login');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
+
+    // Fill in the form (in demo mode, any credentials work)
+    await page.getByLabel('Email').fill('demo@example.com');
+    await page.getByLabel('Password').fill('password123');
 
     // Submit demo login
-    await page.click('button[type="submit"]');
+    await page.locator('button.bg-primary').click();
 
     // Wait for redirect to dashboard
-    await page.waitForURL('/dashboard', { timeout: 10000 });
+    await expect(page).toHaveURL(/.*dashboard/, { timeout: 10000 });
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
     await page.waitForSelector('[data-testid^="post-card-"]', { timeout: 10000 });
   });
