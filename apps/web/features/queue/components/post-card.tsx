@@ -5,6 +5,7 @@ import { sanitizePostContent } from '@/lib/sanitize';
 import { cn } from '@/lib/utils';
 import { AlertCircle, CheckCircle2, Clock, MessageSquare, User } from 'lucide-react';
 import type { ViewMode } from './view-toggle';
+import { PresenceIndicator } from '@/components/presence-indicator';
 
 export type PriorityLevel = 'P1' | 'P2' | 'P3' | 'P4' | 'P5';
 export type { PostStatus } from '@/components/ui/status-badge';
@@ -33,6 +34,8 @@ export interface PostCardProps {
   isKeyboardFocused?: boolean;
   onClick?: () => void;
   viewMode?: ViewMode;
+  currentAgentId?: string;
+  showPresence?: boolean;
 }
 
 const priorityColors: Record<PriorityLevel, string> = {
@@ -65,6 +68,8 @@ export function PostCard({
   isKeyboardFocused = false,
   onClick,
   viewMode = 'list',
+  currentAgentId,
+  showPresence = true,
 }: PostCardProps) {
   const priorityStripColor = priorityColors[priority];
 
@@ -150,14 +155,19 @@ export function PostCard({
 
           {/* Author and Time */}
           <div className="flex items-center justify-between text-xs text-foreground-muted pt-2 border-t border-border">
-            {author && (
-              <span className="flex items-center gap-1">
-                <User size={11} />
-                {author.name}
-                {author.postCount === 0 && <span> (new)</span>}
-              </span>
-            )}
-            <span className="flex items-center gap-1 ml-auto">
+            <div className="flex items-center gap-2">
+              {author && (
+                <span className="flex items-center gap-1">
+                  <User size={11} />
+                  {author.name}
+                  {author.postCount === 0 && <span> (new)</span>}
+                </span>
+              )}
+              {showPresence && (
+                <PresenceIndicator postId={id} currentAgentId={currentAgentId} compact />
+              )}
+            </div>
+            <span className="flex items-center gap-1">
               <Clock size={11} />
               {createdAt}
             </span>
@@ -266,6 +276,11 @@ export function PostCard({
             <Clock size={11} />
             {createdAt}
           </span>
+
+          {/* Presence Indicator */}
+          {showPresence && (
+            <PresenceIndicator postId={id} currentAgentId={currentAgentId} compact />
+          )}
         </div>
 
         {/* Assignment Indicator */}

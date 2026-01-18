@@ -5,7 +5,7 @@
  * In production, this will be replaced with Supabase database queries.
  */
 
-import type { ModerationPost, PriorityRule, Response, ResponseTemplate } from '@modus/logic';
+import type { ModerationPost, PriorityRule, Response, ResponseTemplate, Agent, Presence } from '@modus/logic';
 import {
   RulesEngine,
   generatePostEmbedding,
@@ -349,21 +349,6 @@ const mockPosts: PostWithRelations[] = [
 // ============================================================================
 
 // ============================================================================
-// Agent Types
-// ============================================================================
-
-export interface Agent {
-  id: string;
-  user_id: string;
-  display_name: string;
-  avatar_url?: string | null;
-  role: 'agent' | 'supervisor' | 'admin' | 'moderator';
-  status: 'online' | 'offline' | 'busy';
-  last_active_at: string;
-  created_at: string;
-}
-
-// ============================================================================
 // Initial Mock Agents
 // ============================================================================
 
@@ -496,6 +481,7 @@ class DataStore {
   private rules: Map<string, PriorityRule> = new Map();
   private agents: Map<string, Agent> = new Map();
   private templates: Map<string, ResponseTemplate> = new Map();
+  private presence: Map<string, Presence> = new Map(); // key: `${post_id}:${agent_id}`
 
   constructor() {
     // Initialize with mock data
@@ -889,6 +875,26 @@ class DataStore {
   }
 
   // ============================================================================
+  // Presence Operations (Real-time viewing indicators)
+  // ============================================================================
+
+  addPresence(postId: string, agentId: string, agentName: string, agentStatus: 'online' | 'offline' | 'busy'): Presence {
+    const key = `${postId}:${agentId}`;
+    const now = new Date().toISOString();
+
+    const presence: Presence = {
+      post_id: postId,
+      agent_id: agentId,
+      agent_name: agentName,
+      agent_status: agentStatus,
+      timestamp: now,
+    };
+
+    this.presence.set(key, presence);
+    return presence;
+  }
+
+  // ============================================================================
   // Templates CRUD Operations
   // ============================================================================
 
@@ -1021,6 +1027,98 @@ class DataStore {
       id: agent.id,
       display_name: agent.display_name,
     };
+  }
+
+  // ============================================================================
+  // Presence Tracking
+  // ============================================================================
+
+  /**
+   * Update or add presence for a post
+   * @param postId - The post being viewed
+   * @param agentId - The agent viewing the post
+   * @returns The updated presence record
+   */
+  updatePresence(postId: string, agentId: string): Presence {
+    const agent = this.agents.get(agentId);
+    if (!agent) {
+      throw new Error(`Agent not found: ${agentId}`);
+    }
+
+    const key = `${postId}:${agentId}`;
+    const presence: Presence = {
+      post_id: postId,
+      agent_id: agentId,
+      agent_name: agent.display_name,
+      agent_status: agent.status,
+      timestamp: new Date().toISOString(),
+    };
+
+    this.presence.set(key, presence);
+
+    // Clean up old presence records (older than 5 minutes)
+    this.cleanupPresence();
+
+    return presence;
+  }
+
+  /**
+   * Remove presence for a post when agent stops viewing
+   * @param postId - The post being viewed
+   * @param agentId - The agent viewing the post
+   */
+  removePresence(postId: string, agentId: string): void {
+    const key = `${postId}:${agentId}`;
+    this.presence.delete(key);
+  }
+
+  /**
+   * Get all presence records for a specific post
+   * @param postId - The post to check
+   * @returns Array of presence records for agents viewing this post
+   */
+  getPresenceForPost(postId: string): Presence[] {
+    const presences: Presence[] = [];
+    for (const [key, presence] of this.presence.entries()) {
+      if (key.startsWith(`${postId}:`)) {
+        presences.push(presence);
+      }
+    }
+    return presences;
+  }
+
+  /**
+   * Get all posts that have active presence (are being viewed)
+   * @returns Map of post IDs to array of presence records
+   */
+  getAllPresence(): Map<string, Presence[]> {
+    const postPresence = new Map<string, Presence[]>();
+
+    for (const [key, presence] of this.presence.entries()) {
+      const postId = presence.post_id;
+      if (!postPresence.has(postId)) {
+        postPresence.set(postId, []);
+      }
+      postPresence.get(postId)!.push(presence);
+    }
+
+    return postPresence;
+  }
+
+  /**
+   * Clean up old presence records (older than 5 minutes)
+   * This is called automatically on each updatePresence
+   */
+  private cleanupPresence(): void {
+    const now = new Date().getTime();
+    const fiveMinutes = 5 * 60 * 1000;
+
+    for (const [key, presence] of this.presence.entries()) {
+      const timestamp = new Date(presence.timestamp).getTime();
+      if (now - timestamp > fiveMinutes) {
+        this.presence.delete(key);
+      }
+    }
   }
 }
 

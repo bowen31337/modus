@@ -6,6 +6,7 @@ import { StatusBadge } from '@/components/ui/status-badge';
 import type { PostCardProps } from '@/features/queue/components/post-card';
 import { sanitizePostContent } from '@/lib/sanitize';
 import { cn } from '@/lib/utils';
+import { PresenceIndicator } from '@/components/presence-indicator';
 import {
   Button,
   Dialog,
@@ -520,6 +521,9 @@ export function WorkPane({
               __html: sanitizePostContent(selectedPost.title, { allowHtml: false, escapeHtml: false }),
             }}
           />
+          <div className="mt-2">
+            <PresenceIndicator postId={selectedPost.id} currentAgentId={currentAgent.id} />
+          </div>
         </div>
 
         <div className="flex-1 overflow-y-auto">

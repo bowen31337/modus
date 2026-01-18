@@ -1,0 +1,4881 @@
+{
+  "content_hash": "1aa506c01116461971b51b6fff3b215e3967bb995a115f0a4e0394f2b8e94c4c",
+  "cached_at": "2026-01-18T07:31:23.694975Z",
+  "result": {
+    "passed": false,
+    "duration_seconds": 17.95,
+    "tool": "biome",
+    "tool_version": "biome=unknown",
+    "errors": [
+      {
+        "file": "./.claude_settings.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/api/v1/agents/[id]/route.ts",
+        "line": 1,
+        "column": 1,
+        "message": "This variable implicitly has the any type.",
+        "rule": "lint/suspicious/noImplicitAnyLet",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/api/v1/agents/[id]/route.ts",
+        "line": 1,
+        "column": 1,
+        "message": "This variable implicitly has the any type.",
+        "rule": "lint/suspicious/noImplicitAnyLet",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/api/v1/posts/[id]/responses/route.ts",
+        "line": 1,
+        "column": 1,
+        "message": "This variable is unused.",
+        "rule": "lint/correctness/noUnusedVariables",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/api/v1/posts/[id]/responses/route.ts",
+        "line": 1,
+        "column": 1,
+        "message": "This variable is unused.",
+        "rule": "lint/correctness/noUnusedVariables",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/api/v1/posts/[id]/responses/route.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Import statements could be sorted:",
+        "rule": "organizeImports",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/api/v1/agents/[id]/route.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./update-settings-feature.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "A Node.js builtin module should be imported with the node: protocol.",
+        "rule": "lint/style/useNodejsImportProtocol",
+        "severity": "error"
+      },
+      {
+        "file": "./update-settings-feature.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/api/v1/uploads/route.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Import statements could be sorted:",
+        "rule": "organizeImports",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/error.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Do not shadow the global \"Error\" property.",
+        "rule": "lint/suspicious/noShadowRestrictedNames",
+        "severity": "error"
+      },
+      {
+        "file": "./.qa-cache/lint.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/error.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Import statements could be sorted:",
+        "rule": "organizeImports",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/not-found.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Import statements could be sorted:",
+        "rule": "organizeImports",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/rules/page.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Import statements could be sorted:",
+        "rule": "organizeImports",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/error.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/api/v1/posts/route.ts",
+        "line": 1,
+        "column": 1,
+        "message": "This variable is unused.",
+        "rule": "lint/correctness/noUnusedVariables",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/api/v1/posts/route.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Import statements could be sorted:",
+        "rule": "organizeImports",
+        "severity": "error"
+      },
+      {
+        "file": "./update-qa-status.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "A Node.js builtin module should be imported with the node: protocol.",
+        "rule": "lint/style/useNodejsImportProtocol",
+        "severity": "error"
+      },
+      {
+        "file": "./update-qa-status.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/components/ui/keyboard-shortcut.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "All these imports are only used as types.",
+        "rule": "lint/style/useImportType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/components/ui/keyboard-shortcut.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Avoid using the index of an array as key property in an element.",
+        "rule": "lint/suspicious/noArrayIndexKey",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/components/posts/post-card.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "The elements with the following roles can be changed to the following elements:\n<button>\n<input type=\"button\">",
+        "rule": "lint/a11y/useSemanticElements",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/dashboard/dashboard-client.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "The elements with the following roles can be changed to the following elements:\n<main>",
+        "rule": "lint/a11y/useSemanticElements",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/dashboard/dashboard-client.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Using the role attribute 'main' on the 'main' element is redundant, because it is implied by the semantic 'main' element.",
+        "rule": "lint/a11y/noRedundantRoles",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/dashboard/dashboard-client.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "This hook does not specify all of its dependencies: router.replace",
+        "rule": "lint/correctness/useExhaustiveDependencies",
+        "severity": "error"
+      },
+      {
+        "file": "./update-qa-status.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/components/ui/keyboard-shortcut.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/components/ui/toast.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/layout/components/left-rail.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Import statements could be sorted:",
+        "rule": "organizeImports",
+        "severity": "error"
+      },
+      {
+        "file": "./update-features.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./update-features.js",
+        "line": 1,
+        "column": 1,
+        "message": "A Node.js builtin module should be imported with the node: protocol.",
+        "rule": "lint/style/useNodejsImportProtocol",
+        "severity": "error"
+      },
+      {
+        "file": "./update-features.js",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/layout/components/command-palette.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.",
+        "rule": "lint/a11y/useKeyWithClickEvents",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/layout/components/command-palette.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Shouldn't redeclare 'Command'. Consider to delete it or rename it.",
+        "rule": "lint/suspicious/noRedeclare",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/layout/components/command-palette.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "This hook specifies more dependencies than necessary: searchQuery",
+        "rule": "lint/correctness/useExhaustiveDependencies",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/layout/components/command-palette.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/layout/components/command-palette.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/layout/components/command-palette.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Avoid using the index of an array as key property in an element.",
+        "rule": "lint/suspicious/noArrayIndexKey",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/post-card.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Avoid passing content using the dangerouslySetInnerHTML prop.",
+        "rule": "lint/security/noDangerouslySetInnerHtml",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/post-card.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Avoid passing content using the dangerouslySetInnerHTML prop.",
+        "rule": "lint/security/noDangerouslySetInnerHtml",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/post-card.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Avoid passing content using the dangerouslySetInnerHTML prop.",
+        "rule": "lint/security/noDangerouslySetInnerHtml",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/post-card.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Avoid passing content using the dangerouslySetInnerHTML prop.",
+        "rule": "lint/security/noDangerouslySetInnerHtml",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/filter-chips.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/sort-controls.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.",
+        "rule": "lint/a11y/useKeyWithClickEvents",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/sort-controls.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/sort-controls.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/filter-controls.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.",
+        "rule": "lint/a11y/useKeyWithClickEvents",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/filter-controls.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "A form label must be associated with an input.",
+        "rule": "lint/a11y/noLabelWithoutControl",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/filter-controls.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "A form label must be associated with an input.",
+        "rule": "lint/a11y/noLabelWithoutControl",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/filter-controls.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/filter-controls.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/filter-controls.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/filter-controls.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/filter-controls.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/filter-controls.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/filter-controls.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/filter-controls.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/filter-controls.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./update-error-pages-feature.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "A Node.js builtin module should be imported with the node: protocol.",
+        "rule": "lint/style/useNodejsImportProtocol",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/work/components/reassign-dialog.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/work/components/reassign-dialog.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/work/components/reassign-dialog.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/dashboard/settings/settings-client.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "This variable implicitly has the any type.",
+        "rule": "lint/suspicious/noImplicitAnyLet",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/dashboard/settings/settings-client.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "The assignment should not be in an expression.",
+        "rule": "lint/suspicious/noAssignInExpressions",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/dashboard/settings/settings-client.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "This variable implicitly has the any type.",
+        "rule": "lint/suspicious/noImplicitAnyLet",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/dashboard/settings/settings-client.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "The assignment should not be in an expression.",
+        "rule": "lint/suspicious/noAssignInExpressions",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/dashboard/settings/settings-client.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Avoid using the index of an array as key property in an element.",
+        "rule": "lint/suspicious/noArrayIndexKey",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/dashboard/settings/settings-client.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Avoid using the index of an array as key property in an element.",
+        "rule": "lint/suspicious/noArrayIndexKey",
+        "severity": "error"
+      },
+      {
+        "file": "./update-error-pages-feature.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/dashboard/settings/settings-client.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Import statements could be sorted:",
+        "rule": "organizeImports",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/settings/components/agent-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "A form label must be associated with an input.",
+        "rule": "lint/a11y/noLabelWithoutControl",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/settings/components/agent-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/settings/components/profile-settings.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Import statements could be sorted:",
+        "rule": "organizeImports",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/work/components/template-selector.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "The HTML element with the interactive role \"listbox\" is not focusable.",
+        "rule": "lint/a11y/useFocusableInteractive",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/work/components/template-selector.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "The elements with the following roles can be changed to the following elements:\n<select>",
+        "rule": "lint/a11y/useSemanticElements",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/work/components/template-selector.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "The HTML element with the interactive role \"option\" is not focusable.",
+        "rule": "lint/a11y/useFocusableInteractive",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/work/components/template-selector.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.",
+        "rule": "lint/a11y/useKeyWithClickEvents",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/work/components/template-selector.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "The elements with the following roles can be changed to the following elements:\n<option>",
+        "rule": "lint/a11y/useSemanticElements",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/work/components/template-selector.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/settings/components/agent-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/work/components/rich-text-editor.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./check-features.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./check-features.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./check-pending-qa.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "A Node.js builtin module should be imported with the node: protocol.",
+        "rule": "lint/style/useNodejsImportProtocol",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/lib/sanitize.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/lib/sanitize.ts",
+        "line": 1,
+        "column": 1,
+        "message": "This type annotation is trivially inferred from its initialization.",
+        "rule": "lint/style/noInferrableTypes",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/lib/sanitize.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Template literals are preferred over string concatenation.",
+        "rule": "lint/style/useTemplate",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/lib/sanitize.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Template literals are preferred over string concatenation.",
+        "rule": "lint/style/useTemplate",
+        "severity": "error"
+      },
+      {
+        "file": "./check-pending-features.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "A Node.js builtin module should be imported with the node: protocol.",
+        "rule": "lint/style/useNodejsImportProtocol",
+        "severity": "error"
+      },
+      {
+        "file": "./check-pending-features.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./check-pending-features.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./check-pending-features.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./check-pending-features.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./check-status.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "A Node.js builtin module should be imported with the node: protocol.",
+        "rule": "lint/style/useNodejsImportProtocol",
+        "severity": "error"
+      },
+      {
+        "file": "./check-status.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./check-status.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./check-pending-qa.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/app/dashboard/settings/settings-client.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./debug-templates.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./check-status.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./check-pending-features.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./debug-templates.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/xss-prevention.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "This hook does not specify all of its dependencies: fetchPosts",
+        "rule": "lint/correctness/useExhaustiveDependencies",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "This hook does not specify all of its dependencies: router.replace",
+        "rule": "lint/correctness/useExhaustiveDependencies",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "This hook does not specify all of its dependencies: searchParams",
+        "rule": "lint/correctness/useExhaustiveDependencies",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "This hook does not specify all of its dependencies: searchParams.toString",
+        "rule": "lint/correctness/useExhaustiveDependencies",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "This hook does not specify all of its dependencies: filters.category",
+        "rule": "lint/correctness/useExhaustiveDependencies",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "This hook does not specify all of its dependencies: filters.priority",
+        "rule": "lint/correctness/useExhaustiveDependencies",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "This hook does not specify all of its dependencies: sort.order",
+        "rule": "lint/correctness/useExhaustiveDependencies",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "This hook does not specify all of its dependencies: sort.field",
+        "rule": "lint/correctness/useExhaustiveDependencies",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "This hook does not specify all of its dependencies: viewMode",
+        "rule": "lint/correctness/useExhaustiveDependencies",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "This hook does not specify all of its dependencies: filters.status",
+        "rule": "lint/correctness/useExhaustiveDependencies",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "This hook does not specify all of its dependencies: filters.dateRange",
+        "rule": "lint/correctness/useExhaustiveDependencies",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "This hook does not specify all of its dependencies: filters.search",
+        "rule": "lint/correctness/useExhaustiveDependencies",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "This hook specifies more dependencies than necessary: filters, sort",
+        "rule": "lint/correctness/useExhaustiveDependencies",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Avoid using the index of an array as key property in an element.",
+        "rule": "lint/suspicious/noArrayIndexKey",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Avoid using the index of an array as key property in an element.",
+        "rule": "lint/suspicious/noArrayIndexKey",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/lib/sanitize.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "A form label must be associated with an input.",
+        "rule": "lint/a11y/noLabelWithoutControl",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "A form label must be associated with an input.",
+        "rule": "lint/a11y/noLabelWithoutControl",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "A form label must be associated with an input.",
+        "rule": "lint/a11y/noLabelWithoutControl",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "A form label must be associated with an input.",
+        "rule": "lint/a11y/noLabelWithoutControl",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "A form label must be associated with an input.",
+        "rule": "lint/a11y/noLabelWithoutControl",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "A form label must be associated with an input.",
+        "rule": "lint/a11y/noLabelWithoutControl",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "A form label must be associated with an input.",
+        "rule": "lint/a11y/noLabelWithoutControl",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "A form label must be associated with an input.",
+        "rule": "lint/a11y/noLabelWithoutControl",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "A form label must be associated with an input.",
+        "rule": "lint/a11y/noLabelWithoutControl",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "A form label must be associated with an input.",
+        "rule": "lint/a11y/noLabelWithoutControl",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "A form label must be associated with an input.",
+        "rule": "lint/a11y/noLabelWithoutControl",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Provide an explicit type prop for the button element.",
+        "rule": "lint/a11y/useButtonType",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Avoid using the index of an array as key property in an element.",
+        "rule": "lint/suspicious/noArrayIndexKey",
+        "severity": "error"
+      },
+      {
+        "file": "./packages/logic/src/validation/file-upload.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Unexpected control character in a regular expression.",
+        "rule": "lint/suspicious/noControlCharactersInRegex",
+        "severity": "error"
+      },
+      {
+        "file": "./packages/logic/src/validation/file-upload.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Unexpected control character in a regular expression.",
+        "rule": "lint/suspicious/noControlCharactersInRegex",
+        "severity": "error"
+      },
+      {
+        "file": "./packages/logic/src/validation/file-upload.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Template literals are preferred over string concatenation.",
+        "rule": "lint/style/useTemplate",
+        "severity": "error"
+      },
+      {
+        "file": "./packages/logic/src/validation/file-upload.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Template literals are preferred over string concatenation.",
+        "rule": "lint/style/useTemplate",
+        "severity": "error"
+      },
+      {
+        "file": "./packages/logic/src/validation/file-upload.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Use Number.parseFloat instead of the equivalent global.",
+        "rule": "lint/style/useNumberNamespace",
+        "severity": "error"
+      },
+      {
+        "file": "./packages/logic/src/validation/file-upload.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Use the '**' operator instead of 'Math.pow'.",
+        "rule": "lint/style/useExponentiationOperator",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/lib/data-store.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/lib/data-store.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/lib/data-store.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/lib/data-store.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/lib/data-store.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./packages/logic/src/validation/file-upload.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/work/components/work-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "This hook does not specify all of its dependencies: onResolve",
+        "rule": "lint/correctness/useExhaustiveDependencies",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/work/components/work-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "This hook specifies more dependencies than necessary: onRelease",
+        "rule": "lint/correctness/useExhaustiveDependencies",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/work/components/work-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "This hook specifies a dependency more specific that its captures: selectedPost?.id",
+        "rule": "lint/correctness/useExhaustiveDependencies",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/work/components/work-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "This hook does not specify all of its dependencies: selectedPost",
+        "rule": "lint/correctness/useExhaustiveDependencies",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/work/components/work-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Avoid passing content using the dangerouslySetInnerHTML prop.",
+        "rule": "lint/security/noDangerouslySetInnerHtml",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/work/components/work-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Avoid passing content using the dangerouslySetInnerHTML prop.",
+        "rule": "lint/security/noDangerouslySetInnerHtml",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/work/components/work-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Avoid passing content using the dangerouslySetInnerHTML prop.",
+        "rule": "lint/security/noDangerouslySetInnerHtml",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./feature_list.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/features/work/components/work-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./.qa-cache/typecheck.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/user-context-sidebar.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./apps/web/lib/data-store.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-0-2026-01-18-06-51-58.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-100-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-102-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-10-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-1-2026-01-18-06-51-58.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-103-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-101-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-106-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-105-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-107-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-104-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-11-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-108-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-109-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-110-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/settings-layout.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "This variable is unused.",
+        "rule": "lint/correctness/noUnusedVariables",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/settings-layout.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "This variable is unused.",
+        "rule": "lint/correctness/noUnusedVariables",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/settings-layout.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Import statements could be sorted:",
+        "rule": "organizeImports",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/settings-layout.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-111-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-112-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-115-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-119-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-117-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-113-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-114-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-118-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-12-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-120-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-121-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-116-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-123-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-122-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-124-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/rules-drag-drop.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "This variable is unused.",
+        "rule": "lint/correctness/noUnusedVariables",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/rules-drag-drop.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Import statements could be sorted:",
+        "rule": "organizeImports",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/response-history-chronological.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Import statements could be sorted:",
+        "rule": "organizeImports",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/response-history-chronological.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/response-history-chronological-simple.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Import statements could be sorted:",
+        "rule": "organizeImports",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/response-history-chronological-simple.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-125-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-127-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-126-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-128-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-129-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-131-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-130-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-13-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-132-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/rbac-permissions.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "This variable is unused.",
+        "rule": "lint/correctness/noUnusedVariables",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/rbac-permissions.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "This variable is unused.",
+        "rule": "lint/correctness/noUnusedVariables",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/rbac-permissions.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "This variable is unused.",
+        "rule": "lint/correctness/noUnusedVariables",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-136-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-135-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-134-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-133-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-137-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-138-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/profile-update.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Template literals are preferred over string concatenation.",
+        "rule": "lint/style/useTemplate",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/profile-update.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Import statements could be sorted:",
+        "rule": "organizeImports",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-139-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-144-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-142-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-140-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-14-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-141-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/layout-dimensions.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/layout-dimensions.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-146-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-143-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-147-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-149-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/keyboard-shortcut-hints.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Change to an optional chain.",
+        "rule": "lint/complexity/useOptionalChain",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/keyboard-shortcut-hints.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Use Number.parseFloat instead of the equivalent global.",
+        "rule": "lint/style/useNumberNamespace",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/keyboard-shortcut-hints.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "This variable is unused.",
+        "rule": "lint/correctness/noUnusedVariables",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-148-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-145-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-15-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-150-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/keyboard-shortcut-hints.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-151-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/keyboard-focus.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Change to an optional chain.",
+        "rule": "lint/complexity/useOptionalChain",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/keyboard-focus.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/keyboard-focus.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "This variable is unused.",
+        "rule": "lint/correctness/noUnusedVariables",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/keyboard-focus.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Use Number.parseFloat instead of the equivalent global.",
+        "rule": "lint/style/useNumberNamespace",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/keyboard-focus.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Import statements could be sorted:",
+        "rule": "organizeImports",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-152-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/keyboard-focus.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-154-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-153-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/filter-chips.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "This variable is unused.",
+        "rule": "lint/correctness/noUnusedVariables",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-155-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-156-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/filter-chips.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-157-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-158-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-16-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/file-upload.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Import statements could be sorted:",
+        "rule": "organizeImports",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-164-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/file-upload.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-160-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-159-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-161-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-162-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-165-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/error-pages.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Import statements could be sorted:",
+        "rule": "organizeImports",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-163-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/error-pages.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-166-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-167-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/combined-filters.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-169-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-17-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-168-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-170-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-171-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-172-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-175-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-174-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-176-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-173-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-177-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-178-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-179-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/agent-management.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Import statements could be sorted:",
+        "rule": "organizeImports",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-18-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/accessibility.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Use the '**' operator instead of 'Math.pow'.",
+        "rule": "lint/style/useExponentiationOperator",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/accessibility.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Use Number.parseInt instead of the equivalent global.",
+        "rule": "lint/style/useNumberNamespace",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/accessibility.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Use Number.parseInt instead of the equivalent global.",
+        "rule": "lint/style/useNumberNamespace",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/accessibility.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Use the '**' operator instead of 'Math.pow'.",
+        "rule": "lint/style/useExponentiationOperator",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/accessibility.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "This variable is unused.",
+        "rule": "lint/correctness/noUnusedVariables",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/accessibility.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Use Number.parseFloat instead of the equivalent global.",
+        "rule": "lint/style/useNumberNamespace",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/accessibility.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Use Number.parseFloat instead of the equivalent global.",
+        "rule": "lint/style/useNumberNamespace",
+        "severity": "error"
+      },
+      {
+        "file": "./tests/e2e/accessibility.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-181-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./test-templates-api.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./test-search-manually.js",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `;`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./test-search-manually.js",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `;`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./test-search-manually.js",
+        "line": 1,
+        "column": 1,
+        "message": "Code formatting aborted due to parsing errors. To format code with errors, enable the 'formatter.formatWithErrors' option.",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-180-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-183-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./test-responses-sort.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-184-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-186-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-185-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-187-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./test-qa-features.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Template literals are preferred over string concatenation.",
+        "rule": "lint/style/useTemplate",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-182-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-189-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-188-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./test-qa-features.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-19-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-190-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./test-posts-loading.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-191-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./test-post-1.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "A Node.js builtin module should be imported with the node: protocol.",
+        "rule": "lint/style/useNodejsImportProtocol",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-192-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./test-login-simple.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./test-auth-rules-api.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./test-agents-api.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Prefer for...of instead of forEach.",
+        "rule": "lint/complexity/noForEach",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-193-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./test-agent-role-management.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./show-pending-qa.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "A Node.js builtin module should be imported with the node: protocol.",
+        "rule": "lint/style/useNodejsImportProtocol",
+        "severity": "error"
+      },
+      {
+        "file": "./show-pending-qa.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `>`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "String values must be double quoted.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `@`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "String values must be double quoted.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "String values must be double quoted.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "String values must be double quoted.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "String values must be double quoted.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "String values must be double quoted.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "Minus must be followed by a digit",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "String values must be double quoted.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "Minus must be followed by a digit",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "String values must be double quoted.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "String values must be double quoted.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `>`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "String values must be double quoted.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "End of file expected",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `\u001b`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `mThe`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `CJS`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `build`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `of`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `Vite`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "Missing closing quote",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `DEV`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `v2`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `.`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `1.9`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `media`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `DATA`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `projects`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `autonomous`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "Minus must be followed by a digit",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `coding`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "Minus must be followed by a digit",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `modus`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `modus`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `filter`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `:`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "Minus must be followed by a digit",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "Minus must be followed by a digit",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `.`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `.`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `include`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `:`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `*`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `*`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "JSON standard does not allow comments.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "JSON standard does not allow comments.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "JSON standard does not allow comments.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "Unterminated block comment",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `]` but instead the file ends",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "End of file expected",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `>`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "String values must be double quoted.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `@`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "String values must be double quoted.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "String values must be double quoted.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "String values must be double quoted.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "String values must be double quoted.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "String values must be double quoted.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "Minus must be followed by a digit",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "String values must be double quoted.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "Minus must be followed by a digit",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "String values must be double quoted.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "String values must be double quoted.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `>`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "String values must be double quoted.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "End of file expected",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `\u001b`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `mThe`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `CJS`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `build`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `of`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `Vite`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "Missing closing quote",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `DEV`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `v2`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `.`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `1.9`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `media`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `DATA`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `projects`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `autonomous`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "Minus must be followed by a digit",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `coding`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "Minus must be followed by a digit",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `modus`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `modus`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `filter`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `:`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `/`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "Minus must be followed by a digit",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "Minus must be followed by a digit",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `.`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `.`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `include`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `,` but instead found `:`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `*`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "unexpected character `*`",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "JSON standard does not allow comments.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "JSON standard does not allow comments.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "JSON standard does not allow comments.",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "Unterminated block comment",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "expected `]` but instead the file ends",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "End of file expected",
+        "rule": "parse",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/test-results.json",
+        "line": 1,
+        "column": 1,
+        "message": "Code formatting aborted due to parsing errors. To format code with errors, enable the 'formatter.formatWithErrors' option.",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/screenshots/.last-run.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-194-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/qa-report.json",
+        "line": 1,
+        "column": 1,
+        "message": "Size of ./reports/qa-report.json is 1.7 MiB which exceeds configured maximum of 1.0 MiB for this project.\nThe file size limit exists to prevent us inadvertently slowing down and loading large files that we shouldn't.\nUse the `files.maxSize` configuration to change the maximum size of files processed.",
+        "rule": "lint",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/qa-report.json",
+        "line": 1,
+        "column": 1,
+        "message": "Size of ./reports/qa-report.json is 1.7 MiB which exceeds configured maximum of 1.0 MiB for this project.\nThe file size limit exists to prevent us inadvertently slowing down and loading large files that we shouldn't.\nUse the `files.maxSize` configuration to change the maximum size of files processed.",
+        "rule": "organizeImports",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/qa-report.json",
+        "line": 1,
+        "column": 1,
+        "message": "Size of ./reports/qa-report.json is 1.7 MiB which exceeds configured maximum of 1.0 MiB for this project.\nThe file size limit exists to prevent us inadvertently slowing down and loading large files that we shouldn't.\nUse the `files.maxSize` configuration to change the maximum size of files processed.",
+        "rule": "assists",
+        "severity": "error"
+      },
+      {
+        "file": "./reports/qa-report.json",
+        "line": 1,
+        "column": 1,
+        "message": "Size of ./reports/qa-report.json is 1.7 MiB which exceeds configured maximum of 1.0 MiB for this project.\nThe file size limit exists to prevent us inadvertently slowing down and loading large files that we shouldn't.\nUse the `files.maxSize` configuration to change the maximum size of files processed.",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-195-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-196-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-197-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-198-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-199-2026-01-18-06-52-01.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-2-2026-01-18-06-51-58.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-20-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-21-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-22-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-23-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-24-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-25-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-26-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-27-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-28-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-29-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-99-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-3-2026-01-18-06-51-58.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-30-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-31-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-32-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-35-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-34-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-36-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-33-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-37-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-39-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-38-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-4-2026-01-18-06-51-58.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-40-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-41-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-98-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-42-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-44-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-45-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-43-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-48-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-46-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-47-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-49-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-50-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-52-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-51-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-53-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-5-2026-01-18-06-51-58.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-54-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-55-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-56-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-97-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-58-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-57-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-61-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-6-2026-01-18-06-51-58.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-59-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-60-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-65-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-64-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-62-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-66-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-67-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-63-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-68-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-69-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-96-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-7-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-71-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-70-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-73-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-74-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-75-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-76-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-77-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-72-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-78-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-79-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-8-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-80-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-81-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-82-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-95-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-83-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-84-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-85-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-87-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-90-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-86-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-92-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-94-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-89-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-91-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-88-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-9-2026-01-18-06-51-59.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      },
+      {
+        "file": "./qa-reports/feature-93-2026-01-18-06-52-00.json",
+        "line": 1,
+        "column": 1,
+        "message": "Formatter would have printed the following content:",
+        "rule": "format",
+        "severity": "error"
+      }
+    ],
+    "warnings": [
+      {
+        "file": "./apps/web/app/api/v1/ai/analyze-sentiment/route.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 30 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/app/api/v1/posts/route.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 19 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/queue/components/filter-chips.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 16 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/queue/components/post-card.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 23 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/queue/components/filter-controls.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 16 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/queue/components/filter-controls.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 19 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/app/dashboard/settings/settings-client.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 21 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/settings/components/profile-settings.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 18 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/settings/components/profile-settings.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 17 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/work/hooks/use-ai-suggestion.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 26 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./tests/e2e/xss-prevention.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Unexpected any. Specify a different type.",
+        "rule": "lint/suspicious/noExplicitAny",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 26 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 20 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 20 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 38 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 22 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 16 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/queue/components/queue-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 27 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Unexpected any. Specify a different type.",
+        "rule": "lint/suspicious/noExplicitAny",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 18 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Unexpected any. Specify a different type.",
+        "rule": "lint/suspicious/noExplicitAny",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/rules/components/rules-management.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 29 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/work/components/work-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 48 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/work/components/work-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Unexpected any. Specify a different type.",
+        "rule": "lint/suspicious/noExplicitAny",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/work/components/work-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Unexpected any. Specify a different type.",
+        "rule": "lint/suspicious/noExplicitAny",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/work/components/work-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 33 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./apps/web/features/work/components/work-pane.tsx",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 37 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./tests/e2e/sentiment-badges.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 18 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./tests/e2e/sentiment-badges.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 17 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./tests/e2e/sentiment-badges.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 17 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./tests/e2e/scrollbar-styling.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 17 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./tests/e2e/scrollbar-styling.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 18 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./tests/e2e/scrollbar-styling.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 17 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./tests/e2e/scrollbar-styling.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 18 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./tests/e2e/scrollbar-styling.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 18 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./tests/e2e/scrollbar-styling.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 18 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./tests/e2e/scrollbar-styling.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 18 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./tests/e2e/response-history-chronological.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Forbidden non-null assertion.",
+        "rule": "lint/style/noNonNullAssertion",
+        "severity": "warning"
+      },
+      {
+        "file": "./tests/e2e/response-history-chronological.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Forbidden non-null assertion.",
+        "rule": "lint/style/noNonNullAssertion",
+        "severity": "warning"
+      },
+      {
+        "file": "./tests/e2e/rbac-permissions.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Unexpected any. Specify a different type.",
+        "rule": "lint/suspicious/noExplicitAny",
+        "severity": "warning"
+      },
+      {
+        "file": "./tests/e2e/keyboard-focus.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 21 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./tests/e2e/command-palette-direct.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Unexpected any. Specify a different type.",
+        "rule": "lint/suspicious/noExplicitAny",
+        "severity": "warning"
+      },
+      {
+        "file": "./tests/e2e/agent-status.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Forbidden non-null assertion.",
+        "rule": "lint/style/noNonNullAssertion",
+        "severity": "warning"
+      },
+      {
+        "file": "./tests/e2e/accessibility.spec.ts",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 18 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./test-ai-api.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 24 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      },
+      {
+        "file": "./test-ai-api.mjs",
+        "line": 1,
+        "column": 1,
+        "message": "Excessive complexity of 21 detected (max: 15).",
+        "rule": "lint/complexity/noExcessiveCognitiveComplexity",
+        "severity": "warning"
+      }
+    ],
+    "from_cache": false,
+    "cache_hit": false,
+    "files_checked": 370
+  }
+}

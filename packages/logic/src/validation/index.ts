@@ -87,6 +87,17 @@ export const agentSchema = z.object({
 
 export type Agent = z.infer<typeof agentSchema>;
 
+// Presence (Real-time viewing indicators)
+export const presenceSchema = z.object({
+  post_id: z.string().uuid(),
+  agent_id: z.string().uuid(),
+  agent_name: z.string().min(1).max(100),
+  agent_status: z.enum(['online', 'offline', 'busy']),
+  timestamp: z.string().datetime(),
+});
+
+export type Presence = z.infer<typeof presenceSchema>;
+
 // Moderation Post
 export const moderationPostSchema = z.object({
   id: z.string().uuid(),

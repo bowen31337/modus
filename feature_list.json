@@ -14,7 +14,7 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "1768657233.308225",
+    "dev_completed_at": "2026-01-18T07:14:23.164598Z",
     "dev_failure_count": 0
   },
   {
@@ -50,9 +50,10 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_failure_count": 1,
-    "last_dev_failure_at": "2026-01-17T13:17:30.465373Z",
+    "dev_failure_count": 2,
+    "last_dev_failure_at": "2026-01-18T07:22:05.623479Z",
     "dev_failure_reasons": [
+      "Worker session timed out",
       "Worker session timed out"
     ],
     "dev_completed_at": "1768657233.308329"
@@ -72,7 +73,7 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-17T12:42:24.479608Z",
+    "dev_completed_at": "2026-01-18T07:11:42.009601Z",
     "dev_failure_count": 0,
     "qa_completed_at": "1768661612.449"
   },
@@ -90,8 +91,12 @@
     "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T12:50:49.397907Z",
-    "dev_failure_count": 0,
-    "qa_completed_at": "1768658630.61737"
+    "dev_failure_count": 1,
+    "qa_completed_at": "1768658630.61737",
+    "last_dev_failure_at": "2026-01-18T07:31:00.724933Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -551,11 +556,15 @@
       "Step 7: Verify the viewing indicator disappears for Agent B"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-17T17:50:45.459900Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:23.767148Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-29-2026-01-18-07-31-23.json"
   },
   {
     "category": "functional",
@@ -974,11 +983,15 @@
       "Step 6: Verify escalation is visible and logged"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-17T16:52:38.227996Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:23.784278Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-52-2026-01-18-07-31-23.json"
   },
   {
     "category": "functional",
@@ -1145,11 +1158,15 @@
       "Step 5: Verify cannot modify system rules (if restricted to Admin)"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-17T19:26:33.994528Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:23.801229Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-61-2026-01-18-07-31-23.json"
   },
   {
     "category": "functional",
@@ -1164,11 +1181,15 @@
       "Step 7: Verify can modify system settings"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-17T19:45:50.923289Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:23.818111Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-62-2026-01-18-07-31-23.json"
   },
   {
     "category": "functional",
@@ -1181,11 +1202,15 @@
       "Step 5: Verify role-appropriate menu items are shown"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-17T19:35:37.255048Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:23.834873Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-63-2026-01-18-07-31-23.json"
   },
   {
     "category": "functional",
@@ -1198,11 +1223,15 @@
       "Step 5: Verify database-level security is enforced"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-17T20:35:10.884815Z"
+    "dev_completed_at": "2026-01-17T20:35:10.884815Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:23.851606Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-64-2026-01-18-07-31-23.json"
   },
   {
     "category": "functional",
@@ -1216,11 +1245,15 @@
       "Step 6: Verify action_details JSON contains relevant context"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-17T19:53:21.392125Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:23.868454Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-65-2026-01-18-07-31-23.json"
   },
   {
     "category": "functional",
@@ -1233,11 +1266,15 @@
       "Step 5: Verify the change is traceable and attributable"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-17T19:45:35.154461Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:23.885137Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-66-2026-01-18-07-31-23.json"
   },
   {
     "category": "functional",
@@ -1250,11 +1287,15 @@
       "Step 5: Verify optimistic UI shows update even faster locally"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-17T21:09:32.933391Z"
+    "dev_completed_at": "2026-01-17T21:09:32.933391Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:23.901749Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-67-2026-01-18-07-31-23.json"
   },
   {
     "category": "functional",
@@ -1266,11 +1307,15 @@
       "Step 4: Verify status badge updates without page refresh"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-17T19:56:03.610436Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:23.918691Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-68-2026-01-18-07-31-23.json"
   },
   {
     "category": "functional",
@@ -1283,11 +1328,15 @@
       "Step 5: Test with simulated slow network to confirm optimistic behavior"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-17T20:21:11.651375Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:23.935481Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-69-2026-01-18-07-31-23.json"
   },
   {
     "category": "functional",
@@ -1402,11 +1451,15 @@
       "Step 5: Verify focus order is logical and sequential"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-17T21:18:33.299520Z"
+    "dev_completed_at": "2026-01-17T21:18:33.299520Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:23.952148Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-76-2026-01-18-07-31-23.json"
   },
   {
     "category": "functional",
@@ -1422,11 +1475,15 @@
       "Step 8: Verify changes reflect in queue filters"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-17T21:04:32.390619Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:23.969004Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-77-2026-01-18-07-31-23.json"
   },
   {
     "category": "functional",
@@ -1439,11 +1496,15 @@
       "Step 5: Verify category name or icon is displayed"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-17T21:05:57.328196Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:23.985632Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-78-2026-01-18-07-31-23.json"
   },
   {
     "category": "functional",
@@ -1623,11 +1684,15 @@
       "Step 5: Verify heartbeat messages are exchanged"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-17T21:49:38.635484Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.002342Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-88-2026-01-18-07-31-23.json"
   },
   {
     "category": "functional",
@@ -1667,11 +1732,15 @@
       "Step 5: Verify retrieved context improves AI response relevance"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-17T22:46:12.081837Z"
+    "dev_completed_at": "2026-01-17T22:46:12.081837Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.019328Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-90-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -1685,11 +1754,15 @@
       "Step 6: Verify indexes are created"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-17T22:00:52.804678Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.035896Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-91-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -1702,11 +1775,15 @@
       "Step 5: Verify application can immediately use seeded data"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-17T22:18:07.186833Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.052558Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-92-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -1720,11 +1797,15 @@
       "Step 6: Verify no layout shifts after initial load"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-17T23:09:24.964802Z"
+    "dev_completed_at": "2026-01-17T23:09:24.964802Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.069273Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-93-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -1737,11 +1818,15 @@
       "Step 5: Test keyboard shortcuts for instant response"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-17T22:42:00.750996Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.086004Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-94-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2361,11 +2446,15 @@
       "Step 5: Verify icons are visually balanced with text"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T01:11:28.739610Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.102842Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-131-2026-01-18-07-31-24.json"
   },
   {
     "category": "style",
@@ -2377,11 +2466,15 @@
       "Step 4: Verify logo works on dark background"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T01:14:16.228397Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.119601Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-132-2026-01-18-07-31-24.json"
   },
   {
     "category": "style",
@@ -2394,11 +2487,15 @@
       "Step 5: Verify avatars have subtle border or ring"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-18T01:47:43.541943Z"
+    "dev_completed_at": "2026-01-18T01:47:43.541943Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.136172Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-133-2026-01-18-07-31-24.json"
   },
   {
     "category": "style",
@@ -2411,11 +2508,15 @@
       "Step 5: Verify tooltip shows full datetime on hover"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T01:25:03.145238Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.152910Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-134-2026-01-18-07-31-24.json"
   },
   {
     "category": "style",
@@ -2446,11 +2547,15 @@
       "Step 5: Verify internal notes are visually distinct"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-18T02:24:55.033773Z"
+    "dev_completed_at": "2026-01-18T02:24:55.033773Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.169685Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-136-2026-01-18-07-31-24.json"
   },
   {
     "category": "style",
@@ -2463,11 +2568,15 @@
       "Step 5: Verify multiple viewers are handled appropriately"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T01:53:52.489329Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.186747Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-137-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2482,11 +2591,15 @@
       "Step 7: Verify connection is restored and sync occurs"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T01:56:39.738398Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.203349Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-138-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2559,11 +2672,15 @@
       "Step 5: Verify no duplicate posts appear"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T02:08:03.759712Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.220095Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-143-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2576,11 +2693,15 @@
       "Step 5: Verify memory usage remains stable"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-18T02:34:50.273459Z"
+    "dev_completed_at": "2026-01-18T02:34:50.273459Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.236754Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-144-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2593,11 +2714,15 @@
       "Step 5: Verify no data conflicts occur"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-18T02:24:07.393606Z"
+    "dev_completed_at": "2026-01-18T02:24:07.393606Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.253638Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-145-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2610,11 +2735,15 @@
       "Step 5: Verify error notification is shown to user"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-18T03:03:00.648488Z"
+    "dev_completed_at": "2026-01-18T03:03:00.648488Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.270576Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-146-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2627,11 +2756,15 @@
       "Step 5: Verify response content is preserved"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T02:54:05.301607Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.287685Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-147-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2644,11 +2777,15 @@
       "Step 5: Verify application functions with CSP enabled"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T02:50:54.322586Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.304609Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-148-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2661,11 +2798,15 @@
       "Step 5: Test other XSS vectors (event handlers, etc.)"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_failure_count": 0,
-    "dev_completed_at": "1768715565"
+    "dev_completed_at": "1768715565",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.321435Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-149-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2677,16 +2818,20 @@
       "Step 4: Verify legitimate requests with token succeed"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_failure_count": 2,
     "last_dev_failure_at": "2026-01-18T03:50:57.580923Z",
     "dev_failure_reasons": [
       "Worker session timed out",
       "Worker session timed out"
     ],
-    "dev_completed_at": "1768715565"
+    "dev_completed_at": "1768715565",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.338317Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-150-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2699,11 +2844,15 @@
       "Step 5: Verify UI handles rate limit gracefully"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T02:55:53.128844Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.354992Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-151-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2718,11 +2867,15 @@
       "Step 7: Verify request succeeds"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T03:07:29.143091Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.372129Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-152-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2762,11 +2915,15 @@
       "Step 5: Verify PII is appropriately redacted in logs"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T03:19:08.669530Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.389305Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-154-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2779,15 +2936,19 @@
       "Step 5: Verify no type errors"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
     "dev_completed_at": "1768715565",
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_failure_count": 1,
     "last_dev_failure_at": "2026-01-18T03:49:09.112039Z",
     "dev_failure_reasons": [
       "Worker session timed out"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.406172Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-155-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2800,11 +2961,15 @@
       "Step 5: Verify all files pass checks"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T04:09:29.244387Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.423027Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-156-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2817,11 +2982,15 @@
       "Step 5: Verify tests run quickly"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-18T04:32:10.963503Z"
+    "dev_completed_at": "2026-01-18T04:32:10.963503Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.439876Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-157-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2834,11 +3003,15 @@
       "Step 5: Verify tests are deterministic (no flakiness)"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T04:08:02.712414Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.456625Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-158-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2851,11 +3024,15 @@
       "Step 5: Verify output bundles are created"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-18T04:48:14.788500Z"
+    "dev_completed_at": "2026-01-18T04:48:14.788500Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.473641Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-159-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2868,11 +3045,15 @@
       "Step 5: Verify no server errors in logs"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T04:28:27.746471Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.490360Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-160-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2885,11 +3066,15 @@
       "Step 5: Verify .env.example documents all required vars"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-18T05:18:58.114765Z"
+    "dev_completed_at": "2026-01-18T05:18:58.114765Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.506944Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-161-2026-01-18-07-31-24.json"
   },
   {
     "category": "style",
@@ -2955,8 +3140,13 @@
       "Step 6: Verify form labels are properly associated"
     ],
     "passes": false,
-    "is_dev_done": true,
-    "is_qa_passed": false
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.523791Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-165-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2969,8 +3159,13 @@
       "Step 5: Verify aria-expanded, aria-selected work correctly"
     ],
     "passes": false,
-    "is_dev_done": true,
-    "is_qa_passed": false
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.540450Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-166-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2983,8 +3178,13 @@
       "Step 5: Verify minimum 4.5:1 ratio for normal text"
     ],
     "passes": false,
-    "is_dev_done": true,
-    "is_qa_passed": false
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.557253Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-167-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2997,8 +3197,13 @@
       "Step 5: Verify modals trap focus appropriately"
     ],
     "passes": false,
-    "is_dev_done": true,
-    "is_qa_passed": false
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.574260Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-168-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -3011,8 +3216,13 @@
       "Step 5: Verify functionality is not affected"
     ],
     "passes": false,
-    "is_dev_done": true,
-    "is_qa_passed": false
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.591010Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-169-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -3042,11 +3252,15 @@
       "Step 5: Verify can search/filter agents"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T04:44:59.413102Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.607804Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-171-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -3318,11 +3532,15 @@
       "Step 4: Verify users are notified of conflicts if applicable"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T06:06:29.789970Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.624767Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-188-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -3335,11 +3553,15 @@
       "Step 5: Verify query performance meets targets"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T06:23:08.505157Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.641550Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-189-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -3354,12 +3576,13 @@
     "passes": false,
     "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
-    "dev_failure_count": 1,
-    "last_dev_failure_at": "2026-01-18T06:26:45.112312Z",
-    "dev_failure_reasons": [
-      "Worker session timed out"
-    ]
+    "qa_retry_count": 1,
+    "dev_failure_count": 0,
+    "dev_completed_at": "2026-01-18T07:28:21.430676Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.658342Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-190-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -3372,11 +3595,15 @@
       "Step 5: Verify Realtime connections remain stable"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T06:26:52.229878Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.675433Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-191-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -3389,11 +3616,15 @@
       "Step 5: Verify filters work efficiently at scale"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T05:05:44.022857Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.692192Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-192-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -3407,11 +3638,15 @@
       "Step 6: Verify updates resume flowing without manual refresh"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-18T05:56:45.051371Z"
+    "dev_completed_at": "2026-01-18T05:56:45.051371Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.709131Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-193-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -3466,11 +3701,15 @@
       "Step 5: Verify minimum pane widths are enforced"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-18T05:36:52.485651Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.727019Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-196-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -3502,9 +3741,14 @@
       "Step 7: Verify the updated_at timestamp reflects the change"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "dev_completed_at": "2026-01-18T12:00:00.000000Z"
+    "dev_completed_at": "2026-01-18T12:00:00.000000Z",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-18T07:31:24.743634Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "modus/qa-reports/feature-198-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
