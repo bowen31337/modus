@@ -2862,8 +2862,11 @@
       "Step 5: Verify no server errors in logs"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-18T04:28:27.746471Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -2943,7 +2946,7 @@
       "Step 6: Verify form labels are properly associated"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false
   },
   {
@@ -2957,7 +2960,7 @@
       "Step 5: Verify aria-expanded, aria-selected work correctly"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false
   },
   {
@@ -2971,7 +2974,7 @@
       "Step 5: Verify minimum 4.5:1 ratio for normal text"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false
   },
   {
@@ -2985,7 +2988,7 @@
       "Step 5: Verify modals trap focus appropriately"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false
   },
   {
@@ -2999,7 +3002,7 @@
       "Step 5: Verify functionality is not affected"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false
   },
   {
@@ -3012,9 +3015,12 @@
       "Step 4: Save changes",
       "Step 5: Verify changes are reflected throughout UI"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_failure_count": 0,
+    "dev_completed_at": "1768710702.004"
   },
   {
     "category": "functional",

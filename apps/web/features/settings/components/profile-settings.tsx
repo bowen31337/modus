@@ -2,7 +2,7 @@
 
 import { Button } from '@modus/ui';
 import { Camera, Mail, Shield, User } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Agent {
   id: string;
@@ -28,6 +28,16 @@ export function ProfileSettings({ agent, onUpdateAgent }: ProfileSettingsProps) 
     avatar_url: agent?.avatar_url || '',
   });
   const [errors, setErrors] = useState<{ display_name?: string; avatar_url?: string }>({});
+
+  // Sync formData when agent prop changes (e.g., after successful update)
+  useEffect(() => {
+    if (agent) {
+      setFormData({
+        display_name: agent.display_name,
+        avatar_url: agent.avatar_url || '',
+      });
+    }
+  }, [agent]);
 
   const handleSave = async () => {
     if (!agent) return;
@@ -55,7 +65,7 @@ export function ProfileSettings({ agent, onUpdateAgent }: ProfileSettingsProps) 
     try {
       await onUpdateAgent(agent.id, {
         display_name: formData.display_name.trim(),
-        avatar_url: formData.avatar_url.trim() || null,
+        avatar_url: formData.avatar_url ? formData.avatar_url.trim() : null,
       });
       setIsEditing(false);
       setErrors({});

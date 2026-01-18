@@ -4,6 +4,7 @@ import { ErrorState } from '@/components/ui/error-state';
 import { Search } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { FilterChips } from './filter-chips';
 import { FilterControls, type FilterState, isDateInRange } from './filter-controls';
 import { PostCard, type PostCardProps } from './post-card';
 import { PostCardSkeleton } from './post-card-skeleton';
@@ -607,6 +608,9 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
           <ViewToggle viewMode={viewMode} onViewModeChange={setViewMode} />
         </div>
       </div>
+
+      {/* Active Filter Chips */}
+      <FilterChips filters={filters} onFiltersChange={setFilters} />
 
       {/* Queue List */}
       <div className="flex-1 overflow-y-auto" ref={queueContainerRef}>

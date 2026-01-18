@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist_Mono, Inter } from 'next/font/google';
+import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { ToastProvider } from '@/components/ui/toast';
 import { ToastContainer } from '@/components/ui/toast-container';
@@ -9,7 +9,7 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
-const geistMono = Geist_Mono({
+const jetBrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-geist-mono',
 });
@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className="dark">
       <body
-        className={`${inter.variable} ${geistMono.variable} font-sans bg-background text-foreground antialiased`}
+        className={`${inter.variable} ${jetBrainsMono.variable} font-sans bg-background text-foreground antialiased`}
       >
         <ToastProvider>
           {children}

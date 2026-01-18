@@ -1,0 +1,94 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]: m
+      - 'button "Agent status: Online. Available for assignments" [ref=e6] [cursor=pointer]':
+        - img [ref=e7]
+        - img [ref=e9]
+      - navigation [ref=e11]:
+        - link "Home" [ref=e12] [cursor=pointer]:
+          - /url: /dashboard
+          - img [ref=e13]
+        - link "Queue" [ref=e16] [cursor=pointer]:
+          - /url: /dashboard/queue
+          - img [ref=e17]
+        - link "Assigned" [ref=e20] [cursor=pointer]:
+          - /url: /dashboard/assigned
+          - img [ref=e21]
+        - link "Settings" [ref=e24] [cursor=pointer]:
+          - /url: /dashboard/settings
+          - img [ref=e25]
+      - button "Logout from the application" [ref=e28] [cursor=pointer]:
+        - img [ref=e29]
+    - generic [ref=e32]:
+      - generic [ref=e33]:
+        - generic [ref=e35]:
+          - link [ref=e36] [cursor=pointer]:
+            - /url: /dashboard
+            - img [ref=e37]
+          - heading "Settings" [level=1] [ref=e39]
+        - generic [ref=e40]:
+          - button "Profile" [ref=e41] [cursor=pointer]:
+            - img [ref=e42]
+            - text: Profile
+          - button "Templates" [ref=e45] [cursor=pointer]:
+            - img [ref=e46]
+            - text: Templates
+          - button "Priority Rules" [ref=e49] [cursor=pointer]:
+            - img [ref=e50]
+            - text: Priority Rules
+      - generic [ref=e53]:
+        - generic [ref=e54]:
+          - generic [ref=e55]:
+            - heading "Profile Information" [level=2] [ref=e56]
+            - generic [ref=e57]:
+              - button "Cancel" [disabled]
+              - button "Saving..." [disabled]
+          - generic [ref=e58]:
+            - generic [ref=e59]:
+              - img [ref=e60]
+              - img [ref=e64]
+            - generic [ref=e67]:
+              - heading "Agent A" [level=3] [ref=e68]
+              - generic [ref=e69]:
+                - img [ref=e70]
+                - generic [ref=e73]: user-agent-1
+              - generic [ref=e75]:
+                - img [ref=e76]
+                - text: Agent
+          - generic [ref=e78]:
+            - generic [ref=e79]:
+              - generic [ref=e80]: Display Name *
+              - textbox "Display Name *" [disabled] [ref=e81]:
+                - /placeholder: Enter your display name
+                - text: Updated Agent Name
+              - paragraph [ref=e82]: 18/50 characters
+            - generic [ref=e83]:
+              - generic [ref=e84]: Avatar URL
+              - textbox "Avatar URL" [disabled] [ref=e85]:
+                - /placeholder: https://example.com/avatar.jpg
+              - paragraph [ref=e86]: Enter a URL for your profile image. Leave empty to use default avatar.
+        - generic [ref=e87]:
+          - heading "Account Information" [level=3] [ref=e88]
+          - generic [ref=e89]:
+            - generic [ref=e90]:
+              - generic [ref=e91]: Agent ID
+              - generic [ref=e92]: agent-1
+            - generic [ref=e93]:
+              - generic [ref=e94]: Status
+              - generic [ref=e95]: online
+            - generic [ref=e96]:
+              - generic [ref=e97]: Member Since
+              - generic [ref=e98]: January 1, 2025
+            - generic [ref=e99]:
+              - generic [ref=e100]: Last Active
+              - generic [ref=e101]: Jan 18, 03:27 PM
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e107] [cursor=pointer]:
+    - img [ref=e108]
+  - alert [ref=e111]
+```
