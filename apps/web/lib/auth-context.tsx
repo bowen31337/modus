@@ -165,3 +165,30 @@ export function useRoleCheck() {
     isAgent,
   };
 }
+
+/**
+ * Component that renders children only if user has required role
+ * Use this to protect UI elements based on user role
+ *
+ * @example
+ * <RoleGuard requiredRole="admin">
+ *   <Button>Delete Post</Button>
+ * </RoleGuard>
+ */
+export function RoleGuard({
+  children,
+  requiredRole,
+  fallback = null,
+}: {
+  children: React.ReactNode;
+  requiredRole: UserRole;
+  fallback?: React.ReactNode;
+}) {
+  const { hasRole } = useRoleCheck();
+
+  if (!hasRole(requiredRole)) {
+    return <>{fallback}</>;
+  }
+
+  return <>{children}</>;
+}
