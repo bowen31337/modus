@@ -52,7 +52,9 @@
     "qa_retry_count": 0,
     "dev_failure_count": 1,
     "last_dev_failure_at": "2026-01-17T13:17:30.465373Z",
-    "dev_failure_reasons": ["Worker session timed out"],
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ],
     "dev_completed_at": "1768657233.308329"
   },
   {
@@ -109,7 +111,9 @@
     "qa_retry_count": 0,
     "dev_failure_count": 1,
     "last_dev_failure_at": "2026-01-17T13:16:01.918423Z",
-    "dev_failure_reasons": ["Worker session timed out"]
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -372,7 +376,9 @@
     "qa_retry_count": 0,
     "dev_failure_count": 1,
     "last_dev_failure_at": "2026-01-17T13:46:03.491970Z",
-    "dev_failure_reasons": ["Worker session timed out"]
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -393,7 +399,9 @@
     "qa_retry_count": 0,
     "dev_failure_count": 1,
     "last_dev_failure_at": "2026-01-17T13:47:35.469891Z",
-    "dev_failure_reasons": ["Worker session timed out"]
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -447,7 +455,9 @@
     "dev_completed_at": "1768668777",
     "qa_completed_at": "1768668777",
     "last_dev_failure_at": "2026-01-17T17:22:38.329458Z",
-    "dev_failure_reasons": ["Worker session timed out"]
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -1374,7 +1384,10 @@
     "qa_retry_count": 0,
     "dev_failure_count": 1,
     "last_dev_failure_at": "2026-01-17T20:56:06.039371Z",
-    "dev_failure_reasons": ["Worker session timed out", "Worker session timed out"],
+    "dev_failure_reasons": [
+      "Worker session timed out",
+      "Worker session timed out"
+    ],
     "dev_completed_at": "2026-01-17T20:30:45.494Z",
     "qa_completed_at": "2026-01-17T20:30:45.494Z"
   },
@@ -1468,7 +1481,9 @@
     "qa_retry_count": 0,
     "dev_failure_count": 1,
     "last_dev_failure_at": "2026-01-17T21:36:04.060690Z",
-    "dev_failure_reasons": ["Worker session timed out"],
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ],
     "qa_completed_at": "1768696013"
   },
   {
@@ -1489,7 +1504,9 @@
     "qa_retry_count": 0,
     "dev_failure_count": 1,
     "last_dev_failure_at": "2026-01-17T21:39:36.842877Z",
-    "dev_failure_reasons": ["Worker session timed out"],
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ],
     "qa_completed_at": "1768691591"
   },
   {
@@ -1757,7 +1774,10 @@
     "qa_retry_count": 0,
     "dev_failure_count": 2,
     "last_dev_failure_at": "2026-01-17T23:46:16.061450Z",
-    "dev_failure_reasons": ["Worker session timed out", "Worker session timed out"],
+    "dev_failure_reasons": [
+      "Worker session timed out",
+      "Worker session timed out"
+    ],
     "dev_completed_at": "1768692623"
   },
   {
@@ -1770,12 +1790,13 @@
       "Step 4: Verify empty state includes clear filter option",
       "Step 5: Test empty state for new accounts with no activity"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-17T23:13:47.907388Z",
-    "dev_failure_count": 0
+    "dev_failure_count": 0,
+    "qa_completed_at": "2026-01-18T01:58:24.%3NZ"
   },
   {
     "category": "style",
@@ -1885,7 +1906,9 @@
     "dev_completed_at": "2026-01-18T18:00:00.000000Z",
     "qa_completed_at": "2026-01-18T18:00:00.000000Z",
     "last_dev_failure_at": "2026-01-18T00:54:01.250560Z",
-    "dev_failure_reasons": ["Worker session timed out"]
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "style",
@@ -2092,9 +2115,10 @@
       "Step 5: Take screenshot of hover state"
     ],
     "passes": true,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": true,
-    "qa_completed_at": "2026-01-18T01:23:48.663Z"
+    "qa_completed_at": "2026-01-18T01:23:48.663Z",
+    "dev_completed_at": "1768701492"
   },
   {
     "category": "style",
@@ -2122,9 +2146,10 @@
       "Step 4: Verify text area has appropriate padding",
       "Step 5: Verify editor integrates visually with surrounding UI"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": 1768701745955
   },
   {
     "category": "style",
@@ -2150,9 +2175,10 @@
       "Step 4: Verify search input is prominent",
       "Step 5: Verify command list has clear visual hierarchy"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768703057"
   },
   {
     "category": "style",
@@ -2271,7 +2297,9 @@
     "qa_retry_count": 0,
     "dev_failure_count": 1,
     "last_dev_failure_at": "2026-01-18T01:40:58.920766Z",
-    "dev_failure_reasons": ["Worker session timed out"]
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "style",
@@ -2289,7 +2317,9 @@
     "qa_retry_count": 0,
     "dev_failure_count": 1,
     "last_dev_failure_at": "2026-01-18T01:43:45.943567Z",
-    "dev_failure_reasons": ["Worker session timed out"]
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "style",
@@ -2405,7 +2435,13 @@
     ],
     "passes": false,
     "is_dev_done": false,
-    "is_qa_passed": false
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-18T02:09:17.253718Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "style",
@@ -2437,8 +2473,11 @@
       "Step 7: Verify connection is restored and sync occurs"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-18T01:56:39.738398Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -2511,8 +2550,11 @@
       "Step 5: Verify no duplicate posts appear"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-18T02:08:03.759712Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -2526,7 +2568,13 @@
     ],
     "passes": false,
     "is_dev_done": false,
-    "is_qa_passed": false
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-18T02:23:52.649110Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -2539,8 +2587,11 @@
       "Step 5: Verify no data conflicts occur"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_failure_count": 0,
+    "dev_completed_at": "2026-01-18T02:24:07.393606Z"
   },
   {
     "category": "functional",
