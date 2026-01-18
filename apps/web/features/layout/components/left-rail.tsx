@@ -1,11 +1,11 @@
 'use client';
 
+import { logout } from '@/lib/auth-actions';
+import { createClient } from '@/lib/supabase/client';
+import { Button } from '@modus/ui';
+import { CheckCircle2, Home, Inbox, LogOut, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Inbox, CheckCircle2, Settings, LogOut } from 'lucide-react';
-import { Button } from '@modus/ui';
-import { createClient } from '@/lib/supabase/client';
-import { logout } from '@/lib/auth-actions';
 import { AgentStatusIndicator } from './agent-status-indicator';
 
 const navItems = [
@@ -66,10 +66,10 @@ export function LeftRail() {
             <Link
               key={item.href}
               href={item.href as never}
-              className={`w-10 h-10 flex items-center justify-center rounded-lg transition-colors ${
+              className={`w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-150 ${
                 isActive
                   ? 'bg-obsidian-600 text-white'
-                  : 'text-obsidian-400 hover:bg-obsidian-800 hover:text-obsidian-200'
+                  : 'text-obsidian-400 hover:bg-obsidian-800 hover:text-obsidian-200 active:scale-95'
               }`}
               title={item.label}
               aria-label={item.label}

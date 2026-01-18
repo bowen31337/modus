@@ -1,11 +1,18 @@
 'use client';
 
-import { useState } from 'react';
-import { Filter, X, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@modus/ui';
+import { ChevronDown, Filter, X } from 'lucide-react';
+import { useState } from 'react';
 
-export type CategoryFilter = 'all' | 'Account Issues' | 'Feature Request' | 'Bug Reports' | 'Spam' | 'Harassment' | 'Other';
+export type CategoryFilter =
+  | 'all'
+  | 'Account Issues'
+  | 'Feature Request'
+  | 'Bug Reports'
+  | 'Spam'
+  | 'Harassment'
+  | 'Other';
 export type StatusFilter = 'all' | 'open' | 'in_progress' | 'resolved';
 export type PriorityFilter = 'all' | 'P1' | 'P2' | 'P3' | 'P4' | 'P5';
 
@@ -40,13 +47,13 @@ export const isDateInRange = (dateStr: string, startDate?: string, endDate?: str
     const now = new Date();
 
     if (dateStr.includes('m ago')) {
-      const minutes = parseInt(dateStr);
+      const minutes = Number.parseInt(dateStr);
       postDate.setTime(now.getTime() - minutes * 60000);
     } else if (dateStr.includes('h ago')) {
-      const hours = parseInt(dateStr);
+      const hours = Number.parseInt(dateStr);
       postDate.setTime(now.getTime() - hours * 3600000);
     } else if (dateStr.includes('d ago')) {
-      const days = parseInt(dateStr);
+      const days = Number.parseInt(dateStr);
       postDate.setTime(now.getTime() - days * 86400000);
     } else {
       // Unable to parse, include the post
@@ -83,7 +90,9 @@ const categoryColors: Record<CategoryFilter, string> = {
 
 export function FilterControls({ filters, onFiltersChange, postCount }: FilterControlsProps) {
   const [showDropdown, setShowDropdown] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<'category' | 'status' | 'priority' | 'date' | null>(null);
+  const [activeDropdown, setActiveDropdown] = useState<
+    'category' | 'status' | 'priority' | 'date' | null
+  >(null);
 
   const activeFilterCount = [
     filters.category !== 'all',
@@ -132,17 +141,17 @@ export function FilterControls({ filters, onFiltersChange, postCount }: FilterCo
             {activeFilterCount}
           </span>
         )}
-        <ChevronDown size={12} className={cn('transition-transform', showDropdown && 'rotate-180')} />
+        <ChevronDown
+          size={12}
+          className={cn('transition-transform', showDropdown && 'rotate-180')}
+        />
       </Button>
 
       {/* Dropdown Menu */}
       {showDropdown && (
         <>
           {/* Backdrop */}
-          <div
-            className="fixed inset-0 z-40"
-            onClick={() => setShowDropdown(false)}
-          />
+          <div className="fixed inset-0 z-40" onClick={() => setShowDropdown(false)} />
 
           {/* Dropdown Content */}
           <div className="absolute top-full left-0 mt-1 w-72 bg-background-secondary border border-border rounded-lg shadow-lg z-50 p-3 space-y-3">
@@ -152,7 +161,7 @@ export function FilterControls({ filters, onFiltersChange, postCount }: FilterCo
               {hasActiveFilters && (
                 <button
                   onClick={handleClearAll}
-                  className="text-xs text-primary hover:text-primary/80 flex items-center gap-1"
+                  className="text-xs text-primary hover:text-primary/80 active:text-primary/60 active:scale-95 transition-all duration-150 flex items-center gap-1"
                 >
                   <X size={12} />
                   Clear all
@@ -164,24 +173,40 @@ export function FilterControls({ filters, onFiltersChange, postCount }: FilterCo
             <div>
               <button
                 onClick={() => setActiveDropdown(activeDropdown === 'category' ? null : 'category')}
-                className="w-full flex items-center justify-between text-xs text-foreground-secondary hover:text-foreground transition-colors py-1"
+                className="w-full flex items-center justify-between text-xs text-foreground-secondary hover:text-foreground active:text-foreground/70 active:scale-[0.995] transition-all duration-150 py-1"
               >
                 <span>Category</span>
-                <ChevronDown size={12} className={cn('transition-transform', activeDropdown === 'category' && 'rotate-180')} />
+                <ChevronDown
+                  size={12}
+                  className={cn(
+                    'transition-transform',
+                    activeDropdown === 'category' && 'rotate-180'
+                  )}
+                />
               </button>
               {activeDropdown === 'category' && (
                 <div className="mt-2 space-y-1">
-                  {(['all', 'Account Issues', 'Feature Request', 'Bug Reports', 'Spam', 'Harassment', 'Other'] as CategoryFilter[]).map((cat) => (
+                  {(
+                    [
+                      'all',
+                      'Account Issues',
+                      'Feature Request',
+                      'Bug Reports',
+                      'Spam',
+                      'Harassment',
+                      'Other',
+                    ] as CategoryFilter[]
+                  ).map((cat) => (
                     <button
                       key={cat}
                       onClick={() => {
                         onFiltersChange({ ...filters, category: cat });
                       }}
                       className={cn(
-                        'w-full flex items-center gap-2 px-2 py-1.5 rounded text-xs text-left transition-colors',
+                        'w-full flex items-center gap-2 px-2 py-1.5 rounded text-xs text-left transition-all duration-150',
                         filters.category === cat
-                          ? 'bg-primary/10 text-primary'
-                          : 'hover:bg-background-tertiary text-foreground-secondary'
+                          ? 'bg-primary/10 text-primary active:bg-primary/20'
+                          : 'hover:bg-background-tertiary text-foreground-secondary active:bg-background-hover active:scale-[0.995]'
                       )}
                       data-testid={`filter-category-${cat}`}
                     >
@@ -200,10 +225,16 @@ export function FilterControls({ filters, onFiltersChange, postCount }: FilterCo
             <div>
               <button
                 onClick={() => setActiveDropdown(activeDropdown === 'status' ? null : 'status')}
-                className="w-full flex items-center justify-between text-xs text-foreground-secondary hover:text-foreground transition-colors py-1"
+                className="w-full flex items-center justify-between text-xs text-foreground-secondary hover:text-foreground active:text-foreground/70 active:scale-[0.995] transition-all duration-150 py-1"
               >
                 <span>Status</span>
-                <ChevronDown size={12} className={cn('transition-transform', activeDropdown === 'status' && 'rotate-180')} />
+                <ChevronDown
+                  size={12}
+                  className={cn(
+                    'transition-transform',
+                    activeDropdown === 'status' && 'rotate-180'
+                  )}
+                />
               </button>
               {activeDropdown === 'status' && (
                 <div className="mt-2 space-y-1">
@@ -214,16 +245,20 @@ export function FilterControls({ filters, onFiltersChange, postCount }: FilterCo
                         onFiltersChange({ ...filters, status });
                       }}
                       className={cn(
-                        'w-full px-2 py-1.5 rounded text-xs text-left transition-colors',
+                        'w-full px-2 py-1.5 rounded text-xs text-left transition-all duration-150',
                         filters.status === status
-                          ? 'bg-primary/10 text-primary'
-                          : 'hover:bg-background-tertiary text-foreground-secondary'
+                          ? 'bg-primary/10 text-primary active:bg-primary/20'
+                          : 'hover:bg-background-tertiary text-foreground-secondary active:bg-background-hover active:scale-[0.995]'
                       )}
+                      data-testid={`filter-status-${status}`}
                     >
-                      {status === 'all' ? 'All Statuses' :
-                       status === 'open' ? 'Open' :
-                       status === 'in_progress' ? 'In Progress' :
-                       'Resolved'}
+                      {status === 'all'
+                        ? 'All Statuses'
+                        : status === 'open'
+                          ? 'Open'
+                          : status === 'in_progress'
+                            ? 'In Progress'
+                            : 'Resolved'}
                     </button>
                   ))}
                 </div>
@@ -234,10 +269,16 @@ export function FilterControls({ filters, onFiltersChange, postCount }: FilterCo
             <div>
               <button
                 onClick={() => setActiveDropdown(activeDropdown === 'priority' ? null : 'priority')}
-                className="w-full flex items-center justify-between text-xs text-foreground-secondary hover:text-foreground transition-colors py-1"
+                className="w-full flex items-center justify-between text-xs text-foreground-secondary hover:text-foreground active:text-foreground/70 active:scale-[0.995] transition-all duration-150 py-1"
               >
                 <span>Priority</span>
-                <ChevronDown size={12} className={cn('transition-transform', activeDropdown === 'priority' && 'rotate-180')} />
+                <ChevronDown
+                  size={12}
+                  className={cn(
+                    'transition-transform',
+                    activeDropdown === 'priority' && 'rotate-180'
+                  )}
+                />
               </button>
               {activeDropdown === 'priority' && (
                 <div className="mt-2 space-y-1">
@@ -248,11 +289,12 @@ export function FilterControls({ filters, onFiltersChange, postCount }: FilterCo
                         onFiltersChange({ ...filters, priority });
                       }}
                       className={cn(
-                        'w-full px-2 py-1.5 rounded text-xs text-left transition-colors',
+                        'w-full px-2 py-1.5 rounded text-xs text-left transition-all duration-150',
                         filters.priority === priority
-                          ? 'bg-primary/10 text-primary'
-                          : 'hover:bg-background-tertiary text-foreground-secondary'
+                          ? 'bg-primary/10 text-primary active:bg-primary/20'
+                          : 'hover:bg-background-tertiary text-foreground-secondary active:bg-background-hover active:scale-[0.995]'
                       )}
+                      data-testid={`filter-priority-${priority}`}
                     >
                       {priority === 'all' ? 'All Priorities' : priority}
                     </button>
@@ -265,10 +307,13 @@ export function FilterControls({ filters, onFiltersChange, postCount }: FilterCo
             <div>
               <button
                 onClick={() => setActiveDropdown(activeDropdown === 'date' ? null : 'date')}
-                className="w-full flex items-center justify-between text-xs text-foreground-secondary hover:text-foreground transition-colors py-1"
+                className="w-full flex items-center justify-between text-xs text-foreground-secondary hover:text-foreground active:text-foreground/70 active:scale-[0.995] transition-all duration-150 py-1"
               >
                 <span>Date Range</span>
-                <ChevronDown size={12} className={cn('transition-transform', activeDropdown === 'date' && 'rotate-180')} />
+                <ChevronDown
+                  size={12}
+                  className={cn('transition-transform', activeDropdown === 'date' && 'rotate-180')}
+                />
               </button>
               {activeDropdown === 'date' && (
                 <div className="mt-2 space-y-2">
@@ -277,7 +322,12 @@ export function FilterControls({ filters, onFiltersChange, postCount }: FilterCo
                     <input
                       type="date"
                       value={filters.dateRange?.startDate || ''}
-                      onChange={(e) => handleDateRangeChange(e.target.value || null, filters.dateRange?.endDate || null)}
+                      onChange={(e) =>
+                        handleDateRangeChange(
+                          e.target.value || null,
+                          filters.dateRange?.endDate || null
+                        )
+                      }
                       className="w-full bg-background-tertiary border border-border rounded px-2 py-1.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                       data-testid="date-start-input"
                     />
@@ -287,7 +337,12 @@ export function FilterControls({ filters, onFiltersChange, postCount }: FilterCo
                     <input
                       type="date"
                       value={filters.dateRange?.endDate || ''}
-                      onChange={(e) => handleDateRangeChange(filters.dateRange?.startDate || null, e.target.value || null)}
+                      onChange={(e) =>
+                        handleDateRangeChange(
+                          filters.dateRange?.startDate || null,
+                          e.target.value || null
+                        )
+                      }
                       className="w-full bg-background-tertiary border border-border rounded px-2 py-1.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                       data-testid="date-end-input"
                     />

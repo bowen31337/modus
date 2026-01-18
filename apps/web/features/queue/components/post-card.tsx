@@ -1,9 +1,9 @@
 'use client';
 
-import { Clock, User, MessageSquare, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { type PostStatus, StatusBadge } from '@/components/ui/status-badge';
 import { cn } from '@/lib/utils';
+import { AlertCircle, CheckCircle2, Clock, MessageSquare, User } from 'lucide-react';
 import type { ViewMode } from './view-toggle';
-import { StatusBadge, type PostStatus } from '@/components/ui/status-badge';
 
 export type PriorityLevel = 'P1' | 'P2' | 'P3' | 'P4' | 'P5';
 export type { PostStatus } from '@/components/ui/status-badge';
@@ -104,7 +104,11 @@ export function PostCard({
           {/* Metadata Grid */}
           <div className="grid grid-cols-2 gap-2 text-xs text-foreground-muted mb-2">
             {/* Priority */}
-            <span className={cn('font-mono text-[10px] px-1.5 py-0.5 rounded bg-background-tertiary')}>{priority}</span>
+            <span
+              className={cn('font-mono text-[10px] px-1.5 py-0.5 rounded bg-background-tertiary')}
+            >
+              {priority}
+            </span>
 
             {/* Sentiment */}
             {sentiment && (
@@ -198,7 +202,11 @@ export function PostCard({
         {/* Metadata Row */}
         <div className="flex items-center gap-3 text-xs text-foreground-muted">
           {/* Priority */}
-          <span className={cn('font-mono text-[10px] px-1.5 py-0.5 rounded bg-background-tertiary')}>{priority}</span>
+          <span
+            className={cn('font-mono text-[10px] px-1.5 py-0.5 rounded bg-background-tertiary')}
+          >
+            {priority}
+          </span>
 
           {/* Sentiment */}
           {sentiment && (
