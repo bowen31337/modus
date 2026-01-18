@@ -1,6 +1,11 @@
 import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
-import { type SuggestContext, buildSuggestionPrompt } from '@modus/logic';
+import {
+  type SuggestContext,
+  buildSuggestionPrompt,
+  generatePostEmbedding,
+  cosineSimilarity,
+} from '@modus/logic';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -66,18 +71,37 @@ export async function POST(request: NextRequest) {
 
     // Retrieve similar responses if RAG is enabled
     if (validatedInput.use_rag) {
-      // Get all responses from data store
+      // Generate embedding for the current post
+      const currentEmbedding = generatePostEmbedding(post);
+
+      // Get all posts with their responses from data store
+      const allPosts = dataStore.getAllPosts();
       const allResponses = dataStore.getAllResponses();
 
-      // Simple similarity matching based on category and status
-      // In production, this would use vector embeddings with cosine similarity
-      const similarResponses = allResponses
-        .filter((r) => {
-          // Filter responses from posts in the same category
-          const otherPost = dataStore.getPostById(r.post_id);
-          return otherPost && otherPost.category_id === post.category_id;
+      // Calculate similarity scores using vector embeddings
+      const postsWithSimilarity = allPosts
+        .map((otherPost) => {
+          // Skip the current post itself
+          if (otherPost.id === post.id) return null;
+
+          // Generate embedding for the other post
+          const otherEmbedding = generatePostEmbedding(otherPost);
+
+          // Calculate cosine similarity
+          const similarity = cosineSimilarity(currentEmbedding, otherEmbedding);
+
+          return {
+            post: otherPost,
+            similarity,
+          };
         })
+        .filter((item): item is { post: typeof allPosts[number]; similarity: number } => item !== null)
+        .sort((a, b) => b.similarity - a.similarity)
         .slice(0, validatedInput.max_similar);
+
+      // Get responses from the most similar posts
+      const similarPostIds = new Set(postsWithSimilarity.map((item) => item.post.id));
+      const similarResponses = allResponses.filter((r) => similarPostIds.has(r.post_id));
 
       context.similarResponses = similarResponses;
     }
