@@ -2,9 +2,21 @@ import { expect, test } from '@playwright/test';
 
 test.describe('Admin - Agent Role Management', () => {
   test.beforeEach(async ({ page }) => {
-    // Just navigate to the base URL to ensure server is running
-    // API tests don't need authentication or UI setup
-    await page.goto('/');
+    // Navigate to login page and authenticate
+    await page.goto('/login');
+
+    // Fill in login form (demo mode accepts any credentials)
+    await page.getByLabel('Email').fill('demo@example.com');
+    await page.getByLabel('Password').fill('password123');
+
+    // Submit login form
+    await page.getByRole('button', { name: 'Sign In' }).click();
+
+    // Wait for navigation to dashboard
+    await page.waitForURL(/.*dashboard/, { timeout: 10000 });
+
+    // Wait for dashboard to fully load
+    await expect(page.getByTestId('queue-pane')).toBeVisible({ timeout: 10000 });
   });
 
   test('should allow admin to change agent role via API', async ({ page }) => {

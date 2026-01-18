@@ -8,6 +8,7 @@
 import type {
   Agent,
   AuditLog,
+  Category,
   ModerationPost,
   Presence,
   PriorityRule,
@@ -100,6 +101,26 @@ export interface TestRuleResult {
   calculated_priority: string;
 }
 
+export interface CreateCategoryInput {
+  name: string;
+  slug: string;
+  description?: string;
+  color: string;
+  icon?: string;
+  position?: number;
+  is_active?: boolean;
+}
+
+export interface UpdateCategoryInput {
+  name?: string;
+  slug?: string;
+  description?: string;
+  color?: string;
+  icon?: string;
+  position?: number;
+  is_active?: boolean;
+}
+
 // ============================================================================
 // Initial Mock Data
 // ============================================================================
@@ -184,6 +205,70 @@ const CATEGORY_UUIDS = {
   'Help & Support': '44444444-4444-4444-4444-444444444444',
   'Policy & Guidelines': '55555555-5555-5555-5555-555555555555',
 } as const;
+
+// Mock Categories
+const mockCategories: Category[] = [
+  {
+    id: CATEGORY_UUIDS['Account Issues'],
+    name: 'Account Issues',
+    slug: 'account-issues',
+    description: 'Issues related to user accounts, login, and authentication',
+    color: '#eab308',
+    icon: 'User',
+    position: 1,
+    is_active: true,
+    created_at: '2025-01-17T18:00:00Z',
+    updated_at: '2025-01-17T18:00:00Z',
+  },
+  {
+    id: CATEGORY_UUIDS['Feature Request'],
+    name: 'Feature Request',
+    slug: 'feature-request',
+    description: 'Requests for new features or improvements',
+    color: '#8b5cf6',
+    icon: 'Lightbulb',
+    position: 2,
+    is_active: true,
+    created_at: '2025-01-17T18:00:00Z',
+    updated_at: '2025-01-17T18:00:00Z',
+  },
+  {
+    id: CATEGORY_UUIDS['Bug Reports'],
+    name: 'Bug Reports',
+    slug: 'bug-reports',
+    description: 'Reports of bugs or issues with the platform',
+    color: '#ef4444',
+    icon: 'Bug',
+    position: 3,
+    is_active: true,
+    created_at: '2025-01-17T18:00:00Z',
+    updated_at: '2025-01-17T18:00:00Z',
+  },
+  {
+    id: CATEGORY_UUIDS['Help & Support'],
+    name: 'Help & Support',
+    slug: 'help-support',
+    description: 'General help and support requests',
+    color: '#3b82f6',
+    icon: 'HelpCircle',
+    position: 4,
+    is_active: true,
+    created_at: '2025-01-17T18:00:00Z',
+    updated_at: '2025-01-17T18:00:00Z',
+  },
+  {
+    id: CATEGORY_UUIDS['Policy & Guidelines'],
+    name: 'Policy & Guidelines',
+    slug: 'policy-guidelines',
+    description: 'Questions about community policies and guidelines',
+    color: '#06b6d4',
+    icon: 'Shield',
+    position: 5,
+    is_active: true,
+    created_at: '2025-01-17T18:00:00Z',
+    updated_at: '2025-01-17T18:00:00Z',
+  },
+];
 
 const mockPosts: PostWithRelations[] = [
   {
@@ -503,6 +588,7 @@ class DataStore {
   private rules: Map<string, PriorityRule> = new Map();
   private agents: Map<string, Agent> = new Map();
   private templates: Map<string, ResponseTemplate> = new Map();
+  private categories: Map<string, Category> = new Map();
   private presence: Map<string, Presence> = new Map(); // key: `${post_id}:${agent_id}`
   private auditLogs: Map<string, AuditLog> = new Map(); // key: audit log entry ID
 
@@ -526,6 +612,7 @@ class DataStore {
     this.rules.clear();
     this.agents.clear();
     this.templates.clear();
+    this.categories.clear();
     this.presence.clear();
     this.auditLogs.clear();
 
@@ -552,6 +639,9 @@ class DataStore {
     });
     mockResponses.forEach((response) => {
       this.responses.set(response.id, { ...response });
+    });
+    mockCategories.forEach((category) => {
+      this.categories.set(category.id, { ...category });
     });
   }
 
@@ -847,6 +937,114 @@ class DataStore {
     }
 
     return this.responses.delete(responseId);
+  }
+
+  // ============================================================================
+  // Categories CRUD Operations
+  // ============================================================================
+
+  /**
+   * Get all categories sorted by position
+   * @returns Array of all categories sorted by position
+   */
+  getAllCategories(): Category[] {
+    return Array.from(this.categories.values()).sort((a, b) => a.position - b.position);
+  }
+
+  /**
+   * Get a category by ID
+   * @param id - The category ID
+   * @returns Category object or null if not found
+   */
+  getCategoryByIdPublic(id: string): Category | null {
+    return this.categories.get(id) || null;
+  }
+
+  /**
+   * Create a new category
+   * @param input - Category creation input
+   * @returns Created category object
+   */
+  createCategory(input: CreateCategoryInput): Category {
+    const now = new Date().toISOString();
+    const id = uuidv4();
+
+    const category: Category = {
+      id,
+      name: input.name,
+      slug: input.slug,
+      description: input.description || undefined,
+      color: input.color,
+      icon: input.icon || undefined,
+      position: input.position ?? this.categories.size + 1,
+      is_active: input.is_active ?? true,
+      created_at: now,
+      updated_at: now,
+    };
+
+    this.categories.set(id, category);
+    return category;
+  }
+
+  /**
+   * Update an existing category
+   * @param id - The category ID
+   * @param input - Category update input
+   * @returns Updated category object or null if not found
+   */
+  updateCategory(id: string, input: UpdateCategoryInput): Category | null {
+    const category = this.categories.get(id);
+    if (!category) {
+      return null;
+    }
+
+    const updated: Category = {
+      ...category,
+      ...(input.name !== undefined && { name: input.name }),
+      ...(input.slug !== undefined && { slug: input.slug }),
+      ...(input.description !== undefined && { description: input.description || undefined }),
+      ...(input.color !== undefined && { color: input.color }),
+      ...(input.icon !== undefined && { icon: input.icon || undefined }),
+      ...(input.position !== undefined && { position: input.position }),
+      ...(input.is_active !== undefined && { is_active: input.is_active }),
+      updated_at: new Date().toISOString(),
+    };
+
+    this.categories.set(id, updated);
+    return updated;
+  }
+
+  /**
+   * Delete a category
+   * @param id - The category ID
+   * @returns true if deleted, false if not found
+   */
+  deleteCategory(id: string): boolean {
+    return this.categories.delete(id);
+  }
+
+  /**
+   * Reorder categories by position
+   * @param categoryIds - Array of category IDs in new order
+   * @returns Array of updated categories
+   */
+  reorderCategories(categoryIds: string[]): Category[] {
+    const updatedCategories: Category[] = [];
+
+    categoryIds.forEach((categoryId, index) => {
+      const category = this.categories.get(categoryId);
+      if (category) {
+        const updated = {
+          ...category,
+          position: index + 1,
+          updated_at: new Date().toISOString(),
+        };
+        this.categories.set(categoryId, updated);
+        updatedCategories.push(updated);
+      }
+    });
+
+    return updatedCategories;
   }
 
   // ============================================================================
@@ -1148,35 +1346,14 @@ class DataStore {
   ): { id: string; name: string; color: string } | undefined {
     if (!categoryId) return undefined;
 
-    const categories: Record<string, { id: string; name: string; color: string }> = {
-      '11111111-1111-1111-1111-111111111111': {
-        id: '11111111-1111-1111-1111-111111111111',
-        name: 'Account Issues',
-        color: '#eab308',
-      },
-      '22222222-2222-2222-2222-222222222222': {
-        id: '22222222-2222-2222-2222-222222222222',
-        name: 'Feature Request',
-        color: '#8b5cf6',
-      },
-      '33333333-3333-3333-3333-333333333333': {
-        id: '33333333-3333-3333-3333-333333333333',
-        name: 'Bug Reports',
-        color: '#ef4444',
-      },
-      '44444444-4444-4444-4444-444444444444': {
-        id: '44444444-4444-4444-4444-444444444444',
-        name: 'Help & Support',
-        color: '#3b82f6',
-      },
-      '55555555-5555-5555-5555-555555555555': {
-        id: '55555555-5555-5555-5555-555555555555',
-        name: 'Policy & Guidelines',
-        color: '#06b6d4',
-      },
-    };
+    const category = this.categories.get(categoryId);
+    if (!category) return undefined;
 
-    return categories[categoryId];
+    return {
+      id: category.id,
+      name: category.name,
+      color: category.color,
+    };
   }
 
   private getAgentById(agentId: string): { id: string; display_name: string } | null {

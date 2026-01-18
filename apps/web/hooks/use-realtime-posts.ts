@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { createClient } from '@/lib/supabase/client';
+import { createClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import type { RealtimeChannel, RealtimePostgresChangesPayload } from '@supabase/supabase-js';
 import type { ModerationPost } from '@modus/logic';
 
@@ -29,11 +29,12 @@ export function useRealtimePosts(options: UseRealtimePostsOptions = {}) {
   const channelRef = useRef<RealtimeChannel | null>(null);
 
   useEffect(() => {
-    if (!enabled) {
+    if (!enabled || !isSupabaseConfigured()) {
       return;
     }
 
     const supabase = createClient();
+    if (!supabase) return;
 
     // Create a unique channel name
     const channelName = `moderation_posts_changes_${Date.now()}`;
@@ -83,7 +84,7 @@ export function useRealtimePosts(options: UseRealtimePostsOptions = {}) {
     // Cleanup function
     return () => {
       console.log('[Realtime] Cleaning up subscription');
-      if (channelRef.current) {
+      if (channelRef.current && supabase) {
         supabase.removeChannel(channelRef.current);
         channelRef.current = null;
       }
@@ -113,11 +114,13 @@ export function useRealtimePost(
   const channelRef = useRef<RealtimeChannel | null>(null);
 
   useEffect(() => {
-    if (!postId) {
+    if (!postId || !isSupabaseConfigured()) {
       return;
     }
 
     const supabase = createClient();
+    if (!supabase) return;
+
     const channelName = `post_${postId}_changes_${Date.now()}`;
 
     const channel = supabase
@@ -152,7 +155,7 @@ export function useRealtimePost(
 
     return () => {
       console.log('[Realtime] Cleaning up post subscription');
-      if (channelRef.current) {
+      if (channelRef.current && supabase) {
         supabase.removeChannel(channelRef.current);
         channelRef.current = null;
       }
@@ -176,7 +179,13 @@ export function useAgentPresence() {
   const channelRef = useRef<RealtimeChannel | null>(null);
 
   const trackPresence = useCallback((postId: string, presenceStatus: 'viewing' | 'editing') => {
+    if (!isSupabaseConfigured()) {
+      return;
+    }
+
     const supabase = createClient();
+    if (!supabase) return;
+
     const user = supabase.auth.getUser();
 
     user.then(({ data: { user } }) => {
@@ -214,12 +223,14 @@ export function useAgentPresence() {
   }, []);
 
   const untrackPresence = useCallback(() => {
-    if (channelRef.current) {
+    if (channelRef.current && isSupabaseConfigured()) {
       const supabase = createClient();
-      supabase.removeChannel(channelRef.current);
-      channelRef.current = null;
-      setIsConnected(false);
-      setPresenceState(new Map());
+      if (supabase) {
+        supabase.removeChannel(channelRef.current);
+        channelRef.current = null;
+        setIsConnected(false);
+        setPresenceState(new Map());
+      }
     }
   }, []);
 

@@ -2,6 +2,7 @@
 
 import { LeftRail } from '@/features/layout/components/left-rail';
 import { RulesManagement } from '@/features/rules/components/rules-management';
+import { CategoriesManagement } from '@/features/settings/components/categories-management';
 import { AgentManagement } from '@/features/settings/components/agent-management';
 import { AuditLog } from '@/features/settings/components/audit-log';
 import { ProfileSettings } from '@/features/settings/components/profile-settings';
@@ -12,6 +13,7 @@ import {
   ArrowLeft,
   Edit,
   FileText,
+  Folder,
   History,
   Plus,
   Search,
@@ -50,7 +52,7 @@ interface SettingsClientProps {
 
 export default function SettingsClient({ userRole, currentUser }: SettingsClientProps) {
   const [activeTab, setActiveTab] = useState<
-    'profile' | 'templates' | 'rules' | 'agents' | 'audit'
+    'profile' | 'templates' | 'categories' | 'rules' | 'agents' | 'audit'
   >('profile');
 
   // Check if user has admin access
@@ -348,6 +350,21 @@ export default function SettingsClient({ userRole, currentUser }: SettingsClient
             )}
             {isAdmin && (
               <Button
+                onClick={() => setActiveTab('categories')}
+                className={cn(
+                  'px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-2',
+                  activeTab === 'categories'
+                    ? 'bg-background-tertiary text-foreground font-medium'
+                    : 'text-muted-foreground hover:bg-background-tertiary/50'
+                )}
+                data-testid="tab-categories"
+              >
+                <Folder size={16} />
+                Categories
+              </Button>
+            )}
+            {isAdmin && (
+              <Button
                 onClick={() => setActiveTab('rules')}
                 className={cn(
                   'px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-2',
@@ -507,6 +524,13 @@ export default function SettingsClient({ userRole, currentUser }: SettingsClient
               </div>
             </div>
           </>
+        )}
+
+        {/* Categories Tab Content */}
+        {activeTab === 'categories' && (
+          <div className="flex-1 overflow-y-auto p-6">
+            <CategoriesManagement />
+          </div>
         )}
 
         {/* Rules Tab Content */}

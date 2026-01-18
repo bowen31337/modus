@@ -103,10 +103,17 @@ export async function PUT(
  * - responseId: Response UUID
  */
 export async function DELETE(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string; responseId: string }> }
 ) {
   try {
+    // Validate CSRF token for state-changing operation
+    try {
+      await requireCsrfProtection(request);
+    } catch (csrfError) {
+      return csrfErrorResponse();
+    }
+
     // Check for agent role or higher
     const hasAccess = await checkRole('agent');
     if (!hasAccess) {

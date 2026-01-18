@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { ToastProvider } from '@/components/ui/toast';
 import { ToastContainer } from '@/components/ui/toast-container';
+import { AnnouncerListener } from '@/components/ui/screen-reader-announcer';
 import '@/lib/init'; // Initialize app and validate env vars
 
 const inter = Inter({
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ToastProvider>
           {children}
           <ToastContainer />
+          <AnnouncerListener />
         </ToastProvider>
       </body>
     </html>

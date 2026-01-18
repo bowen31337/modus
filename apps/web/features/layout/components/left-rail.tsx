@@ -2,7 +2,7 @@
 
 import { KeyboardShortcut } from '@/components/ui/keyboard-shortcut';
 import { logout } from '@/lib/auth-actions';
-import { createClient } from '@/lib/supabase/client';
+import { createClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { Button } from '@modus/ui';
 import { CheckCircle2, Home, Inbox, LogOut, Settings } from 'lucide-react';
 import Link from 'next/link';
@@ -21,13 +21,12 @@ export function LeftRail() {
 
   const handleLogout = async () => {
     // Check if Supabase is configured before attempting logout
-    const isSupabaseConfigured =
-      process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-    if (isSupabaseConfigured) {
+    if (isSupabaseConfigured()) {
       try {
         const supabase = createClient();
-        await supabase.auth.signOut();
+        if (supabase) {
+          await supabase.auth.signOut();
+        }
       } catch (_error) {
         // If Supabase fails, continue to redirect
       }

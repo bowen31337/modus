@@ -1,3 +1,4 @@
+import { csrfErrorResponse, requireCsrfProtection } from '@/lib/csrf';
 import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
 import { type NextRequest, NextResponse } from 'next/server';
@@ -131,6 +132,13 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       return NextResponse.json({ error: 'Forbidden: Supervisor access required' }, { status: 403 });
     }
 
+    // Validate CSRF token for state-changing operation
+    try {
+      await requireCsrfProtection(request);
+    } catch (csrfError) {
+      return csrfErrorResponse();
+    }
+
     const { id } = await params;
 
     console.log('[PATCH /api/v1/templates/:id] Request received for template:', id);
@@ -203,7 +211,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
  * }
  */
 export async function DELETE(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -211,6 +219,13 @@ export async function DELETE(
     const hasAccess = await checkRole('supervisor');
     if (!hasAccess) {
       return NextResponse.json({ error: 'Forbidden: Supervisor access required' }, { status: 403 });
+    }
+
+    // Validate CSRF token for state-changing operation
+    try {
+      await requireCsrfProtection(request);
+    } catch (csrfError) {
+      return csrfErrorResponse();
     }
 
     const { id } = await params;

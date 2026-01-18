@@ -1,3 +1,4 @@
+import { csrfErrorResponse, requireCsrfProtection } from '@/lib/csrf';
 import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
 import { type NextRequest, NextResponse } from 'next/server';
@@ -127,6 +128,13 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     const { id } = await params;
 
     console.log('[PATCH /api/v1/agents/:id] Request received for agent:', id);
+
+    // Validate CSRF token for state-changing operation
+    try {
+      await requireCsrfProtection(request);
+    } catch (csrfError) {
+      return csrfErrorResponse();
+    }
 
     // Parse request body
     const body = await request.json();

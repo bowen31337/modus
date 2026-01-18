@@ -2,7 +2,7 @@
 
 import { FieldError, FormError } from '@/components/ui/field-error';
 import { demoLoginAction } from '@/lib/auth-actions';
-import { createClient } from '@/lib/supabase/client';
+import { createClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@modus/ui';
@@ -33,16 +33,17 @@ export function LoginForm() {
     mode: 'all',
   });
 
-  // Check if Supabase is configured
-  const isSupabaseConfigured =
-    process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
   const onSubmit = async (data: LoginFormData) => {
     setLoading(true);
     setError(null);
 
     try {
       const supabase = createClient();
+      if (!supabase) {
+        setError('Supabase is not configured');
+        return;
+      }
+
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: data.email,
         password: data.password,
@@ -63,7 +64,7 @@ export function LoginForm() {
 
   // For demo mode, use a form with server action for proper cookie handling
   // demoLoginAction is a server action that handles the redirect directly
-  if (!isSupabaseConfigured) {
+  if (!isSupabaseConfigured()) {
     const handleDemoLogin = demoLoginAction;
 
     return (

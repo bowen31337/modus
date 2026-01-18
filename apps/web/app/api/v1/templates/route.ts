@@ -1,3 +1,4 @@
+import { csrfErrorResponse, requireCsrfProtection } from '@/lib/csrf';
 import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
 import { sanitizeTemplateContent } from '@modus/logic';
@@ -113,6 +114,13 @@ export async function POST(_request: NextRequest) {
     const hasAccess = await checkRole('supervisor');
     if (!hasAccess) {
       return NextResponse.json({ error: 'Forbidden: Supervisor access required' }, { status: 403 });
+    }
+
+    // Validate CSRF token for state-changing operation
+    try {
+      await requireCsrfProtection(_request);
+    } catch (csrfError) {
+      return csrfErrorResponse();
     }
 
     console.log('[POST /api/v1/templates] Request received');

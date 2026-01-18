@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { createClient } from './supabase/client';
+import { createClient, isSupabaseConfigured } from './supabase/client';
 
 export type UserRole = 'admin' | 'moderator' | 'agent' | 'supervisor';
 
@@ -36,6 +36,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(true);
     try {
       const supabase = createClient();
+
+      // Demo mode: Supabase not configured
+      if (!supabase) {
+        setUser({
+          id: 'demo-admin',
+          role: 'admin',
+          display_name: 'Demo Admin',
+        });
+        setLoading(false);
+        return;
+      }
+
       const {
         data: { session },
       } = await supabase.auth.getSession();
@@ -78,27 +90,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             });
           }
         }
-      } else {
-        // Demo mode - check for demo session
-        const isSupabaseConfigured =
-          process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-        if (!isSupabaseConfigured) {
-          // In demo mode, default to admin for full access
-          setUser({
-            id: 'demo-admin',
-            role: 'admin',
-            display_name: 'Demo Admin',
-          });
-        }
       }
+      // If no session and Supabase is configured, user stays null (not logged in)
     } catch (error) {
       console.error('Error loading user:', error);
       // In demo mode without Supabase, default to admin
-      const isSupabaseConfigured =
-        process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-      if (!isSupabaseConfigured) {
+      if (!isSupabaseConfigured()) {
         setUser({
           id: 'demo-admin',
           role: 'admin',

@@ -1,6 +1,7 @@
 import { csrfErrorResponse, requireCsrfProtection } from '@/lib/csrf';
 import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
+import { rateLimitMiddleware } from '@/lib/rate-limit';
 import {
   sanitizePostContent,
   type PostsQuery,
@@ -31,6 +32,12 @@ import { z } from 'zod';
  */
 export async function GET(request: NextRequest) {
   try {
+    // Check rate limit
+    const rateLimitResponse = await rateLimitMiddleware(request);
+    if (rateLimitResponse) {
+      return rateLimitResponse;
+    }
+
     // Check for agent role or higher
     const hasAccess = await checkRole('agent');
     if (!hasAccess) {
@@ -204,6 +211,12 @@ const createPostInputSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    // Check rate limit
+    const rateLimitResponse = await rateLimitMiddleware(request);
+    if (rateLimitResponse) {
+      return rateLimitResponse;
+    }
+
     // Check for supervisor or admin role
     const hasAccess = await checkRole('supervisor');
     if (!hasAccess) {

@@ -187,6 +187,7 @@ export function FilterChips({ filters, onFiltersChange }: FilterChipsProps) {
           type="button"
           onClick={handleClearAll}
           className="ml-auto text-xs text-primary hover:text-primary/80 active:text-primary/60 transition-colors duration-150 px-2 py-1"
+          aria-label="Clear all filters"
           data-testid="clear-all-filters"
         >
           Clear all

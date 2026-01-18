@@ -1,5 +1,6 @@
 import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
+import { requireCsrfProtection } from '@/lib/csrf';
 import { type NextRequest, NextResponse } from 'next/server';
 
 /**
@@ -56,6 +57,9 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
  */
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    // Validate CSRF token for state-changing requests
+    await requireCsrfProtection(request);
+
     // Check for agent role or higher
     const hasAccess = await checkRole('agent');
     if (!hasAccess) {

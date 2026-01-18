@@ -1,3 +1,4 @@
+import { csrfErrorResponse, requireCsrfProtection } from '@/lib/csrf';
 import { checkRole } from '@/lib/role-check';
 import { type CreateRuleInput, dataStore } from '@/lib/data-store';
 import { type NextRequest, NextResponse } from 'next/server';
@@ -54,6 +55,13 @@ export async function POST(request: NextRequest) {
     const isAdmin = await checkRole('admin');
     if (!isAdmin) {
       return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
+
+    // Validate CSRF token for state-changing operation
+    try {
+      await requireCsrfProtection(request);
+    } catch (csrfError) {
+      return csrfErrorResponse();
     }
 
     const body = await request.json();

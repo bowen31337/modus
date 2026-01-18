@@ -50,8 +50,8 @@ const config: Config = {
         // Text colors
         foreground: {
           DEFAULT: '#ffffff',
-          secondary: '#cbd5e1', // slate-300
-          muted: '#94a3b8', // slate-400
+          secondary: '#e2e8f0', // slate-200 - improved contrast
+          muted: '#cbd5e1', // slate-300 - improved contrast for WCAG AA
         },
         // Border colors
         border: {
@@ -61,7 +61,7 @@ const config: Config = {
         // Aliases for shadcn compatibility
         muted: {
           DEFAULT: '#1e293b',
-          foreground: '#94a3b8',
+          foreground: '#cbd5e1', // slate-300 - improved contrast for WCAG AA
         },
       },
       fontFamily: {
