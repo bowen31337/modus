@@ -94,7 +94,9 @@ test.describe('Queue Filtering and Sorting', () => {
     await page.waitForTimeout(500);
 
     // Verify filtered results show only "In Progress" posts
-    const inProgressPosts = page.locator('[data-testid="queue-container"] [role="button"][tabindex="0"]');
+    const inProgressPosts = page.locator(
+      '[data-testid="queue-container"] [role="button"][tabindex="0"]'
+    );
     const count = await inProgressPosts.count();
 
     expect(count).toBeGreaterThan(0);
@@ -140,7 +142,9 @@ test.describe('Queue Filtering and Sorting', () => {
     await page.waitForTimeout(500);
 
     // Verify filtered results
-    const searchResults = page.locator('[data-testid="queue-container"] [role="button"][tabindex="0"]');
+    const searchResults = page.locator(
+      '[data-testid="queue-container"] [role="button"][tabindex="0"]'
+    );
     const count = await searchResults.count();
 
     expect(count).toBeGreaterThan(0);

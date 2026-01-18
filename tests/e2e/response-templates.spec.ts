@@ -154,7 +154,7 @@ test.describe('Response Templates', () => {
 
     // Get initial content
     const editor = page.getByTestId('response-textarea');
-    const initialContent = await editor.inputValue();
+    const _initialContent = await editor.inputValue();
 
     // Type additional text
     await editor.click();

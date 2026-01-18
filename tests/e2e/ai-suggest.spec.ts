@@ -103,7 +103,7 @@ test.describe('AI Suggest Functionality', () => {
     await page.waitForFunction(
       () => {
         const overlay = document.querySelector('[data-testid="ghost-text-overlay"]');
-        return overlay && overlay.textContent && overlay.textContent.length > 50;
+        return overlay?.textContent && overlay.textContent.length > 50;
       },
       { timeout: 15000 }
     );
@@ -111,7 +111,7 @@ test.describe('AI Suggest Functionality', () => {
     // Get ghost text content before accepting
     const ghostText = page.locator('[data-testid="ghost-text-overlay"]');
     const ghostSpan = ghostText.locator('span[class*="text-primary"]');
-    const ghostContent = await ghostSpan.textContent();
+    const _ghostContent = await ghostSpan.textContent();
 
     // Click on the textarea to ensure it has focus (ghost text has pointer-events-none)
     const textarea = page.locator('[data-testid="response-textarea"]');
@@ -169,7 +169,7 @@ test.describe('AI Suggest Functionality', () => {
     await page.waitForFunction(
       () => {
         const overlay = document.querySelector('[data-testid="ghost-text-overlay"]');
-        return overlay && overlay.textContent && overlay.textContent.length > 50;
+        return overlay?.textContent && overlay.textContent.length > 50;
       },
       { timeout: 15000 }
     );
@@ -244,7 +244,7 @@ test.describe('AI Suggest Functionality', () => {
     await page.waitForFunction(
       () => {
         const overlay = document.querySelector('[data-testid="ghost-text-overlay"]');
-        return overlay && overlay.textContent && overlay.textContent.length > 50;
+        return overlay?.textContent && overlay.textContent.length > 50;
       },
       { timeout: 15000 }
     );

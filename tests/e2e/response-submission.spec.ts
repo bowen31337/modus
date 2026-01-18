@@ -132,7 +132,7 @@ test.describe('Response Submission', () => {
     await page.waitForSelector('[data-testid="work-pane"]');
 
     const sendButton = page.locator('[data-testid="send-response-button"]');
-    const checkbox = page.locator('[data-testid="internal-note-checkbox"]');
+    const _checkbox = page.locator('[data-testid="internal-note-checkbox"]');
 
     // Initially button says "Send Response"
     await expect(sendButton).toHaveText('Send Response');

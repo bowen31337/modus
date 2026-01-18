@@ -287,16 +287,24 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
             {ghostText ? (
               <>
                 Press{' '}
-                <kbd className="px-1.5 py-0.5 bg-background-tertiary rounded text-foreground text-[10px] font-mono">Tab</kbd>{' '}
+                <kbd className="px-1.5 py-0.5 bg-background-tertiary rounded text-foreground text-[10px] font-mono">
+                  Tab
+                </kbd>{' '}
                 to accept,{' '}
-                <kbd className="px-1.5 py-0.5 bg-background-tertiary rounded text-foreground text-[10px] font-mono">Esc</kbd>{' '}
+                <kbd className="px-1.5 py-0.5 bg-background-tertiary rounded text-foreground text-[10px] font-mono">
+                  Esc
+                </kbd>{' '}
                 to dismiss
               </>
             ) : (
               <>
-                <kbd className="px-1.5 py-0.5 bg-background-tertiary rounded text-foreground text-[10px] font-mono">Ctrl+B</kbd>{' '}
+                <kbd className="px-1.5 py-0.5 bg-background-tertiary rounded text-foreground text-[10px] font-mono">
+                  Ctrl+B
+                </kbd>{' '}
                 Bold,{' '}
-                <kbd className="px-1.5 py-0.5 bg-background-tertiary rounded text-foreground text-[10px] font-mono">Ctrl+I</kbd>{' '}
+                <kbd className="px-1.5 py-0.5 bg-background-tertiary rounded text-foreground text-[10px] font-mono">
+                  Ctrl+I
+                </kbd>{' '}
                 Italic
               </>
             )}

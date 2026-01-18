@@ -3,11 +3,13 @@
 import { FieldError, FormError } from '@/components/ui/field-error';
 import { demoLoginAction } from '@/lib/auth-actions';
 import { createClient } from '@/lib/supabase/client';
+import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@modus/ui';
 import { Input } from '@modus/ui';
+import { Loader2, LogIn } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -22,6 +24,7 @@ export function LoginForm() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const {
     register,
     handleSubmit,
@@ -52,7 +55,7 @@ export function LoginForm() {
       }
 
       router.push('/dashboard');
-    } catch (err) {
+    } catch (_err) {
       setError('An unexpected error occurred');
     } finally {
       setLoading(false);
@@ -62,8 +65,14 @@ export function LoginForm() {
   // For demo mode, use a form with server action for proper cookie handling
   // demoLoginAction is a server action that handles the redirect directly
   if (!isSupabaseConfigured) {
+    const handleDemoLogin = () => {
+      startTransition(async () => {
+        await demoLoginAction(new FormData());
+      });
+    };
+
     return (
-      <form action={demoLoginAction} className="space-y-4">
+      <form action={handleDemoLogin} className="space-y-5">
         <div className="space-y-2">
           <label htmlFor="email" className="block text-sm font-medium text-foreground">
             Email
@@ -74,6 +83,7 @@ export function LoginForm() {
             placeholder="agent@example.com"
             autoComplete="email"
             name="email"
+            className="bg-background-tertiary border-border hover:border-border/80 focus:border-primary focus:ring-primary/20 transition-colors"
           />
         </div>
 
@@ -87,20 +97,42 @@ export function LoginForm() {
             placeholder="••••••••"
             autoComplete="current-password"
             name="password"
+            className="bg-background-tertiary border-border hover:border-border/80 focus:border-primary focus:ring-primary/20 transition-colors"
           />
         </div>
 
         {error && <FormError message={error} />}
 
-        <Button type="submit" disabled={loading} className="w-full">
-          {loading ? 'Signing in...' : 'Sign In'}
+        <Button
+          type="submit"
+          disabled={loading || isPending}
+          className="w-full h-11 text-sm font-medium bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30"
+        >
+          {loading || isPending ? (
+            <>
+              <Loader2 size={16} className="animate-spin mr-2" data-testid="loading-spinner" />
+              Signing in...
+            </>
+          ) : (
+            <>
+              <LogIn size={16} className="mr-2" />
+              Sign In
+            </>
+          )}
         </Button>
+
+        {/* Demo mode hint */}
+        <div className="pt-2 text-center">
+          <p className="text-xs text-muted-foreground">
+            Demo mode: Use any email/password combination
+          </p>
+        </div>
       </form>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <div className="space-y-2">
         <label htmlFor="email" className="block text-sm font-medium text-foreground">
           Email
@@ -111,6 +143,12 @@ export function LoginForm() {
           placeholder="agent@example.com"
           autoComplete="email"
           {...register('email')}
+          className={cn(
+            'bg-background-tertiary border-border hover:border-border/80 transition-colors',
+            errors.email
+              ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20'
+              : 'focus:border-primary focus:ring-primary/20'
+          )}
         />
         <FieldError message={errors.email?.message} />
       </div>
@@ -125,14 +163,34 @@ export function LoginForm() {
           placeholder="••••••••"
           autoComplete="current-password"
           {...register('password')}
+          className={cn(
+            'bg-background-tertiary border-border hover:border-border/80 transition-colors',
+            errors.password
+              ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20'
+              : 'focus:border-primary focus:ring-primary/20'
+          )}
         />
         <FieldError message={errors.password?.message} />
       </div>
 
       {error && <FormError message={error} />}
 
-      <Button type="submit" disabled={loading} className="w-full">
-        {loading ? 'Signing in...' : 'Sign In'}
+      <Button
+        type="submit"
+        disabled={loading}
+        className="w-full h-11 text-sm font-medium bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30"
+      >
+        {loading ? (
+          <>
+            <Loader2 size={16} className="animate-spin mr-2" data-testid="loading-spinner" />
+            Signing in...
+          </>
+        ) : (
+          <>
+            <LogIn size={16} className="mr-2" />
+            Sign In
+          </>
+        )}
       </Button>
     </form>
   );

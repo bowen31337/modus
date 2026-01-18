@@ -157,7 +157,7 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
     return {
       id: apiPost.id,
       title: apiPost.title,
-      excerpt: apiPost.excerpt || apiPost.body_content.substring(0, 150) + '...',
+      excerpt: apiPost.excerpt || `${apiPost.body_content.substring(0, 150)}...`,
       bodyContent: apiPost.body_content,
       priority: apiPost.priority,
       status: apiPost.status,
@@ -472,7 +472,7 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
           `[Enter key] posts length: ${currentPosts.length}, focusedIndex: ${currentIndex}`
         );
         console.log(
-          `[Enter key] posts content:`,
+          '[Enter key] posts content:',
           JSON.stringify(currentPosts.map((p) => ({ id: p?.id, title: p?.title })))
         );
         if (currentPosts.length > 0) {
@@ -549,17 +549,19 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
     let comparison = 0;
 
     switch (sort.field) {
-      case 'priority':
+      case 'priority': {
         const priorityOrder = { P1: 1, P2: 2, P3: 3, P4: 4, P5: 5 };
         comparison = priorityOrder[a.priority] - priorityOrder[b.priority];
         return sort.order === 'asc' ? -comparison : comparison;
+      }
       case 'date':
         comparison = a.createdAt.localeCompare(b.createdAt);
         return sort.order === 'asc' ? comparison : -comparison;
-      case 'status':
+      case 'status': {
         const statusOrder = { open: 1, in_progress: 2, resolved: 3 };
         comparison = statusOrder[a.status] - statusOrder[b.status];
         return sort.order === 'asc' ? comparison : -comparison;
+      }
       case 'response_count':
         comparison = (a.responseCount || 0) - (b.responseCount || 0);
         return sort.order === 'asc' ? comparison : -comparison;

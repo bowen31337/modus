@@ -2661,7 +2661,7 @@
       "Step 5: Test other XSS vectors (event handlers, etc.)"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 0,
     "dev_failure_count": 2,
@@ -2669,7 +2669,8 @@
     "dev_failure_reasons": [
       "Worker session timed out",
       "Worker session timed out"
-    ]
+    ],
+    "dev_completed_at": "1768707986"
   },
   {
     "category": "functional",
@@ -2681,14 +2682,15 @@
       "Step 4: Verify legitimate requests with token succeed"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 0,
     "dev_failure_count": 1,
     "last_dev_failure_at": "2026-01-18T03:20:54.942176Z",
     "dev_failure_reasons": [
       "Worker session timed out"
-    ]
+    ],
+    "dev_completed_at": "1768707986"
   },
   {
     "category": "functional",
@@ -2774,8 +2776,9 @@
       "Step 5: Verify no type errors"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "1768707986"
   },
   {
     "category": "functional",

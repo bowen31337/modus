@@ -126,7 +126,7 @@ async function main() {
     if (!passed) allPassed = false;
   }
 
-  console.log('\n' + (allPassed ? 'All tests passed!' : 'Some tests failed.'));
+  console.log(`\n${allPassed ? 'All tests passed!' : 'Some tests failed.'}`);
   process.exit(allPassed ? 0 : 1);
 }
 

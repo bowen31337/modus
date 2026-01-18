@@ -38,10 +38,9 @@ async function testGetAllAgents() {
         info(`  - ${agent.display_name} (${agent.status})`);
       });
       return true;
-    } else {
-      error(`GET /api/v1/agents - Failed: ${JSON.stringify(data)}`);
-      return false;
     }
+    error(`GET /api/v1/agents - Failed: ${JSON.stringify(data)}`);
+    return false;
   } catch (e) {
     error(`GET /api/v1/agents - Error: ${e.message}`);
     return false;
@@ -58,10 +57,9 @@ async function testGetAgentById() {
     if (response.ok && data.data && data.data.id === 'agent-1') {
       success(`GET /api/v1/agents/agent-1 - Returned ${data.data.display_name}`);
       return true;
-    } else {
-      error(`GET /api/v1/agents/agent-1 - Failed: ${JSON.stringify(data)}`);
-      return false;
     }
+    error(`GET /api/v1/agents/agent-1 - Failed: ${JSON.stringify(data)}`);
+    return false;
   } catch (e) {
     error(`GET /api/v1/agents/agent-1 - Error: ${e.message}`);
     return false;
@@ -73,15 +71,14 @@ async function testGetAgentNotFound() {
 
   try {
     const response = await fetch(`${BASE_URL}/api/v1/agents/agent-999`);
-    const data = await response.json();
+    const _data = await response.json();
 
     if (response.status === 404) {
-      success(`GET /api/v1/agents/agent-999 - Correctly returned 404`);
+      success('GET /api/v1/agents/agent-999 - Correctly returned 404');
       return true;
-    } else {
-      error(`GET /api/v1/agents/agent-999 - Expected 404, got ${response.status}`);
-      return false;
     }
+    error(`GET /api/v1/agents/agent-999 - Expected 404, got ${response.status}`);
+    return false;
   } catch (e) {
     error(`GET /api/v1/agents/agent-999 - Error: ${e.message}`);
     return false;
@@ -114,10 +111,9 @@ async function testUpdateAgentStatus() {
       });
 
       return true;
-    } else {
-      error(`PATCH /api/v1/agents/agent-1 - Failed: ${JSON.stringify(data)}`);
-      return false;
     }
+    error(`PATCH /api/v1/agents/agent-1 - Failed: ${JSON.stringify(data)}`);
+    return false;
   } catch (e) {
     error(`PATCH /api/v1/agents/agent-1 - Error: ${e.message}`);
     return false;
@@ -135,15 +131,14 @@ async function testUpdateAgentStatusInvalid() {
       },
       body: JSON.stringify({ status: 'invalid' }),
     });
-    const data = await response.json();
+    const _data = await response.json();
 
     if (response.status === 400) {
-      success(`PATCH /api/v1/agents/agent-1 - Correctly returned 400 for invalid status`);
+      success('PATCH /api/v1/agents/agent-1 - Correctly returned 400 for invalid status');
       return true;
-    } else {
-      error(`PATCH /api/v1/agents/agent-1 - Expected 400, got ${response.status}`);
-      return false;
     }
+    error(`PATCH /api/v1/agents/agent-1 - Expected 400, got ${response.status}`);
+    return false;
   } catch (e) {
     error(`PATCH /api/v1/agents/agent-1 - Error: ${e.message}`);
     return false;
@@ -174,7 +169,7 @@ async function runTests() {
     console.log('');
   }
 
-  log(`\n=== Test Results ===`, 'blue');
+  log('\n=== Test Results ===', 'blue');
   log(`Total: ${tests.length}`, 'blue');
   success(`Passed: ${passed}`);
   if (failed > 0) {

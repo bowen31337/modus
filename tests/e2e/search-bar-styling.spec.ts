@@ -73,7 +73,7 @@ test.describe('Search Bar - Dark Theme Styling', () => {
   test('should have search icon that is appropriately styled', async ({ page }) => {
     // The search icon is rendered by lucide-react
     // Verify it's visible and has appropriate color
-    const searchIcon = page.locator('svg[data-testid="search-icon"]');
+    const _searchIcon = page.locator('svg[data-testid="search-icon"]');
 
     // If the icon doesn't have a test ID, we can check the parent container
     const searchContainer = page.locator('.relative:has(input[placeholder="Search posts..."])');

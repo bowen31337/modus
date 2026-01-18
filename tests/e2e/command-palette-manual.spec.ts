@@ -24,7 +24,7 @@ test.describe('Command Palette - Manual Test', () => {
   test('should render CommandPalette component in DOM (initially hidden)', async ({ page }) => {
     // The CommandPalette should be in the DOM but hidden initially
     // Check if the component exists but is not visible
-    const commandPalette = page.locator('body'); // The component is rendered at the root level
+    const _commandPalette = page.locator('body'); // The component is rendered at the root level
 
     // It should not be visible initially
     await expect(page.getByTestId('command-palette')).not.toBeVisible();

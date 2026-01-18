@@ -71,7 +71,7 @@ async function testLoginInvalid() {
       throw new Error(`Expected 400, got ${response.status}`);
     }
 
-    log(`  Correctly returned 400 for missing password`);
+    log('  Correctly returned 400 for missing password');
   });
 }
 
@@ -83,7 +83,7 @@ async function testSessionNoAuth() {
       throw new Error(`Expected 401, got ${response.status}`);
     }
 
-    log(`  Correctly returned 401 for no session`);
+    log('  Correctly returned 401 for no session');
   });
 }
 
@@ -152,7 +152,7 @@ async function testCreateRuleMissingFields() {
       throw new Error(`Expected 400, got ${response.status}`);
     }
 
-    log(`  Correctly returned 400 for missing fields`);
+    log('  Correctly returned 400 for missing fields');
   });
 }
 

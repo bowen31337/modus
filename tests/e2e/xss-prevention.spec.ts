@@ -200,7 +200,9 @@ test.describe('XSS Prevention', () => {
 
     // Click on the post to view details
     // Find the post by title
-    const postCard = page.locator('[data-testid^="post-card-"]').filter({ hasText: 'XSS Test Post' });
+    const postCard = page
+      .locator('[data-testid^="post-card-"]')
+      .filter({ hasText: 'XSS Test Post' });
     await expect(postCard).toBeVisible();
     await postCard.click();
 

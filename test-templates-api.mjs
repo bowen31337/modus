@@ -38,10 +38,9 @@ async function testGetAllTemplates() {
         info(`  - ${template.name} (${template.usage_count} uses)`);
       });
       return true;
-    } else {
-      error(`GET /api/v1/templates - Failed: ${JSON.stringify(data)}`);
-      return false;
     }
+    error(`GET /api/v1/templates - Failed: ${JSON.stringify(data)}`);
+    return false;
   } catch (e) {
     error(`GET /api/v1/templates - Error: ${e.message}`);
     return false;
@@ -58,10 +57,9 @@ async function testGetTemplateById() {
     if (response.ok && data.data && data.data.id === 'template-1') {
       success(`GET /api/v1/templates/template-1 - Returned "${data.data.name}"`);
       return true;
-    } else {
-      error(`GET /api/v1/templates/template-1 - Failed: ${JSON.stringify(data)}`);
-      return false;
     }
+    error(`GET /api/v1/templates/template-1 - Failed: ${JSON.stringify(data)}`);
+    return false;
   } catch (e) {
     error(`GET /api/v1/templates/template-1 - Error: ${e.message}`);
     return false;
@@ -73,15 +71,14 @@ async function testGetTemplateNotFound() {
 
   try {
     const response = await fetch(`${BASE_URL}/api/v1/templates/template-999`);
-    const data = await response.json();
+    const _data = await response.json();
 
     if (response.status === 404) {
-      success(`GET /api/v1/templates/template-999 - Correctly returned 404`);
+      success('GET /api/v1/templates/template-999 - Correctly returned 404');
       return true;
-    } else {
-      error(`GET /api/v1/templates/template-999 - Expected 404, got ${response.status}`);
-      return false;
     }
+    error(`GET /api/v1/templates/template-999 - Expected 404, got ${response.status}`);
+    return false;
   } catch (e) {
     error(`GET /api/v1/templates/template-999 - Error: ${e.message}`);
     return false;
@@ -121,10 +118,9 @@ async function testCreateTemplate() {
       });
 
       return true;
-    } else {
-      error(`POST /api/v1/templates - Failed: ${JSON.stringify(data)}`);
-      return false;
     }
+    error(`POST /api/v1/templates - Failed: ${JSON.stringify(data)}`);
+    return false;
   } catch (e) {
     error(`POST /api/v1/templates - Error: ${e.message}`);
     return false;
@@ -148,15 +144,14 @@ async function testCreateTemplateInvalid() {
       body: JSON.stringify(invalidTemplate),
     });
 
-    const data = await response.json();
+    const _data = await response.json();
 
     if (response.status === 400) {
-      success(`POST /api/v1/templates - Correctly returned 400 for missing name`);
+      success('POST /api/v1/templates - Correctly returned 400 for missing name');
       return true;
-    } else {
-      error(`POST /api/v1/templates - Expected 400, got ${response.status}`);
-      return false;
     }
+    error(`POST /api/v1/templates - Expected 400, got ${response.status}`);
+    return false;
   } catch (e) {
     error(`POST /api/v1/templates - Error: ${e.message}`);
     return false;
@@ -194,10 +189,9 @@ async function testUpdateTemplate() {
       });
 
       return true;
-    } else {
-      error(`PATCH /api/v1/templates/template-1 - Failed: ${JSON.stringify(data)}`);
-      return false;
     }
+    error(`PATCH /api/v1/templates/template-1 - Failed: ${JSON.stringify(data)}`);
+    return false;
   } catch (e) {
     error(`PATCH /api/v1/templates/template-1 - Error: ${e.message}`);
     return false;
@@ -216,15 +210,14 @@ async function testUpdateTemplateNotFound() {
       body: JSON.stringify({ name: 'Updated' }),
     });
 
-    const data = await response.json();
+    const _data = await response.json();
 
     if (response.status === 404) {
-      success(`PATCH /api/v1/templates/template-999 - Correctly returned 404`);
+      success('PATCH /api/v1/templates/template-999 - Correctly returned 404');
       return true;
-    } else {
-      error(`PATCH /api/v1/templates/template-999 - Expected 404, got ${response.status}`);
-      return false;
     }
+    error(`PATCH /api/v1/templates/template-999 - Expected 404, got ${response.status}`);
+    return false;
   } catch (e) {
     error(`PATCH /api/v1/templates/template-999 - Error: ${e.message}`);
     return false;
@@ -252,7 +245,7 @@ async function testDeleteTemplate() {
 
     const createData = await createResponse.json();
     if (!createResponse.ok) {
-      error(`DELETE test setup failed - could not create template`);
+      error('DELETE test setup failed - could not create template');
       return false;
     }
 
@@ -271,16 +264,14 @@ async function testDeleteTemplate() {
       // Verify it's actually deleted
       const verifyResponse = await fetch(`${BASE_URL}/api/v1/templates/${templateId}`);
       if (verifyResponse.status === 404) {
-        success(`DELETE verification - Template is actually gone (404)`);
+        success('DELETE verification - Template is actually gone (404)');
         return true;
-      } else {
-        error(`DELETE verification - Template still exists after delete`);
-        return false;
       }
-    } else {
-      error(`DELETE /api/v1/templates/${templateId} - Failed: ${JSON.stringify(deleteData)}`);
+      error('DELETE verification - Template still exists after delete');
       return false;
     }
+    error(`DELETE /api/v1/templates/${templateId} - Failed: ${JSON.stringify(deleteData)}`);
+    return false;
   } catch (e) {
     error(`DELETE /api/v1/templates - Error: ${e.message}`);
     return false;
@@ -314,7 +305,7 @@ async function runTests() {
     console.log('');
   }
 
-  log(`\n=== Test Results ===`, 'blue');
+  log('\n=== Test Results ===', 'blue');
   log(`Total: ${tests.length}`, 'blue');
   success(`Passed: ${passed}`);
   if (failed > 0) {

@@ -43,7 +43,7 @@ export const isDateInRange = (dateStr: string, startDate?: string, endDate?: str
   const postDate = new Date(dateStr);
 
   // If the date string is not a valid ISO date, try to parse relative time
-  if (isNaN(postDate.getTime())) {
+  if (Number.isNaN(postDate.getTime())) {
     const now = new Date();
 
     if (dateStr.includes('m ago')) {

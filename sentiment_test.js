@@ -154,9 +154,9 @@ const posts = [
 ];
 
 for (const post of posts) {
-  const fullText = post.title + ' ' + post.bodyContent;
+  const fullText = `${post.title} ${post.bodyContent}`;
   const result = analyzeSentiment(fullText);
-  console.log('Post ' + post.id + ':');
+  console.log(`Post ${post.id}:`);
   console.log('  Score:', result.score);
   console.log('  Label:', result.label);
 }

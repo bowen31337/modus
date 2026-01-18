@@ -131,7 +131,7 @@ test.describe('Micro-animations - Basic Interaction Feedback', () => {
   test('should respect prefers-reduced-motion setting', async ({ page }) => {
     // Check that global CSS has reduced motion support
     const hasReducedMotion = await page.evaluate(() => {
-      const styles = getComputedStyle(document.body);
+      const _styles = getComputedStyle(document.body);
       // Check if media query is registered
       return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     });
@@ -145,9 +145,7 @@ test.describe('Micro-animations - Basic Interaction Feedback', () => {
     const hasReducedMotionStyles = await page.evaluate(() => {
       // Check for style tags containing reduced motion
       const styleTags = Array.from(document.querySelectorAll('style'));
-      return styleTags.some((tag) =>
-        tag.textContent?.includes('prefers-reduced-motion')
-      );
+      return styleTags.some((tag) => tag.textContent?.includes('prefers-reduced-motion'));
     });
 
     expect(hasReducedMotionStyles).toBe(true);

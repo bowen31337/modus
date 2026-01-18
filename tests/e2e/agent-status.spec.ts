@@ -124,6 +124,6 @@ test.describe('Agent Status Management', () => {
 
     expect(statusPosition).toBeTruthy();
     expect(logoPosition).toBeTruthy();
-    expect(statusPosition!.y).toBeGreaterThan(logoPosition!.y!);
+    expect(statusPosition?.y).toBeGreaterThan(logoPosition?.y!);
   });
 });

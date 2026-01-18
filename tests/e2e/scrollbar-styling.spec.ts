@@ -43,7 +43,7 @@ test.describe('Scrollbar Styling - Dark Theme', () => {
               return true;
             }
           }
-        } catch (e) {
+        } catch (_e) {
           // Cross-origin stylesheets may throw errors
         }
       }
@@ -63,10 +63,12 @@ test.describe('Scrollbar Styling - Dark Theme', () => {
           for (const rule of rules) {
             if (rule.cssText.includes('::-webkit-scrollbar-thumb')) {
               // Check if it has rounded styling
-              return rule.cssText.includes('rounded-full') || rule.cssText.includes('border-radius');
+              return (
+                rule.cssText.includes('rounded-full') || rule.cssText.includes('border-radius')
+              );
             }
           }
-        } catch (e) {
+        } catch (_e) {
           // Cross-origin stylesheets may throw errors
         }
       }
@@ -88,7 +90,7 @@ test.describe('Scrollbar Styling - Dark Theme', () => {
               return true;
             }
           }
-        } catch (e) {
+        } catch (_e) {
           // Cross-origin stylesheets may throw errors
         }
       }
@@ -119,7 +121,7 @@ test.describe('Scrollbar Styling - Dark Theme', () => {
               );
             }
           }
-        } catch (e) {
+        } catch (_e) {
           // Cross-origin stylesheets may throw errors
         }
       }
@@ -143,7 +145,7 @@ test.describe('Scrollbar Styling - Dark Theme', () => {
               return true;
             }
           }
-        } catch (e) {
+        } catch (_e) {
           // Cross-origin stylesheets may throw errors
         }
       }
@@ -166,7 +168,7 @@ test.describe('Scrollbar Styling - Dark Theme', () => {
               return rule.cssText.includes('width: 8px') || rule.cssText.includes('width:8px');
             }
           }
-        } catch (e) {
+        } catch (_e) {
           // Cross-origin stylesheets may throw errors
         }
       }
@@ -199,7 +201,7 @@ test.describe('Scrollbar Styling - Dark Theme', () => {
               return true;
             }
           }
-        } catch (e) {
+        } catch (_e) {
           // Cross-origin stylesheets may throw errors
         }
       }

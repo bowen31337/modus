@@ -1,6 +1,8 @@
 import { dataStore } from '@/lib/data-store';
-import { type PostsQuery, postsQuerySchema } from '@modus/logic';
+import { requireCsrfProtection, csrfErrorResponse } from '@/lib/csrf';
+import { type PostsQuery, generatePostEmbedding, postsQuerySchema } from '@modus/logic';
 import { type NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
 /**
  * GET /api/v1/posts
@@ -58,7 +60,7 @@ export async function GET(request: NextRequest) {
     }
 
     if (validatedQuery.priority && validatedQuery.priority.length > 0) {
-      posts = posts.filter((post) => validatedQuery.priority!.includes(post.priority));
+      posts = posts.filter((post) => validatedQuery.priority?.includes(post.priority));
     }
 
     if (validatedQuery.assigned_to_id) {
@@ -93,20 +95,22 @@ export async function GET(request: NextRequest) {
       let comparison = 0;
 
       switch (validatedQuery.sort_by) {
-        case 'priority':
+        case 'priority': {
           // Priority order: P1 < P2 < P3 < P4 < P5
           const priorityOrder = { P1: 1, P2: 2, P3: 3, P4: 4, P5: 5 };
           comparison = priorityOrder[a.priority] - priorityOrder[b.priority];
           break;
+        }
 
         case 'date':
           comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
           break;
 
-        case 'status':
+        case 'status': {
           const statusOrder = { open: 1, in_progress: 2, resolved: 3 };
           comparison = statusOrder[a.status] - statusOrder[b.status];
           break;
+        }
 
         default:
           comparison = 0;
@@ -140,5 +144,97 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
+// ============================================================================
+// POST /api/v1/posts
+// ============================================================================
+
+/**
+ * Create a new moderation post with automatic embedding generation
+ *
+ * Request Body:
+ * - title: Post title (required, max 500 chars)
+ * - body_content: Post content (required)
+ * - excerpt: Optional excerpt (max 300 chars)
+ * - category_id: Optional category UUID
+ * - status: Post status (open, in_progress, resolved) - default: open
+ * - priority: Priority level (P1, P2, P3, P4, P5) - default: P4
+ * - sentiment_score: Optional sentiment score (-1 to 1)
+ * - sentiment_label: Optional sentiment label (negative, neutral, positive)
+ * - author_user_id: Author user ID (required, UUID)
+ * - author_post_count: Number of posts by this author (required)
+ * - assigned_to_id: Optional agent ID to assign to
+ * - embedding: Optional pre-computed embedding array (1536 dimensions)
+ *
+ * Response:
+ * - data: The created post with generated embedding
+ * - message: Success message
+ */
+const createPostInputSchema = z.object({
+  title: z.string().min(1, 'Title is required').max(500, 'Title must be 500 characters or less'),
+  body_content: z.string().min(1, 'Body content is required'),
+  excerpt: z.string().max(300, 'Excerpt must be 300 characters or less').optional(),
+  category_id: z.string().uuid().optional().nullable(),
+  status: z.enum(['open', 'in_progress', 'resolved']).default('open'),
+  priority: z.enum(['P1', 'P2', 'P3', 'P4', 'P5']).default('P4'),
+  sentiment_score: z.number().min(-1).max(1).optional().nullable(),
+  sentiment_label: z.enum(['negative', 'neutral', 'positive']).optional().nullable(),
+  author_user_id: z.string().uuid('Author user ID must be a valid UUID'),
+  author_post_count: z.number().int().min(0, 'Author post count must be 0 or greater'),
+  assigned_to_id: z.string().uuid().optional().nullable(),
+  embedding: z.array(z.number()).length(1536).optional().nullable(),
+});
+
+export async function POST(request: NextRequest) {
+  try {
+    // Validate CSRF token for state-changing operation
+    try {
+      await requireCsrfProtection(request);
+    } catch (csrfError) {
+      return csrfErrorResponse();
+    }
+
+    // Parse and validate request body
+    const body = await request.json();
+    const validatedInput = createPostInputSchema.parse(body);
+
+    // Generate embedding if not provided
+    const embedding = validatedInput.embedding ?? generatePostEmbedding(validatedInput);
+
+    // Create the post
+    const post = dataStore.createPost({
+      ...validatedInput,
+      embedding,
+    });
+
+    return NextResponse.json(
+      {
+        data: post,
+        message: 'Post created successfully',
+      },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error('Error in POST /api/v1/posts:', error);
+
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        {
+          error: 'Invalid request body',
+          details: error.errors,
+        },
+        { status: 400 }
+      );
+    }
+
+    return NextResponse.json(
+      {
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    );
   }
 }

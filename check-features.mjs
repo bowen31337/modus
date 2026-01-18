@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'node:fs';
 const features = JSON.parse(fs.readFileSync('feature_list.json', 'utf8'));
 
 // Find features that need work

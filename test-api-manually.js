@@ -1,5 +1,5 @@
 // Simple API test script
-const http = require('http');
+const http = require('node:http');
 
 function testAPI() {
   const options = {
@@ -30,7 +30,7 @@ function testAPI() {
           });
         }
         console.log('Full response:', JSON.stringify(parsed, null, 2));
-      } catch (e) {
+      } catch (_e) {
         console.log('Response:', data);
       }
       process.exit(0);

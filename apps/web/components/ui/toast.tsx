@@ -1,9 +1,9 @@
 'use client';
 
-import * as React from 'react';
-import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react';
-import * as ToastPrimitive from '@radix-ui/react-toast';
 import { cn } from '@/lib/utils';
+import * as ToastPrimitive from '@radix-ui/react-toast';
+import { AlertCircle, AlertTriangle, CheckCircle, Info, X } from 'lucide-react';
+import * as React from 'react';
 
 // Toast types
 export type ToastType = 'success' | 'error' | 'info' | 'warning';
@@ -47,61 +47,60 @@ interface ToastProps {
 }
 
 // Toast component
-const Toast = React.forwardRef<
-  React.ElementRef<typeof ToastPrimitive.Root>,
-  ToastProps
->(({ id, title, description, type = 'info', onDismiss }, ref) => {
-  const variant = toastVariants[type];
-  const Icon = variant.icon;
+const Toast = React.forwardRef<React.ElementRef<typeof ToastPrimitive.Root>, ToastProps>(
+  ({ id, title, description, type = 'info', onDismiss }, ref) => {
+    const variant = toastVariants[type];
+    const Icon = variant.icon;
 
-  return (
-    <ToastPrimitive.Root
-      ref={ref as React.Ref<HTMLLIElement>}
-      className={cn(
-        // Layout and positioning
-        'pointer-events-auto relative flex w-full items-start gap-3 rounded-lg border p-4',
-        // Background and border (subtle layering)
-        'bg-background-secondary',
-        variant.bg,
-        variant.border,
-        // Smooth transitions
-        'transition-all duration-150',
-        // Swipe animations
-        'data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:opacity-100',
-        'data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=end]:opacity-0',
-        'data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none',
-      )}
-      data-testid={`toast-${type}`}
-      data-toast-type={type}
-    >
-      <Icon className={cn('h-4.5 w-4.5 flex-shrink-0 mt-0.5', variant.iconColor)} />
-      <div className="flex-1 space-y-1.5 min-w-0">
-        {title && (
-          <ToastPrimitive.Title className="text-sm font-semibold text-foreground leading-tight">
-            {title}
-          </ToastPrimitive.Title>
+    return (
+      <ToastPrimitive.Root
+        ref={ref as React.Ref<HTMLLIElement>}
+        className={cn(
+          // Layout and positioning
+          'pointer-events-auto relative flex w-full items-start gap-3 rounded-lg border p-4',
+          // Background and border (subtle layering)
+          'bg-background-secondary',
+          variant.bg,
+          variant.border,
+          // Smooth transitions
+          'transition-all duration-150',
+          // Swipe animations
+          'data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:opacity-100',
+          'data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=end]:opacity-0',
+          'data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none'
         )}
-        {description && (
-          <ToastPrimitive.Description className="text-sm text-foreground-secondary leading-tight">
-            {description}
-          </ToastPrimitive.Description>
-        )}
-      </div>
-      <ToastPrimitive.Close
-        asChild
-        onClick={() => onDismiss?.(id)}
-        className="ml-auto flex-shrink-0"
+        data-testid={`toast-${type}`}
+        data-toast-type={type}
       >
-        <button
-          className="rounded-md p-1 hover:bg-background-tertiary transition-all duration-150 active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary/50"
-          aria-label="Close notification"
+        <Icon className={cn('h-4.5 w-4.5 flex-shrink-0 mt-0.5', variant.iconColor)} />
+        <div className="flex-1 space-y-1.5 min-w-0">
+          {title && (
+            <ToastPrimitive.Title className="text-sm font-semibold text-foreground leading-tight">
+              {title}
+            </ToastPrimitive.Title>
+          )}
+          {description && (
+            <ToastPrimitive.Description className="text-sm text-foreground-secondary leading-tight">
+              {description}
+            </ToastPrimitive.Description>
+          )}
+        </div>
+        <ToastPrimitive.Close
+          asChild
+          onClick={() => onDismiss?.(id)}
+          className="ml-auto flex-shrink-0"
         >
-          <X size={14} className="text-muted-foreground" />
-        </button>
-      </ToastPrimitive.Close>
-    </ToastPrimitive.Root>
-  );
-});
+          <button
+            className="rounded-md p-1 hover:bg-background-tertiary transition-all duration-150 active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary/50"
+            aria-label="Close notification"
+          >
+            <X size={14} className="text-muted-foreground" />
+          </button>
+        </ToastPrimitive.Close>
+      </ToastPrimitive.Root>
+    );
+  }
+);
 Toast.displayName = ToastPrimitive.Root.displayName;
 
 // Toast viewport
@@ -120,7 +119,7 @@ const ToastViewport = React.forwardRef<
       'p-4',
       // Focus handling
       'focus:outline-none',
-      className,
+      className
     )}
     {...props}
   />
@@ -152,7 +151,7 @@ interface ToastPromiseOptions {
 async function toastPromise<T>(
   promise: Promise<T>,
   options: ToastPromiseOptions,
-  toast: (toast: Omit<ToastProps, 'id'>) => void,
+  toast: (toast: Omit<ToastProps, 'id'>) => void
 ): Promise<T> {
   toast({
     title: options.loading,
@@ -175,12 +174,6 @@ async function toastPromise<T>(
   }
 }
 
-export {
-  Toast,
-  ToastViewport,
-  ToastProvider,
-  toastPromise,
-  toastVariants,
-};
+export { Toast, ToastViewport, ToastProvider, toastPromise, toastVariants };
 export type { ToastProps };
 export { ToastPrimitive as ToastRoot };

@@ -1,7 +1,7 @@
 'use client';
 
+import type { ToastType } from '@/components/ui/toast';
 import { useCallback } from 'react';
-import { type ToastType } from '@/components/ui/toast';
 
 // Toast action type
 type ToastAction = {
@@ -52,21 +52,33 @@ export function useToast() {
     return id;
   }, []);
 
-  const success = useCallback((title: string, description?: string) => {
-    return toast({ title, description, type: 'success' });
-  }, [toast]);
+  const success = useCallback(
+    (title: string, description?: string) => {
+      return toast({ title, description, type: 'success' });
+    },
+    [toast]
+  );
 
-  const error = useCallback((title: string, description?: string) => {
-    return toast({ title, description, type: 'error' });
-  }, [toast]);
+  const error = useCallback(
+    (title: string, description?: string) => {
+      return toast({ title, description, type: 'error' });
+    },
+    [toast]
+  );
 
-  const info = useCallback((title: string, description?: string) => {
-    return toast({ title, description, type: 'info' });
-  }, [toast]);
+  const info = useCallback(
+    (title: string, description?: string) => {
+      return toast({ title, description, type: 'info' });
+    },
+    [toast]
+  );
 
-  const warning = useCallback((title: string, description?: string) => {
-    return toast({ title, description, type: 'warning' });
-  }, [toast]);
+  const warning = useCallback(
+    (title: string, description?: string) => {
+      return toast({ title, description, type: 'warning' });
+    },
+    [toast]
+  );
 
   return {
     toast,

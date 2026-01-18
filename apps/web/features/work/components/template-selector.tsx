@@ -155,7 +155,6 @@ export function TemplateSelector({ onSelect, postContext = {} }: TemplateSelecto
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full px-3 py-2 bg-background border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               data-testid="template-search-input"
-              autoFocus
             />
           </div>
 

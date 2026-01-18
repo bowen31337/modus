@@ -36,7 +36,7 @@ test.describe('Command Palette - Feature Tests', () => {
     // Check that we can manually trigger the keyboard event
     const eventTriggered = await page.evaluate(() => {
       let triggered = false;
-      const handler = (e: Event) => {
+      const handler = (_e: Event) => {
         triggered = true;
       };
 

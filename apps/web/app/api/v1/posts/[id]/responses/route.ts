@@ -1,4 +1,5 @@
 import { dataStore } from '@/lib/data-store';
+import { requireCsrfProtection, csrfErrorResponse } from '@/lib/csrf';
 import { createResponseInputSchema } from '@modus/logic';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -20,6 +21,13 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
     if (!id) {
       return NextResponse.json({ error: 'Post ID is required' }, { status: 400 });
+    }
+
+    // Validate CSRF token for state-changing operation
+    try {
+      await requireCsrfProtection(request);
+    } catch (csrfError) {
+      return csrfErrorResponse();
     }
 
     // Verify the post exists

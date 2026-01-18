@@ -7,6 +7,7 @@ export * from './Badge';
 export * from './Separator';
 export * from './dropdown-menu';
 export * from './dialog';
+export * from './tooltip';
 
 // Export lucide icons
 export * from './Icon';

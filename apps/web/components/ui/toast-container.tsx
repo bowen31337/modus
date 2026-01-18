@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { Toast } from './toast';
 import { TOAST_EVENT, type ToastEventDetail } from '@/hooks/use-toast';
+import { useCallback, useEffect, useState } from 'react';
+import { Toast } from './toast';
 
 interface ToastState {
   id: string;

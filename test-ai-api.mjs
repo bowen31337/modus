@@ -21,7 +21,7 @@ function log(message, color = 'reset') {
 }
 
 function logTest(testName) {
-  console.log('\n' + '='.repeat(60));
+  console.log(`\n${'='.repeat(60)}`);
   log(`TEST: ${testName}`, 'blue');
   console.log('='.repeat(60));
 }
@@ -90,7 +90,7 @@ async function testSentimentAnalysis() {
           logSuccess(`Correctly returned error: ${response.status}`);
           passed++;
         } else {
-          logError(`Should have failed but succeeded`);
+          logError('Should have failed but succeeded');
           failed++;
         }
       } else {
@@ -185,7 +185,7 @@ async function testAISuggest() {
           logSuccess(`Correctly returned error: ${response.status}`);
           passed++;
         } else {
-          logError(`Should have failed but succeeded`);
+          logError('Should have failed but succeeded');
           failed++;
         }
       } else {
@@ -201,7 +201,7 @@ async function testAISuggest() {
             logSuccess(`Suggestion generated (${data.suggestion.length} chars)`);
             passed++;
           } else {
-            logError(`Suggestion is empty`);
+            logError('Suggestion is empty');
             failed++;
           }
 
@@ -209,7 +209,7 @@ async function testAISuggest() {
           if (typeof data.tokens_used === 'number') {
             logSuccess(`Tokens used is valid: ${data.tokens_used}`);
           } else {
-            logError(`Tokens used is invalid`);
+            logError('Tokens used is invalid');
             failed++;
           }
         } else {
@@ -250,9 +250,9 @@ async function main() {
   totalFailed += suggestResults.failed;
 
   // Summary
-  console.log('\n' + '='.repeat(60));
+  console.log(`\n${'='.repeat(60)}`);
   log(`TOTAL: ${totalPassed} passed, ${totalFailed} failed`, totalFailed === 0 ? 'green' : 'red');
-  console.log('='.repeat(60) + '\n');
+  console.log(`${'='.repeat(60)}\n`);
 
   process.exit(totalFailed > 0 ? 1 : 0);
 }

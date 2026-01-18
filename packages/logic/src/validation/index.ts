@@ -1,4 +1,10 @@
 import { z } from 'zod';
+import {
+  sanitizeInput,
+  sanitizePostContent,
+  sanitizeResponseContent,
+  sanitizeTemplateContent,
+} from '../security';
 
 // ============================================================================
 // Enums and Constants
@@ -99,6 +105,8 @@ export const moderationPostSchema = z.object({
   created_at: z.string().datetime(),
   updated_at: z.string().datetime().optional(),
   resolved_at: z.string().datetime().optional().nullable(),
+  // Vector embedding for semantic search/RAG (1536 dimensions for OpenAI text-embedding-3-small)
+  embedding: z.array(z.number()).optional().nullable(),
 });
 
 export type ModerationPost = z.infer<typeof moderationPostSchema>;
@@ -258,3 +266,44 @@ export const postsQuerySchema = z.object({
 });
 
 export type PostsQuery = z.infer<typeof postsQuerySchema>;
+
+// ============================================================================
+// Sanitization Helpers
+// ============================================================================
+
+/**
+ * Sanitizes a moderation post's content fields (title, body_content, excerpt).
+ * This is called automatically when creating or updating posts.
+ */
+export function sanitizeModerationPost(post: {
+  title: string;
+  body_content: string;
+  excerpt?: string;
+}): {
+  title: string;
+  body_content: string;
+  excerpt?: string;
+} {
+  return sanitizePostContent(post);
+}
+
+/**
+ * Sanitizes response content before saving.
+ */
+export function sanitizeResponse(content: string): string {
+  return sanitizeResponseContent(content);
+}
+
+/**
+ * Sanitizes template content before saving.
+ */
+export function sanitizeTemplate(content: string): string {
+  return sanitizeTemplateContent(content);
+}
+
+/**
+ * Sanitizes a string value for safe rendering.
+ */
+export function sanitize(value: string): string {
+  return sanitizeInput(value);
+}

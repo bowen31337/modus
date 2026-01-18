@@ -59,7 +59,7 @@ test.describe('Sentiment Badges Accessibility', () => {
 
     for (let i = 0; i < Math.min(count, 10); i++) {
       const card = postCards.nth(i);
-      const cardText = await card.textContent();
+      const _cardText = await card.textContent();
 
       // Check if this card has a negative sentiment indicator
       // Looking for AlertCircle icon (used for negative sentiment)
@@ -71,7 +71,7 @@ test.describe('Sentiment Badges Accessibility', () => {
         const text = await span.textContent();
 
         // Negative sentiment cards have "negative" text and AlertCircle icon
-        if (text && text.toLowerCase().includes('negative')) {
+        if (text?.toLowerCase().includes('negative')) {
           // Verify there's an SVG icon nearby (the AlertCircle)
           const parent = span.locator('..');
           const hasIcon = (await parent.locator('svg').count()) > 0;
@@ -119,7 +119,7 @@ test.describe('Sentiment Badges Accessibility', () => {
         const text = await span.textContent();
 
         // Positive sentiment cards have "positive" text
-        if (text && text.toLowerCase().includes('positive')) {
+        if (text?.toLowerCase().includes('positive')) {
           // Verify there's an SVG icon nearby
           const parent = span.locator('..');
           const hasIcon = (await parent.locator('svg').count()) > 0;
@@ -165,7 +165,7 @@ test.describe('Sentiment Badges Accessibility', () => {
         const text = await span.textContent();
 
         // Neutral sentiment cards have "neutral" text
-        if (text && text.toLowerCase().includes('neutral')) {
+        if (text?.toLowerCase().includes('neutral')) {
           // Verify there's an SVG icon nearby
           const parent = span.locator('..');
           const hasIcon = (await parent.locator('svg').count()) > 0;

@@ -45,7 +45,7 @@ Priority: ${post.priority}
   }
 
   if (post.author_post_count <= 1) {
-    prompt += `Note: This appears to be a first-time poster. Be extra welcoming.\n`;
+    prompt += 'Note: This appears to be a first-time poster. Be extra welcoming.\n';
   }
 
   if (similarResponses.length > 0) {
@@ -164,4 +164,55 @@ export function cosineSimilarity(a: number[], b: number[]): number {
 
   const magnitude = Math.sqrt(normA) * Math.sqrt(normB);
   return magnitude === 0 ? 0 : dotProduct / magnitude;
+}
+
+// ============================================================================
+// Embedding Generation
+// ============================================================================
+
+/**
+ * Generate a mock vector embedding for text content
+ *
+ * This is a deterministic mock implementation for development/testing.
+ * In production, this would call an AI provider like OpenAI's text-embedding API.
+ *
+ * @param text - The text to generate an embedding for
+ * @param dimensions - The number of dimensions for the embedding vector (default: 1536)
+ * @returns A mock embedding vector
+ *
+ * @example
+ * const embedding = await generateEmbedding("Hello world");
+ * // Returns: [0.123, -0.456, 0.789, ...] (1536 dimensions)
+ */
+export function generateEmbedding(text: string, dimensions = 1536): number[] {
+  // Create a deterministic embedding based on the text content
+  // This uses a simple hash function to generate consistent values
+  const hash = text.split('').reduce((acc, char) => {
+    return ((acc << 5) - acc + char.charCodeAt(0)) | 0;
+  }, 0);
+
+  const embedding: number[] = [];
+  for (let i = 0; i < dimensions; i++) {
+    // Generate pseudo-random values based on hash and index
+    const seed = (hash + i * 7919) | 0;
+    const value = Math.sin(seed) * 0.5 + Math.cos(seed * 0.5) * 0.3;
+    // Normalize to [-1, 1] range
+    embedding.push(Math.max(-1, Math.min(1, value)));
+  }
+
+  return embedding;
+}
+
+/**
+ * Generate an embedding for a moderation post
+ *
+ * Combines title and body content for semantic representation.
+ * In production, this would call an AI provider's embedding API.
+ *
+ * @param post - The moderation post to generate an embedding for
+ * @returns A vector embedding for the post content
+ */
+export function generatePostEmbedding(post: { title: string; body_content: string }): number[] {
+  const text = `${post.title}\n\n${post.body_content}`.trim();
+  return generateEmbedding(text);
 }

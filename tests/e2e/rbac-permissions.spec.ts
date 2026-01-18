@@ -85,7 +85,7 @@ test.describe
 
     test('should allow agent to claim posts', async ({ page }) => {
       // Login
-      const session = await loginAndGetSession(page);
+      const _session = await loginAndGetSession(page);
 
       // Navigate to queue
       await page.goto('/dashboard');

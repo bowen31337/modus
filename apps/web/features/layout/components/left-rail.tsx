@@ -27,7 +27,7 @@ export function LeftRail() {
       try {
         const supabase = createClient();
         await supabase.auth.signOut();
-      } catch (error) {
+      } catch (_error) {
         // If Supabase fails, continue to redirect
       }
     }

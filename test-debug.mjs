@@ -31,7 +31,7 @@ import { chromium } from '@playwright/test';
   await page.screenshot({ path: 'debug-screenshot.png' });
 
   // Get page content
-  const content = await page.content();
+  const _content = await page.content();
   console.log('Page title:', await page.title());
 
   // Look for post cards
@@ -40,7 +40,7 @@ import { chromium } from '@playwright/test';
 
   for (const button of buttons) {
     const text = await button.textContent();
-    if (text && text.includes('Bug')) {
+    if (text?.includes('Bug')) {
       console.log('Found bug post button:', text.substring(0, 100));
     }
   }

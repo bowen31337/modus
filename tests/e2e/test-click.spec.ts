@@ -83,7 +83,7 @@ test('should click on post card and see work pane', async ({ page, context }) =>
       'click',
       (e) => {
         console.log(
-          `[Test] Window click on:`,
+          '[Test] Window click on:',
           (e.target as HTMLElement)?.tagName,
           (e.target as HTMLElement)?.getAttribute('data-testid')
         );

@@ -4,7 +4,7 @@
  * Update feature list to mark API integration features as passing
  */
 
-import fs from 'fs';
+import fs from 'node:fs';
 
 const featureList = JSON.parse(fs.readFileSync('feature_list.json', 'utf8'));
 
@@ -40,6 +40,6 @@ const passing = featureList.filter((f) => f.passes).length;
 const devDone = featureList.filter((f) => f.is_dev_done).length;
 const total = featureList.length;
 
-console.log(`\nStats:`);
+console.log('\nStats:');
 console.log(`  Passing: ${passing}/${total} (${((passing / total) * 100).toFixed(1)}%)`);
 console.log(`  Dev Done: ${devDone}/${total} (${((devDone / total) * 100).toFixed(1)}%)`);

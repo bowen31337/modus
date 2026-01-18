@@ -69,7 +69,7 @@ async function testReleasePost() {
       throw new Error('Post was not properly released');
     }
 
-    log(`  Post released successfully`, GREEN);
+    log('  Post released successfully', GREEN);
   });
 }
 
@@ -117,7 +117,7 @@ async function testSubmitInternalNote() {
       throw new Error('Response is not marked as internal note');
     }
 
-    log(`  Internal note created successfully`, GREEN);
+    log('  Internal note created successfully', GREEN);
   });
 }
 

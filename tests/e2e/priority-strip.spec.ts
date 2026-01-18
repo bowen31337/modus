@@ -171,7 +171,7 @@ test.describe('PostCard Priority Strip', () => {
     });
 
     // Verify screenshot was created
-    const fs = require('fs');
+    const fs = require('node:fs');
     expect(fs.existsSync('reports/screenshots/postcard-priority-strip.png')).toBeTruthy();
   });
 });

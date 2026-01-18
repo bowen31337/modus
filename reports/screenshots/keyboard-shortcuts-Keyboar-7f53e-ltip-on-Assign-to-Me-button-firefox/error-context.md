@@ -1,0 +1,84 @@
+# Page snapshot
+
+```yaml
+- generic:
+  - generic [active]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]:
+          - navigation [ref=e6]:
+            - button "previous" [disabled] [ref=e7]:
+              - img "previous" [ref=e8]
+            - generic [ref=e10]:
+              - generic [ref=e11]: 1/
+              - text: "1"
+            - button "next" [disabled] [ref=e12]:
+              - img "next" [ref=e13]
+          - img
+        - generic [ref=e15]:
+          - link "Next.js 15.5.9 (outdated) Webpack" [ref=e16] [cursor=pointer]:
+            - /url: https://nextjs.org/docs/messages/version-staleness
+            - img [ref=e17]
+            - generic "An outdated version detected (latest is 16.1.3), upgrade is highly recommended!" [ref=e19]: Next.js 15.5.9 (outdated)
+            - generic [ref=e20]: Webpack
+          - img
+      - generic [ref=e21]:
+        - dialog "Runtime TypeError" [ref=e22]:
+          - generic [ref=e25]:
+            - generic [ref=e26]:
+              - generic [ref=e27]:
+                - generic [ref=e29]: Runtime TypeError
+                - generic [ref=e30]:
+                  - button "Copy Error Info" [ref=e31] [cursor=pointer]:
+                    - img [ref=e32]
+                  - button "No related documentation found" [disabled] [ref=e34]:
+                    - img [ref=e35]
+                  - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools" [ref=e37] [cursor=pointer]:
+                    - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+                    - img [ref=e38]
+              - paragraph [ref=e47]: __webpack_modules__[moduleId] is not a function
+            - generic [ref=e49]:
+              - generic [ref=e50]:
+                - paragraph [ref=e51]:
+                  - text: Call Stack
+                  - generic [ref=e52]: "37"
+                - button "Show 33 ignore-listed frame(s)" [ref=e53] [cursor=pointer]:
+                  - text: Show 33 ignore-listed frame(s)
+                  - img [ref=e54]
+              - generic [ref=e56]:
+                - generic [ref=e57]: __webpack_exec__
+                - text: .next/server/app/dashboard/page.js (803:39)
+              - generic [ref=e58]:
+                - generic [ref=e59]: <unknown>
+                - text: .next/server/app/dashboard/page.js (804:4669)
+              - generic [ref=e60]:
+                - generic [ref=e61]: <unknown>
+                - text: .next/server/app/dashboard/page.js (804:47)
+              - generic [ref=e62]:
+                - generic [ref=e63]: Object.<anonymous>
+                - text: .next/server/app/dashboard/page.js (807:3)
+          - generic [ref=e64]:
+            - generic [ref=e65]: "1"
+            - generic [ref=e66]: "2"
+        - contentinfo [ref=e67]:
+          - region "Error feedback" [ref=e68]:
+            - paragraph [ref=e69]:
+              - link "Was this helpful?" [ref=e70] [cursor=pointer]:
+                - /url: https://nextjs.org/telemetry#error-feedback
+            - button "Mark as helpful" [ref=e71] [cursor=pointer]:
+              - img [ref=e72]
+            - button "Mark as not helpful" [ref=e75] [cursor=pointer]:
+              - img [ref=e76]
+    - generic [ref=e82] [cursor=pointer]:
+      - button "Open Next.js Dev Tools" [ref=e83]:
+        - img [ref=e84]
+      - generic [ref=e88]:
+        - button "Open issues overlay" [ref=e89]:
+          - generic [ref=e90]:
+            - generic [ref=e91]: "0"
+            - generic [ref=e92]: "1"
+          - generic [ref=e93]: Issue
+        - button "Collapse issues badge" [ref=e94]:
+          - img [ref=e95]
+  - alert [ref=e97]
+```

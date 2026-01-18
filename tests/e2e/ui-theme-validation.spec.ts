@@ -94,7 +94,7 @@ test.describe('UI Theme and Design System Validation', () => {
         'rgb(148, 163, 184)', // P3 - slate-400
         'rgb(52, 211, 153)', // P4 - emerald-400
       ];
-      const colorMatch = expectedColors.some((color) => stripColor.includes(color.split(', ')[0]));
+      const _colorMatch = expectedColors.some((color) => stripColor.includes(color.split(', ')[0]));
       // At minimum, ensure it has color
       expect(stripColor).toMatch(/rgb\(\d+,\s*\d+,\s*\d+\)/);
     }
@@ -135,7 +135,7 @@ test.describe('UI Theme and Design System Validation', () => {
     if (outline.outlineStyle !== 'none' && outline.outlineWidth !== '0px') {
       // Outline should contain indigo color
       expect(
-        outline.outlineColor + ' ' + outline.boxShadow,
+        `${outline.outlineColor} ${outline.boxShadow}`,
         'Focus ring should be indigo color'
       ).toMatch(/99|102|241|rgb\(99,\s*102,\s*241\)/);
     }
@@ -147,13 +147,13 @@ test.describe('UI Theme and Design System Validation', () => {
     await expect(button, 'Should have at least one button').toBeAttached();
 
     // Get default state
-    const defaultBg = await button.evaluate((el) => window.getComputedStyle(el).backgroundColor);
+    const _defaultBg = await button.evaluate((el) => window.getComputedStyle(el).backgroundColor);
 
     // Hover over button
     await button.hover();
     await page.waitForTimeout(200); // Wait for transition
 
-    const hoverBg = await button.evaluate((el) => window.getComputedStyle(el).backgroundColor);
+    const _hoverBg = await button.evaluate((el) => window.getComputedStyle(el).backgroundColor);
 
     // Colors should be different (hover state)
     // Note: Some buttons might not change background, so we just check the interaction works
@@ -163,7 +163,7 @@ test.describe('UI Theme and Design System Validation', () => {
     await page.mouse.down();
     await page.waitForTimeout(100);
 
-    const activeBg = await button.evaluate((el) => window.getComputedStyle(el).backgroundColor);
+    const _activeBg = await button.evaluate((el) => window.getComputedStyle(el).backgroundColor);
 
     // Button should still be visible
     expect(await button.isVisible()).toBeTruthy();
@@ -194,7 +194,7 @@ test.describe('UI Theme and Design System Validation', () => {
     const hoverBoxShadow = await card.evaluate((el) => window.getComputedStyle(el).boxShadow);
 
     // Check for visual change (background, transform, or shadow)
-    const hasVisualChange =
+    const _hasVisualChange =
       defaultBg !== hoverBg ||
       defaultTransform !== hoverTransform ||
       defaultBoxShadow !== hoverBoxShadow ||
@@ -247,7 +247,7 @@ test.describe('UI Theme and Design System Validation', () => {
       const toPx = (val: string) => {
         if (!val || val === 'normal' || val === 'auto') return 0;
         const parsed = Number.parseFloat(val.replace('px', ''));
-        return isNaN(parsed) ? 0 : parsed;
+        return Number.isNaN(parsed) ? 0 : parsed;
       };
 
       const spacingValues = Object.values(spacing)

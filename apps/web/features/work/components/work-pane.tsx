@@ -3,8 +3,9 @@
 import { InlineError } from '@/components/ui/error-state';
 import { StatusBadge } from '@/components/ui/status-badge';
 import type { PostCardProps } from '@/features/queue/components/post-card';
+import { sanitizePostContent } from '@/lib/sanitize';
 import { cn } from '@/lib/utils';
-import { Button } from '@modus/ui';
+import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@modus/ui';
 import {
   AlertCircle,
   ArrowRightLeft,
@@ -136,7 +137,7 @@ export function WorkPane({
         // Check if the event target is inside the command palette
         const target = e.target as Node;
         const commandPalette = document.querySelector('[data-testid="command-palette"]');
-        if (commandPalette && commandPalette.contains(target)) {
+        if (commandPalette?.contains(target)) {
           // Let the command palette handle the Escape key
           return;
         }
@@ -299,419 +300,454 @@ export function WorkPane({
   }
 
   return (
-    <main className="flex-1 flex flex-col bg-background overflow-hidden" data-testid="work-pane">
-      {/* Header */}
-      <div className="border-b border-border p-4 bg-background-secondary">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-3">
-            <span
-              className={cn(
-                'font-mono text-sm px-2 py-0.5 rounded',
-                priorityColors[selectedPost.priority] + '/20',
-                'text-foreground'
-              )}
-            >
-              {selectedPost.priority}
-            </span>
-            <StatusBadge status={selectedPost.status} size="sm" />
-            {isAssignedToMe && (
-              <span className="text-xs px-2 py-0.5 rounded bg-primary/20 text-primary flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                Assigned to you
+    <TooltipProvider>
+      <main className="flex-1 flex flex-col bg-background overflow-hidden" data-testid="work-pane">
+        {/* Header */}
+        <div className="border-b border-border p-4 bg-background-secondary">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-3">
+              <span
+                className={cn(
+                  'font-mono text-sm px-2 py-0.5 rounded',
+                  `${priorityColors[selectedPost.priority]}/20`,
+                  'text-foreground'
+                )}
+              >
+                {selectedPost.priority}
               </span>
-            )}
+              <StatusBadge status={selectedPost.status} size="sm" />
+              {isAssignedToMe && (
+                <span className="text-xs px-2 py-0.5 rounded bg-primary/20 text-primary flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  Assigned to you
+                </span>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              {!isAssignedToMe ? (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      onClick={onAssignToMe}
+                      data-testid="assign-to-me-button"
+                      variant="default"
+                      size="default"
+                    >
+                      Assign to Me
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>Assign this post to yourself</TooltipContent>
+                </Tooltip>
+              ) : (
+                <>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        onClick={() => setIsReassignModalOpen(true)}
+                        data-testid="reassign-button"
+                        variant="outline"
+                        size="default"
+                      >
+                        <ArrowRightLeft size={14} />
+                        Reassign
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Reassign to another agent (Cmd+Shift+A)</TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        onClick={onRelease}
+                        data-testid="release-button"
+                        variant="outline"
+                        size="default"
+                      >
+                        Release
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Release this post back to the queue</TooltipContent>
+                  </Tooltip>
+                </>
+              )}
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    onClick={onResolve}
+                    data-testid="resolve-button"
+                    variant="outline"
+                    size="default"
+                  >
+                    Resolve
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Resolve this post (Cmd+Enter when responding)</TooltipContent>
+              </Tooltip>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            {!isAssignedToMe ? (
-              <Button
-                onClick={onAssignToMe}
-                data-testid="assign-to-me-button"
-                variant="default"
-                size="default"
-              >
-                Assign to Me
-              </Button>
-            ) : (
-              <>
-                <Button
-                  onClick={() => setIsReassignModalOpen(true)}
-                  data-testid="reassign-button"
-                  variant="outline"
-                  size="default"
-                  title="Reassign to another agent (Cmd+Shift+A)"
-                >
-                  <ArrowRightLeft size={14} />
-                  Reassign
-                </Button>
-                <Button
-                  onClick={onRelease}
-                  data-testid="release-button"
-                  variant="outline"
-                  size="default"
-                >
-                  Release
-                </Button>
-              </>
-            )}
-            <Button
-              onClick={onResolve}
-              data-testid="resolve-button"
-              variant="outline"
-              size="default"
-            >
-              Resolve
-            </Button>
-          </div>
+          <h1
+            className="text-xl font-semibold text-foreground"
+            data-testid="post-title"
+            dangerouslySetInnerHTML={{
+              __html: sanitizePostContent(selectedPost.title, { allowHtml: false, escapeHtml: false }),
+            }}
+          />
         </div>
-        <h1 className="text-xl font-semibold text-foreground" data-testid="post-title">
-          {selectedPost.title}
-        </h1>
-      </div>
 
-      <div className="flex-1 overflow-y-auto">
-        <div className="flex flex-col lg:flex-row">
-          {/* Main Content */}
-          <div className="flex-1 p-6">
-            <div className="max-w-4xl mx-auto space-y-6">
-              {/* Post Content */}
-              <section
-                className="bg-background-secondary rounded-lg border border-border p-4"
-                data-testid="post-content-section"
-              >
-                <h2 className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wide">
-                  Content
-                </h2>
-                <div className="prose prose-invert max-w-none">
-                  <p className="text-foreground-secondary leading-relaxed">
-                    {selectedPost.excerpt}
-                  </p>
-                </div>
-              </section>
-
-              {/* Response Editor */}
-              <section className="bg-background-secondary rounded-lg border border-border p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <h2 className="text-sm font-semibold text-foreground uppercase tracking-wide">
-                    Response
+        <div className="flex-1 overflow-y-auto">
+          <div className="flex flex-col lg:flex-row">
+            {/* Main Content */}
+            <div className="flex-1 p-6">
+              <div className="max-w-4xl mx-auto space-y-6">
+                {/* Post Content */}
+                <section
+                  className="bg-background-secondary rounded-lg border border-border p-4"
+                  data-testid="post-content-section"
+                >
+                  <h2 className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wide">
+                    Content
                   </h2>
-                  <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={isInternalNote}
-                      onChange={(e) => setIsInternalNote(e.target.checked)}
-                      className="w-4 h-4 rounded border-border bg-background-tertiary text-primary focus:ring-2 focus:ring-primary"
-                      data-testid="internal-note-checkbox"
-                    />
-                    <span>Internal Note</span>
-                  </label>
-                </div>
-                <RichTextEditor
-                  ref={editorRef}
-                  value={responseContent}
-                  onChange={setResponseContent}
-                  placeholder="Type your response here... (Press R to focus)"
-                  ghostText={aiSuggestion.ghostText}
-                  onAcceptGhostText={handleAcceptGhostText}
-                  onDismissGhostText={handleDismissGhostText}
-                />
-                <div className="flex items-center justify-between mt-3">
-                  <div className="flex items-center gap-2">
-                    <TemplateSelector
-                      onSelect={handleTemplateSelect}
-                      postContext={{
-                        title: selectedPost.title,
-                        authorName: selectedPost.author?.name,
-                        category: selectedPost.category?.name,
+                  <div className="prose prose-invert max-w-none">
+                    <p
+                      className="text-foreground-secondary leading-relaxed"
+                      dangerouslySetInnerHTML={{
+                        __html: sanitizePostContent(selectedPost.excerpt, {
+                          allowHtml: false,
+                          escapeHtml: false,
+                        }),
                       }}
                     />
+                  </div>
+                </section>
+
+                {/* Response Editor */}
+                <section className="bg-background-secondary rounded-lg border border-border p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <h2 className="text-sm font-semibold text-foreground uppercase tracking-wide">
+                      Response
+                    </h2>
+                    <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={isInternalNote}
+                        onChange={(e) => setIsInternalNote(e.target.checked)}
+                        className="w-4 h-4 rounded border-border bg-background-tertiary text-primary focus:ring-2 focus:ring-primary"
+                        data-testid="internal-note-checkbox"
+                      />
+                      <span>Internal Note</span>
+                    </label>
+                  </div>
+                  <RichTextEditor
+                    ref={editorRef}
+                    value={responseContent}
+                    onChange={setResponseContent}
+                    placeholder="Type your response here... (Press R to focus)"
+                    ghostText={aiSuggestion.ghostText}
+                    onAcceptGhostText={handleAcceptGhostText}
+                    onDismissGhostText={handleDismissGhostText}
+                  />
+                  <div className="flex items-center justify-between mt-3">
+                    <div className="flex items-center gap-2">
+                      <TemplateSelector
+                        onSelect={handleTemplateSelect}
+                        postContext={{
+                          title: selectedPost.title,
+                          authorName: selectedPost.author?.name,
+                          category: selectedPost.category?.name,
+                        }}
+                      />
+                      <Button
+                        onClick={handleAiSuggest}
+                        disabled={aiSuggestion.isStreaming}
+                        variant="secondary"
+                        size="default"
+                        data-testid="ai-suggest-button"
+                      >
+                        {aiSuggestion.isStreaming ? (
+                          <>
+                            <Loader2 size={14} className="animate-spin" />
+                            Generating...
+                          </>
+                        ) : (
+                          <>✨ AI Suggest</>
+                        )}
+                      </Button>
+                    </div>
                     <Button
-                      onClick={handleAiSuggest}
-                      disabled={aiSuggestion.isStreaming}
-                      variant="secondary"
+                      onClick={handleSendResponse}
+                      disabled={!responseContent.trim() || submittingResponse}
+                      variant="default"
                       size="default"
-                      data-testid="ai-suggest-button"
+                      data-testid="send-response-button"
                     >
-                      {aiSuggestion.isStreaming ? (
+                      {submittingResponse ? (
                         <>
-                          <Loader2 size={14} className="animate-spin" />
-                          Generating...
+                          <Loader2 size={16} className="animate-spin" />
+                          {isInternalNote ? 'Adding...' : 'Sending...'}
                         </>
+                      ) : isInternalNote ? (
+                        'Add Note'
                       ) : (
-                        <>✨ AI Suggest</>
+                        'Send Response'
                       )}
                     </Button>
                   </div>
-                  <Button
-                    onClick={handleSendResponse}
-                    disabled={!responseContent.trim() || submittingResponse}
-                    variant="default"
-                    size="default"
-                    data-testid="send-response-button"
-                  >
-                    {submittingResponse ? (
-                      <>
-                        <Loader2 size={16} className="animate-spin" />
-                        {isInternalNote ? 'Adding...' : 'Sending...'}
-                      </>
-                    ) : isInternalNote ? (
-                      'Add Note'
-                    ) : (
-                      'Send Response'
-                    )}
-                  </Button>
-                </div>
-                <div className="text-xs text-muted-foreground mt-2">
-                  Tip: Press{' '}
-                  <kbd className="px-1 py-0.5 bg-background-tertiary rounded text-foreground">
-                    Cmd+Enter
-                  </kbd>{' '}
-                  to {isInternalNote ? 'add note' : 'send response'} and resolve
-                </div>
-              </section>
-
-              {/* Activity History */}
-              {responseError && (
-                <div className="mb-4">
-                  <InlineError
-                    message={responseError}
-                    onRetry={() => {
-                      if (selectedPost) {
-                        // Reload responses
-                        fetch(`/api/v1/posts/${selectedPost.id}/responses`)
-                          .then((res) => {
-                            if (res.ok) return res.json();
-                            throw new Error('Failed to reload');
-                          })
-                          .then((result) => {
-                            const transformed = result.data.map((r: any) => ({
-                              id: r.id,
-                              content: r.content,
-                              isInternalNote: r.is_internal_note,
-                              agent: currentAgent.name,
-                              createdAt: r.created_at,
-                            }));
-                            setResponses(transformed);
-                            setResponseError(null);
-                          })
-                          .catch(() => setResponseError('Failed to reload responses'));
-                      }
-                    }}
-                  />
-                </div>
-              )}
-              {(responses.length > 0 || loadingResponses) && (
-                <section className="bg-background-secondary rounded-lg border border-border p-4">
-                  <h2 className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wide">
-                    Activity History
-                  </h2>
-                  <div className="space-y-3">
-                    {loadingResponses ? (
-                      <>
-                        {/* Show 2 skeleton loaders while loading */}
-                        <ResponseSkeleton />
-                        <ResponseSkeleton />
-                      </>
-                    ) : (
-                      <>
-                        {responses.map((response) => (
-                          <div
-                            key={response.id}
-                            className={cn(
-                              'p-4 rounded-lg border transition-all',
-                              response.isInternalNote
-                                ? 'bg-amber-500/5 border-amber-500/20 border-l-4 border-l-amber-500/60'
-                                : 'bg-background-tertiary border-border hover:border-border/80'
-                            )}
-                            data-testid={`response-${response.id}`}
-                          >
-                            <div className="flex items-start justify-between mb-3">
-                              <div className="flex items-center gap-2">
-                                <div
-                                  className={cn(
-                                    'w-6 h-6 rounded-full flex items-center justify-center',
-                                    response.isInternalNote ? 'bg-amber-500/20' : 'bg-primary/20'
-                                  )}
-                                >
-                                  {response.isInternalNote ? (
-                                    <EyeOff size={12} className="text-amber-400" />
-                                  ) : (
-                                    <MessageCircle size={12} className="text-primary" />
-                                  )}
-                                </div>
-                                <div className="flex flex-col">
-                                  <div className="flex items-center gap-2">
-                                    <span className="text-sm font-medium text-foreground">
-                                      {response.agent}
-                                    </span>
-                                    {response.isInternalNote && (
-                                      <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 font-medium border border-amber-500/30 flex items-center gap-1">
-                                        <EyeOff size={10} />
-                                        Internal
-                                      </span>
-                                    )}
-                                  </div>
-                                  <span className="text-xs text-muted-foreground">
-                                    {response.isInternalNote
-                                      ? 'Private note - not visible to community'
-                                      : 'Public response - visible to everyone'}
-                                  </span>
-                                </div>
-                              </div>
-                              <span className="text-xs text-muted-foreground">
-                                {new Date(response.createdAt).toLocaleString()}
-                              </span>
-                            </div>
-                            <div
-                              className={cn(
-                                'text-sm leading-relaxed whitespace-pre-wrap p-3 rounded-md',
-                                response.isInternalNote
-                                  ? 'bg-amber-950/20 text-amber-100/90'
-                                  : 'bg-background-secondary text-foreground-secondary'
-                              )}
-                            >
-                              {response.content}
-                            </div>
-                          </div>
-                        ))}
-                      </>
-                    )}
+                  <div className="text-xs text-muted-foreground mt-2">
+                    Tip: Press{' '}
+                    <kbd className="px-1 py-0.5 bg-background-tertiary rounded text-foreground">
+                      Cmd+Enter
+                    </kbd>{' '}
+                    to {isInternalNote ? 'add note' : 'send response'} and resolve
                   </div>
                 </section>
-              )}
-            </div>
-          </div>
 
-          {/* User Context Sidebar */}
-          <aside
-            className="w-full lg:w-72 p-6 border-t lg:border-t-0 lg:border-l border-border bg-background-secondary"
-            data-testid="user-context-sidebar"
-          >
-            <div className="space-y-4">
-              <h2 className="text-sm font-semibold text-foreground uppercase tracking-wide">
-                User Context
-              </h2>
-
-              {/* Author Info */}
-              <div className="bg-background-tertiary rounded-lg p-3 border border-border">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
-                    <User size={16} className="text-primary" />
+                {/* Activity History */}
+                {responseError && (
+                  <div className="mb-4">
+                    <InlineError
+                      message={responseError}
+                      onRetry={() => {
+                        if (selectedPost) {
+                          // Reload responses
+                          fetch(`/api/v1/posts/${selectedPost.id}/responses`)
+                            .then((res) => {
+                              if (res.ok) return res.json();
+                              throw new Error('Failed to reload');
+                            })
+                            .then((result) => {
+                              const transformed = result.data.map((r: any) => ({
+                                id: r.id,
+                                content: r.content,
+                                isInternalNote: r.is_internal_note,
+                                agent: currentAgent.name,
+                                createdAt: r.created_at,
+                              }));
+                              setResponses(transformed);
+                              setResponseError(null);
+                            })
+                            .catch(() => setResponseError('Failed to reload responses'));
+                        }
+                      }}
+                    />
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-foreground">
-                      {selectedPost.author?.name || 'Unknown User'}
-                    </p>
-                    <p className="text-xs text-muted-foreground">Author</p>
+                )}
+                {(responses.length > 0 || loadingResponses) && (
+                  <section className="bg-background-secondary rounded-lg border border-border p-4">
+                    <h2 className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wide">
+                      Activity History
+                    </h2>
+                    <div className="space-y-3">
+                      {loadingResponses ? (
+                        <>
+                          {/* Show 2 skeleton loaders while loading */}
+                          <ResponseSkeleton />
+                          <ResponseSkeleton />
+                        </>
+                      ) : (
+                        <>
+                          {responses.map((response) => (
+                            <div
+                              key={response.id}
+                              className={cn(
+                                'p-4 rounded-lg border transition-all',
+                                response.isInternalNote
+                                  ? 'bg-amber-500/5 border-amber-500/20 border-l-4 border-l-amber-500/60'
+                                  : 'bg-background-tertiary border-border hover:border-border/80'
+                              )}
+                              data-testid={`response-${response.id}`}
+                            >
+                              <div className="flex items-start justify-between mb-3">
+                                <div className="flex items-center gap-2">
+                                  <div
+                                    className={cn(
+                                      'w-6 h-6 rounded-full flex items-center justify-center',
+                                      response.isInternalNote ? 'bg-amber-500/20' : 'bg-primary/20'
+                                    )}
+                                  >
+                                    {response.isInternalNote ? (
+                                      <EyeOff size={12} className="text-amber-400" />
+                                    ) : (
+                                      <MessageCircle size={12} className="text-primary" />
+                                    )}
+                                  </div>
+                                  <div className="flex flex-col">
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-sm font-medium text-foreground">
+                                        {response.agent}
+                                      </span>
+                                      {response.isInternalNote && (
+                                        <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 font-medium border border-amber-500/30 flex items-center gap-1">
+                                          <EyeOff size={10} />
+                                          Internal
+                                        </span>
+                                      )}
+                                    </div>
+                                    <span className="text-xs text-muted-foreground">
+                                      {response.isInternalNote
+                                        ? 'Private note - not visible to community'
+                                        : 'Public response - visible to everyone'}
+                                    </span>
+                                  </div>
+                                </div>
+                                <span className="text-xs text-muted-foreground">
+                                  {new Date(response.createdAt).toLocaleString()}
+                                </span>
+                              </div>
+                              <div
+                                className={cn(
+                                  'text-sm leading-relaxed whitespace-pre-wrap p-3 rounded-md',
+                                  response.isInternalNote
+                                    ? 'bg-amber-950/20 text-amber-100/90'
+                                    : 'bg-background-secondary text-foreground-secondary'
+                                )}
+                                dangerouslySetInnerHTML={{
+                                  __html: sanitizePostContent(response.content, {
+                                    allowHtml: false,
+                                    escapeHtml: false,
+                                  }),
+                                }}
+                              />
+                            </div>
+                          ))}
+                        </>
+                      )}
+                    </div>
+                  </section>
+                )}
+              </div>
+            </div>
+
+            {/* User Context Sidebar */}
+            <aside
+              className="w-full lg:w-72 p-6 border-t lg:border-t-0 lg:border-l border-border bg-background-secondary"
+              data-testid="user-context-sidebar"
+            >
+              <div className="space-y-4">
+                <h2 className="text-sm font-semibold text-foreground uppercase tracking-wide">
+                  User Context
+                </h2>
+
+                {/* Author Info */}
+                <div className="bg-background-tertiary rounded-lg p-3 border border-border">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
+                      <User size={16} className="text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-foreground">
+                        {selectedPost.author?.name || 'Unknown User'}
+                      </p>
+                      <p className="text-xs text-muted-foreground">Author</p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Sentiment */}
-              {selectedPost.sentiment && (
-                <div className="bg-background-tertiary rounded-lg p-3 border border-border">
-                  <div className="flex items-center gap-2">
-                    {selectedPost.sentiment === 'negative' && (
-                      <AlertCircle
-                        size={16}
-                        className={(sentimentColors.negative?.split(' ')?.[0] || '').replace(
-                          'text-',
-                          'text-'
-                        )}
-                      />
-                    )}
-                    {selectedPost.sentiment === 'positive' && (
-                      <CheckCircle2
-                        size={16}
-                        className={(sentimentColors.positive?.split(' ')?.[0] || '').replace(
-                          'text-',
-                          'text-'
-                        )}
-                      />
-                    )}
-                    {selectedPost.sentiment === 'neutral' && (
-                      <MessageSquare
-                        size={16}
-                        className={(sentimentColors.neutral?.split(' ')?.[0] || '').replace(
-                          'text-',
-                          'text-'
-                        )}
-                      />
-                    )}
-                    <span
-                      className={cn(
-                        'text-sm font-medium',
-                        sentimentColors[selectedPost.sentiment]?.split(' ')?.[0]
+                {/* Sentiment */}
+                {selectedPost.sentiment && (
+                  <div className="bg-background-tertiary rounded-lg p-3 border border-border">
+                    <div className="flex items-center gap-2">
+                      {selectedPost.sentiment === 'negative' && (
+                        <AlertCircle
+                          size={16}
+                          className={(sentimentColors.negative?.split(' ')?.[0] || '').replace(
+                            'text-',
+                            'text-'
+                          )}
+                        />
                       )}
-                    >
-                      {selectedPost.sentiment.charAt(0).toUpperCase() +
-                        selectedPost.sentiment.slice(1)}{' '}
-                      Sentiment
+                      {selectedPost.sentiment === 'positive' && (
+                        <CheckCircle2
+                          size={16}
+                          className={(sentimentColors.positive?.split(' ')?.[0] || '').replace(
+                            'text-',
+                            'text-'
+                          )}
+                        />
+                      )}
+                      {selectedPost.sentiment === 'neutral' && (
+                        <MessageSquare
+                          size={16}
+                          className={(sentimentColors.neutral?.split(' ')?.[0] || '').replace(
+                            'text-',
+                            'text-'
+                          )}
+                        />
+                      )}
+                      <span
+                        className={cn(
+                          'text-sm font-medium',
+                          sentimentColors[selectedPost.sentiment]?.split(' ')?.[0]
+                        )}
+                      >
+                        {selectedPost.sentiment.charAt(0).toUpperCase() +
+                          selectedPost.sentiment.slice(1)}{' '}
+                        Sentiment
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Post History */}
+                <div className="bg-background-tertiary rounded-lg p-3 border border-border">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-muted-foreground">Post History</span>
+                    <span className="text-sm font-medium text-foreground">
+                      {selectedPost.author?.postCount ?? 0} posts
                     </span>
                   </div>
-                </div>
-              )}
-
-              {/* Post History */}
-              <div className="bg-background-tertiary rounded-lg p-3 border border-border">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-muted-foreground">Post History</span>
-                  <span className="text-sm font-medium text-foreground">
-                    {selectedPost.author?.postCount ?? 0} posts
-                  </span>
-                </div>
-                {selectedPost.author?.postCount === 0 && (
-                  <div className="text-xs text-yellow-400 bg-yellow-500/10 px-2 py-1 rounded">
-                    First-time poster
-                  </div>
-                )}
-              </div>
-
-              {/* Metadata */}
-              <div className="bg-background-tertiary rounded-lg p-3 border border-border space-y-2">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Hash size={14} />
-                  <span>Post ID: {selectedPost.id}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Clock size={14} />
-                  <span>Created: {selectedPost.createdAt}</span>
-                </div>
-                {selectedPost.category && (
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <span
-                      className="w-2 h-2 rounded-full"
-                      style={{ backgroundColor: selectedPost.category.color }}
-                    />
-                    <span>{selectedPost.category.name}</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Assignment Status */}
-              <div className="bg-background-tertiary rounded-lg p-3 border border-border">
-                <h3 className="text-sm font-medium text-foreground mb-2">Assignment</h3>
-                <div className="text-sm text-muted-foreground">
-                  {isAssignedToMe ? (
-                    <span className="text-primary">Assigned to you</span>
-                  ) : (
-                    <span>Unassigned - click &quot;Assign to Me&quot; to claim</span>
+                  {selectedPost.author?.postCount === 0 && (
+                    <div className="text-xs text-yellow-400 bg-yellow-500/10 px-2 py-1 rounded">
+                      First-time poster
+                    </div>
                   )}
                 </div>
-              </div>
-            </div>
-          </aside>
-        </div>
-      </div>
 
-      {/* Reassign Dialog */}
-      <ReassignDialog
-        isOpen={isReassignModalOpen}
-        onClose={() => setIsReassignModalOpen(false)}
-        onReassign={handleReassign}
-        currentAgentId={currentAgent.id}
-        agents={mockAgents}
-        postTitle={selectedPost.title}
-      />
-    </main>
+                {/* Metadata */}
+                <div className="bg-background-tertiary rounded-lg p-3 border border-border space-y-2">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Hash size={14} />
+                    <span>Post ID: {selectedPost.id}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Clock size={14} />
+                    <span>Created: {selectedPost.createdAt}</span>
+                  </div>
+                  {selectedPost.category && (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <span
+                        className="w-2 h-2 rounded-full"
+                        style={{ backgroundColor: selectedPost.category.color }}
+                      />
+                      <span>{selectedPost.category.name}</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Assignment Status */}
+                <div className="bg-background-tertiary rounded-lg p-3 border border-border">
+                  <h3 className="text-sm font-medium text-foreground mb-2">Assignment</h3>
+                  <div className="text-sm text-muted-foreground">
+                    {isAssignedToMe ? (
+                      <span className="text-primary">Assigned to you</span>
+                    ) : (
+                      <span>Unassigned - click &quot;Assign to Me&quot; to claim</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+
+        {/* Reassign Dialog */}
+        <ReassignDialog
+          isOpen={isReassignModalOpen}
+          onClose={() => setIsReassignModalOpen(false)}
+          onReassign={handleReassign}
+          currentAgentId={currentAgent.id}
+          agents={mockAgents}
+          postTitle={selectedPost.title}
+        />
+      </main>
+    </TooltipProvider>
   );
 }

@@ -6,7 +6,13 @@
  */
 
 import type { ModerationPost, PriorityRule, Response, ResponseTemplate } from '@modus/logic';
-import { RulesEngine } from '@modus/logic/rules';
+import {
+  RulesEngine,
+  generatePostEmbedding,
+  sanitizeModerationPost,
+  sanitizeResponse,
+  sanitizeTemplate,
+} from '@modus/logic';
 import { v4 as uuidv4 } from 'uuid';
 
 // ============================================================================
@@ -38,6 +44,7 @@ export interface CreatePostInput {
   author_user_id: string;
   author_post_count: number;
   assigned_to_id?: string | null;
+  embedding?: number[] | null;
 }
 
 export interface UpdatePostInput {
@@ -196,6 +203,11 @@ const mockPosts: PostWithRelations[] = [
     },
     assigned_agent: null,
     responses: [],
+    embedding: generatePostEmbedding({
+      title: 'Unable to access my account after password reset',
+      body_content:
+        "I reset my password yesterday but still can't log in. The system keeps saying my credentials are invalid. I've tried clearing my cache, using incognito mode, and even a different browser, but nothing works. I need to access my account urgently for work purposes. Please help me resolve this issue as soon as possible.",
+    }),
   },
   {
     id: '2',
@@ -223,6 +235,11 @@ const mockPosts: PostWithRelations[] = [
     },
     assigned_agent: null,
     responses: [],
+    embedding: generatePostEmbedding({
+      title: 'Feature request: Dark mode for mobile app',
+      body_content:
+        'Would love to see a dark mode option in the mobile application. My eyes get tired using the app at night, and the bright white background is really uncomfortable. Many other apps have this feature now, and it would be great if you could implement it. Maybe you could also add an automatic option that switches based on system settings.',
+    }),
   },
   {
     id: '3',
@@ -253,6 +270,11 @@ const mockPosts: PostWithRelations[] = [
       display_name: 'Agent A',
     },
     responses: [],
+    embedding: generatePostEmbedding({
+      title: 'Bug: Images not loading in posts',
+      body_content:
+        "Since the last update, images in community posts are not loading. Just shows a broken image icon where the images should be. This is happening on both desktop and mobile versions. I've tried on different internet connections and the issue persists. It's really frustrating because images are a big part of the community experience.",
+    }),
   },
   {
     id: '4',
@@ -280,6 +302,11 @@ const mockPosts: PostWithRelations[] = [
     },
     assigned_agent: null,
     responses: [],
+    embedding: generatePostEmbedding({
+      title: 'How do I change my email notification settings?',
+      body_content:
+        "I've been looking everywhere but can't find where to change my email notification preferences. I want to receive daily digest emails instead of instant notifications for every post. Can someone point me to the right setting? Thanks in advance!",
+    }),
   },
   {
     id: '5',
@@ -309,6 +336,11 @@ const mockPosts: PostWithRelations[] = [
       display_name: 'Agent B',
     },
     responses: [],
+    embedding: generatePostEmbedding({
+      title: 'Community guidelines clarification needed',
+      body_content:
+        "I'm a bit confused about the community guidelines regarding self-promotion. I've seen some posts promoting products get removed while others stay up. What exactly is the policy? I want to make sure I don't accidentally break the rules when sharing my own projects. A clearer explanation would be really helpful for everyone.",
+    }),
   },
 ];
 
@@ -464,11 +496,19 @@ class DataStore {
 
   createPost(input: CreatePostInput): PostWithRelations {
     const now = new Date().toISOString();
-    const post: PostWithRelations = {
-      id: uuidv4(),
+
+    // Sanitize content to prevent XSS attacks
+    const sanitized = sanitizeModerationPost({
       title: input.title,
       body_content: input.body_content,
       excerpt: input.excerpt,
+    });
+
+    const post: PostWithRelations = {
+      id: uuidv4(),
+      title: sanitized.title,
+      body_content: sanitized.body_content,
+      excerpt: sanitized.excerpt,
       category_id: input.category_id,
       status: input.status,
       priority: input.priority,
@@ -484,6 +524,8 @@ class DataStore {
       category: this.getCategoryById(input.category_id),
       assigned_agent: input.assigned_to_id ? this.getAgentById(input.assigned_to_id) : null,
       responses: [],
+      // Generate embedding if not provided
+      embedding: input.embedding ?? generatePostEmbedding(input),
     };
 
     this.posts.set(post.id, post);
@@ -568,11 +610,15 @@ class DataStore {
     is_internal_note: boolean;
   }): Response {
     const now = new Date().toISOString();
+
+    // Sanitize content to prevent XSS attacks
+    const sanitizedContent = sanitizeResponse(input.content);
+
     const response: Response = {
       id: uuidv4(),
       post_id: input.post_id,
       agent_id: input.agent_id,
-      content: input.content,
+      content: sanitizedContent,
       is_internal_note: input.is_internal_note,
       created_at: now,
       updated_at: now,
@@ -749,10 +795,14 @@ class DataStore {
     created_by: string;
   }): ResponseTemplate {
     const now = new Date().toISOString();
+
+    // Sanitize content to prevent XSS attacks
+    const sanitizedContent = sanitizeTemplate(input.content);
+
     const template: ResponseTemplate = {
       id: uuidv4(),
       name: input.name,
-      content: input.content,
+      content: sanitizedContent,
       placeholders: input.placeholders || [],
       category_id: input.category_id || null,
       usage_count: 0,
@@ -778,9 +828,14 @@ class DataStore {
     if (!template) return null;
 
     const now = new Date().toISOString();
+
+    // Sanitize content if provided
+    const sanitizedContent = input.content ? sanitizeTemplate(input.content) : template.content;
+
     const updated: ResponseTemplate = {
       ...template,
       ...input,
+      content: sanitizedContent,
       updated_at: now,
     };
 

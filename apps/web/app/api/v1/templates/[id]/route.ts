@@ -186,7 +186,10 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
  *   "message": "Template deleted successfully"
  * }
  */
-export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const { id } = await params;
 

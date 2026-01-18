@@ -1,6 +1,7 @@
 'use client';
 
 import { type PostStatus, StatusBadge } from '@/components/ui/status-badge';
+import { sanitizePostContent } from '@/lib/sanitize';
 import { cn } from '@/lib/utils';
 import { AlertCircle, CheckCircle2, Clock, MessageSquare, User } from 'lucide-react';
 import type { ViewMode } from './view-toggle';
@@ -72,7 +73,6 @@ export function PostCard({
     return (
       <button
         type="button"
-        role="button"
         tabIndex={0}
         onClick={onClick}
         aria-pressed={isSelected}
@@ -91,7 +91,11 @@ export function PostCard({
           {/* Header Row */}
           <div className="flex items-start justify-between gap-2 mb-2">
             <h3 className="text-sm font-medium text-foreground leading-tight line-clamp-2 flex-1">
-              {title}
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: sanitizePostContent(title, { allowHtml: false, escapeHtml: false }),
+                }}
+              />
             </h3>
 
             {/* Status Badge */}
@@ -99,7 +103,12 @@ export function PostCard({
           </div>
 
           {/* Excerpt */}
-          <p className="text-xs text-foreground-muted mb-3 line-clamp-3">{excerpt}</p>
+          <p
+            className="text-xs text-foreground-muted mb-3 line-clamp-3"
+            dangerouslySetInnerHTML={{
+              __html: sanitizePostContent(excerpt, { allowHtml: false, escapeHtml: false }),
+            }}
+          />
 
           {/* Metadata Grid */}
           <div className="grid grid-cols-2 gap-2 text-xs text-foreground-muted mb-2">
@@ -124,7 +133,7 @@ export function PostCard({
             {category && (
               <span
                 className="px-1.5 py-0.5 rounded text-[10px] font-medium truncate"
-                style={{ backgroundColor: category.color + '33', color: category.color }}
+                style={{ backgroundColor: `${category.color}33`, color: category.color }}
               >
                 {category.name}
               </span>
@@ -170,7 +179,6 @@ export function PostCard({
   return (
     <button
       type="button"
-      role="button"
       tabIndex={0}
       onClick={onClick}
       aria-pressed={isSelected}
@@ -189,7 +197,11 @@ export function PostCard({
         {/* Header Row */}
         <div className="flex items-start justify-between gap-2 mb-1">
           <h3 className="text-sm font-medium text-foreground leading-tight line-clamp-2 flex-1">
-            {title}
+            <span
+              dangerouslySetInnerHTML={{
+                __html: sanitizePostContent(title, { allowHtml: false, escapeHtml: false }),
+              }}
+            />
           </h3>
 
           {/* Status Badge */}
@@ -197,7 +209,12 @@ export function PostCard({
         </div>
 
         {/* Excerpt */}
-        <p className="text-xs text-foreground-muted mb-2 line-clamp-2">{excerpt}</p>
+        <p
+          className="text-xs text-foreground-muted mb-2 line-clamp-2"
+          dangerouslySetInnerHTML={{
+            __html: sanitizePostContent(excerpt, { allowHtml: false, escapeHtml: false }),
+          }}
+        />
 
         {/* Metadata Row */}
         <div className="flex items-center gap-3 text-xs text-foreground-muted">
@@ -221,7 +238,7 @@ export function PostCard({
           {category && (
             <span
               className="px-1.5 py-0.5 rounded text-[10px] font-medium"
-              style={{ backgroundColor: category.color + '33', color: category.color }}
+              style={{ backgroundColor: `${category.color}33`, color: category.color }}
             >
               {category.name}
             </span>

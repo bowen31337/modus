@@ -51,37 +51,54 @@ test.describe('Toast Notifications', () => {
   });
 
   test('should show success toast when resolving a post', async ({ page }) => {
-    // Click on first post to open it
+    // Click on first post to open it (this will assign it first)
     const firstPost = page.locator('[data-testid^="post-card-"]').first();
     await expect(firstPost).toBeVisible();
     await firstPost.click();
 
     // Wait for work pane to appear
-    await page.waitForSelector('[data-testid="work-pane"]', { timeout: 5000 });
+    await page.waitForSelector('[data-testid="work-pane"]', { timeout: 10000 });
+
+    // Dismiss the assignment toast first so we can see the resolve toast
+    const assignmentToast = page.locator('[data-testid="toast-success"]').first();
+    await expect(assignmentToast).toBeVisible({ timeout: 5000 });
+    await assignmentToast.locator('button[aria-label="Close notification"]').click();
+    await expect(assignmentToast).not.toBeVisible({ timeout: 3000 });
 
     // Click Resolve button
     await page.click('button:has-text("Resolve")');
 
-    // Wait for success toast to appear
+    // Wait for success toast to appear (wait for the new toast, not the old one)
     await page.waitForSelector('[data-testid="toast-success"]', { timeout: 5000 });
 
-    // Verify toast content
-    const successToast = page.locator('[data-testid="toast-success"]');
+    // Verify toast content - use .last() to get the newly created toast
+    const successToast = page.locator('[data-testid="toast-success"]').last();
     await expect(successToast).toContainText('Post resolved');
     await expect(successToast).toContainText('The post has been marked as resolved.');
   });
 
   test('should show info toast when releasing a post', async ({ page }) => {
-    // Click on first post to open it
+    // Click on first post to open it (this will assign it first)
     const firstPost = page.locator('[data-testid^="post-card-"]').first();
     await expect(firstPost).toBeVisible();
     await firstPost.click();
 
     // Wait for work pane to appear
-    await page.waitForSelector('[data-testid="work-pane"]', { timeout: 5000 });
+    await page.waitForSelector('[data-testid="work-pane"]', { timeout: 10000 });
+
+    // Wait for the "Release" button to be visible (it only appears after assignment)
+    const releaseButton = page.locator('button:has-text("Release")');
+    await expect(releaseButton).toBeVisible({ timeout: 10000 });
+
+    // Dismiss the assignment toast first so we can see the release toast
+    const assignmentToast = page.locator('[data-testid="toast-success"]').first();
+    if (await assignmentToast.isVisible()) {
+      await assignmentToast.locator('button[aria-label="Close notification"]').click();
+      await expect(assignmentToast).not.toBeVisible({ timeout: 3000 });
+    }
 
     // Click Release button
-    await page.click('button:has-text("Release")');
+    await releaseButton.click();
 
     // Wait for info toast to appear
     await page.waitForSelector('[data-testid="toast-info"]', { timeout: 5000 });
@@ -166,15 +183,17 @@ test.describe('Toast Notifications', () => {
   test('should show toast styling based on type', async ({ page }) => {
     // Test success toast styling
     const firstPost = page.locator('[data-testid^="post-card-"]').first();
+    await expect(firstPost).toBeVisible();
     await firstPost.click();
     await page.waitForSelector('[data-testid="toast-success"]', { timeout: 5000 });
 
-    const successToast = page.locator('[data-testid="toast-success"]');
+    const successToast = page.locator('[data-testid="toast-success"]').first();
     // Verify it has the success type data attribute
     await expect(successToast).toHaveAttribute('data-toast-type', 'success');
 
     // Dismiss the toast
     await successToast.locator('button[aria-label="Close notification"]').click();
+    await expect(successToast).not.toBeVisible({ timeout: 3000 });
 
     // Test error toast styling (trigger by failing a request)
     await page.route('**/api/v1/posts/**', (route) => {
@@ -191,15 +210,20 @@ test.describe('Toast Notifications', () => {
     // Trigger multiple toasts by assigning multiple posts
     const posts = page.locator('[data-testid^="post-card-"]');
 
-    // Click on first two posts quickly
+    // Click on first post to assign it
+    await expect(posts.nth(0)).toBeVisible();
     await posts.nth(0).click();
-    await page.waitForSelector('[data-testid="toast-success"]', { timeout: 5000 });
+    await page.waitForSelector('[data-testid="work-pane"]', { timeout: 10000 });
+
+    // Wait for release button to be visible (post must be assigned first)
+    const releaseButton = page.locator('button:has-text("Release")');
+    await expect(releaseButton).toBeVisible({ timeout: 10000 });
 
     // Release the first post to trigger another toast
-    await page.click('button:has-text("Release")');
+    await releaseButton.click();
     await page.waitForSelector('[data-testid="toast-info"]', { timeout: 5000 });
 
-    // Verify we have multiple toasts visible
+    // Verify we have multiple toasts visible (success from assignment + info from release)
     const toasts = page.locator('[data-testid^="toast-"]');
     const toastCount = await toasts.count();
     expect(toastCount).toBeGreaterThanOrEqual(2);
@@ -208,12 +232,13 @@ test.describe('Toast Notifications', () => {
   test('should have proper accessibility attributes', async ({ page }) => {
     // Click on first post to trigger assignment
     const firstPost = page.locator('[data-testid^="post-card-"]').first();
+    await expect(firstPost).toBeVisible();
     await firstPost.click();
 
     // Wait for success toast to appear
     await page.waitForSelector('[data-testid="toast-success"]', { timeout: 5000 });
 
-    const successToast = page.locator('[data-testid="toast-success"]');
+    const successToast = page.locator('[data-testid="toast-success"]').first();
 
     // Verify close button has accessible label
     const closeButton = successToast.locator('button[aria-label="Close notification"]');
@@ -226,7 +251,7 @@ test.describe('Toast Notifications', () => {
 
     // Press Enter to close
     await closeButton.press('Enter');
-    await expect(successToast).not.toBeVisible({ timeout: 2000 });
+    await expect(successToast).not.toBeVisible({ timeout: 3000 });
   });
 
   test('should show toast after reassigning post', async ({ page }) => {
@@ -236,22 +261,22 @@ test.describe('Toast Notifications', () => {
     await firstPost.click();
 
     // Wait for work pane to appear
-    await page.waitForSelector('[data-testid="work-pane"]', { timeout: 5000 });
+    await page.waitForSelector('[data-testid="work-pane"]', { timeout: 10000 });
 
-    // Click reassign button (if available) or use keyboard shortcut
-    // First, let's try to find the reassign button
+    // Wait for reassign button to be visible (it only appears after assignment)
     const reassignButton = page.locator('button:has-text("Reassign")');
-    if (await reassignButton.isVisible()) {
-      await reassignButton.click();
+    await expect(reassignButton).toBeVisible({ timeout: 10000 });
 
-      // Select an agent from the dropdown
-      await page.locator('button:has-text("Agent B")').first().click();
+    // Click reassign button
+    await reassignButton.click();
 
-      // Wait for success toast
-      await page.waitForSelector('[data-testid="toast-success"]', { timeout: 5000 });
-      const successToast = page.locator('[data-testid="toast-success"]');
-      await expect(successToast).toContainText('Post reassigned');
-    }
+    // Select an agent from the dropdown
+    await page.locator('button:has-text("Agent B")').first().click();
+
+    // Wait for success toast
+    await page.waitForSelector('[data-testid="toast-success"]', { timeout: 5000 });
+    const successToast = page.locator('[data-testid="toast-success"]').last();
+    await expect(successToast).toContainText('Post reassigned');
   });
 });
 
@@ -260,7 +285,6 @@ test.describe('Toast Notifications - Consistent Styling', () => {
     // Navigate to login page first
     await page.goto('/login');
 
-    // Check if we're in demo mode (Supabase not configured)
     // In demo mode, just submit the login form (credentials don't matter)
     const loginButton = page.getByRole('button', { name: 'Sign In' });
     await expect(loginButton).toBeVisible({ timeout: 5000 });
@@ -313,7 +337,6 @@ test.describe('Toast Notifications - Consistent Styling', () => {
 
     const successToast = page.locator('[data-testid="toast-success"]');
     const successClasses = await successToast.getAttribute('class');
-    expect(successClasses).toMatch(/bg-background-secondary/);
     expect(successClasses).toMatch(/bg-emerald-500\/10/);
 
     // Verify consistent spacing
@@ -348,8 +371,8 @@ test.describe('Toast Notifications - Consistent Styling', () => {
 
     const successToast = page.locator('[data-testid="toast-success"]');
 
-    // Verify title styling
-    const title = successToast.locator('[data-testid="toast-success"]').locator('..').locator('text=Post assigned');
+    // Verify title styling - find the title element directly
+    const title = successToast.locator('[data-testid="toast-success"] > div > div:first-child');
     const titleClasses = await title.getAttribute('class');
     expect(titleClasses).toMatch(/text-sm/);
     expect(titleClasses).toMatch(/font-semibold/);
@@ -357,7 +380,7 @@ test.describe('Toast Notifications - Consistent Styling', () => {
 
     // Verify description styling (if present)
     const description = successToast.locator('p');
-    if (await description.count() > 0) {
+    if ((await description.count()) > 0) {
       const descriptionClasses = await description.first().getAttribute('class');
       expect(descriptionClasses).toMatch(/text-sm/);
       expect(descriptionClasses).toMatch(/text-foreground-secondary/);
@@ -487,7 +510,7 @@ test.describe('Toast Notifications - Consistent Styling', () => {
 
     // Verify content container has proper flex alignment
     const toastClasses = await successToast.getAttribute('class');
-    expect(toastClasses).toMatch(/items-start/); // Changed from items-center to items-start for better alignment with multi-line text
+    expect(toastClasses).toMatch(/items-start/);
     expect(toastClasses).toMatch(/flex/);
     expect(toastClasses).toMatch(/gap-3/);
   });

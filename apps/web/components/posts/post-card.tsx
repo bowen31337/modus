@@ -113,7 +113,7 @@ export function PostCard({
           {category && (
             <span
               className="px-1.5 py-0.5 rounded text-[10px] font-medium"
-              style={{ backgroundColor: category.color + '33', color: category.color }}
+              style={{ backgroundColor: `${category.color}33`, color: category.color }}
             >
               {category.name}
             </span>

@@ -44,7 +44,7 @@ export default function DashboardPage() {
           const post: PostCardProps = {
             id: apiPost.id,
             title: apiPost.title,
-            excerpt: apiPost.excerpt || apiPost.body_content.substring(0, 150) + '...',
+            excerpt: apiPost.excerpt || `${apiPost.body_content.substring(0, 150)}...`,
             bodyContent: apiPost.body_content,
             priority: apiPost.priority,
             status: apiPost.status,
@@ -134,7 +134,10 @@ export default function DashboardPage() {
 
         if (response.ok) {
           setAssignedPosts((prev) => new Set(prev).add(post.id));
-          success('Post assigned', `${post.title.substring(0, 40)}${post.title.length > 40 ? '...' : ''} assigned to you.`);
+          success(
+            'Post assigned',
+            `${post.title.substring(0, 40)}${post.title.length > 40 ? '...' : ''} assigned to you.`
+          );
         } else {
           console.error('Failed to assign post:', await response.text());
           error('Assignment failed', 'Could not assign this post. Please try again.');
@@ -164,7 +167,10 @@ export default function DashboardPage() {
 
         if (response.ok) {
           setAssignedPosts((prev) => new Set(prev).add(selectedPost.id));
-          success('Post assigned', `${selectedPost.title.substring(0, 40)}${selectedPost.title.length > 40 ? '...' : ''} assigned to you.`);
+          success(
+            'Post assigned',
+            `${selectedPost.title.substring(0, 40)}${selectedPost.title.length > 40 ? '...' : ''} assigned to you.`
+          );
         } else {
           console.error('Failed to assign post:', await response.text());
           error('Assignment failed', 'Could not assign this post. Please try again.');
