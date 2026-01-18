@@ -216,11 +216,52 @@ test.describe('Response Editing', () => {
     // Click delete button
     await page.locator('[data-testid^="delete-response-"]').first().click();
 
+    // Verify confirmation dialog appears
+    await expect(page.locator('[data-testid="delete-response-dialog"]')).toBeVisible();
+    await expect(page.locator('text=Delete Response')).toBeVisible();
+
+    // Click confirm delete button
+    await page.click('[data-testid="confirm-delete-button"]');
+
     // Wait for deletion to complete
     await page.waitForTimeout(500);
 
     // Verify response is no longer visible
     await expect(page.locator('text=Response to delete')).not.toBeVisible();
+  });
+
+  test('should cancel delete when clicking Cancel in confirmation dialog', async ({ page }) => {
+    // Select the first post
+    await page.click('[data-testid^="post-card-"]:first-child');
+
+    // Wait for work pane to load
+    await page.waitForSelector('[data-testid="work-pane"]');
+
+    // Send a response
+    const textarea = page.locator('[data-testid="response-textarea"]');
+    await textarea.fill('Response to not delete');
+    await page.click('[data-testid="send-response-button"]');
+
+    // Wait for activity history
+    await page.waitForSelector('text=Activity History', { timeout: 5000 });
+
+    // Verify response is visible
+    await expect(page.locator('text=Response to not delete')).toBeVisible();
+
+    // Click delete button
+    await page.locator('[data-testid^="delete-response-"]').first().click();
+
+    // Verify confirmation dialog appears
+    await expect(page.locator('[data-testid="delete-response-dialog"]')).toBeVisible();
+
+    // Click cancel button
+    await page.click('[data-testid="cancel-delete-button"]');
+
+    // Verify confirmation dialog is closed
+    await expect(page.locator('[data-testid="delete-response-dialog"]')).not.toBeVisible();
+
+    // Verify response is still visible
+    await expect(page.locator('text=Response to not delete')).toBeVisible();
   });
 
   test('should show loading state when saving edit', async ({ page }) => {
@@ -279,8 +320,15 @@ test.describe('Response Editing', () => {
     const deleteButton = page.locator('[data-testid^="delete-response-"]').first();
     await deleteButton.click();
 
-    // The button should be disabled during deletion
-    await expect(deleteButton).toBeDisabled();
+    // Verify confirmation dialog appears
+    await expect(page.locator('[data-testid="delete-response-dialog"]')).toBeVisible();
+
+    // Click confirm delete button
+    const confirmButton = page.locator('[data-testid="confirm-delete-button"]');
+    await confirmButton.click();
+
+    // The confirm button should be disabled during deletion
+    await expect(confirmButton).toBeDisabled();
 
     // Wait for deletion to complete
     await page.waitForTimeout(500);

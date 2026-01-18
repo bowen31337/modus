@@ -1,5 +1,6 @@
 'use client';
 
+import { KeyboardShortcut } from '@/components/ui/keyboard-shortcut';
 import { cn } from '@/lib/utils';
 import { Bold, Italic, Link, List, ListOrdered } from 'lucide-react';
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
@@ -287,24 +288,16 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
             {ghostText ? (
               <>
                 Press{' '}
-                <kbd className="px-1.5 py-0.5 bg-background-tertiary rounded text-foreground text-[10px] font-mono">
-                  Tab
-                </kbd>{' '}
+                <KeyboardShortcut keys={['Tab']} variant="subtle" />{' '}
                 to accept,{' '}
-                <kbd className="px-1.5 py-0.5 bg-background-tertiary rounded text-foreground text-[10px] font-mono">
-                  Esc
-                </kbd>{' '}
+                <KeyboardShortcut keys={['Esc']} variant="subtle" />{' '}
                 to dismiss
               </>
             ) : (
               <>
-                <kbd className="px-1.5 py-0.5 bg-background-tertiary rounded text-foreground text-[10px] font-mono">
-                  Ctrl+B
-                </kbd>{' '}
+                <KeyboardShortcut keys={['Ctrl', 'B']} variant="subtle" />{' '}
                 Bold,{' '}
-                <kbd className="px-1.5 py-0.5 bg-background-tertiary rounded text-foreground text-[10px] font-mono">
-                  Ctrl+I
-                </kbd>{' '}
+                <KeyboardShortcut keys={['Ctrl', 'I']} variant="subtle" />{' '}
                 Italic
               </>
             )}

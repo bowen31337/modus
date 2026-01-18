@@ -1,11 +1,24 @@
 'use client';
 
 import { InlineError } from '@/components/ui/error-state';
+import { KeyboardShortcut } from '@/components/ui/keyboard-shortcut';
 import { StatusBadge } from '@/components/ui/status-badge';
 import type { PostCardProps } from '@/features/queue/components/post-card';
 import { sanitizePostContent } from '@/lib/sanitize';
 import { cn } from '@/lib/utils';
-import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@modus/ui';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@modus/ui';
 import {
   AlertCircle,
   ArrowRightLeft,
@@ -75,6 +88,7 @@ export function WorkPane({
   const [editIsInternalNote, setEditIsInternalNote] = useState(false);
   const [savingEdit, setSavingEdit] = useState(false);
   const [deletingResponseId, setDeletingResponseId] = useState<string | null>(null);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const editorRef = useRef<RichTextEditorRef>(null);
   const editEditorRef = useRef<RichTextEditorRef>(null);
   const isAssignedToMe = selectedPost ? assignedPosts.has(selectedPost.id) : false;
@@ -335,6 +349,7 @@ export function WorkPane({
                   ...r,
                   content: result.data.content,
                   isInternalNote: result.data.is_internal_note,
+                  agentId: result.data.agent_id,
                 }
               : r
           )
@@ -356,19 +371,26 @@ export function WorkPane({
   const handleDeleteResponse = async (responseId: string) => {
     if (!selectedPost) return;
 
+    // Show confirmation dialog
+    setDeleteConfirmOpen(true);
+    setDeletingResponseId(responseId);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!selectedPost || !deletingResponseId) return;
+
     try {
-      setDeletingResponseId(responseId);
       setResponseError(null);
 
       const response = await fetch(
-        `/api/v1/posts/${selectedPost.id}/responses/${responseId}`,
+        `/api/v1/posts/${selectedPost.id}/responses/${deletingResponseId}`,
         {
           method: 'DELETE',
         }
       );
 
       if (response.ok) {
-        setResponses((prev) => prev.filter((r) => r.id !== responseId));
+        setResponses((prev) => prev.filter((r) => r.id !== deletingResponseId));
       } else {
         const errorText = await response.text();
         console.error('Failed to delete response:', errorText);
@@ -379,7 +401,13 @@ export function WorkPane({
       setResponseError('Failed to delete response');
     } finally {
       setDeletingResponseId(null);
+      setDeleteConfirmOpen(false);
     }
+  };
+
+  const handleCancelDelete = () => {
+    setDeletingResponseId(null);
+    setDeleteConfirmOpen(false);
   };
 
   const handleResponseEditContentChange = (content: string) => {
@@ -526,6 +554,9 @@ export function WorkPane({
                     <h2 className="text-sm font-semibold text-foreground uppercase tracking-wide">
                       Response
                     </h2>
+                    <KeyboardShortcut keys={['R']} />
+                  </div>
+                  <div className="flex items-center gap-3 mb-3">
                     <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer">
                       <input
                         type="checkbox"
@@ -1035,6 +1066,30 @@ export function WorkPane({
           agents={mockAgents}
           postTitle={selectedPost.title}
         />
+
+        {/* Delete Confirmation Dialog */}
+        <Dialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+          <DialogContent data-testid="delete-response-dialog">
+            <DialogHeader>
+              <DialogTitle>Delete Response</DialogTitle>
+              <DialogDescription>
+                Are you sure you want to delete this response? This action cannot be undone.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button variant="outline" onClick={handleCancelDelete} data-testid="cancel-delete-button">
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={handleConfirmDelete}
+                data-testid="confirm-delete-button"
+              >
+                Delete
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </main>
     </TooltipProvider>
   );

@@ -1,0 +1,193 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]: m
+      - 'button "Agent status: Online. Available for assignments" [ref=e6] [cursor=pointer]':
+        - img [ref=e7]
+        - img [ref=e9]
+      - navigation [ref=e11]:
+        - generic [ref=e12]:
+          - link "Home" [ref=e13] [cursor=pointer]:
+            - /url: /dashboard
+            - img [ref=e14]
+          - generic:
+            - generic:
+              - generic: Home
+              - generic:
+                - generic:
+                  - generic: G
+                - generic:
+                  - generic: +
+                  - generic: H
+        - generic [ref=e17]:
+          - link "Queue" [ref=e18] [cursor=pointer]:
+            - /url: /dashboard/queue
+            - img [ref=e19]
+          - generic:
+            - generic:
+              - generic: Queue
+              - generic:
+                - generic:
+                  - generic: G
+                - generic:
+                  - generic: +
+                  - generic: Q
+        - generic [ref=e22]:
+          - link "Assigned" [ref=e23] [cursor=pointer]:
+            - /url: /dashboard/assigned
+            - img [ref=e24]
+          - generic:
+            - generic:
+              - generic: Assigned
+              - generic:
+                - generic:
+                  - generic: G
+                - generic:
+                  - generic: +
+                  - generic: A
+        - generic [ref=e27]:
+          - link "Settings" [ref=e28] [cursor=pointer]:
+            - /url: /dashboard/settings
+            - img [ref=e29]
+          - generic:
+            - generic:
+              - generic: Settings
+              - generic:
+                - generic:
+                  - generic: G
+                - generic:
+                  - generic: +
+                  - generic: S
+      - button "Logout from the application" [ref=e32] [cursor=pointer]:
+        - img [ref=e33]
+    - complementary [ref=e36]:
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - heading "Moderation Queue" [level=1] [ref=e39]
+          - generic [ref=e40]:
+            - generic [ref=e41]: "Navigate:"
+            - generic [ref=e44]: K
+            - generic [ref=e47]: J
+        - generic [ref=e48]:
+          - img [ref=e49]
+          - searchbox "Search posts..." [ref=e52]
+      - generic [ref=e53]:
+        - button "Filters" [ref=e55] [cursor=pointer]:
+          - img [ref=e56]
+          - text: Filters
+          - img [ref=e58]
+        - 'button "Sort : Priority" [ref=e61] [cursor=pointer]':
+          - img [ref=e62]
+          - text: Sort
+          - generic [ref=e65]: ": Priority"
+          - img [ref=e66]
+        - generic [ref=e69]:
+          - button "List view" [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+          - button "Grid view" [ref=e72] [cursor=pointer]:
+            - img [ref=e73]
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - 'button "Bug: Images not loading in posts In Progress Since the last update, images in community posts are not loading. Just shows a broken image icon... P1 Bug Reports user-3 2025-01-17T13:45:00Z Open" [ref=e80] [cursor=pointer]':
+            - generic [ref=e82]:
+              - generic [ref=e83]:
+                - 'heading "Bug: Images not loading in posts" [level=3] [ref=e84]'
+                - generic [ref=e85]: In Progress
+              - paragraph [ref=e86]: Since the last update, images in community posts are not loading. Just shows a broken image icon...
+              - generic [ref=e87]:
+                - generic [ref=e88]: P1
+                - img [ref=e90]
+                - generic [ref=e92]: Bug Reports
+                - generic [ref=e93]:
+                  - img [ref=e94]
+                  - text: user-3
+                - generic [ref=e97]:
+                  - img [ref=e98]
+                  - text: 2025-01-17T13:45:00Z
+            - generic [ref=e102]: Open
+          - button "Unable to access my account after password reset Open I reset my password yesterday but still can't log in. The system keeps saying my credentials are invalid... P2 Account Issues user-1 2025-01-18T10:30:00Z Open" [ref=e103] [cursor=pointer]:
+            - generic [ref=e105]:
+              - generic [ref=e106]:
+                - heading "Unable to access my account after password reset" [level=3] [ref=e107]
+                - generic [ref=e108]: Open
+              - paragraph [ref=e109]: I reset my password yesterday but still can't log in. The system keeps saying my credentials are invalid...
+              - generic [ref=e110]:
+                - generic [ref=e111]: P2
+                - img [ref=e113]
+                - generic [ref=e115]: Account Issues
+                - generic [ref=e116]:
+                  - img [ref=e117]
+                  - text: user-1
+                - generic [ref=e120]:
+                  - img [ref=e121]
+                  - text: 2025-01-18T10:30:00Z
+            - generic [ref=e125]: Open
+          - 'button "Feature request: Dark mode for mobile app Open Would love to see a dark mode option in the mobile application. My eyes get tired using the app at night... P3 Feature Request user-2 2025-01-17T14:15:00Z Open" [ref=e126] [cursor=pointer]':
+            - generic [ref=e128]:
+              - generic [ref=e129]:
+                - 'heading "Feature request: Dark mode for mobile app" [level=3] [ref=e130]'
+                - generic [ref=e131]: Open
+              - paragraph [ref=e132]: Would love to see a dark mode option in the mobile application. My eyes get tired using the app at night...
+              - generic [ref=e133]:
+                - generic [ref=e134]: P3
+                - img [ref=e136]
+                - generic [ref=e139]: Feature Request
+                - generic [ref=e140]:
+                  - img [ref=e141]
+                  - text: user-2
+                - generic [ref=e144]:
+                  - img [ref=e145]
+                  - text: 2025-01-17T14:15:00Z
+            - generic [ref=e149]: Open
+          - button "Community guidelines clarification needed Resolved I'm a bit confused about the community guidelines regarding self-promotion... P3 Policy & Guidelines user-5 2025-01-16T09:30:00Z Assigned to Agent B Open" [ref=e150] [cursor=pointer]:
+            - generic [ref=e152]:
+              - generic [ref=e153]:
+                - heading "Community guidelines clarification needed" [level=3] [ref=e154]
+                - generic [ref=e155]: Resolved
+              - paragraph [ref=e156]: I'm a bit confused about the community guidelines regarding self-promotion...
+              - generic [ref=e157]:
+                - generic [ref=e158]: P3
+                - img [ref=e160]
+                - generic [ref=e162]: Policy & Guidelines
+                - generic [ref=e163]:
+                  - img [ref=e164]
+                  - text: user-5
+                - generic [ref=e167]:
+                  - img [ref=e168]
+                  - text: 2025-01-16T09:30:00Z
+              - generic [ref=e171]: Assigned to Agent B
+            - generic [ref=e174]: Open
+          - button "How do I change my email notification settings? Open I've been looking everywhere but can't find where to change my email notification preferences... P4 Help & Support user-4 2025-01-17T11:20:00Z Open" [ref=e175] [cursor=pointer]:
+            - generic [ref=e177]:
+              - generic [ref=e178]:
+                - heading "How do I change my email notification settings?" [level=3] [ref=e179]
+                - generic [ref=e180]: Open
+              - paragraph [ref=e181]: I've been looking everywhere but can't find where to change my email notification preferences...
+              - generic [ref=e182]:
+                - generic [ref=e183]: P4
+                - img [ref=e185]
+                - generic [ref=e187]: Help & Support
+                - generic [ref=e188]:
+                  - img [ref=e189]
+                  - text: user-4
+                - generic [ref=e192]:
+                  - img [ref=e193]
+                  - text: 2025-01-17T11:20:00Z
+            - generic [ref=e197]: Open
+        - generic [ref=e198]: End of list
+      - generic [ref=e200]:
+        - generic [ref=e201]: "Total: 5"
+        - generic [ref=e202]: "Loaded: 5"
+    - generic [ref=e203]:
+      - img [ref=e205]
+      - heading "No Post Selected" [level=3] [ref=e207]
+      - paragraph [ref=e208]: Select a post from the queue to begin moderation
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e214] [cursor=pointer]:
+    - img [ref=e215]
+  - alert [ref=e218]
+```

@@ -181,6 +181,13 @@ export const createResponseInputSchema = z.object({
 
 export type CreateResponseInput = z.infer<typeof createResponseInputSchema>;
 
+export const updateResponseInputSchema = z.object({
+  content: z.string().min(1).optional(),
+  is_internal_note: z.boolean().optional(),
+});
+
+export type UpdateResponseInput = z.infer<typeof updateResponseInputSchema>;
+
 export const updatePostInputSchema = z.object({
   status: z.enum(['open', 'in_progress', 'resolved']).optional(),
   priority: z.enum(['P1', 'P2', 'P3', 'P4', 'P5']).optional(),

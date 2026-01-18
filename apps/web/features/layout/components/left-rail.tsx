@@ -2,6 +2,7 @@
 
 import { logout } from '@/lib/auth-actions';
 import { createClient } from '@/lib/supabase/client';
+import { KeyboardShortcut } from '@/components/ui/keyboard-shortcut';
 import { Button } from '@modus/ui';
 import { CheckCircle2, Home, Inbox, LogOut, Settings } from 'lucide-react';
 import Link from 'next/link';
@@ -9,10 +10,10 @@ import { usePathname } from 'next/navigation';
 import { AgentStatusIndicator } from './agent-status-indicator';
 
 const navItems = [
-  { icon: Home, label: 'Home', href: '/dashboard' },
-  { icon: Inbox, label: 'Queue', href: '/dashboard/queue' },
-  { icon: CheckCircle2, label: 'Assigned', href: '/dashboard/assigned' },
-  { icon: Settings, label: 'Settings', href: '/dashboard/settings' },
+  { icon: Home, label: 'Home', href: '/dashboard', shortcut: 'G H' },
+  { icon: Inbox, label: 'Queue', href: '/dashboard/queue', shortcut: 'G Q' },
+  { icon: CheckCircle2, label: 'Assigned', href: '/dashboard/assigned', shortcut: 'G A' },
+  { icon: Settings, label: 'Settings', href: '/dashboard/settings', shortcut: 'G S' },
 ];
 
 export function LeftRail() {
@@ -63,19 +64,33 @@ export function LeftRail() {
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           return (
-            <Link
-              key={item.href}
-              href={item.href as never}
-              className={`w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-200 ${
-                isActive
-                  ? 'bg-obsidian-600 text-white shadow-md'
-                  : 'text-obsidian-400 hover:bg-obsidian-800 hover:text-obsidian-200 hover:scale-105 active:scale-95'
-              }`}
-              title={item.label}
-              aria-label={item.label}
-            >
-              <item.icon size={20} className="transition-transform duration-200" />
-            </Link>
+            <div key={item.href} className="group relative">
+              <Link
+                href={item.href as never}
+                className={`w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-200 ${
+                  isActive
+                    ? 'bg-obsidian-600 text-white shadow-md'
+                    : 'text-obsidian-400 hover:bg-obsidian-800 hover:text-obsidian-200 hover:scale-105 active:scale-95'
+                }`}
+                title={item.label}
+                aria-label={item.label}
+              >
+                <item.icon size={20} className="transition-transform duration-200" />
+              </Link>
+              {/* Tooltip with shortcut */}
+              <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-2 py-1 bg-obsidian-800 text-white text-xs rounded whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50">
+                <div className="flex items-center gap-2">
+                  <span>{item.label}</span>
+                  <KeyboardShortcut
+                    keys={item.shortcut.split(' ')}
+                    variant="subtle"
+                    separator="+"
+                  />
+                </div>
+                {/* Arrow */}
+                <div className="absolute top-full right-full -mr-px -mt-px border-4 border-transparent border-r-obsidian-800" />
+              </div>
+            </div>
           );
         })}
       </nav>

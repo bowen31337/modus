@@ -1,6 +1,7 @@
 'use client';
 
 import { ErrorState } from '@/components/ui/error-state';
+import { KeyboardShortcut } from '@/components/ui/keyboard-shortcut';
 import { Search } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -599,7 +600,14 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
     >
       {/* Queue Header */}
       <div className="p-4 border-b border-border">
-        <h1 className="text-lg font-semibold text-foreground mb-3">Moderation Queue</h1>
+        <div className="flex items-center justify-between mb-3">
+          <h1 className="text-lg font-semibold text-foreground">Moderation Queue</h1>
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <span className="hidden sm:inline">Navigate:</span>
+            <KeyboardShortcut keys={['K']} />
+            <KeyboardShortcut keys={['J']} />
+          </div>
+        </div>
 
         {/* Search Bar */}
         <div className="relative">

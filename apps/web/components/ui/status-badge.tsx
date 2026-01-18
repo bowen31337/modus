@@ -25,8 +25,8 @@ const statusConfig: Record<PostStatus, { bg: string; text: string; label: string
     label: 'In Progress',
   },
   resolved: {
-    bg: 'bg-emerald-500/20',
-    text: 'text-emerald-400',
+    bg: 'bg-emerald-500/30',
+    text: 'text-emerald-100 font-semibold',
     label: 'Resolved',
   },
 };

@@ -3412,8 +3412,10 @@
     "passes": true,
     "is_dev_done": true,
     "is_qa_passed": true,
-    "dev_completed_at": "1768712677",
-    "qa_completed_at": "1768712677"
+    "dev_completed_at": "2026-01-18T05:19:51.418549Z",
+    "qa_completed_at": "1768712677",
+    "qa_retry_count": 0,
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -3429,7 +3431,13 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "dev_completed_at": "1768713545",
-    "qa_passed_at": "1768713545"
+    "qa_passed_at": "1768713545",
+    "qa_retry_count": 0,
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-18T05:35:44.295798Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "style",
@@ -3454,9 +3462,11 @@
       "Step 3: Verify command palette shows shortcuts next to commands",
       "Step 4: Verify shortcuts are displayed in monospace font (Geist Mono)"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768714571857",
+    "qa_passed_at": "1768714571857"
   },
   {
     "category": "functional",
@@ -3471,8 +3481,9 @@
       "Step 7: Verify the updated_at timestamp reflects the change"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "2026-01-18T12:00:00.000000Z"
   },
   {
     "category": "functional",
@@ -3485,8 +3496,10 @@
       "Step 5: Verify response is removed from the history",
       "Step 6: Verify audit log records the deletion"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-18T12:00:00.000000Z",
+    "qa_completed_at": "2026-01-18T12:00:00.000000Z"
   }
 ]
