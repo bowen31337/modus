@@ -11,6 +11,7 @@ import { PostCard, type PostCardProps } from './post-card';
 import { PostCardSkeleton } from './post-card-skeleton';
 import { SortControls, type SortState } from './sort-controls';
 import { type ViewMode, ViewToggle } from './view-toggle';
+import { useRealtimePosts } from '@/hooks/use-realtime-posts';
 
 // Mock current agent for demo purposes - must match dashboard-client.tsx
 const CURRENT_AGENT = {
@@ -290,6 +291,44 @@ export function QueuePane({
     // those values change, not when the callback is recreated.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters, sort]);
+
+  // Real-time subscription for post updates
+  // This ensures the queue updates within 2 seconds when posts change
+  useRealtimePosts({
+    enabled: true,
+    onPostUpdate: (payload) => {
+      console.log('[QueuePane] Real-time post update received:', payload);
+      const updatedPost = payload.new as Record<string, unknown>;
+      if (!updatedPost || !updatedPost.id) return;
+
+      // Update the post in the local state if it exists
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.id === updatedPost.id
+            ? {
+                ...post,
+                status: updatedPost.status as PostCardProps['status'],
+                priority: updatedPost.priority as PostCardProps['priority'],
+              }
+            : post
+        )
+      );
+    },
+    onPostInsert: (payload) => {
+      console.log('[QueuePane] Real-time post insert received:', payload);
+      // Only add the new post if it matches current filters
+      // This prevents the queue from showing posts that shouldn't be visible
+      fetchPosts(1, true);
+    },
+    onPostDelete: (payload) => {
+      console.log('[QueuePane] Real-time post delete received:', payload);
+      const deletedPost = payload.old as Record<string, unknown> | null;
+      const deletedPostId = deletedPost?.id as string | undefined;
+      if (deletedPostId) {
+        setPosts((prevPosts) => prevPosts.filter((post) => post.id !== deletedPostId));
+      }
+    },
+  });
 
   // Sync filters, sort, and view mode to URL query parameters
   useEffect(() => {
