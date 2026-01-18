@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { LeftRail } from '@/features/layout/components/left-rail';
 import { QueuePane } from '@/features/queue/components/queue-pane';
 import { WorkPane } from '@/features/work/components/work-pane';
@@ -14,10 +15,80 @@ const CURRENT_AGENT = {
 };
 
 export default function DashboardPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [selectedPost, setSelectedPost] = useState<PostCardProps | null>(null);
   const [assignedPosts, setAssignedPosts] = useState<Set<string>>(new Set());
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [forceReset, setForceReset] = useState(0);
+  const [isLoadingPost, setIsLoadingPost] = useState(false);
+
+  // Load post from URL query parameter on mount and on URL changes
+  useEffect(() => {
+    const postId = searchParams.get('post');
+
+    if (postId) {
+      // Load the post from the API
+      setIsLoadingPost(true);
+      fetch(`/api/v1/posts/${postId}`)
+        .then(res => {
+          if (res.ok) {
+            return res.json();
+          }
+          throw new Error('Post not found');
+        })
+        .then(data => {
+          const apiPost = data.data;
+          const post: PostCardProps = {
+            id: apiPost.id,
+            title: apiPost.title,
+            excerpt: apiPost.excerpt || apiPost.body_content.substring(0, 150) + '...',
+            bodyContent: apiPost.body_content,
+            priority: apiPost.priority,
+            status: apiPost.status,
+            sentiment: apiPost.sentiment_label || undefined,
+            category: apiPost.category,
+            author: {
+              name: apiPost.author_user_id,
+              postCount: apiPost.author_post_count,
+            },
+            assignedTo: apiPost.assigned_agent?.display_name || undefined,
+            createdAt: apiPost.created_at,
+            responseCount: apiPost.response_count || 0,
+          };
+          setSelectedPost(post);
+        })
+        .catch(error => {
+          console.error('Error loading post from URL:', error);
+          // Clear the invalid post ID from URL
+          const params = new URLSearchParams(searchParams);
+          params.delete('post');
+          router.replace(`/dashboard?${params.toString()}`, { scroll: false });
+        })
+        .finally(() => {
+          setIsLoadingPost(false);
+        });
+    } else {
+      // No post in URL, clear selection
+      setSelectedPost(null);
+    }
+    // Note: We intentionally don't include router in dependencies to avoid infinite loops
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
+  // Handle browser back/forward navigation (popstate)
+  useEffect(() => {
+    const handlePopState = () => {
+      // When browser back/forward is pressed, the URL has already changed
+      // The searchParams useEffect will handle loading the correct post
+      console.log('[DashboardPage] Browser navigation detected (popstate)');
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
 
   // Cmd+K keyboard shortcut to open command palette
   useEffect(() => {
@@ -67,6 +138,11 @@ export default function DashboardPage() {
       }
     }
     setSelectedPost(post);
+
+    // Update URL with the selected post ID (push state for browser history)
+    const params = new URLSearchParams(searchParams);
+    params.set('post', post.id);
+    router.push(`/dashboard?${params.toString()}`, { scroll: false });
   };
 
   const handleAssignToMe = async () => {
@@ -119,6 +195,11 @@ export default function DashboardPage() {
     setSelectedPost(null);
     // Force QueuePane to reset its keyboard focus state
     setForceReset(prev => prev + 1);
+
+    // Remove post from URL (replace state to avoid adding extra history entry)
+    const params = new URLSearchParams(searchParams);
+    params.delete('post');
+    router.replace(`/dashboard?${params.toString()}`, { scroll: false });
   };
 
   const handleResolve = async () => {
@@ -135,6 +216,11 @@ export default function DashboardPage() {
         // Successfully resolved - post will be updated in queue via refetch
         // For now, just clear the selected post
         setSelectedPost(null);
+
+        // Remove post from URL
+        const params = new URLSearchParams(searchParams);
+        params.delete('post');
+        router.replace(`/dashboard?${params.toString()}`, { scroll: false });
       } else {
         console.error('Failed to resolve post:', await response.text());
       }

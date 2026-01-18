@@ -146,7 +146,11 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
 
   // Fetch posts from API
   const fetchPosts = useCallback(async (page: number, reset: boolean = false) => {
-    if (loadingRef.current) return;
+    console.log('[QueuePane] fetchPosts called', { page, reset, loadingRef: loadingRef.current });
+    if (loadingRef.current) {
+      console.log('[QueuePane] fetchPosts skipped - already loading');
+      return;
+    }
 
     setLoading(true);
     setError(null); // Clear previous errors
@@ -158,6 +162,7 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
         sort_by: sort.field,
         sort_order: sort.order,
       });
+      console.log('[QueuePane] Fetching from API:', `/api/v1/posts?${params.toString()}`);
 
       // Add filters
       if (filters.status !== 'all') {
@@ -172,12 +177,20 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
       // Note: category filter would need category_id, not name
       // Date range would use date_from and date_to
 
-      const response = await fetch(`/api/v1/posts?${params.toString()}`);
+      const url = `/api/v1/posts?${params.toString()}`;
+      console.log('[QueuePane] Fetching posts from:', url);
+      console.log('[QueuePane] Current filters:', JSON.stringify(filters));
+      console.log('[QueuePane] Current sort:', JSON.stringify(sort));
+      const response = await fetch(url);
+      console.log('[QueuePane] API response status:', response.status);
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error('[QueuePane] API error response:', errorText);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data: ApiPostsResponse = await response.json();
+      console.log('[QueuePane] API response data:', JSON.stringify(data).substring(0, 500));
 
       // Transform API posts to PostCardProps
       const transformedPosts = data.data.map(transformApiPost);
@@ -207,10 +220,12 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
 
   // Initial fetch and refetch when filters/sort change
   useEffect(() => {
+    console.log('[QueuePane] useEffect triggered - filters or sort changed', { filters, sort });
     // Reset and fetch when filters or sort change
     setPosts([]);
     setCurrentPage(1);
     setHasMore(true);
+    console.log('[QueuePane] About to call fetchPosts(1, true)');
     fetchPosts(1, true);
     // Note: fetchPosts is intentionally not in the dependency array
     // to prevent infinite loops. The function internally uses filters/sort

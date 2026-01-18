@@ -1,21 +1,23 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('AI Suggest Functionality', () => {
-  test.beforeEach(async ({ page, context }) => {
-    // Set demo session cookie directly on the browser context
-    // This cookie is checked by DashboardLayout to allow access
-    await context.addCookies([{
-      name: 'modus_demo_session',
-      value: 'active',
-      domain: 'localhost',
-      path: '/',
-    }]);
+  test.beforeEach(async ({ page }) => {
+    // Navigate to login page first
+    await page.goto('/login');
 
-    // Navigate directly to dashboard
-    await page.goto('/dashboard');
+    // Fill in demo credentials and sign in
+    await page.getByLabel('Email').fill('demo@example.com');
+    await page.getByLabel('Password').fill('password123');
+    await page.getByRole('button', { name: 'Sign In' }).click();
+
+    // Wait for redirect to dashboard
+    await page.waitForURL(/.*dashboard/, { timeout: 10000 });
 
     // Wait for queue pane to be visible
     await expect(page.getByTestId('queue-pane')).toBeVisible();
+
+    // Wait for post cards to load from API
+    await page.waitForSelector('[data-testid^="post-card-"]', { timeout: 10000 });
 
     // Remove Next.js dev overlay using JavaScript
     await page.evaluate(() => {
@@ -28,7 +30,7 @@ test.describe('AI Suggest Functionality', () => {
 
   test('should display AI Suggest button in response editor', async ({ page }) => {
     // Click on the first post to open detail view
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]', { timeout: 5000 });
@@ -41,7 +43,7 @@ test.describe('AI Suggest Functionality', () => {
 
   test('should show loading state when AI Suggest is clicked', async ({ page }) => {
     // Click on the first post to open detail view
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]', { timeout: 5000 });
@@ -63,7 +65,7 @@ test.describe('AI Suggest Functionality', () => {
 
   test('should display ghost text during AI streaming', async ({ page }) => {
     // Click on the first post to open detail view
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]', { timeout: 5000 });
@@ -86,7 +88,7 @@ test.describe('AI Suggest Functionality', () => {
 
   test('should accept AI suggestion when Tab key is pressed', async ({ page }) => {
     // Click on the first post to open detail view
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]', { timeout: 5000 });
@@ -150,7 +152,7 @@ test.describe('AI Suggest Functionality', () => {
 
   test('should dismiss ghost text when Escape key is pressed', async ({ page }) => {
     // Click on the first post to open detail view
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]', { timeout: 5000 });
@@ -192,7 +194,7 @@ test.describe('AI Suggest Functionality', () => {
 
   test('should dismiss ghost text when user starts typing', async ({ page }) => {
     // Click on the first post to open detail view
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]', { timeout: 5000 });
@@ -220,7 +222,7 @@ test.describe('AI Suggest Functionality', () => {
 
   test('should generate contextual suggestions based on post content', async ({ page }) => {
     // Click on the first post
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]', { timeout: 5000 });
@@ -251,7 +253,7 @@ test.describe('AI Suggest Functionality', () => {
 
   test('should show helpful tip when ghost text is present', async ({ page }) => {
     // Click on the first post
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]', { timeout: 5000 });
@@ -269,7 +271,7 @@ test.describe('AI Suggest Functionality', () => {
 
   test('should disable AI Suggest button while streaming', async ({ page }) => {
     // Click on the first post
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]', { timeout: 5000 });

@@ -19,7 +19,7 @@ test.describe('Post Reassignment', () => {
 
   test('should display reassign button when post is assigned to current agent', async ({ page }) => {
     // Click on first post to assign it
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
 
     // Wait for work pane to load
     await expect(page.getByTestId('work-pane')).toBeVisible();
@@ -33,7 +33,7 @@ test.describe('Post Reassignment', () => {
 
   test('should not display reassign button for unassigned posts', async ({ page }) => {
     // Click on a post (which auto-assigns it)
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
     await expect(page.getByTestId('work-pane')).toBeVisible();
 
     // Reassign to another agent (which unassigns from current agent)
@@ -50,7 +50,7 @@ test.describe('Post Reassignment', () => {
 
   test('should open reassign modal when reassign button is clicked', async ({ page }) => {
     // Click on first post to assign it
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
     await expect(page.getByTestId('work-pane')).toBeVisible();
 
     // Click reassign button
@@ -66,7 +66,7 @@ test.describe('Post Reassignment', () => {
 
   test('should open reassign modal with Cmd+Shift+A keyboard shortcut', async ({ page }) => {
     // Click on first post to assign it
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
     await expect(page.getByTestId('work-pane')).toBeVisible();
 
     // Press Cmd+Shift+A (or Ctrl+Shift+A on Windows/Linux)
@@ -78,7 +78,7 @@ test.describe('Post Reassignment', () => {
 
   test('should display list of available agents in reassign modal', async ({ page }) => {
     // Click on first post and open reassign modal
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
     await page.getByTestId('reassign-button').click();
 
     // Verify agent list is visible
@@ -92,7 +92,7 @@ test.describe('Post Reassignment', () => {
 
   test('should filter agents when searching in reassign modal', async ({ page }) => {
     // Click on first post and open reassign modal
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
     await page.getByTestId('reassign-button').click();
 
     // Type in search box
@@ -109,7 +109,7 @@ test.describe('Post Reassignment', () => {
 
   test('should show current agent as disabled option', async ({ page }) => {
     // Click on first post and open reassign modal
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
     await page.getByTestId('reassign-button').click();
 
     // Verify current agent (Agent A) shows "(Current)" label
@@ -126,7 +126,7 @@ test.describe('Post Reassignment', () => {
 
   test('should allow selecting and confirming reassignment to another agent', async ({ page }) => {
     // Click on first post and open reassign modal
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
     await page.getByTestId('reassign-button').click();
 
     // Select Agent B
@@ -156,7 +156,7 @@ test.describe('Post Reassignment', () => {
 
   test('should close reassign modal when cancel button is clicked', async ({ page }) => {
     // Click on first post and open reassign modal
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
     await page.getByTestId('reassign-button').click();
 
     // Verify modal is open
@@ -174,7 +174,7 @@ test.describe('Post Reassignment', () => {
 
   test('should close reassign modal with Escape key', async ({ page }) => {
     // Click on first post and open reassign modal
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
     await page.getByTestId('reassign-button').click();
 
     // Verify modal is open
@@ -189,7 +189,7 @@ test.describe('Post Reassignment', () => {
 
   test('should close reassign modal when clicking close button', async ({ page }) => {
     // Click on first post and open reassign modal
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
     await page.getByTestId('reassign-button').click();
 
     // Verify modal is open
@@ -204,7 +204,7 @@ test.describe('Post Reassignment', () => {
 
   test('should show agent status indicators in reassign modal', async ({ page }) => {
     // Click on first post and open reassign modal
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
     await page.getByTestId('reassign-button').click();
 
     // Verify agents have status indicators (colored dots)
@@ -218,7 +218,7 @@ test.describe('Post Reassignment', () => {
 
   test('should display keyboard shortcut hint in reassign button tooltip', async ({ page }) => {
     // Click on first post to assign it
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
     await expect(page.getByTestId('work-pane')).toBeVisible();
 
     // Verify reassign button has tooltip title

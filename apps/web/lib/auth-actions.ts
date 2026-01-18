@@ -31,8 +31,11 @@ export async function demoLogin() {
 /**
  * Server action for demo mode login - to be used directly as form action
  * This is a wrapper that can be used directly with form's action prop
+ * Accepts FormData but ignores it since demo mode doesn't need credentials
  */
-export async function demoLoginAction(): Promise<void> {
+export async function demoLoginAction(formData: FormData): Promise<void> {
+  // In demo mode, we don't actually validate credentials
+  // The form fields are just for show to simulate a real login flow
   await demoLogin();
 }
 

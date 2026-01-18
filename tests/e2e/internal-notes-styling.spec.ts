@@ -15,7 +15,7 @@ test.describe('Internal Notes Styling', () => {
 
   test('should display internal notes with distinct visual styling', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]', { timeout: 5000 });
@@ -65,7 +65,7 @@ test.describe('Internal Notes Styling', () => {
 
   test('should display public responses with different styling', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]', { timeout: 5000 });
@@ -111,7 +111,7 @@ test.describe('Internal Notes Styling', () => {
 
   test('should show both internal notes and public responses with distinct styling', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]', { timeout: 5000 });
@@ -161,7 +161,7 @@ test.describe('Internal Notes Styling', () => {
 
   test('should have clear visual separation between internal and public responses', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]', { timeout: 5000 });
@@ -214,7 +214,7 @@ test.describe('Internal Notes Styling', () => {
 
   test('should show explanatory text for internal notes vs public responses', async ({ page }) => {
     // Select the first post
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
 
     // Wait for work pane to load
     await page.waitForSelector('[data-testid="work-pane"]', { timeout: 5000 });

@@ -24,6 +24,11 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
 
+    // Debug logging
+    console.log('[GET /api/v1/posts] Request received');
+    const allPosts = dataStore.getAllPosts();
+    console.log('[GET /api/v1/posts] Total posts in dataStore:', allPosts.length);
+
     // Parse and validate query parameters
     const queryParams: Record<string, unknown> = {};
     for (const [key, value] of searchParams.entries()) {
@@ -41,7 +46,7 @@ export async function GET(request: NextRequest) {
     const validatedQuery = postsQuerySchema.parse(queryParams) as PostsQuery;
 
     // Get all posts from data store
-    let posts = dataStore.getAllPosts();
+    let posts = allPosts;
 
     // Apply filters
     if (validatedQuery.category_id) {

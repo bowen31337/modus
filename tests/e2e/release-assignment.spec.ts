@@ -27,7 +27,7 @@ test.describe('Release Assignment', () => {
 
   test('should display release button when post is assigned to current agent', async ({ page }) => {
     // Click on first post to assign it
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
 
     // Wait for work pane to load
     await expect(page.getByTestId('work-pane')).toBeVisible();
@@ -41,7 +41,7 @@ test.describe('Release Assignment', () => {
 
   test('should release assignment when release button is clicked', async ({ page }) => {
     // Click on first post to assign it
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
     await expect(page.getByTestId('work-pane')).toBeVisible();
 
     // Verify "Assigned to you" badge is visible in the header
@@ -59,7 +59,7 @@ test.describe('Release Assignment', () => {
 
   test('should show assign button instead of release button for unassigned posts', async ({ page }) => {
     // Select a post (which auto-assigns it)
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
     await expect(page.getByTestId('work-pane')).toBeVisible();
 
     // Release the assignment
@@ -74,7 +74,7 @@ test.describe('Release Assignment', () => {
 
   test('should allow reassigning after releasing', async ({ page }) => {
     // Click on first post to assign it
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
     await expect(page.getByTestId('work-pane')).toBeVisible();
 
     // Release the assignment
@@ -108,7 +108,7 @@ test.describe('Release Assignment', () => {
 
   test('should maintain release state when switching between posts', async ({ page }) => {
     // Assign first post
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
     await expect(page.getByTestId('work-pane')).toBeVisible();
     await expect(page.getByTestId('release-button')).toBeVisible();
 
@@ -117,7 +117,7 @@ test.describe('Release Assignment', () => {
     await expect(page.getByTestId('release-button')).toBeVisible();
 
     // Switch back to first post
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
 
     // First post should still show as assigned (release button visible)
     await expect(page.getByTestId('release-button')).toBeVisible();
@@ -125,7 +125,7 @@ test.describe('Release Assignment', () => {
 
   test('should have accessible release button with proper labeling', async ({ page }) => {
     // Assign a post
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
     await expect(page.getByTestId('work-pane')).toBeVisible();
 
     // Check button has proper attributes
@@ -137,7 +137,7 @@ test.describe('Release Assignment', () => {
 
   test('should display release button with correct styling', async ({ page }) => {
     // Assign a post
-    await page.click('[data-testid="post-card-1"]');
+    await page.locator('[data-testid^="post-card-"]').first().click();
     await expect(page.getByTestId('work-pane')).toBeVisible();
 
     // Check button styling

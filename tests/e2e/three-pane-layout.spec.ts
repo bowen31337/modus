@@ -15,6 +15,11 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Three-Pane Layout', () => {
   test.beforeEach(async ({ page, context }) => {
+    // Listen for ALL console messages
+    page.on('console', msg => {
+      console.log('Browser console:', msg.type(), msg.text());
+    });
+
     // Set demo session cookie directly on the browser context
     await context.addCookies([{
       name: 'modus_demo_session',
@@ -23,11 +28,14 @@ test.describe('Three-Pane Layout', () => {
       path: '/',
     }]);
 
-    // Navigate directly to dashboard with hard reload
-    await page.goto('/dashboard', { waitUntil: 'networkidle' });
+    // Navigate directly to dashboard
+    await page.goto('/dashboard');
 
-    // Wait for the queue to load
+    // Wait for the queue pane to load
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
+
+    // Wait a bit for posts to potentially load
+    await page.waitForTimeout(3000);
   });
 
   test('should display the main three-pane layout', async ({ page }) => {

@@ -1766,9 +1766,10 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_failure_count": 1,
-    "last_dev_failure_at": "2026-01-17T23:16:14.160906Z",
+    "dev_failure_count": 2,
+    "last_dev_failure_at": "2026-01-17T23:46:16.061450Z",
     "dev_failure_reasons": [
+      "Worker session timed out",
       "Worker session timed out"
     ],
     "dev_completed_at": "1768692623"
@@ -1821,8 +1822,11 @@
       "Step 5: Take screenshot for visual verification"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_failure_count": 0,
+    "dev_completed_at": "2026-01-17T23:53:58.622701Z"
   },
   {
     "category": "style",
@@ -1836,8 +1840,11 @@
       "Step 6: Take screenshots of each priority level"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-17T23:41:13.569811Z",
+    "dev_failure_count": 0
   },
   {
     "category": "style",

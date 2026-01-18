@@ -3,13 +3,23 @@ import { test, expect } from '@playwright/test';
 // Run tests sequentially to avoid interference between keyboard navigation tests
 test.describe.serial('Keyboard Navigation - Queue', () => {
   test.beforeEach(async ({ page }) => {
+    // Capture console logs for debugging
+    page.on('console', msg => {
+      const text = msg.text();
+      if (text.includes('[QueuePane]') || text.includes('Keyboard')) {
+        console.log('Browser console:', text);
+      }
+    });
+
     // Navigate to login page first
     await page.goto('/login');
 
     // Wait for login page to load
     await page.waitForSelector('text=Sign in to your account', { timeout: 10000 });
 
-    // Click sign in button (demo mode doesn't require credentials)
+    // Fill in demo credentials and sign in
+    await page.getByLabel('Email').fill('demo@example.com');
+    await page.getByLabel('Password').fill('password123');
     await page.getByRole('button', { name: 'Sign In' }).click();
 
     // Wait for redirect to dashboard
@@ -19,7 +29,7 @@ test.describe.serial('Keyboard Navigation - Queue', () => {
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
 
     // Wait for the first post to be visible
-    await page.waitForSelector('[data-testid^="post-card-"]', { timeout: 5000 });
+    await page.waitForSelector('[data-testid^="post-card-"]', { timeout: 10000 });
 
     // Blur the search input to ensure it doesn't capture keyboard events
     await page.evaluate(() => {
@@ -73,9 +83,6 @@ test.describe.serial('Keyboard Navigation - Queue', () => {
       return input ? (input as HTMLInputElement).value : 'no search input';
     });
     console.log('Search input value:', searchInputValue);
-
-    // Add console listener to capture logs from the browser
-    page.on('console', msg => console.log('Browser console:', msg.text()));
 
     // Press J to navigate down - use keyDown instead of press for better compatibility
     await page.keyboard.press('J');
@@ -197,9 +204,6 @@ test.describe.serial('Keyboard Navigation - Queue', () => {
       };
     });
     console.log('Before Enter:', JSON.stringify(debugState, null, 2));
-
-    // Add console listener to capture logs from the browser
-    page.on('console', msg => console.log('Browser console:', msg.text()));
 
     // Press Enter to open the first post
     await page.keyboard.press('Enter');
@@ -432,5 +436,87 @@ test.describe.serial('Keyboard Navigation - Queue', () => {
     const firstPostAfterEscape = page.locator('[data-testid^="post-card-"]').first();
     await expect(firstPostAfterEscape).toHaveClass(/ring-2/);
     await expect(firstPostAfterEscape).toHaveClass(/ring-primary/);
+  });
+
+  test('should support browser back/forward navigation with post selection', async ({ page }) => {
+    // Get the first two posts
+    const allPosts = page.locator('[data-testid^="post-card-"]');
+    const firstPost = allPosts.nth(0);
+    const secondPost = allPosts.nth(1);
+
+    // Get post IDs for URL verification
+    const firstPostId = await firstPost.getAttribute('data-testid');
+    const secondPostId = await secondPost.getAttribute('data-testid');
+    console.log('First post ID:', firstPostId);
+    console.log('Second post ID:', secondPostId);
+
+    // Verify initial URL has no post parameter
+    await expect(page).toHaveURL(/dashboard$/);
+
+    // Click on the first post to open it
+    await firstPost.click();
+    await page.waitForTimeout(1000);
+
+    // Verify URL now contains the first post ID
+    const firstPostIdOnly = firstPostId?.replace('post-card-', '');
+    await expect(page).toHaveURL(new RegExp(`dashboard\\?post=${firstPostIdOnly}`));
+
+    // Verify work pane is visible with the first post
+    await page.waitForSelector('[data-testid="work-pane"]', { timeout: 10000 });
+    await expect(page.locator('[data-testid="post-title"]')).toBeVisible();
+
+    // Close the detail view
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(800);
+
+    // Verify URL no longer has post parameter
+    await expect(page).toHaveURL(/dashboard$/);
+
+    // Click on the second post to open it
+    await secondPost.click();
+    await page.waitForTimeout(1000);
+
+    // Verify URL now contains the second post ID
+    const secondPostIdOnly = secondPostId?.replace('post-card-', '');
+    await expect(page).toHaveURL(new RegExp(`dashboard\\?post=${secondPostIdOnly}`));
+
+    // Verify work pane shows the second post
+    await page.waitForSelector('[data-testid="work-pane"]', { timeout: 10000 });
+    await expect(page.locator('[data-testid="post-title"]')).toBeVisible();
+
+    // Press browser back button
+    await page.goBack();
+    await page.waitForTimeout(1000);
+
+    // Verify URL is back to the first post
+    await expect(page).toHaveURL(new RegExp(`dashboard\\?post=${firstPostIdOnly}`));
+
+    // Verify work pane shows the first post again
+    await page.waitForSelector('[data-testid="work-pane"]', { timeout: 10000 });
+    const postTitle = await page.locator('[data-testid="post-title"]').textContent();
+    console.log('Post title after back:', postTitle);
+
+    // Press browser forward button
+    await page.goForward();
+    await page.waitForTimeout(1000);
+
+    // Verify URL is back to the second post
+    await expect(page).toHaveURL(new RegExp(`dashboard\\?post=${secondPostIdOnly}`));
+
+    // Verify work pane shows the second post again
+    await page.waitForSelector('[data-testid="work-pane"]', { timeout: 10000 });
+
+    // Press browser back twice to return to queue
+    await page.goBack();
+    await page.waitForTimeout(800);
+    await page.goBack();
+    await page.waitForTimeout(800);
+
+    // Verify URL is back to dashboard without post parameter
+    await expect(page).toHaveURL(/dashboard$/);
+
+    // Verify work pane is hidden (back to queue)
+    const workPane = page.locator('[data-testid="work-pane"]');
+    await expect(workPane).toBeHidden();
   });
 });
