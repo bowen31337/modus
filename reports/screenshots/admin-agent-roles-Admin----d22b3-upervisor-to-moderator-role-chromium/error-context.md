@@ -1,0 +1,78 @@
+# Page snapshot
+
+```yaml
+- generic:
+  - generic [active]:
+    - generic [ref=e5] [cursor=pointer]:
+      - button "Open Next.js Dev Tools" [ref=e6]:
+        - img [ref=e7]
+      - generic [ref=e10]:
+        - button "Open issues overlay" [ref=e11]:
+          - generic [ref=e12]:
+            - generic [ref=e13]: "0"
+            - generic [ref=e14]: "1"
+          - generic [ref=e15]: Issue
+        - button "Collapse issues badge" [ref=e16]:
+          - img [ref=e17]
+    - generic [ref=e21]:
+      - generic [ref=e22]:
+        - generic [ref=e23]:
+          - navigation [ref=e24]:
+            - button "previous" [disabled] [ref=e25]:
+              - img "previous" [ref=e26]
+            - generic [ref=e28]:
+              - generic [ref=e29]: 1/
+              - text: "1"
+            - button "next" [disabled] [ref=e30]:
+              - img "next" [ref=e31]
+          - img
+        - generic [ref=e33]:
+          - link "Next.js 15.4.10 (outdated) Webpack" [ref=e34] [cursor=pointer]:
+            - /url: https://nextjs.org/docs/messages/version-staleness
+            - img [ref=e35]
+            - generic "An outdated version detected (latest is 16.1.3), upgrade is highly recommended!" [ref=e37]: Next.js 15.4.10 (outdated)
+            - generic [ref=e38]: Webpack
+          - img
+      - generic [ref=e39]:
+        - dialog "Runtime Error" [ref=e40]:
+          - generic [ref=e43]:
+            - generic [ref=e44]:
+              - generic [ref=e45]:
+                - generic [ref=e47]: Runtime Error
+                - generic [ref=e48]:
+                  - button "Copy Stack Trace" [ref=e49] [cursor=pointer]:
+                    - img [ref=e50]
+                  - button "No related documentation found" [disabled] [ref=e52]:
+                    - img [ref=e53]
+                  - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools" [ref=e55] [cursor=pointer]:
+                    - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+                    - img [ref=e56]
+              - paragraph [ref=e65]: "ENOENT: no such file or directory, open '/media/DATA/projects/autonomous-coding-modus/modus/apps/web/.next/server/vendor-chunks/lucide-react@0.468.0_react@19.0.0.js'"
+            - generic [ref=e67]:
+              - generic [ref=e68]:
+                - paragraph [ref=e69]:
+                  - text: Call Stack
+                  - generic [ref=e70]: "44"
+                - button "Show 42 ignore-listed frame(s)" [ref=e71] [cursor=pointer]:
+                  - text: Show 42 ignore-listed frame(s)
+                  - img [ref=e72]
+              - generic [ref=e74]:
+                - generic [ref=e75]: <unknown>
+                - text: .next/server/app/page.js (489:47)
+              - generic [ref=e76]:
+                - generic [ref=e77]: Object.<anonymous>
+                - text: .next/server/app/page.js (492:3)
+          - generic [ref=e78]:
+            - generic [ref=e79]: "1"
+            - generic [ref=e80]: "2"
+        - contentinfo [ref=e81]:
+          - region "Error feedback" [ref=e82]:
+            - paragraph [ref=e83]:
+              - link "Was this helpful?" [ref=e84] [cursor=pointer]:
+                - /url: https://nextjs.org/telemetry#error-feedback
+            - button "Mark as helpful" [ref=e85] [cursor=pointer]:
+              - img [ref=e86]
+            - button "Mark as not helpful" [ref=e89] [cursor=pointer]:
+              - img [ref=e90]
+  - alert [ref=e92]
+```

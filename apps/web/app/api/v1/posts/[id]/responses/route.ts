@@ -1,7 +1,7 @@
 import { csrfErrorResponse, requireCsrfProtection } from '@/lib/csrf';
 import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
-import { createResponseInputSchema } from '@modus/logic';
+import { sanitizeResponseContent, createResponseInputSchema } from '@modus/logic';
 import { type NextRequest, NextResponse } from 'next/server';
 
 /**
@@ -49,15 +49,18 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     // Validate input with Zod
     const validatedInput = createResponseInputSchema.parse(body);
 
+    // Sanitize content to prevent XSS attacks
+    const sanitizedContent = sanitizeResponseContent(validatedInput.content);
+
     // For demo purposes, use a hardcoded agent ID that matches the frontend
     // In production, this would come from the authenticated user's session
     const demoAgentId = '550e8400-e29b-41d4-a716-446655440001';
 
-    // Create the response
+    // Create the response with sanitized content
     const response = dataStore.createResponse({
       post_id: id,
       agent_id: demoAgentId,
-      content: validatedInput.content,
+      content: sanitizedContent,
       is_internal_note: validatedInput.is_internal_note,
     });
 

@@ -1,7 +1,12 @@
 import { csrfErrorResponse, requireCsrfProtection } from '@/lib/csrf';
 import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
-import { type PostsQuery, generatePostEmbedding, postsQuerySchema } from '@modus/logic';
+import {
+  sanitizePostContent,
+  type PostsQuery,
+  generatePostEmbedding,
+  postsQuerySchema,
+} from '@modus/logic';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -216,12 +221,25 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const validatedInput = createPostInputSchema.parse(body);
 
-    // Generate embedding if not provided
-    const embedding = validatedInput.embedding ?? generatePostEmbedding(validatedInput);
+    // Sanitize content to prevent XSS attacks
+    const sanitized = sanitizePostContent({
+      title: validatedInput.title,
+      body_content: validatedInput.body_content,
+      excerpt: validatedInput.excerpt,
+    });
 
-    // Create the post
+    // Generate embedding if not provided (use sanitized content)
+    const embedding = validatedInput.embedding ?? generatePostEmbedding({
+      title: sanitized.title,
+      body_content: sanitized.body_content,
+    });
+
+    // Create the post with sanitized content
     const post = dataStore.createPost({
       ...validatedInput,
+      title: sanitized.title,
+      body_content: sanitized.body_content,
+      excerpt: sanitized.excerpt,
       embedding,
     });
 

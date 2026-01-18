@@ -1,5 +1,6 @@
 import { checkRole } from '@/lib/role-check';
 import { dataStore } from '@/lib/data-store';
+import { sanitizeTemplateContent } from '@modus/logic';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -122,12 +123,15 @@ export async function POST(_request: NextRequest) {
     // Validate request body
     const validatedData = createTemplateSchema.parse(body);
 
+    // Sanitize content to prevent XSS attacks
+    const sanitizedContent = sanitizeTemplateContent(validatedData.content);
+
     console.log('[POST /api/v1/templates] Creating template:', validatedData.name);
 
-    // Create template in data store
+    // Create template in data store with sanitized content
     const newTemplate = dataStore.createTemplate({
       name: validatedData.name,
-      content: validatedData.content,
+      content: sanitizedContent,
       placeholders: validatedData.placeholders,
       category_id: validatedData.category_id,
       created_by: validatedData.created_by,
