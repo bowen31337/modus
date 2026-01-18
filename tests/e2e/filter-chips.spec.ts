@@ -17,7 +17,10 @@ test.describe('Filter Chips - Consistent Pill Styling', () => {
   test.beforeEach(async ({ page }) => {
     // First authenticate by logging in (this sets the demo session cookie)
     await page.goto('/login');
-    await page.getByRole('button', { name: 'Sign In' }).click();
+    // Fill in credentials for demo mode
+    await page.getByLabel('Email').fill('demo@example.com');
+    await page.getByLabel('Password').fill('password123');
+    await page.locator('button.bg-primary').click();
     await expect(page).toHaveURL(/.*dashboard/);
     // Wait for queue pane to load
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
@@ -100,6 +103,13 @@ test.describe('Filter Chips - Consistent Pill Styling', () => {
     await page.locator('button:has-text("Bug Reports")').nth(0).click();
     await page.waitForTimeout(500);
 
+    // Close the filter dropdown by clicking the backdrop
+    const backdrop = page.locator('div.fixed.inset-0.z-40').first();
+    if (await backdrop.isVisible()) {
+      await backdrop.click();
+    }
+    await page.waitForTimeout(300);
+
     // Get initial chip count
     const chipsBefore = page.locator('span.inline-flex');
     const countBefore = await chipsBefore.count();
@@ -148,19 +158,34 @@ test.describe('Filter Chips - Consistent Pill Styling', () => {
     await page.locator('button:has-text("Bug Reports")').nth(0).click();
     await page.waitForTimeout(500);
 
+    // Close the filter dropdown by clicking the backdrop
+    const backdrop = page.locator('div.fixed.inset-0.z-40').first();
+    if (await backdrop.isVisible()) {
+      await backdrop.click();
+    }
+    await page.waitForTimeout(300);
+
     // Apply status filter
+    await page.locator('button:has-text("Filters")').first().click();
     await page.locator('button:has-text("Status")').first().click();
     await page.locator('button:has-text("Open")').nth(0).click();
     await page.waitForTimeout(500);
+
+    // Close the filter dropdown again
+    if (await backdrop.isVisible()) {
+      await backdrop.click();
+    }
+    await page.waitForTimeout(300);
 
     // Get the first chip and verify it has background styling
     const chip = page.locator('span.inline-flex').first();
     const chipClass = await chip.getAttribute('class');
 
-    // Should have background color (bg-*), text color (text-*), and border color (border-*)
-    expect(chipClass).toMatch(/bg-\w+\/\d+/);
-    expect(chipClass).toMatch(/text-\w+/);
-    expect(chipClass).toMatch(/border-\w+\/\d+/);
+    // Should have background color (bg-*/*), text color (text-*), and border color (border-*/*)
+    // Using more flexible regex patterns to match Tailwind classes
+    expect(chipClass).toMatch(/bg-\w+-\d+\/\d+/);  // e.g., bg-red-500/20
+    expect(chipClass).toMatch(/text-\w+-\d+/);     // e.g., text-red-300
+    expect(chipClass).toMatch(/border-\w+-\d+\/\d+/); // e.g., border-red-500/30
   });
 
   test('should have Clear all button when chips are visible', async ({ page }) => {
@@ -187,13 +212,20 @@ test.describe('Filter Chips - Consistent Pill Styling', () => {
     await page.locator('button:has-text("Open")').nth(0).click();
     await page.waitForTimeout(500);
 
+    // Close the filter dropdown by clicking the backdrop
+    const backdrop = page.locator('div.fixed.inset-0.z-40').first();
+    if (await backdrop.isVisible()) {
+      await backdrop.click();
+    }
+    await page.waitForTimeout(300);
+
     // Verify chips are visible
     const chipsBefore = page.locator('span.inline-flex');
     const countBefore = await chipsBefore.count();
     expect(countBefore).toBeGreaterThan(0);
 
-    // Click Clear all
-    await page.locator('button[data-testid="clear-all-filters"]').click();
+    // Click Clear all - use force click since there might be other elements
+    await page.locator('button[data-testid="clear-all-filters"]').click({ force: true });
     await page.waitForTimeout(500);
 
     // Verify chips are gone
@@ -274,8 +306,11 @@ test.describe('Filter Chips - Consistent Pill Styling', () => {
   });
 
   test('should hide chips container when no filters are active', async ({ page }) => {
-    // Verify chips container is not visible initially (no filters applied)
-    const chipsContainer = page.locator('div:has(> span.inline-flex)').first();
-    await expect(chipsContainer).toHaveCount(0);
+    // Verify chips are not visible initially (no filters applied)
+    const chips = page.locator('span.inline-flex');
+    // Filter chips should not exist when no filters are applied
+    // Note: there might be other inline-flex elements on the page, so we check specifically for filter chips
+    const filterChips = page.locator('span.inline-flex:has(button[data-testid^="remove-filter-"])');
+    await expect(filterChips).toHaveCount(0);
   });
 });

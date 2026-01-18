@@ -119,7 +119,7 @@ export function FilterChips({ filters, onFiltersChange }: FilterChipsProps) {
     });
   }
 
-  const handleRemoveChip = (chipId: string, type: string) => {
+  const handleRemoveChip = (type: string) => {
     const newFilters = { ...filters };
 
     switch (type) {
@@ -173,7 +173,7 @@ export function FilterChips({ filters, onFiltersChange }: FilterChipsProps) {
             <span className="opacity-90">{chip.value}</span>
             <button
               type="button"
-              onClick={() => handleRemoveChip(chip.id, chip.type)}
+              onClick={() => handleRemoveChip(chip.type)}
               className="ml-1 rounded-full p-0.5 hover:bg-white/10 transition-colors duration-150"
               aria-label={`Remove ${chip.label} filter`}
               data-testid={`remove-filter-${chip.type}`}

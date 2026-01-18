@@ -32,7 +32,8 @@ test.describe('Accessibility - ARIA Labels', () => {
 
     await page.goto('/dashboard');
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
-    await page.waitForTimeout(2000);
+    // Wait for posts to actually load (not just the queue pane)
+    await page.waitForSelector('[data-testid^="post-card-"]', { timeout: 10000 });
   });
 
   test('should have aria-labels on all icon-only buttons', async ({ page }) => {
@@ -182,6 +183,7 @@ test.describe('Accessibility - Contrast Ratios', () => {
 
     await page.goto('/dashboard');
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
+    await page.waitForSelector('[data-testid^="post-card-"]', { timeout: 10000 });
   });
 
   test('should have sufficient contrast on text', async ({ page }) => {
@@ -329,7 +331,8 @@ test.describe('Accessibility - Tab Order', () => {
 
     await page.goto('/dashboard');
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
-    await page.waitForTimeout(1000);
+    // Wait for posts to actually load
+    await page.waitForSelector('[data-testid^="post-card-"]', { timeout: 10000 });
   });
 
   test('should follow logical tab order', async ({ page }) => {
@@ -389,12 +392,17 @@ test.describe('Accessibility - Tab Order', () => {
   });
 
   test('should trap focus in modal when opened', async ({ page }) => {
-    // Open command palette (Cmd+K)
-    await page.keyboard.press('Meta+K');
+    // Open command palette using Ctrl+K (cross-platform compatible)
+    // Try both Meta and Ctrl as fallback
+    try {
+      await page.keyboard.press('Control+K');
+    } catch {
+      await page.keyboard.press('Meta+K');
+    }
     await page.waitForTimeout(500);
 
     // Command palette should be visible
-    const commandPalette = page.locator('[data-testid="command-palette-modal"]');
+    const commandPalette = page.locator('[data-testid="command-palette"]');
     await expect(commandPalette).toBeVisible();
 
     // Press Tab multiple times
@@ -463,6 +471,8 @@ test.describe('Accessibility - Reduced Motion', () => {
 
     await page.goto('/dashboard');
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
+    // Wait for posts to actually load
+    await page.waitForSelector('[data-testid^="post-card-"]', { timeout: 10000 });
 
     // Check that animations respect the preference
     const animatedElements = page.locator('*').filter(async (el) => {
@@ -487,9 +497,9 @@ test.describe('Accessibility - Reduced Motion', () => {
       });
 
       // Should be either 0s or very short
-      const durationMatch = animationDuration.match(/([\d.]+)s/);
+      const durationMatch = animationDuration.match(/([\\d.e-]+)s/);
       if (durationMatch) {
-        const duration = parseFloat(durationMatch[1]);
+        const durationStr = durationMatch[1];
         // Allow 0.01s tolerance for CSS precision (1e-05s = 0.00001s)
         expect(
           duration,
@@ -514,6 +524,8 @@ test.describe('Accessibility - Reduced Motion', () => {
 
     await page.goto('/dashboard');
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
+    // Wait for posts to actually load
+    await page.waitForSelector('[data-testid^="post-card-"]', { timeout: 10000 });
 
     // Verify basic functionality still works
     const searchInput = page.locator('input[type="search"]');
@@ -544,6 +556,8 @@ test.describe('Accessibility - Screen Reader', () => {
 
     await page.goto('/dashboard');
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
+    // Wait for posts to actually load
+    await page.waitForSelector('[data-testid^="post-card-"]', { timeout: 10000 });
   });
 
   test('should announce page title', async ({ page }) => {

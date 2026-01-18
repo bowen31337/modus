@@ -2738,12 +2738,16 @@
     "is_dev_done": false,
     "is_qa_passed": false,
     "qa_retry_count": 0,
-    "dev_failure_count": 2,
-    "last_dev_failure_at": "2026-01-18T04:03:03.507234Z",
+    "dev_failure_count": 3,
+    "last_dev_failure_at": "2026-01-18T04:33:06.425897Z",
     "dev_failure_reasons": [
       "Worker session timed out",
+      "Worker session timed out",
       "Worker session timed out"
-    ]
+    ],
+    "is_stuck": true,
+    "stuck_reason": "Max DEV failures exceeded. Last errors: ['Worker session timed out', 'Worker session timed out']",
+    "stuck_at": "2026-01-18T04:33:12.366284Z"
   },
   {
     "category": "functional",
@@ -2811,14 +2815,11 @@
       "Step 5: Verify tests run quickly"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 0,
-    "dev_failure_count": 1,
-    "last_dev_failure_at": "2026-01-18T04:19:12.052253Z",
-    "dev_failure_reasons": [
-      "Worker session timed out"
-    ]
+    "dev_failure_count": 0,
+    "dev_completed_at": "2026-01-18T04:32:10.963503Z"
   },
   {
     "category": "functional",
@@ -2849,7 +2850,13 @@
     ],
     "passes": false,
     "is_dev_done": false,
-    "is_qa_passed": false
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-18T04:38:02.803543Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",

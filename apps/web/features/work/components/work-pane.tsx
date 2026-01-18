@@ -618,121 +618,193 @@ export function WorkPane({
 
             {/* User Context Sidebar */}
             <aside
-              className="w-full lg:w-72 p-6 border-t lg:border-t-0 lg:border-l border-border bg-background-secondary"
+              className="w-full lg:w-72 border-t lg:border-t-0 lg:border-l border-border bg-background-secondary overflow-y-auto"
               data-testid="user-context-sidebar"
             >
-              <div className="space-y-4">
-                <h2 className="text-sm font-semibold text-foreground uppercase tracking-wide">
+              {/* Sidebar Header */}
+              <div className="sticky top-0 bg-background-secondary/95 backdrop-blur-sm border-b border-border p-4">
+                <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">
                   User Context
                 </h2>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Author information and post metadata
+                </p>
+              </div>
 
-                {/* Author Info */}
-                <div className="bg-background-tertiary rounded-lg p-3 border border-border">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
-                      <User size={16} className="text-primary" />
+              <div className="p-4 space-y-5">
+                {/* Author Card - Primary Information */}
+                <section className="space-y-2">
+                  <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    Author
+                  </h3>
+                  <div className="bg-background-tertiary rounded-lg p-4 border border-border/60 hover:border-border/80 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
+                        <User size={18} className="text-primary" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-foreground truncate">
+                          {selectedPost.author?.name || 'Unknown User'}
+                        </p>
+                        <p className="text-xs text-muted-foreground">Community Member</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-sm font-medium text-foreground">
-                        {selectedPost.author?.name || 'Unknown User'}
-                      </p>
-                      <p className="text-xs text-muted-foreground">Author</p>
-                    </div>
+                    {/* First-time poster indicator */}
+                    {selectedPost.author?.postCount === 0 && (
+                      <div className="mt-3 text-xs font-medium px-2.5 py-1.5 rounded bg-yellow-500/15 text-yellow-400 border border-yellow-500/20 inline-block">
+                        ⚠ First-time poster
+                      </div>
+                    )}
                   </div>
-                </div>
+                </section>
 
-                {/* Sentiment */}
-                {selectedPost.sentiment && (
-                  <div className="bg-background-tertiary rounded-lg p-3 border border-border">
-                    <div className="flex items-center gap-2">
-                      {selectedPost.sentiment === 'negative' && (
-                        <AlertCircle
-                          size={16}
-                          className={(sentimentColors.negative?.split(' ')?.[0] || '').replace(
-                            'text-',
-                            'text-'
+                {/* Sentiment & Category - Quick Scan */}
+                <section className="space-y-2">
+                  <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    Analysis
+                  </h3>
+                  <div className="grid grid-cols-1 gap-2">
+                    {/* Sentiment */}
+                    {selectedPost.sentiment && (
+                      <div className="bg-background-tertiary rounded-lg p-3 border border-border/60">
+                        <div className="flex items-center gap-2">
+                          {selectedPost.sentiment === 'negative' && (
+                            <AlertCircle
+                              size={14}
+                              className="text-red-400"
+                            />
                           )}
-                        />
-                      )}
-                      {selectedPost.sentiment === 'positive' && (
-                        <CheckCircle2
-                          size={16}
-                          className={(sentimentColors.positive?.split(' ')?.[0] || '').replace(
-                            'text-',
-                            'text-'
+                          {selectedPost.sentiment === 'positive' && (
+                            <CheckCircle2
+                              size={14}
+                              className="text-emerald-400"
+                            />
                           )}
-                        />
-                      )}
-                      {selectedPost.sentiment === 'neutral' && (
-                        <MessageSquare
-                          size={16}
-                          className={(sentimentColors.neutral?.split(' ')?.[0] || '').replace(
-                            'text-',
-                            'text-'
+                          {selectedPost.sentiment === 'neutral' && (
+                            <MessageSquare
+                              size={14}
+                              className="text-muted-foreground"
+                            />
                           )}
-                        />
-                      )}
-                      <span
-                        className={cn(
-                          'text-sm font-medium',
-                          sentimentColors[selectedPost.sentiment]?.split(' ')?.[0]
-                        )}
-                      >
-                        {selectedPost.sentiment.charAt(0).toUpperCase() +
-                          selectedPost.sentiment.slice(1)}{' '}
-                        Sentiment
+                          <span
+                            className={cn(
+                              'text-sm font-medium',
+                              selectedPost.sentiment === 'negative' && 'text-red-400',
+                              selectedPost.sentiment === 'positive' && 'text-emerald-400',
+                              selectedPost.sentiment === 'neutral' && 'text-muted-foreground'
+                            )}
+                          >
+                            {selectedPost.sentiment.charAt(0).toUpperCase() +
+                              selectedPost.sentiment.slice(1)}{' '}
+                            Sentiment
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Category */}
+                    {selectedPost.category && (
+                      <div className="bg-background-tertiary rounded-lg p-3 border border-border/60">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+                            style={{ backgroundColor: selectedPost.category.color }}
+                          />
+                          <span className="text-sm text-foreground">
+                            {selectedPost.category.name}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </section>
+
+                {/* Assignment Status - Action Context */}
+                <section className="space-y-2">
+                  <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    Assignment
+                  </h3>
+                  <div className="bg-background-tertiary rounded-lg p-3 border border-border/60">
+                    {isAssignedToMe ? (
+                      <div className="flex items-center gap-2 text-sm">
+                        <span className="w-2 h-2 rounded-full bg-primary" />
+                        <span className="text-primary font-medium">Assigned to you</span>
+                      </div>
+                    ) : (
+                      <div className="text-sm text-muted-foreground">
+                        Unassigned - click &quot;Assign to Me&quot; to claim
+                      </div>
+                    )}
+                  </div>
+                </section>
+
+                {/* Post History - User Behavior */}
+                <section className="space-y-2">
+                  <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    Post History
+                  </h3>
+                  <div className="bg-background-tertiary rounded-lg p-3 border border-border/60">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">Total Posts</span>
+                      <span className="text-sm font-semibold text-foreground">
+                        {selectedPost.author?.postCount ?? 0}
                       </span>
                     </div>
                   </div>
-                )}
+                </section>
 
-                {/* Post History */}
-                <div className="bg-background-tertiary rounded-lg p-3 border border-border">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-muted-foreground">Post History</span>
-                    <span className="text-sm font-medium text-foreground">
-                      {selectedPost.author?.postCount ?? 0} posts
-                    </span>
-                  </div>
-                  {selectedPost.author?.postCount === 0 && (
-                    <div className="text-xs text-yellow-400 bg-yellow-500/10 px-2 py-1 rounded">
-                      First-time poster
+                {/* Metadata - Technical Details */}
+                <section className="space-y-2">
+                  <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    Metadata
+                  </h3>
+                  <div className="bg-background-tertiary rounded-lg p-3 border border-border/60 space-y-3">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">Post ID</span>
+                      <span className="text-foreground font-mono text-xs">{selectedPost.id}</span>
                     </div>
-                  )}
-                </div>
-
-                {/* Metadata */}
-                <div className="bg-background-tertiary rounded-lg p-3 border border-border space-y-2">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Hash size={14} />
-                    <span>Post ID: {selectedPost.id}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Clock size={14} />
-                    <span>Created: {selectedPost.createdAt}</span>
-                  </div>
-                  {selectedPost.category && (
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">Created</span>
+                      <span className="text-foreground">{selectedPost.createdAt}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">Priority</span>
                       <span
-                        className="w-2 h-2 rounded-full"
-                        style={{ backgroundColor: selectedPost.category.color }}
-                      />
-                      <span>{selectedPost.category.name}</span>
+                        className={cn(
+                          'font-mono text-xs px-1.5 py-0.5 rounded',
+                          selectedPost.priority === 'P1' && 'bg-red-500/20 text-red-400',
+                          selectedPost.priority === 'P2' && 'bg-orange-500/20 text-orange-400',
+                          selectedPost.priority === 'P3' && 'bg-yellow-500/20 text-yellow-400',
+                          selectedPost.priority === 'P4' && 'bg-blue-500/20 text-blue-400',
+                          selectedPost.priority === 'P5' && 'bg-gray-500/20 text-gray-400'
+                        )}
+                      >
+                        {selectedPost.priority}
+                      </span>
                     </div>
-                  )}
-                </div>
-
-                {/* Assignment Status */}
-                <div className="bg-background-tertiary rounded-lg p-3 border border-border">
-                  <h3 className="text-sm font-medium text-foreground mb-2">Assignment</h3>
-                  <div className="text-sm text-muted-foreground">
-                    {isAssignedToMe ? (
-                      <span className="text-primary">Assigned to you</span>
-                    ) : (
-                      <span>Unassigned - click &quot;Assign to Me&quot; to claim</span>
-                    )}
                   </div>
-                </div>
+                </section>
+
+                {/* Quick Stats */}
+                <section className="space-y-2">
+                  <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    Quick Stats
+                  </h3>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="bg-background-tertiary rounded-lg p-3 border border-border/60 text-center">
+                      <div className="text-lg font-bold text-foreground">
+                        {selectedPost.author?.postCount ?? 0}
+                      </div>
+                      <div className="text-xs text-muted-foreground">Posts</div>
+                    </div>
+                    <div className="bg-background-tertiary rounded-lg p-3 border border-border/60 text-center">
+                      <div className="text-lg font-bold text-foreground">
+                        {selectedPost.status === 'in_progress' ? 'Active' : 'Open'}
+                      </div>
+                      <div className="text-xs text-muted-foreground">Status</div>
+                    </div>
+                  </div>
+                </section>
               </div>
             </aside>
           </div>

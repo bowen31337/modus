@@ -87,8 +87,8 @@ test.describe('Three-Pane Layout', () => {
     const filterButtons = page.locator('button:has-text("Filters"), button:has-text("Sort")');
     await expect(filterButtons).toHaveCount(2);
 
-    // Verify queue pane has moderation queue header
-    const queueHeader = page.locator('h2:has-text("Moderation Queue")');
+    // Verify queue pane has moderation queue header (changed from h2 to h1 for proper heading hierarchy)
+    const queueHeader = page.locator('h1:has-text("Moderation Queue")');
     await expect(queueHeader).toBeVisible();
 
     // Step 5: Verify the work pane (flexible width) is visible

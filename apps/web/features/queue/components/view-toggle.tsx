@@ -18,7 +18,7 @@ export function ViewToggle({ viewMode, onViewModeChange }: ViewToggleProps) {
         size="sm"
         onClick={() => onViewModeChange('list')}
         className="h-7 w-7 p-0"
-        title="List view"
+        aria-label="List view"
         data-testid="view-toggle-list"
       >
         <List className="w-4 h-4" />
@@ -28,7 +28,7 @@ export function ViewToggle({ viewMode, onViewModeChange }: ViewToggleProps) {
         size="sm"
         onClick={() => onViewModeChange('grid')}
         className="h-7 w-7 p-0"
-        title="Grid view"
+        aria-label="Grid view"
         data-testid="view-toggle-grid"
       >
         <LayoutGrid className="w-4 h-4" />
