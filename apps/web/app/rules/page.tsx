@@ -1,6 +1,6 @@
+import { RulesManagement } from '@/features/rules/components/rules-management';
 import { createServerSideClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
-import { RulesManagement } from '@/features/rules/components/rules-management';
 
 export default async function RulesPage() {
   // Check if Supabase is configured

@@ -34,7 +34,8 @@ export function FilterChips({ filters, onFiltersChange }: FilterChipsProps) {
       label: 'Category',
       value: filters.category,
       type: 'category',
-      color: categoryColors[filters.category] || 'bg-slate-500/20 text-slate-300 border-slate-500/30',
+      color:
+        categoryColors[filters.category] || 'bg-slate-500/20 text-slate-300 border-slate-500/30',
     });
   }
 

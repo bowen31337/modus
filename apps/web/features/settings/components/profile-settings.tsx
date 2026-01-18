@@ -1,9 +1,9 @@
 'use client';
 
+import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@modus/ui';
 import { Camera, Mail, Shield } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { Avatar } from '@/components/ui/avatar';
+import { useEffect, useState } from 'react';
 
 interface Agent {
   id: string;
@@ -152,16 +152,8 @@ export function ProfileSettings({ agent, onUpdateAgent }: ProfileSettingsProps) 
 
         {/* Avatar Section */}
         <div className="flex items-center gap-6 mb-6">
-          <div
-            className="relative overflow-hidden group"
-            data-testid="avatar-display"
-          >
-            <Avatar
-              src={agent.avatar_url}
-              name={agent.display_name}
-              size="2xl"
-              withBorder
-            />
+          <div className="relative overflow-hidden group" data-testid="avatar-display">
+            <Avatar src={agent.avatar_url} name={agent.display_name} size="2xl" withBorder />
             {isEditing && (
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <Camera size={24} className="text-white" />

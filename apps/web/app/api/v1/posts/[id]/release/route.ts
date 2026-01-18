@@ -8,8 +8,11 @@ import { type NextRequest, NextResponse } from 'next/server';
  *
  * Path Parameters:
  * - id: Post UUID
+ *
+ * Request Body:
+ * - agent_id: UUID of the agent releasing the post (for audit logging)
  */
-export async function POST(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
 
@@ -17,7 +20,10 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
       return NextResponse.json({ error: 'Post ID is required' }, { status: 400 });
     }
 
-    const releasedPost = dataStore.releasePost(id);
+    const body = await request.json();
+    const agentId = body.agent_id;
+
+    const releasedPost = dataStore.releasePost(id, agentId);
 
     if (!releasedPost) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });

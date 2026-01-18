@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
 import { AlertCircle, Home, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
+import { useEffect } from 'react';
 
 export default function Error({
   error,
@@ -31,8 +31,8 @@ export default function Error({
 
         {/* Error message */}
         <p className="text-muted-foreground max-w-md mx-auto leading-relaxed">
-          An unexpected error occurred. Don't worry, your work is safe. You can try refreshing
-          the page or go back to the dashboard.
+          An unexpected error occurred. Don't worry, your work is safe. You can try refreshing the
+          page or go back to the dashboard.
         </p>
 
         {/* Error details (in development) */}

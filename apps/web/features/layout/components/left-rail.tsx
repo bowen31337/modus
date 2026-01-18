@@ -1,8 +1,8 @@
 'use client';
 
+import { KeyboardShortcut } from '@/components/ui/keyboard-shortcut';
 import { logout } from '@/lib/auth-actions';
 import { createClient } from '@/lib/supabase/client';
-import { KeyboardShortcut } from '@/components/ui/keyboard-shortcut';
 import { Button } from '@modus/ui';
 import { CheckCircle2, Home, Inbox, LogOut, Settings } from 'lucide-react';
 import Link from 'next/link';

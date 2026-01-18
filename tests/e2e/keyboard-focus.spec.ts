@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Keyboard Focus States', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to login page first
-    await page.goto('http://localhost:3005/login');
+    await page.goto('/login');
 
     // Wait for login page to load
     await page.waitForSelector('text=Sign in to your account', { timeout: 10000 });

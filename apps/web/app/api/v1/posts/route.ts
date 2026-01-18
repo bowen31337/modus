@@ -1,5 +1,5 @@
+import { csrfErrorResponse, requireCsrfProtection } from '@/lib/csrf';
 import { dataStore } from '@/lib/data-store';
-import { requireCsrfProtection, csrfErrorResponse } from '@/lib/csrf';
 import { type PostsQuery, generatePostEmbedding, postsQuerySchema } from '@modus/logic';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';

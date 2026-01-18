@@ -124,8 +124,12 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     const body = await request.json();
 
     // Determine update type based on request body
-    let updatedAgent;
-    let message;
+    let updatedAgent: ReturnType<
+      | typeof dataStore.updateAgentStatus
+      | typeof dataStore.updateAgentProfile
+      | typeof dataStore.updateAgentRole
+    >;
+    let message: string;
 
     if ('status' in body) {
       // Status update
@@ -152,7 +156,8 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       return NextResponse.json(
         {
           error: 'Invalid request body',
-          details: 'Must provide either "status", profile fields (display_name, avatar_url), or "role"',
+          details:
+            'Must provide either "status", profile fields (display_name, avatar_url), or "role"',
         },
         { status: 400 }
       );

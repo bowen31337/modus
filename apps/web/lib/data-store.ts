@@ -5,7 +5,15 @@
  * In production, this will be replaced with Supabase database queries.
  */
 
-import type { ModerationPost, PriorityRule, Response, ResponseTemplate, Agent, Presence } from '@modus/logic';
+import type {
+  Agent,
+  AuditLog,
+  ModerationPost,
+  Presence,
+  PriorityRule,
+  Response,
+  ResponseTemplate,
+} from '@modus/logic';
 import {
   RulesEngine,
   generatePostEmbedding,
@@ -359,7 +367,7 @@ const mockAgents: Agent[] = [
     user_id: 'user-agent-1',
     display_name: 'Agent A',
     avatar_url: null,
-    role: 'agent',
+    role: 'admin',
     status: 'online',
     last_active_at: new Date().toISOString(),
     created_at: '2025-01-01T00:00:00Z',
@@ -382,6 +390,16 @@ const mockAgents: Agent[] = [
     role: 'agent',
     status: 'offline',
     last_active_at: '2025-01-17T10:00:00Z',
+    created_at: '2025-01-01T00:00:00Z',
+  },
+  {
+    id: 'agent-4',
+    user_id: 'user-agent-4',
+    display_name: 'Agent D',
+    avatar_url: null,
+    role: 'moderator',
+    status: 'online',
+    last_active_at: new Date().toISOString(),
     created_at: '2025-01-01T00:00:00Z',
   },
 ];
@@ -447,7 +465,8 @@ const mockResponses: Response[] = [
     id: 'response-1',
     post_id: '1',
     agent_id: 'agent-1',
-    content: 'Thank you for reporting this issue. I can see you\'re having trouble accessing your account after the password reset. Let me investigate this for you.',
+    content:
+      "Thank you for reporting this issue. I can see you're having trouble accessing your account after the password reset. Let me investigate this for you.",
     is_internal_note: false,
     created_at: '2025-01-15T10:00:00Z',
     updated_at: '2025-01-15T10:00:00Z',
@@ -456,7 +475,8 @@ const mockResponses: Response[] = [
     id: 'response-2',
     post_id: '1',
     agent_id: 'agent-2',
-    content: 'Internal note: User has contacted support 3 times about this issue. Priority should be escalated.',
+    content:
+      'Internal note: User has contacted support 3 times about this issue. Priority should be escalated.',
     is_internal_note: true,
     created_at: '2025-01-15T10:30:00Z',
     updated_at: '2025-01-15T10:30:00Z',
@@ -465,7 +485,8 @@ const mockResponses: Response[] = [
     id: 'response-3',
     post_id: '1',
     agent_id: 'agent-1',
-    content: 'I\'ve escalated this to our technical team. They\'re looking into the password reset system issue. We should have an update for you within 24 hours.',
+    content:
+      "I've escalated this to our technical team. They're looking into the password reset system issue. We should have an update for you within 24 hours.",
     is_internal_note: false,
     created_at: '2025-01-15T11:00:00Z',
     updated_at: '2025-01-15T11:00:00Z',
@@ -483,9 +504,40 @@ class DataStore {
   private agents: Map<string, Agent> = new Map();
   private templates: Map<string, ResponseTemplate> = new Map();
   private presence: Map<string, Presence> = new Map(); // key: `${post_id}:${agent_id}`
+  private auditLogs: Map<string, AuditLog> = new Map(); // key: audit log entry ID
 
   constructor() {
     // Initialize with mock data
+    this.initializeMockData();
+  }
+
+  // ============================================================================
+  // Reset Operations
+  // ============================================================================
+
+  /**
+   * Reset the data store to its initial mock data state.
+   * This is useful for testing to ensure a clean state between tests.
+   */
+  reset(): void {
+    // Clear all maps
+    this.posts.clear();
+    this.responses.clear();
+    this.rules.clear();
+    this.agents.clear();
+    this.templates.clear();
+    this.presence.clear();
+    this.auditLogs.clear();
+
+    // Re-initialize with mock data
+    this.initializeMockData();
+  }
+
+  /**
+   * Initialize the data store with mock data.
+   * This is called by the constructor and reset() method.
+   */
+  private initializeMockData(): void {
     mockPosts.forEach((post) => {
       this.posts.set(post.id, { ...post });
     });
@@ -549,7 +601,10 @@ class DataStore {
     // Apply priority rules to calculate the final priority
     const rules = this.getAllRules().filter((r) => r.is_active);
     const rulesEngine = new RulesEngine(rules);
-    const calculatedPriority = rulesEngine.calculatePriority({ post: tempPost, currentTime: new Date(createdAt) });
+    const calculatedPriority = rulesEngine.calculatePriority({
+      post: tempPost,
+      currentTime: new Date(createdAt),
+    });
 
     const post: PostWithRelations = {
       id: uuidv4(),
@@ -579,11 +634,25 @@ class DataStore {
     return post;
   }
 
-  updatePost(id: string, input: UpdatePostInput): PostWithRelations | null {
+  updatePost(id: string, input: UpdatePostInput, agentId?: string): PostWithRelations | null {
     const post = this.posts.get(id);
     if (!post) return null;
 
     const now = new Date().toISOString();
+
+    // Capture previous state for audit log
+    const previousState: Record<string, unknown> = {};
+    const newState: Record<string, unknown> = {};
+
+    if (input.status !== undefined) {
+      previousState.status = post.status;
+      newState.status = input.status;
+    }
+    if (input.priority !== undefined) {
+      previousState.priority = post.priority;
+      newState.priority = input.priority;
+    }
+
     const updated: PostWithRelations = {
       ...post,
       ...input,
@@ -593,6 +662,19 @@ class DataStore {
     };
 
     this.posts.set(id, updated);
+
+    // Record audit log if agentId is provided and there are changes
+    if (agentId && (input.status !== undefined || input.priority !== undefined)) {
+      this.recordAuditLog(
+        agentId,
+        'update_post',
+        id,
+        { changed_fields: Object.keys(newState) },
+        Object.keys(previousState).length > 0 ? previousState : null,
+        Object.keys(newState).length > 0 ? newState : null
+      );
+    }
+
     return updated;
   }
 
@@ -609,6 +691,10 @@ class DataStore {
     if (!post) return null;
 
     const now = new Date().toISOString();
+    const previousState = {
+      assigned_to_id: post.assigned_to_id,
+      assigned_agent: post.assigned_agent?.display_name || null,
+    };
     const updated: PostWithRelations = {
       ...post,
       assigned_to_id: agentId,
@@ -618,14 +704,32 @@ class DataStore {
     };
 
     this.posts.set(postId, updated);
+
+    // Record audit log
+    this.recordAuditLog(
+      agentId,
+      'assign_post',
+      postId,
+      { reason: 'agent_claimed' },
+      previousState,
+      {
+        assigned_to_id: agentId,
+        assigned_agent: updated.assigned_agent?.display_name || null,
+      }
+    );
+
     return updated;
   }
 
-  releasePost(postId: string): PostWithRelations | null {
+  releasePost(postId: string, agentId?: string): PostWithRelations | null {
     const post = this.posts.get(postId);
     if (!post) return null;
 
     const now = new Date().toISOString();
+    const previousState = {
+      assigned_to_id: post.assigned_to_id,
+      assigned_agent: post.assigned_agent?.display_name || null,
+    };
     const updated: PostWithRelations = {
       ...post,
       assigned_to_id: null,
@@ -635,6 +739,22 @@ class DataStore {
     };
 
     this.posts.set(postId, updated);
+
+    // Record audit log if agentId is provided
+    if (agentId) {
+      this.recordAuditLog(
+        agentId,
+        'release_post',
+        postId,
+        { reason: 'agent_released' },
+        previousState,
+        {
+          assigned_to_id: null,
+          assigned_agent: null,
+        }
+      );
+    }
+
     return updated;
   }
 
@@ -674,6 +794,14 @@ class DataStore {
     };
 
     this.responses.set(response.id, response);
+
+    // Record audit log
+    this.recordAuditLog(input.agent_id, 'create_response', input.post_id, {
+      response_id: response.id,
+      is_internal_note: input.is_internal_note,
+      content_preview: sanitizedContent.substring(0, 100),
+    });
+
     return response;
   }
 
@@ -905,7 +1033,12 @@ class DataStore {
   // Presence Operations (Real-time viewing indicators)
   // ============================================================================
 
-  addPresence(postId: string, agentId: string, agentName: string, agentStatus: 'online' | 'offline' | 'busy'): Presence {
+  addPresence(
+    postId: string,
+    agentId: string,
+    agentName: string,
+    agentStatus: 'online' | 'offline' | 'busy'
+  ): Presence {
     const key = `${postId}:${agentId}`;
     const now = new Date().toISOString();
 
@@ -1140,12 +1273,110 @@ class DataStore {
     const now = new Date().getTime();
     const fiveMinutes = 5 * 60 * 1000;
 
-    for (const [key, presence] of this.presence.entries()) {
+    for (const presence of this.presence.values()) {
       const timestamp = new Date(presence.timestamp).getTime();
       if (now - timestamp > fiveMinutes) {
-        this.presence.delete(key);
+        this.presence.delete(`${presence.post_id}:${presence.agent_id}`);
       }
     }
+  }
+
+  // ============================================================================
+  // Audit Log Operations
+  // ============================================================================
+
+  /**
+   * Record an audit log entry
+   * @param agentId - The agent performing the action
+   * @param actionType - Type of action (e.g., 'assign_post', 'release_post', 'create_response')
+   * @param postId - Optional post ID if action is related to a post
+   * @param actionDetails - Additional context about the action
+   * @param previousState - Optional previous state before the change
+   * @param newState - Optional new state after the change
+   * @returns The created audit log entry
+   */
+  recordAuditLog(
+    agentId: string,
+    actionType: string,
+    postId?: string | null,
+    actionDetails?: Record<string, unknown>,
+    previousState?: Record<string, unknown> | null,
+    newState?: Record<string, unknown> | null
+  ): AuditLog {
+    const now = new Date().toISOString();
+    const auditLog: AuditLog = {
+      id: uuidv4(),
+      agent_id: agentId,
+      post_id: postId || null,
+      action_type: actionType,
+      action_details: actionDetails,
+      previous_state: previousState,
+      new_state: newState,
+      created_at: now,
+    };
+
+    this.auditLogs.set(auditLog.id, auditLog);
+    return auditLog;
+  }
+
+  /**
+   * Get all audit log entries
+   * @param options - Optional filtering and pagination options
+   * @returns Array of audit log entries
+   */
+  getAuditLogs(options?: {
+    agentId?: string;
+    postId?: string;
+    actionType?: string;
+    limit?: number;
+    offset?: number;
+  }): AuditLog[] {
+    let logs = Array.from(this.auditLogs.values());
+
+    // Apply filters
+    if (options?.agentId) {
+      logs = logs.filter((log) => log.agent_id === options.agentId);
+    }
+    if (options?.postId) {
+      logs = logs.filter((log) => log.post_id === options.postId);
+    }
+    if (options?.actionType) {
+      logs = logs.filter((log) => log.action_type === options.actionType);
+    }
+
+    // Sort by timestamp descending (newest first)
+    logs.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
+    // Apply pagination
+    const offset = options?.offset || 0;
+    const limit = options?.limit || 100;
+    return logs.slice(offset, offset + limit);
+  }
+
+  /**
+   * Get audit log entries for a specific post
+   * @param postId - The post ID
+   * @returns Array of audit log entries for the post
+   */
+  getAuditLogsForPost(postId: string): AuditLog[] {
+    return this.getAuditLogs({ postId });
+  }
+
+  /**
+   * Get audit log entries for a specific agent
+   * @param agentId - The agent ID
+   * @returns Array of audit log entries for the agent
+   */
+  getAuditLogsForAgent(agentId: string): AuditLog[] {
+    return this.getAuditLogs({ agentId });
+  }
+
+  /**
+   * Get total count of audit log entries
+   * @returns Total count
+   */
+  getAuditLogCount(): number {
+    return this.auditLogs.size;
   }
 }
 

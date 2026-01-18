@@ -60,16 +60,13 @@ export function sanitizeHtml(html: string): string {
   sanitized = sanitized.replace(/vbscript:/gi, '');
 
   // Remove style tags with dangerous content (expression, behavior, etc.)
-  sanitized = sanitized.replace(
-    /<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi,
-    (match) => {
-      // Remove dangerous CSS properties
-      return match
-        .replace(/expression\s*\([^)]*\)/gi, '')
-        .replace(/behavior\s*:\s*[^;]+;?/gi, '')
-        .replace(/-moz-binding\s*:\s*[^;]+;?/gi, '');
-    }
-  );
+  sanitized = sanitized.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, (match) => {
+    // Remove dangerous CSS properties
+    return match
+      .replace(/expression\s*\([^)]*\)/gi, '')
+      .replace(/behavior\s*:\s*[^;]+;?/gi, '')
+      .replace(/-moz-binding\s*:\s*[^;]+;?/gi, '');
+  });
 
   return sanitized;
 }
@@ -119,9 +116,7 @@ export function sanitizeUrl(url: string): string {
 
   // Only allow http, https, mailto, tel protocols
   const allowedProtocols = ['http://', 'https://', 'mailto:', 'tel:'];
-  const hasAllowedProtocol = allowedProtocols.some((protocol) =>
-    lowerUrl.startsWith(protocol)
-  );
+  const hasAllowedProtocol = allowedProtocols.some((protocol) => lowerUrl.startsWith(protocol));
 
   if (!hasAllowedProtocol && /^https?:\/\//i.test(trimmedUrl)) {
     return trimmedUrl;
@@ -161,7 +156,7 @@ export function isContentSafe(content: string): boolean {
  * @param maxLength - Maximum length in characters
  * @returns Truncated content
  */
-export function truncateContent(content: string, maxLength: number = 1000): string {
+export function truncateContent(content: string, maxLength = 1000): string {
   if (!content || content.length <= maxLength) return content;
 
   // Truncate at the last complete word before maxLength

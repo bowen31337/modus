@@ -1,0 +1,111 @@
+{
+  "feature_id": 148,
+  "feature_description": "Content Security Policy headers are properly set",
+  "timestamp": "2026-01-18T20:00:00.000000Z",
+  "status": "passed",
+  "test_type": "e2e",
+  "test_command": "BASE_URL=http://localhost:3004 pnpm playwright test tests/e2e/csp-headers.spec.ts --project=chromium",
+  "results": {
+    "total": 17,
+    "passed": 17,
+    "failed": 0,
+    "skipped": 0
+  },
+  "tests": [
+    {
+      "name": "should have Content-Security-Policy header set",
+      "status": "passed"
+    },
+    {
+      "name": "CSP should restrict script sources to self",
+      "status": "passed"
+    },
+    {
+      "name": "CSP should restrict default sources to self",
+      "status": "passed"
+    },
+    {
+      "name": "CSP should restrict frame sources to none",
+      "status": "passed"
+    },
+    {
+      "name": "CSP should allow data URIs for images",
+      "status": "passed"
+    },
+    {
+      "name": "should have X-Frame-Options header set to DENY",
+      "status": "passed"
+    },
+    {
+      "name": "should have X-Content-Type-Options header set to nosniff",
+      "status": "passed"
+    },
+    {
+      "name": "should have Referrer-Policy header set",
+      "status": "passed"
+    },
+    {
+      "name": "should have Permissions-Policy header set",
+      "status": "passed"
+    },
+    {
+      "name": "application functions correctly with CSP enabled",
+      "status": "passed"
+    },
+    {
+      "name": "dashboard page loads correctly with CSP headers",
+      "status": "passed"
+    },
+    {
+      "name": "CSP allows inline styles for Tailwind CSS",
+      "status": "passed"
+    },
+    {
+      "name": "CSP allows inline scripts for Next.js runtime",
+      "status": "passed"
+    },
+    {
+      "name": "CSP blocks mixed content",
+      "status": "passed"
+    },
+    {
+      "name": "CSP upgrades insecure requests",
+      "status": "passed"
+    },
+    {
+      "name": "CSP restricts form actions to self",
+      "status": "passed"
+    },
+    {
+      "name": "CSP restricts base URI to self",
+      "status": "passed"
+    }
+  ],
+  "csp_headers_verified": {
+    "content-security-policy": true,
+    "x-frame-options": true,
+    "x-content-type-options": true,
+    "referrer-policy": true,
+    "permissions-policy": true
+  },
+  "implementation": {
+    "middleware_file": "apps/web/middleware.ts",
+    "test_file": "tests/e2e/csp-headers.spec.ts",
+    "directives": [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: https:",
+      "font-src 'self' data:",
+      "connect-src 'self'",
+      "frame-src 'none'",
+      "media-src 'none'",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "upgrade-insecure-requests",
+      "block-all-mixed-content"
+    ]
+  },
+  "notes": "All 17 CSP header tests passed. CSP headers are properly configured in middleware.ts and the application functions correctly with the security policy enabled."
+}

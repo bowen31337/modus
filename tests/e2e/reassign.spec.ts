@@ -12,6 +12,9 @@ test.describe('Post Reassignment', () => {
       },
     ]);
 
+    // Reset the data store to ensure clean state for each test
+    await page.request.post('/api/v1/test/reset');
+
     // Navigate to dashboard
     await page.goto('/dashboard');
 

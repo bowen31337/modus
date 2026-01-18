@@ -287,18 +287,13 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
             <span className="font-medium">Tips:</span>
             {ghostText ? (
               <>
-                Press{' '}
-                <KeyboardShortcut keys={['Tab']} variant="subtle" />{' '}
-                to accept,{' '}
-                <KeyboardShortcut keys={['Esc']} variant="subtle" />{' '}
-                to dismiss
+                Press <KeyboardShortcut keys={['Tab']} variant="subtle" /> to accept,{' '}
+                <KeyboardShortcut keys={['Esc']} variant="subtle" /> to dismiss
               </>
             ) : (
               <>
-                <KeyboardShortcut keys={['Ctrl', 'B']} variant="subtle" />{' '}
-                Bold,{' '}
-                <KeyboardShortcut keys={['Ctrl', 'I']} variant="subtle" />{' '}
-                Italic
+                <KeyboardShortcut keys={['Ctrl', 'B']} variant="subtle" /> Bold,{' '}
+                <KeyboardShortcut keys={['Ctrl', 'I']} variant="subtle" /> Italic
               </>
             )}
           </span>

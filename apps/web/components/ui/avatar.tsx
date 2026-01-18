@@ -7,8 +7,8 @@
  * Supports image avatars, fallback initials, and placeholder icons.
  */
 
-import { User } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { User } from 'lucide-react';
 
 // ============================================================================
 // Types
@@ -155,12 +155,7 @@ export function AvatarGroup({ avatars, max = 3, size = 'sm', className }: Avatar
     <div className={cn('flex items-center -space-x-2', className)} data-testid="avatar-group">
       {visible.map((avatar, index) => (
         <div key={index} className="relative" style={{ zIndex: max - index }}>
-          <Avatar
-            {...avatar}
-            size={size}
-            withBorder
-            className="ring-2 ring-background"
-          />
+          <Avatar {...avatar} size={size} withBorder className="ring-2 ring-background" />
         </div>
       ))}
       {remaining > 0 && (

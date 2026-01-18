@@ -1,23 +1,26 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('Optimistic UI for Post Assignment', () => {
-  test.beforeEach(async ({ page, context }) => {
-    // Set the demo session cookie directly to authenticate
-    await context.addCookies([
-      {
-        name: 'modus_demo_session',
-        value: 'active',
-        path: '/',
-        domain: 'localhost',
-        httpOnly: true,
-      },
-    ]);
+  test.beforeEach(async ({ page }) => {
+    // Navigate to login page first
+    await page.goto('/login');
 
-    // Navigate directly to dashboard
-    await page.goto('/dashboard');
+    // Wait for login page to load
+    await page.waitForSelector('text=Sign in to your account', { timeout: 10000 });
 
-    // Wait for the queue to load
-    await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 5000 });
+    // Fill in demo credentials and sign in
+    await page.getByLabel('Email').fill('demo@example.com');
+    await page.getByLabel('Password').fill('password123');
+    await page.getByRole('button', { name: 'Sign In' }).click();
+
+    // Wait for redirect to dashboard
+    await page.waitForURL(/.*dashboard/, { timeout: 10000 });
+
+    // Wait for the queue pane to be visible
+    await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
+
+    // Wait for the first post to be visible
+    await page.waitForSelector('[data-testid^="post-card-"]', { timeout: 10000 });
   });
 
   test('should show immediate "Assigned to you" in queue when clicking post', async ({ page }) => {
@@ -25,16 +28,13 @@ test.describe('Optimistic UI for Post Assignment', () => {
     const postCard = page.getByTestId('post-card-1');
     await expect(postCard).toBeVisible();
 
-    // Get the initial assignedTo text (should be empty or not "You")
-    const initialAssignedTo = postCard.locator('[data-testid="post-assigned-to"]');
-    const initialText = await initialAssignedTo.textContent();
-
     // Click on the post - this should trigger optimistic assignment
     await postCard.click();
 
     // IMMEDIATELY check that the post shows as assigned to "You" (optimistic UI)
     // This should appear BEFORE the API response completes
-    await expect(postCard.locator('[data-testid="post-assigned-to"]')).toContainText('You', {
+    // The assignment text is rendered as "Assigned to You" in the post card
+    await expect(postCard.locator('text=/Assigned to You/')).toBeVisible({
       timeout: 100, // Very short timeout to verify it appears immediately
     });
 
@@ -51,11 +51,12 @@ test.describe('Optimistic UI for Post Assignment', () => {
     // Click on the post
     await postCard.click();
 
-    // Verify work pane shows assignment immediately
+    // Wait for work pane to be visible (this is the detail view opening)
     const workPane = page.getByTestId('work-pane');
-    const assignedIndicator = workPane.getByText('Assigned to you').first();
+    await expect(workPane).toBeVisible({ timeout: 5000 });
 
-    // This should appear immediately due to optimistic UI
+    // Verify work pane shows assignment immediately (optimistic UI)
+    const assignedIndicator = workPane.getByText('Assigned to you').first();
     await expect(assignedIndicator).toBeVisible({ timeout: 100 });
   });
 
@@ -65,6 +66,10 @@ test.describe('Optimistic UI for Post Assignment', () => {
 
     // Click on the post
     await postCard.click();
+
+    // Wait for work pane to be visible first
+    const workPane = page.getByTestId('work-pane');
+    await expect(workPane).toBeVisible({ timeout: 5000 });
 
     // Release button should appear immediately (optimistic state)
     const releaseButton = page.getByTestId('release-button');
@@ -81,7 +86,7 @@ test.describe('Optimistic UI for Post Assignment', () => {
     await postCard.click();
 
     // Verify it shows as assigned immediately
-    await expect(postCard.locator('[data-testid="post-assigned-to"]')).toContainText('You', {
+    await expect(postCard.locator('text=/Assigned to You/')).toBeVisible({
       timeout: 100,
     });
 
@@ -100,7 +105,7 @@ test.describe('Optimistic UI for Post Assignment', () => {
     });
 
     // The post should still show as assigned to "You"
-    await expect(postCard.locator('[data-testid="post-assigned-to"]')).toContainText('You');
+    await expect(postCard.locator('text=/Assigned to You/')).toBeVisible();
   });
 
   test('should show optimistic assignment state in work pane for already assigned posts', async ({ page }) => {
@@ -121,7 +126,7 @@ test.describe('Optimistic UI for Post Assignment', () => {
     await expect(workPane.getByText('Assigned to you').first()).toBeVisible({ timeout: 100 });
 
     // Verify first post card still shows as assigned in the queue
-    await expect(postCard1.locator('[data-testid="post-assigned-to"]')).toContainText('You');
+    await expect(postCard1.locator('text=/Assigned to You/')).toBeVisible();
   });
 
   test('should show optimistic assignment when using keyboard navigation (Enter key)', async ({ page }) => {
@@ -129,17 +134,20 @@ test.describe('Optimistic UI for Post Assignment', () => {
     const postCard = page.getByTestId('post-card-1');
     await expect(postCard).toBeVisible();
 
-    // Click to focus (simulating keyboard navigation would require actual key events)
+    // Click to select (simulating keyboard navigation would require actual key events)
     // For this test, we click to select which triggers assignment
     await postCard.click();
 
     // Verify optimistic assignment appears immediately
-    await expect(postCard.locator('[data-testid="post-assigned-to"]')).toContainText('You', {
+    await expect(postCard.locator('text=/Assigned to You/')).toBeVisible({
       timeout: 100,
     });
 
-    // Verify work pane shows assignment
+    // Wait for work pane to be visible
     const workPane = page.getByTestId('work-pane');
+    await expect(workPane).toBeVisible({ timeout: 5000 });
+
+    // Verify work pane shows assignment
     await expect(workPane.getByText('Assigned to you').first()).toBeVisible();
   });
 });

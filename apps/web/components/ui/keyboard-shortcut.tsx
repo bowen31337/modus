@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { type HTMLAttributes } from 'react';
+import type { HTMLAttributes } from 'react';
 
 interface KeyboardShortcutProps extends HTMLAttributes<HTMLDivElement> {
   keys: string[];
@@ -34,8 +34,7 @@ export function KeyboardShortcut({
     <div
       className={cn(
         'inline-flex items-center gap-1 px-1.5 py-0.5 rounded border font-mono text-[10px] sm:text-xs',
-        variant === 'default' &&
-          'bg-background-tertiary border-border text-muted-foreground',
+        variant === 'default' && 'bg-background-tertiary border-border text-muted-foreground',
         variant === 'subtle' &&
           'bg-background-secondary/50 border-border/60 text-muted-foreground/70',
         className

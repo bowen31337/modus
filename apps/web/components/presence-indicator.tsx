@@ -7,10 +7,10 @@
  * Shows agent avatars, names, and status with visual indicators.
  */
 
-import React, { useEffect, useState } from 'react';
-import { Eye, Users } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { Avatar } from '@/components/ui/avatar';
+import { cn } from '@/lib/utils';
+import { Eye, Users } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 // ============================================================================
 // Types
@@ -159,15 +159,11 @@ export function PresenceIndicator({
                 presence.agent_status === 'offline' && 'bg-gray-400'
               )}
             />
-            <span className="text-xs font-medium text-foreground">
-              {presence.agent_name}
-            </span>
+            <span className="text-xs font-medium text-foreground">{presence.agent_name}</span>
           </div>
         ))}
         {otherAgents.length > 3 && (
-          <span className="text-xs text-muted-foreground">
-            +{otherAgents.length - 3} more
-          </span>
+          <span className="text-xs text-muted-foreground">+{otherAgents.length - 3} more</span>
         )}
       </div>
     </div>

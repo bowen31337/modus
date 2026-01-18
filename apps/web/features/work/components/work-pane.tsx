@@ -1,12 +1,12 @@
 'use client';
 
+import { PresenceIndicator } from '@/components/presence-indicator';
 import { InlineError } from '@/components/ui/error-state';
 import { KeyboardShortcut } from '@/components/ui/keyboard-shortcut';
 import { StatusBadge } from '@/components/ui/status-badge';
 import type { PostCardProps } from '@/features/queue/components/post-card';
 import { sanitizePostContent } from '@/lib/sanitize';
 import { cn } from '@/lib/utils';
-import { PresenceIndicator } from '@/components/presence-indicator';
 import {
   Button,
   Dialog,
@@ -477,6 +477,7 @@ export function WorkPane({
                         data-testid="reassign-button"
                         variant="outline"
                         size="default"
+                        title="Reassign to another agent (Cmd+Shift+A)"
                       >
                         <ArrowRightLeft size={14} />
                         Reassign
@@ -518,7 +519,10 @@ export function WorkPane({
             className="text-xl font-semibold text-foreground"
             data-testid="post-title"
             dangerouslySetInnerHTML={{
-              __html: sanitizePostContent(selectedPost.title, { allowHtml: false, escapeHtml: false }),
+              __html: sanitizePostContent(selectedPost.title, {
+                allowHtml: false,
+                escapeHtml: false,
+              }),
             }}
           />
           <div className="mt-2">
@@ -778,9 +782,7 @@ export function WorkPane({
                                   <div
                                     className={cn(
                                       'absolute left-2.5 top-6 w-3 h-3 rounded-full border-2 border-background-secondary z-10',
-                                      response.isInternalNote
-                                        ? 'bg-amber-500'
-                                        : 'bg-primary'
+                                      response.isInternalNote ? 'bg-amber-500' : 'bg-primary'
                                     )}
                                   />
 
@@ -951,22 +953,13 @@ export function WorkPane({
                       <div className="bg-background-tertiary rounded-lg p-3 border border-border/60">
                         <div className="flex items-center gap-2">
                           {selectedPost.sentiment === 'negative' && (
-                            <AlertCircle
-                              size={14}
-                              className="text-red-400"
-                            />
+                            <AlertCircle size={14} className="text-red-400" />
                           )}
                           {selectedPost.sentiment === 'positive' && (
-                            <CheckCircle2
-                              size={14}
-                              className="text-emerald-400"
-                            />
+                            <CheckCircle2 size={14} className="text-emerald-400" />
                           )}
                           {selectedPost.sentiment === 'neutral' && (
-                            <MessageSquare
-                              size={14}
-                              className="text-muted-foreground"
-                            />
+                            <MessageSquare size={14} className="text-muted-foreground" />
                           )}
                           <span
                             className={cn(
@@ -1112,7 +1105,11 @@ export function WorkPane({
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
-              <Button variant="outline" onClick={handleCancelDelete} data-testid="cancel-delete-button">
+              <Button
+                variant="outline"
+                onClick={handleCancelDelete}
+                data-testid="cancel-delete-button"
+              >
                 Cancel
               </Button>
               <Button

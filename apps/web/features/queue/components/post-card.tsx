@@ -1,11 +1,11 @@
 'use client';
 
+import { PresenceIndicator } from '@/components/presence-indicator';
 import { type PostStatus, StatusBadge } from '@/components/ui/status-badge';
 import { sanitizePostContent } from '@/lib/sanitize';
 import { cn } from '@/lib/utils';
 import { AlertCircle, CheckCircle2, Clock, MessageSquare, User } from 'lucide-react';
 import type { ViewMode } from './view-toggle';
-import { PresenceIndicator } from '@/components/presence-indicator';
 
 export type PriorityLevel = 'P1' | 'P2' | 'P3' | 'P4' | 'P5';
 export type { PostStatus } from '@/components/ui/status-badge';

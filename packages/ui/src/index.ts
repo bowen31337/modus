@@ -8,6 +8,7 @@ export * from './Separator';
 export * from './dropdown-menu';
 export * from './dialog';
 export * from './tooltip';
+export * from './Skeleton';
 
 // Export lucide icons
 export * from './Icon';

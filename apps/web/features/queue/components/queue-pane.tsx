@@ -80,7 +80,12 @@ const getCategoryIdByName = (categoryName: string): string | null => {
   return categoryMap[categoryName] || null;
 };
 
-export function QueuePane({ forceReset, onPostSelect, selectedPostId, assignedPosts }: QueuePaneProps) {
+export function QueuePane({
+  forceReset,
+  onPostSelect,
+  selectedPostId,
+  assignedPosts,
+}: QueuePaneProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -555,8 +560,9 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId, assignedPo
     if (filters.search) {
       const searchLower = filters.search.toLowerCase();
       const titleMatch = post.title?.toLowerCase().includes(searchLower);
-      const bodyMatch = post.excerpt?.toLowerCase().includes(searchLower) ||
-                       post.bodyContent?.toLowerCase().includes(searchLower);
+      const bodyMatch =
+        post.excerpt?.toLowerCase().includes(searchLower) ||
+        post.bodyContent?.toLowerCase().includes(searchLower);
       if (!titleMatch && !bodyMatch) {
         return false;
       }

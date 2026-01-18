@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { csrfErrorResponse, requireCsrfProtection } from '@/lib/csrf';
 import { dataStore } from '@/lib/data-store';
-import { requireCsrfProtection, csrfErrorResponse } from '@/lib/csrf';
+import { type NextRequest, NextResponse } from 'next/server';
 
 // ============================================================================
 // GET /api/v1/presence?post_id=xxx
@@ -13,10 +13,7 @@ export async function GET(request: NextRequest) {
     const postId = searchParams.get('post_id');
 
     if (!postId) {
-      return NextResponse.json(
-        { error: 'post_id query parameter is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'post_id query parameter is required' }, { status: 400 });
     }
 
     const presences = dataStore.getPresenceForPost(postId);
@@ -27,10 +24,7 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error('Error fetching presence:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch presence data' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch presence data' }, { status: 500 });
   }
 }
 
@@ -52,10 +46,7 @@ export async function POST(request: NextRequest) {
     const { post_id, agent_id, agent_name, agent_status } = body;
 
     if (!post_id || !agent_id) {
-      return NextResponse.json(
-        { error: 'post_id and agent_id are required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'post_id and agent_id are required' }, { status: 400 });
     }
 
     // Get agent info if not provided
@@ -65,29 +56,18 @@ export async function POST(request: NextRequest) {
     if (!agentName || !agentStatus) {
       const agent = dataStore.getAgent(agent_id);
       if (!agent) {
-        return NextResponse.json(
-          { error: 'Agent not found' },
-          { status: 404 }
-        );
+        return NextResponse.json({ error: 'Agent not found' }, { status: 404 });
       }
       agentName = agent.display_name;
       agentStatus = agent.status;
     }
 
-    const presence = dataStore.addPresence(
-      post_id,
-      agent_id,
-      agentName,
-      agent_status || 'online'
-    );
+    const presence = dataStore.addPresence(post_id, agent_id, agentName, agent_status || 'online');
 
     return NextResponse.json(presence, { status: 200 });
   } catch (error) {
     console.error('Error updating presence:', error);
-    return NextResponse.json(
-      { error: 'Failed to update presence' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to update presence' }, { status: 500 });
   }
 }
 
@@ -121,9 +101,6 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
     console.error('Error removing presence:', error);
-    return NextResponse.json(
-      { error: 'Failed to remove presence' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to remove presence' }, { status: 500 });
   }
 }

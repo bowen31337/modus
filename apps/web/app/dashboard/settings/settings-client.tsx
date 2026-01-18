@@ -2,11 +2,23 @@
 
 import { LeftRail } from '@/features/layout/components/left-rail';
 import { RulesManagement } from '@/features/rules/components/rules-management';
-import { ProfileSettings } from '@/features/settings/components/profile-settings';
 import { AgentManagement } from '@/features/settings/components/agent-management';
+import { AuditLog } from '@/features/settings/components/audit-log';
+import { ProfileSettings } from '@/features/settings/components/profile-settings';
 import { cn } from '@/lib/utils';
 import { Button } from '@modus/ui';
-import { ArrowLeft, Edit, FileText, Plus, Search, Shield, Trash2, User, Users } from 'lucide-react';
+import {
+  ArrowLeft,
+  Edit,
+  FileText,
+  History,
+  Plus,
+  Search,
+  Shield,
+  Trash2,
+  User,
+  Users,
+} from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -31,7 +43,9 @@ export interface Agent {
 }
 
 export default function SettingsClient() {
-  const [activeTab, setActiveTab] = useState<'profile' | 'templates' | 'rules' | 'agents'>('profile');
+  const [activeTab, setActiveTab] = useState<
+    'profile' | 'templates' | 'rules' | 'agents' | 'audit'
+  >('profile');
 
   // Mock current agent (in real app, this would come from auth/session)
   const [currentAgent, setCurrentAgent] = useState<Agent>({
@@ -346,6 +360,19 @@ export default function SettingsClient() {
               <Users size={16} />
               Agents
             </Button>
+            <Button
+              onClick={() => setActiveTab('audit')}
+              className={cn(
+                'px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-2',
+                activeTab === 'audit'
+                  ? 'bg-background-tertiary text-foreground font-medium'
+                  : 'text-muted-foreground hover:bg-background-tertiary/50'
+              )}
+              data-testid="tab-audit"
+            >
+              <History size={16} />
+              Audit Log
+            </Button>
           </div>
         </div>
 
@@ -477,6 +504,15 @@ export default function SettingsClient() {
         {activeTab === 'agents' && (
           <div className="flex-1 overflow-y-auto p-6">
             <AgentManagement agents={agents} onUpdateAgentRole={handleUpdateAgentRole} />
+          </div>
+        )}
+
+        {/* Audit Log Tab Content */}
+        {activeTab === 'audit' && (
+          <div className="flex-1 overflow-y-auto p-6">
+            <div className="max-w-6xl mx-auto">
+              <AuditLog currentAgentId={currentAgent.id} />
+            </div>
           </div>
         )}
       </div>

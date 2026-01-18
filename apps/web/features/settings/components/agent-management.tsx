@@ -1,9 +1,9 @@
 'use client';
 
+import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@modus/ui';
 import { ChevronDown, ChevronUp, Edit, Shield, Users } from 'lucide-react';
 import { useState } from 'react';
-import { Avatar } from '@/components/ui/avatar';
 
 export interface Agent {
   id: string;
@@ -137,7 +137,9 @@ export function AgentManagement({ agents, onUpdateAgentRole }: AgentManagementPr
                   {/* Agent Info */}
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <h4 className="text-sm font-semibold text-foreground">{agent.display_name}</h4>
+                      <h4 className="text-sm font-semibold text-foreground">
+                        {agent.display_name}
+                      </h4>
                       <span
                         className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium border ${roleColors[agent.role]}`}
                         data-testid={`agent-role-${agent.id}`}
@@ -151,7 +153,10 @@ export function AgentManagement({ agents, onUpdateAgentRole }: AgentManagementPr
 
                   {/* Status Text */}
                   <div className="text-right">
-                    <p className="text-xs text-muted-foreground capitalize" data-testid={`agent-status-text-${agent.id}`}>
+                    <p
+                      className="text-xs text-muted-foreground capitalize"
+                      data-testid={`agent-status-text-${agent.id}`}
+                    >
                       {agent.status}
                     </p>
                     <p className="text-xs text-muted-foreground">
@@ -163,7 +168,9 @@ export function AgentManagement({ agents, onUpdateAgentRole }: AgentManagementPr
                 {/* Action Buttons */}
                 <div className="flex items-center gap-2 ml-4">
                   <Button
-                    onClick={() => setExpandedAgentId(expandedAgentId === agent.id ? null : agent.id)}
+                    onClick={() =>
+                      setExpandedAgentId(expandedAgentId === agent.id ? null : agent.id)
+                    }
                     variant="ghost"
                     size="icon"
                     data-testid={`expand-agent-${agent.id}`}
@@ -180,7 +187,10 @@ export function AgentManagement({ agents, onUpdateAgentRole }: AgentManagementPr
 
             {/* Expanded Details */}
             {expandedAgentId === agent.id && (
-              <div className="border-t border-border p-4 bg-background-tertiary/30" data-testid={`agent-details-${agent.id}`}>
+              <div
+                className="border-t border-border p-4 bg-background-tertiary/30"
+                data-testid={`agent-details-${agent.id}`}
+              >
                 <div className="space-y-3">
                   {/* Account Information */}
                   <div className="grid grid-cols-2 gap-3 text-xs">

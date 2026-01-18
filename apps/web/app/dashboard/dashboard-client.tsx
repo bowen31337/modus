@@ -1,11 +1,14 @@
 'use client';
 
+import { NetworkStatusIndicator } from '@/components/network-status-indicator';
+import { TeamMetrics } from '@/features/dashboard/components/team-metrics';
 import { CommandPalette } from '@/features/layout/components/command-palette';
 import { LeftRail } from '@/features/layout/components/left-rail';
 import type { PostCardProps } from '@/features/queue/components/post-card';
 import { QueuePane } from '@/features/queue/components/queue-pane';
 import { WorkPane } from '@/features/work/components/work-pane';
 import { useToast } from '@/hooks/use-toast';
+import type { AgentRole } from '@modus/logic';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -24,6 +27,28 @@ export default function DashboardPage() {
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [forceReset, setForceReset] = useState(0);
   const [, setIsLoadingPost] = useState(false);
+  const [userRole, setUserRole] = useState<AgentRole | null>(null);
+  const [metricsRefreshKey] = useState(0);
+  const [isLoadingSession, setIsLoadingSession] = useState(true);
+
+  // Load user session on mount to get user role
+  useEffect(() => {
+    const fetchSession = async () => {
+      try {
+        const response = await fetch('/api/v1/auth/session');
+        if (response.ok) {
+          const data = await response.json();
+          setUserRole(data.data.role);
+        }
+      } catch (err) {
+        console.error('Error fetching session:', err);
+      } finally {
+        setIsLoadingSession(false);
+      }
+    };
+
+    fetchSession();
+  }, []);
 
   // Load post from URL query parameter on mount and on URL changes
   useEffect(() => {
@@ -323,6 +348,9 @@ export default function DashboardPage() {
     }
   };
 
+  // Check if user has permission to view team metrics (supervisor or admin)
+  const canViewTeamMetrics = userRole === 'supervisor' || userRole === 'admin';
+
   return (
     <main className="flex h-screen overflow-hidden" role="main">
       {/* Left Rail - 64px fixed width */}
@@ -348,12 +376,24 @@ export default function DashboardPage() {
         onReassign={handleReassign}
       />
 
+      {/* Team Metrics - Visible to supervisors and admins */}
+      {canViewTeamMetrics && !isLoadingSession && (
+        <div className="fixed bottom-4 right-4 z-40 w-96">
+          <TeamMetrics refreshKey={metricsRefreshKey} />
+        </div>
+      )}
+
       {/* Command Palette */}
       <CommandPalette
         isOpen={isCommandPaletteOpen}
         onClose={() => setIsCommandPaletteOpen(false)}
         onNavigate={handleCommandPaletteNavigate}
       />
+
+      {/* Network Status Indicator - positioned in top-right corner */}
+      <div className="fixed top-4 right-4 z-50">
+        <NetworkStatusIndicator showLabel={false} />
+      </div>
     </main>
   );
 }
