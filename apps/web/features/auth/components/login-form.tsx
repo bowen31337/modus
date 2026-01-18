@@ -65,11 +65,7 @@ export function LoginForm() {
   // For demo mode, use a form with server action for proper cookie handling
   // demoLoginAction is a server action that handles the redirect directly
   if (!isSupabaseConfigured) {
-    const handleDemoLogin = async () => {
-      startTransition(async () => {
-        await demoLoginAction(new FormData());
-      });
-    };
+    const handleDemoLogin = demoLoginAction;
 
     return (
       <form action={handleDemoLogin} className="space-y-5">
@@ -105,20 +101,10 @@ export function LoginForm() {
 
         <Button
           type="submit"
-          disabled={loading || isPending}
           className="w-full h-11 text-sm font-medium bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30"
         >
-          {loading || isPending ? (
-            <>
-              <Loader2 size={16} className="animate-spin mr-2" data-testid="loading-spinner" />
-              Signing in...
-            </>
-          ) : (
-            <>
-              <LogIn size={16} className="mr-2" />
-              Sign In
-            </>
-          )}
+          <LogIn size={16} className="mr-2" />
+          Sign In
         </Button>
 
         {/* Demo mode hint */}

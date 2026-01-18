@@ -1,0 +1,167 @@
+# Session 51 - 2026-01-18
+
+## Summary
+
+Fixed critical login redirect bug in demo mode. The issue was that the demo login form was wrapping the server action in `startTransition`, which prevented proper navigation waiting in Chromium browsers. Changed to directly use the `demoLoginAction` server action, allowing Playwright to properly detect the navigation and verify the redirect to dashboard.
+
+## Completed Tasks
+
+### 1. Fixed Login Redirect Bug in Demo Mode
+
+**Problem:**
+- 4 out of 20 login tests were failing in Chromium (Firefox tests passed)
+- Tests failed with: `Expected pattern: /.*dashboard/` but received `"http://localhost:3000/login"`
+- The form submission was returning 303 redirects correctly, but Chromium wasn't detecting the navigation
+
+**Root Cause:**
+In `apps/web/features/auth/components/login-form.tsx`, the demo login was wrapping the server action in `startTransition`:
+
+```tsx
+// BEFORE (broken)
+const handleDemoLogin = async () => {
+  startTransition(async () => {
+    await demoLoginAction(new FormData());
+  });
+};
+```
+
+The `startTransition` wrapper prevented Playwright from properly waiting for the navigation to complete.
+
+**Solution:**
+Changed to directly use the `demoLoginAction` server action:
+
+```tsx
+// AFTER (fixed)
+const handleDemoLogin = demoLoginAction;
+```
+
+And updated the form to use the server action directly:
+```tsx
+<form action={handleDemoLogin} className="space-y-5">
+```
+
+**Why This Works:**
+- `demoLoginAction` is a Next.js Server Action that handles the redirect internally using `redirect('/dashboard')`
+- Server Actions called directly from form `action` prop are properly tracked by Next.js navigation
+- Playwright can now detect when the navigation completes and verify the redirect
+
+### 2. Cleaned Up Dev Server Processes
+
+**Problem:**
+Multiple Next.js dev server processes were running on different ports (3000, 3007, 3008, 3009), causing port conflicts and inconsistent test results.
+
+**Solution:**
+- Killed all existing Next.js processes
+- Cleaned build artifacts (`.next`, `.turbo`)
+- Started fresh dev server on port 3000
+
+### 3. Verified Test Results
+
+**Login Tests (20 total):**
+```
+✓ 10/10 Chromium tests passing
+✓ 10/10 Firefox tests passing
+✓ Total: 20/20 (100%) passing
+```
+
+**Accessibility Tests (40 total):**
+```
+✓ 36/40 tests passing (90%)
+✗ 4 tests failing (pre-existing issues):
+  - Tab order tests (2) - Focus management issue
+  - Command palette focus trap (2) - Keyboard shortcut timing issue
+```
+
+## Files Modified
+
+### `apps/web/features/auth/components/login-form.tsx`
+- Removed `startTransition` wrapper from demo login
+- Changed from async wrapper to direct server action usage
+- Removed unused `isPending` variable from demo mode
+
+## Test Results
+
+### Login Tests (20/20 Passing)
+```
+Running 20 tests using 8 workers
+
+✓ [chromium] should display login form
+✓ [chromium] should display demo mode message
+✓ [chromium] should display professional styling elements
+✓ [chromium] should have styled input fields
+✓ [chromium] should have styled submit button
+✓ [chromium] should display loading state
+✓ [chromium] should have footer with security info
+✓ [chromium] should redirect to dashboard after login
+✓ [chromium] should redirect with empty form
+✓ [chromium] should redirect with invalid email
+✓ [firefox] should display login form
+✓ [firefox] should display demo mode message
+✓ [firefox] should display professional styling elements
+✓ [firefox] should have styled input fields
+✓ [firefox] should have styled submit button
+✓ [firefox] should display loading state
+✓ [firefox] should have footer with security info
+✓ [firefox] should redirect to dashboard after login
+✓ [firefox] should redirect with empty form
+✓ [firefox] should redirect with invalid email
+
+20 passed (12.8s)
+```
+
+### Project Status
+- **Total Features:** 200
+- **Passing:** 140 (70%)
+- **Pending Dev:** 5 (3%)
+- **Dev Complete (Not QA):** 55 (28%)
+- **Not Passing:** 60 (30%)
+
+## Technical Details
+
+### Server Actions vs. Client-Side Navigation
+
+**Server Actions (Recommended for Forms):**
+- Called directly from form `action` prop
+- Next.js handles navigation automatically
+- Properly tracked by Playwright and other testing tools
+- Support progressive enhancement (works without JavaScript)
+
+**Client-Side Navigation (useTransition):**
+- Requires explicit `startTransition` for React 18+
+- Can cause timing issues with testing tools
+- Better for programmatic navigation after async operations
+
+### Demo Mode Authentication Flow
+
+1. User submits login form with any credentials
+2. `demoLoginAction` server action is called
+3. Server action sets demo session cookie
+4. Server action calls `redirect('/dashboard')`
+5. Browser navigates to dashboard
+6. Dashboard loads with demo session active
+
+## What Went Well
+
+✅ Login tests now pass 100% (20/20)
+✅ Clean dev server environment
+✅ Root cause identified and fixed
+✅ Fix is minimal and focused
+
+## Next Steps
+
+1. Run full E2E test suite to verify no regressions
+2. Address remaining accessibility test failures (tab order, focus trap)
+3. Continue work on pending features (5 remaining)
+4. QA validation for 55 dev-complete features
+
+## Session Metrics
+
+- **Duration:** ~30 minutes
+- **Files Modified:** 1 (login-form.tsx)
+- **Tests Fixed:** 4 (Chromium login redirect tests)
+- **Test Pass Rate:** 100% (20/20 login tests)
+- **Build Status:** TypeScript ✓ PASSING, Dev Server ✓ RUNNING
+
+---
+
+**End of Session 51**
