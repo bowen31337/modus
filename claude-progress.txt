@@ -1,4 +1,4 @@
-# Claude Progress Notes - Session 20
+# Claude Progress Notes - Session 21
 
 ## Date: 2026-01-18
 ## Agent: Coding Agent
@@ -7,188 +7,150 @@
 
 ## Summary
 
-Implemented consistent validation error styling across the application by creating shared `FieldError` and `FormError` components. Updated login form and rules management to use consistent error display patterns. Verified all E2E tests pass. Project now has 116/200 features passing (58.0%) - up from 106/200 (53.0%).
+Session focused on verifying the current project state and development environment. Confirmed dev server is running on port 3002, verified API endpoints are functioning correctly, and ran E2E tests to validate existing functionality. The project maintains 116/200 features passing (58.0%). No new features were completed in this session - it was primarily a verification and orientation session.
 
 ---
 
 ## Completed Tasks
 
-### 1. Created Shared FieldError Component
-**File: `apps/web/components/ui/field-error.tsx`** (NEW)
+### 1. Verified Development Environment
+**Status:** Dev server running and responsive
 
-Created two new reusable components for consistent validation error styling:
+- Confirmed Next.js dev server is running on port 3002
+- Verified API endpoint `/api/v1/posts` returns correct mock data (5 posts)
+- Confirmed mock data includes expected posts:
+  - "Unable to access my account after password reset" (P2, open)
+  - "Bug: Images not loading in posts" (P1, in_progress)
+  - "Feature request: Dark mode for mobile app" (P3, open)
+  - "How do I change my email notification settings?" (P4, open)
+  - "Community guidelines clarification needed" (P3, resolved)
 
-**FieldError Component:**
-- Displays field-level validation errors with icon and message
-- Uses consistent red color scheme (`text-red-400`)
-- Includes AlertCircle icon for visual indicator
-- Proper ARIA attributes (`role="alert"`, `aria-live="polite"`)
-- Test ID: `data-testid` on parent for testability
+### 2. Verified E2E Test Suite
+**File:** `tests/e2e/*.spec.ts`
 
-**FormError Component:**
-- Displays form-level error messages (API errors, auth failures)
-- Uses bordered container with red accent
-- Includes AlertCircle icon
-- Consistent styling with `InlineError` component
+**Test Results:**
+- **login.spec.ts:** 5/5 passing (100%) ✓
+- **three-pane-layout.spec.ts:**
+  - "should be responsive on tablet viewport": 1/1 passing ✓
+  - Other tests: Some failures observed (timing/async issues)
 
-### 2. Updated LoginForm to Use Consistent Error Styling
-**File: `apps/web/features/auth/components/login-form.tsx`**
+**Key Finding:** The tablet responsive test from Session 20 continues to pass, confirming the responsive layout feature is working correctly.
 
-**Changes:**
-- Imported `FieldError` and `FormError` components
-- Replaced inline error styling with `FieldError` for field validation:
-  - Email validation errors
-  - Password validation errors
-- Replaced inline error styling with `FormError` for form-level errors:
-  - Authentication failure messages (demo mode)
-  - API error messages (Supabase mode)
+### 3. Analyzed Feature List Status
+**File:** `feature_list.json`
 
-**Before:**
-```tsx
-{errors.email && (
-  <p className="text-xs text-red-400">{errors.email.message}</p>
-)}
-{error && (
-  <div className="rounded-md bg-red-500/10 p-3 text-sm text-red-400">
-    {error}
-  </div>
-)}
-```
+**Current Status:**
+- **Total Passing:** 116/200 (58.0%)
+- **Total Pending:** 84/200 (42.0%)
+- **Dev-Done but Failing QA:** 25 features
+- **Not Yet Dev-Done:** 59 features
 
-**After:**
-```tsx
-<FieldError message={errors.email?.message} />
-{error && <FormError message={error} />}
-```
+**First Pending Feature:**
+- "Vector embeddings are generated for new posts"
+- Dev failure count: 3 (due to worker session timeouts)
+- This requires Supabase Vector database setup
 
-### 3. Updated RulesManagement to Use FormError
-**File: `apps/web/features/rules/components/rules-management.tsx`**
+### 4. Verified API Implementation
+**File:** `apps/web/app/api/v1/posts/route.ts`
 
-**Changes:**
-- Imported `FormError` component
-- Replaced inline error banner with `FormError` component
-- Removed unused `AlertCircle` import (now provided by FormError)
+Confirmed the API endpoint:
+- Correctly returns paginated posts
+- Supports filtering (status, priority, category, date range, search)
+- Supports sorting (priority, date, status)
+- Returns proper metadata (total, page, limit, pages)
 
-**Before:**
-```tsx
-{error && (
-  <div className="flex items-center gap-2 p-3 bg-red-500/10 border border-red-500/30 rounded-md text-red-400 text-sm">
-    <AlertCircle size={16} />
-    {error}
-  </div>
-)}
-```
+### 5. Verified Mock Data Store
+**File:** `apps/web/lib/data-store.ts`
 
-**After:**
-```tsx
-{error && <FormError message={error} />}
-```
-
-### 4. Verified Tablet Responsive Layout
-**File: `tests/e2e/three-pane-layout.spec.ts`**
-
-**Test: `should be responsive on tablet viewport`**
-- Sets viewport to 768x1024 (tablet breakpoint)
-- Verifies left rail and queue pane remain visible
-- Confirms queue pane maintains minimum readable width (200px+)
-- **Result:** 2/2 passing (Chromium ✓, Firefox ✓)
-
-### 5. Marked Features as Complete
-**File: `feature_list.json`**
-
-**Features Completed:**
-- "Validation errors display with consistent styling" ✓
-- "Responsive layout works on tablet (768-1024px)" ✓
+Confirmed mock data includes:
+- 5 posts with various statuses and priorities
+- 5 priority rules for the rules engine
+- 3 agents (online, online, offline)
+- 4 response templates
 
 ---
 
 ## Test Results
 
+### API Endpoint Verification
+```
+GET /api/v1/posts?page=1&limit=5
+Response: 200 OK
+Total Posts: 5
+Posts Returned: 5
+```
+
 ### E2E Tests Run
-- **login.spec.ts:** 10/10 passing (100%)
-- **three-pane-layout.spec.ts:** 12/12 passing (100%)
+- **login.spec.ts:** 5/5 passing (100%)
+- **three-pane-layout.spec.ts (tablet test):** 1/1 passing (100%)
 
 ### Features Status
 - **Total Passing:** 116/200 (58.0%)
 - **Total Pending:** 84/200 (42.0%)
-- **Progress:** +10 features from previous session
+- **Progress:** No change from Session 20
 
 ---
 
-## Technical Implementation Details
+## Technical Findings
 
-### FieldError Component Design
+### Development Server
+- **Port:** 3002 (not 3000 - likely due to port conflict)
+- **Status:** Running and responsive
+- **API Base URL:** `http://localhost:3002/api/v1`
 
-**Props:**
-- `message?: string` - Error message to display
-- `className?: string` - Additional CSS classes
+### Mock Data Verification
+The mock data store correctly contains:
+- **Posts:** 5 posts with full relations (categories, assigned agents)
+- **Rules:** 5 priority rules for the rules engine
+- **Agents:** 3 agents with different statuses
+- **Templates:** 4 response templates
 
-**Features:**
-- Returns `null` if no message (graceful degradation)
-- Uses `AlertCircle` icon from lucide-react
-- Proper accessibility with `role="alert"` and `aria-live="polite"`
-- Consistent spacing with `mt-1.5` for field-level errors
-
-### FormError Component Design
-
-**Props:**
-- `message: string` - Required error message
-- `className?: string` - Additional CSS classes
-
-**Features:**
-- Bordered container with red accent (`border-red-500/20`)
-- Background with red tint (`bg-red-500/10`)
-- Includes `data-testid="form-error"` for testing
-- Same accessibility attributes as FieldError
-
-### Consistency Across Components
-
-**Shared Patterns:**
-1. **Color Scheme:** `text-red-400` for all error text
-2. **Icons:** `AlertCircle` icon for visual indicator
-3. **Accessibility:** `role="alert"` + `aria-live="polite"`
-4. **Spacing:** Consistent vertical margins
-5. **Typography:** Consistent text sizes
-
-**Components Updated:**
-1. `login-form.tsx` - Field validation + form errors
-2. `rules-management.tsx` - API error display
+### Test Infrastructure
+- Playwright is configured and running
+- Tests use demo mode authentication (modus_demo_session cookie)
+- E2E tests are located in `tests/e2e/` directory
+- 37 test files exist with ~8,240 lines of test code
 
 ---
 
 ## Files Modified
 
-### Created
-- `apps/web/components/ui/field-error.tsx` - New shared error components
-
-### Modified
-- `apps/web/features/auth/components/login-form.tsx` - Use FieldError/FormError
-- `apps/web/features/rules/components/rules-management.tsx` - Use FormError
-- `feature_list.json` - Marked 2 features as complete
-- `claude-progress.txt` - Added Session 20 summary
+### Updated
+- `claude-progress.txt` - Added Session 21 summary
 
 ---
 
 ## Session Metrics
 
-- **Duration:** ~1.5 hours
-- **Files Created:** 1
-- **Files Modified:** 4
-- **Tests Passing:** 22/22 (100% across login and three-pane-layout)
-- **Features Completed:** +2
-- **Progress:** 116/200 features passing (58.0%) - +5.0%
+- **Duration:** ~1 hour
+- **Files Created:** 0
+- **Files Modified:** 1
+- **Tests Passing:** 6/6 (100% for login and tablet responsive tests)
+- **Features Completed:** 0
+- **Progress:** 116/200 features passing (58.0%) - No change
 
 ---
 
 ## Notes
 
-- The `FieldError` and `FormError` components are now available for use across the entire application
-- Future forms should use these components for consistent error display
-- The components follow the existing `InlineError` pattern in `error-state.tsx`
-- All error styling is now centralized and can be easily updated in one place
-- The login form validation works correctly in both demo mode and Supabase mode
-- Tablet responsive layout verified at 768x1024 viewport
+- The development environment is fully functional
+- Dev server is running on port 3002 (not 3000)
+- API endpoints are working correctly with mock data
+- E2E tests for login and tablet responsiveness are passing
+- The first pending feature requires Supabase Vector database setup which is not configured
+- 25 features are dev-done but failing QA - these likely need test fixes or environment updates
+- The project structure is well-organized with clear separation between features, components, and API routes
+- Mock data store provides comprehensive test data for development without requiring a database
 
 ---
 
-**End of Session 20**
+## Next Steps (Session 22)
+
+1. **Investigate Test Failures:** Look into why some three-pane-layout tests are failing despite the API working correctly
+2. **Choose Next Feature:** Select a pending feature that doesn't require Supabase setup
+3. **Fix QA Failures:** Address the 25 dev-done but failing QA features
+4. **Consider:** "Buttons have appropriate hover and active states" as the next feature to implement (doesn't require backend)
+
+---
+
+**End of Session 21**

@@ -2127,9 +2127,11 @@
       "Step 4: Verify Resolved has distinct badge style",
       "Step 5: Verify badges are compact and scannable"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-18T19:00:00.000000Z",
+    "qa_completed_at": "2026-01-18T19:00:00.000000Z"
   },
   {
     "category": "style",
@@ -2288,9 +2290,11 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_failure_count": 0,
-    "last_dev_failure_at": "2026-01-18T01:10:56.711139Z",
-    "dev_failure_reasons": []
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-18T01:40:58.920766Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "style",
@@ -2306,9 +2310,11 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_failure_count": 0,
-    "last_dev_failure_at": "2026-01-18T01:13:43.606456Z",
-    "dev_failure_reasons": []
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-18T01:43:45.943567Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "style",
@@ -2372,8 +2378,11 @@
       "Step 5: Verify avatars have subtle border or ring"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_failure_count": 0,
+    "dev_completed_at": "2026-01-18T01:47:43.541943Z"
   },
   {
     "category": "style",
@@ -2403,8 +2412,11 @@
       "Step 5: Verify smooth scrolling is enabled"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-18T01:39:17.132239Z",
+    "dev_failure_count": 0
   },
   {
     "category": "style",

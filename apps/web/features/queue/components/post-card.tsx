@@ -3,9 +3,10 @@
 import { Clock, User, MessageSquare, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { ViewMode } from './view-toggle';
+import { StatusBadge, type PostStatus } from '@/components/ui/status-badge';
 
 export type PriorityLevel = 'P1' | 'P2' | 'P3' | 'P4' | 'P5';
-export type PostStatus = 'open' | 'in_progress' | 'resolved';
+export type { PostStatus } from '@/components/ui/status-badge';
 export type SentimentLabel = 'negative' | 'neutral' | 'positive';
 
 export interface PostCardProps {
@@ -47,12 +48,6 @@ const sentimentColors: Record<SentimentLabel, string> = {
   positive: 'text-emerald-400',
 };
 
-const statusColors: Record<PostStatus, string> = {
-  open: 'bg-background-tertiary text-foreground-secondary',
-  in_progress: 'bg-primary/20 text-primary',
-  resolved: 'bg-emerald-500/20 text-emerald-400',
-};
-
 export function PostCard({
   id,
   title,
@@ -83,7 +78,7 @@ export function PostCard({
         aria-pressed={isSelected}
         data-testid={`post-card-${id}`}
         className={cn(
-          'group relative flex flex-col w-full bg-background-secondary hover:bg-background-tertiary transition-colors cursor-pointer text-left border border-border rounded-lg overflow-hidden',
+          'group relative flex flex-col w-full bg-background-secondary hover:bg-background-tertiary active:bg-background-hover active:scale-[0.99] transition-all duration-150 cursor-pointer text-left border border-border rounded-lg overflow-hidden',
           isSelected && 'ring-2 ring-primary',
           isKeyboardFocused && 'ring-2 ring-primary ring-offset-2 ring-offset-background'
         )}
@@ -100,14 +95,7 @@ export function PostCard({
             </h3>
 
             {/* Status Badge */}
-            <span
-              className={cn(
-                'text-[10px] px-1.5 py-0.5 rounded font-medium whitespace-nowrap',
-                statusColors[status]
-              )}
-            >
-              {status === 'open' ? 'Open' : status === 'in_progress' ? 'In Progress' : 'Resolved'}
-            </span>
+            <StatusBadge status={status} />
           </div>
 
           {/* Excerpt */}
@@ -184,7 +172,7 @@ export function PostCard({
       aria-pressed={isSelected}
       data-testid={`post-card-${id}`}
       className={cn(
-        'group relative flex w-full border-b border-border bg-background-secondary hover:bg-background-tertiary transition-colors cursor-pointer text-left',
+        'group relative flex w-full border-b border-border bg-background-secondary hover:bg-background-tertiary active:bg-background-hover active:scale-[0.995] transition-all duration-150 cursor-pointer text-left',
         isSelected && 'bg-background-tertiary ring-1 ring-primary inset-0',
         isKeyboardFocused && 'outline-none ring-2 ring-primary ring-offset-2 ring-offset-background'
       )}
@@ -201,14 +189,7 @@ export function PostCard({
           </h3>
 
           {/* Status Badge */}
-          <span
-            className={cn(
-              'text-[10px] px-1.5 py-0.5 rounded font-medium whitespace-nowrap',
-              statusColors[status]
-            )}
-          >
-            {status === 'open' ? 'Open' : status === 'in_progress' ? 'In Progress' : 'Resolved'}
-          </span>
+          <StatusBadge status={status} />
         </div>
 
         {/* Excerpt */}

@@ -10,6 +10,8 @@ import { useAiSuggestion } from '../hooks/use-ai-suggestion';
 import { ReassignDialog } from './reassign-dialog';
 import { InlineError } from '@/components/ui/error-state';
 import { ResponseSkeleton } from './response-skeleton';
+import { Button } from '@modus/ui';
+import { StatusBadge } from '@/components/ui/status-badge';
 
 interface WorkPaneProps {
   selectedPost: PostCardProps | null;
@@ -35,12 +37,6 @@ const sentimentColors: Record<string, string> = {
   neutral: 'text-foreground-muted bg-background-tertiary',
   positive: 'text-emerald-400 bg-emerald-500/10',
 } as const;
-
-const statusColors: Record<string, string> = {
-  open: 'bg-background-tertiary text-foreground-secondary',
-  in_progress: 'bg-primary/20 text-primary',
-  resolved: 'bg-emerald-500/20 text-emerald-400',
-};
 
 export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignToMe, onRelease, onResolve, onCloseDetail, onReassign }: WorkPaneProps) {
   const [responseContent, setResponseContent] = useState('');
@@ -290,14 +286,7 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
             >
               {selectedPost.priority}
             </span>
-            <span
-              className={cn(
-                'text-xs px-2 py-0.5 rounded font-medium capitalize',
-                statusColors[selectedPost.status]
-              )}
-            >
-              {selectedPost.status === 'open' ? 'Open' : selectedPost.status === 'in_progress' ? 'In Progress' : 'Resolved'}
-            </span>
+            <StatusBadge status={selectedPost.status} size="sm" />
             {isAssignedToMe && (
               <span className="text-xs px-2 py-0.5 rounded bg-primary/20 text-primary flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary" />
@@ -307,44 +296,44 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
           </div>
           <div className="flex items-center gap-2">
             {!isAssignedToMe ? (
-              <button
-                type="button"
+              <Button
                 onClick={onAssignToMe}
-                className="px-3 py-1.5 bg-primary hover:bg-primary/90 text-white text-sm rounded-md transition-colors"
                 data-testid="assign-to-me-button"
+                variant="default"
+                size="default"
               >
                 Assign to Me
-              </button>
+              </Button>
             ) : (
               <>
-                <button
-                  type="button"
+                <Button
                   onClick={() => setIsReassignModalOpen(true)}
-                  className="px-3 py-1.5 bg-background-tertiary hover:bg-background-tertiary/80 text-foreground text-sm rounded-md transition-colors border border-border flex items-center gap-2"
                   data-testid="reassign-button"
+                  variant="outline"
+                  size="default"
                   title="Reassign to another agent (Cmd+Shift+A)"
                 >
                   <ArrowRightLeft size={14} />
                   Reassign
-                </button>
-                <button
-                  type="button"
+                </Button>
+                <Button
                   onClick={onRelease}
-                  className="px-3 py-1.5 bg-background-tertiary hover:bg-background-tertiary/80 text-foreground text-sm rounded-md transition-colors border border-border"
                   data-testid="release-button"
+                  variant="outline"
+                  size="default"
                 >
                   Release
-                </button>
+                </Button>
               </>
             )}
-            <button
-              type="button"
+            <Button
               onClick={onResolve}
-              className="px-3 py-1.5 bg-background-tertiary hover:bg-background-tertiary/80 text-foreground text-sm rounded-md transition-colors border border-border"
               data-testid="resolve-button"
+              variant="outline"
+              size="default"
             >
               Resolve
-            </button>
+            </Button>
           </div>
         </div>
         <h1 className="text-xl font-semibold text-foreground" data-testid="post-title">
@@ -408,15 +397,11 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
                         category: selectedPost.category?.name,
                       }}
                     />
-                    <button
+                    <Button
                       onClick={handleAiSuggest}
                       disabled={aiSuggestion.isStreaming}
-                      className={cn(
-                        'px-3 py-1.5 text-foreground text-sm rounded-md transition-colors border flex items-center gap-2',
-                        aiSuggestion.isStreaming
-                          ? 'bg-primary/20 cursor-wait'
-                          : 'bg-background-tertiary hover:bg-background-tertiary/80 border-border'
-                      )}
+                      variant="secondary"
+                      size="default"
                       data-testid="ai-suggest-button"
                     >
                       {aiSuggestion.isStreaming ? (
@@ -429,17 +414,13 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
                           ✨ AI Suggest
                         </>
                       )}
-                    </button>
+                    </Button>
                   </div>
-                  <button
+                  <Button
                     onClick={handleSendResponse}
                     disabled={!responseContent.trim() || submittingResponse}
-                    className={cn(
-                      'px-4 py-1.5 text-white text-sm rounded-md transition-colors flex items-center gap-2',
-                      responseContent.trim() && !submittingResponse
-                        ? 'bg-emerald-500 hover:bg-emerald-600'
-                        : 'bg-emerald-500/50 cursor-not-allowed'
-                    )}
+                    variant="default"
+                    size="default"
                     data-testid="send-response-button"
                   >
                     {submittingResponse ? (
@@ -450,7 +431,7 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
                     ) : (
                       isInternalNote ? 'Add Note' : 'Send Response'
                     )}
-                  </button>
+                  </Button>
                 </div>
                 <div className="text-xs text-muted-foreground mt-2">
                   Tip: Press <kbd className="px-1 py-0.5 bg-background-tertiary rounded text-foreground">Cmd+Enter</kbd> to {isInternalNote ? 'add note' : 'send response'} and resolve

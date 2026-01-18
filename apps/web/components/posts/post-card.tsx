@@ -1,8 +1,9 @@
 import { Clock, User, MessageSquare, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { StatusBadge, type PostStatus } from '@/components/ui/status-badge';
 
 export type PriorityLevel = 'P1' | 'P2' | 'P3' | 'P4' | 'P5';
-export type PostStatus = 'open' | 'in_progress' | 'resolved';
+export type { PostStatus } from '@/components/ui/status-badge';
 export type SentimentLabel = 'negative' | 'neutral' | 'positive';
 
 export interface PostCardProps {
@@ -39,12 +40,6 @@ const sentimentColors: Record<SentimentLabel, string> = {
   negative: 'text-red-400',
   neutral: 'text-foreground-muted',
   positive: 'text-green-400',
-};
-
-const statusColors: Record<PostStatus, string> = {
-  open: 'bg-background-tertiary text-foreground-secondary',
-  in_progress: 'bg-primary/20 text-primary',
-  resolved: 'bg-emerald-500/20 text-emerald-400',
 };
 
 export function PostCard({
@@ -92,14 +87,7 @@ export function PostCard({
           </h3>
 
           {/* Status Badge */}
-          <span
-            className={cn(
-              'text-[10px] px-1.5 py-0.5 rounded font-medium whitespace-nowrap',
-              statusColors[status]
-            )}
-          >
-            {status === 'open' ? 'Open' : status === 'in_progress' ? 'In Progress' : 'Resolved'}
-          </span>
+          <StatusBadge status={status} />
         </div>
 
         {/* Excerpt */}
