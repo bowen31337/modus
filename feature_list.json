@@ -3335,8 +3335,11 @@
       "Step 5: Verify query performance meets targets"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-18T06:23:08.505157Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -3350,7 +3353,13 @@
     ],
     "passes": false,
     "is_dev_done": false,
-    "is_qa_passed": false
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-18T06:26:45.112312Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -3363,8 +3372,11 @@
       "Step 5: Verify Realtime connections remain stable"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-18T06:26:52.229878Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
