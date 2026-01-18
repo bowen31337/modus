@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { CommandPalette } from '@/features/layout/components/command-palette';
 import { LeftRail } from '@/features/layout/components/left-rail';
+import type { PostCardProps } from '@/features/queue/components/post-card';
 import { QueuePane } from '@/features/queue/components/queue-pane';
 import { WorkPane } from '@/features/work/components/work-pane';
-import { CommandPalette } from '@/features/layout/components/command-palette';
-import { type PostCardProps } from '@/features/queue/components/post-card';
+import { useToast } from '@/hooks/use-toast';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 // Mock current agent for demo purposes
 const CURRENT_AGENT = {
@@ -17,11 +18,12 @@ const CURRENT_AGENT = {
 export default function DashboardPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { success, error, info } = useToast();
   const [selectedPost, setSelectedPost] = useState<PostCardProps | null>(null);
   const [assignedPosts, setAssignedPosts] = useState<Set<string>>(new Set());
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [forceReset, setForceReset] = useState(0);
-  const [isLoadingPost, setIsLoadingPost] = useState(false);
+  const [, setIsLoadingPost] = useState(false);
 
   // Load post from URL query parameter on mount and on URL changes
   useEffect(() => {
@@ -31,13 +33,13 @@ export default function DashboardPage() {
       // Load the post from the API
       setIsLoadingPost(true);
       fetch(`/api/v1/posts/${postId}`)
-        .then(res => {
+        .then((res) => {
           if (res.ok) {
             return res.json();
           }
           throw new Error('Post not found');
         })
-        .then(data => {
+        .then((data) => {
           const apiPost = data.data;
           const post: PostCardProps = {
             id: apiPost.id,
@@ -58,8 +60,9 @@ export default function DashboardPage() {
           };
           setSelectedPost(post);
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Error loading post from URL:', error);
+          error('Post not found', 'The post you requested could not be loaded.');
           // Clear the invalid post ID from URL
           const params = new URLSearchParams(searchParams);
           params.delete('post');
@@ -130,12 +133,15 @@ export default function DashboardPage() {
         });
 
         if (response.ok) {
-          setAssignedPosts(prev => new Set(prev).add(post.id));
+          setAssignedPosts((prev) => new Set(prev).add(post.id));
+          success('Post assigned', `${post.title.substring(0, 40)}${post.title.length > 40 ? '...' : ''} assigned to you.`);
         } else {
           console.error('Failed to assign post:', await response.text());
+          error('Assignment failed', 'Could not assign this post. Please try again.');
         }
-      } catch (error) {
-        console.error('Error assigning post:', error);
+      } catch (err) {
+        console.error('Error assigning post:', err);
+        error('Assignment failed', 'An error occurred while assigning the post.');
       }
     }
     setSelectedPost(post);
@@ -157,12 +163,15 @@ export default function DashboardPage() {
         });
 
         if (response.ok) {
-          setAssignedPosts(prev => new Set(prev).add(selectedPost.id));
+          setAssignedPosts((prev) => new Set(prev).add(selectedPost.id));
+          success('Post assigned', `${selectedPost.title.substring(0, 40)}${selectedPost.title.length > 40 ? '...' : ''} assigned to you.`);
         } else {
           console.error('Failed to assign post:', await response.text());
+          error('Assignment failed', 'Could not assign this post. Please try again.');
         }
-      } catch (error) {
-        console.error('Error assigning post:', error);
+      } catch (err) {
+        console.error('Error assigning post:', err);
+        error('Assignment failed', 'An error occurred while assigning the post.');
       }
     }
   };
@@ -175,16 +184,19 @@ export default function DashboardPage() {
         });
 
         if (response.ok) {
-          setAssignedPosts(prev => {
+          setAssignedPosts((prev) => {
             const newSet = new Set(prev);
             newSet.delete(selectedPost.id);
             return newSet;
           });
+          info('Post released', 'The post has been released back to the queue.');
         } else {
           console.error('Failed to release post:', await response.text());
+          error('Release failed', 'Could not release this post. Please try again.');
         }
-      } catch (error) {
-        console.error('Error releasing post:', error);
+      } catch (err) {
+        console.error('Error releasing post:', err);
+        error('Release failed', 'An error occurred while releasing the post.');
       }
     }
     // Note: We keep the detail view open after release so the user can see
@@ -196,7 +208,7 @@ export default function DashboardPage() {
     // Close the detail view and return to queue (called by Escape key)
     setSelectedPost(null);
     // Force QueuePane to reset its keyboard focus state
-    setForceReset(prev => prev + 1);
+    setForceReset((prev) => prev + 1);
 
     // Remove post from URL (push to history for proper back/forward navigation)
     const params = new URLSearchParams(searchParams);
@@ -218,6 +230,7 @@ export default function DashboardPage() {
         // Successfully resolved - post will be updated in queue via refetch
         // For now, just clear the selected post
         setSelectedPost(null);
+        success('Post resolved', 'The post has been marked as resolved.');
 
         // Remove post from URL
         const params = new URLSearchParams(searchParams);
@@ -225,9 +238,11 @@ export default function DashboardPage() {
         router.replace(`/dashboard?${params.toString()}`, { scroll: false });
       } else {
         console.error('Failed to resolve post:', await response.text());
+        error('Resolve failed', 'Could not resolve this post. Please try again.');
       }
-    } catch (error) {
-      console.error('Error resolving post:', error);
+    } catch (err) {
+      console.error('Error resolving post:', err);
+      error('Resolve failed', 'An error occurred while resolving the post.');
     }
   };
 
@@ -241,19 +256,21 @@ export default function DashboardPage() {
 
       if (response.ok) {
         // Remove from current agent's assigned posts
-        setAssignedPosts(prev => {
+        setAssignedPosts((prev) => {
           const newSet = new Set(prev);
           newSet.delete(postId);
           return newSet;
         });
 
-        // Log the reassignment (in production, this would be an audit log entry)
+        success('Post reassigned', 'The post has been reassigned to another agent.');
         console.log(`Reassigned post ${postId} to agent ${toAgentId}`);
       } else {
         console.error('Failed to reassign post:', await response.text());
+        error('Reassignment failed', 'Could not reassign this post. Please try again.');
       }
-    } catch (error) {
-      console.error('Error reassigning post:', error);
+    } catch (err) {
+      console.error('Error reassigning post:', err);
+      error('Reassignment failed', 'An error occurred while reassigning the post.');
     }
   };
 

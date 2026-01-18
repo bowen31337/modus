@@ -1,14 +1,16 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('View Toggle (Grid/List)', () => {
   test.beforeEach(async ({ page, context }) => {
     // Set demo session cookie directly on the browser context
-    await context.addCookies([{
-      name: 'modus_demo_session',
-      value: 'active',
-      domain: 'localhost',
-      path: '/',
-    }]);
+    await context.addCookies([
+      {
+        name: 'modus_demo_session',
+        value: 'active',
+        domain: 'localhost',
+        path: '/',
+      },
+    ]);
 
     // Navigate directly to dashboard
     await page.goto('/dashboard');
@@ -118,7 +120,9 @@ test.describe('View Toggle (Grid/List)', () => {
     await expect(firstPost).toHaveClass(/border/); // Grid view has full border
 
     // Check that priority strip is horizontal in grid view
-    const priorityStrip = firstPost.locator('.bg-red-500, .bg-orange-500, .bg-yellow-500, .bg-blue-500, .bg-gray-500').first();
+    const priorityStrip = firstPost
+      .locator('.bg-red-500, .bg-orange-500, .bg-yellow-500, .bg-blue-500, .bg-gray-500')
+      .first();
     await expect(priorityStrip).toBeVisible();
   });
 

@@ -8,7 +8,7 @@
  * 4. Verify smooth transition from skeleton to content
  */
 
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Skeleton Loaders', () => {
   test.beforeEach(async ({ page }) => {
@@ -60,7 +60,10 @@ test.describe('Skeleton Loaders', () => {
     await expect(title).toBeVisible();
 
     // 3. Status badge
-    const statusBadge = postCard.locator('span').filter({ hasText: /Open|In Progress|Resolved/ }).first();
+    const statusBadge = postCard
+      .locator('span')
+      .filter({ hasText: /Open|In Progress|Resolved/ })
+      .first();
     await expect(statusBadge).toBeVisible();
 
     // 4. Excerpt/preview text
@@ -106,7 +109,7 @@ test.describe('Skeleton Loaders', () => {
     // Intercept the posts API to add a delay
     await page.route('**/api/v1/posts*', async (route) => {
       // Add 500ms delay to ensure skeleton is visible
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       await route.continue();
     });
 

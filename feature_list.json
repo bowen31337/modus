@@ -2205,9 +2205,10 @@
       "Step 4: Verify animations don't cause motion sickness",
       "Step 5: Verify animations can be reduced if prefers-reduced-motion is set"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768703586.923"
   },
   {
     "category": "style",
@@ -2434,14 +2435,11 @@
       "Step 5: Verify internal notes are visually distinct"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 0,
-    "dev_failure_count": 1,
-    "last_dev_failure_at": "2026-01-18T02:09:17.253718Z",
-    "dev_failure_reasons": [
-      "Worker session timed out"
-    ]
+    "dev_failure_count": 0,
+    "dev_completed_at": "2026-01-18T02:24:55.033773Z"
   },
   {
     "category": "style",

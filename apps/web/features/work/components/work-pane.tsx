@@ -1,17 +1,28 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { MessageSquare, User, Clock, AlertCircle, CheckCircle2, Hash, Loader2, EyeOff, MessageCircle, ArrowRightLeft } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { InlineError } from '@/components/ui/error-state';
+import { StatusBadge } from '@/components/ui/status-badge';
 import type { PostCardProps } from '@/features/queue/components/post-card';
-import { RichTextEditor, type RichTextEditorRef } from './rich-text-editor';
-import { TemplateSelector } from './template-selector';
+import { cn } from '@/lib/utils';
+import { Button } from '@modus/ui';
+import {
+  AlertCircle,
+  ArrowRightLeft,
+  CheckCircle2,
+  Clock,
+  EyeOff,
+  Hash,
+  Loader2,
+  MessageCircle,
+  MessageSquare,
+  User,
+} from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { useAiSuggestion } from '../hooks/use-ai-suggestion';
 import { ReassignDialog } from './reassign-dialog';
-import { InlineError } from '@/components/ui/error-state';
 import { ResponseSkeleton } from './response-skeleton';
-import { Button } from '@modus/ui';
-import { StatusBadge } from '@/components/ui/status-badge';
+import { RichTextEditor, type RichTextEditorRef } from './rich-text-editor';
+import { TemplateSelector } from './template-selector';
 
 interface WorkPaneProps {
   selectedPost: PostCardProps | null;
@@ -38,9 +49,26 @@ const sentimentColors: Record<string, string> = {
   positive: 'text-emerald-400 bg-emerald-500/10',
 } as const;
 
-export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignToMe, onRelease, onResolve, onCloseDetail, onReassign }: WorkPaneProps) {
+export function WorkPane({
+  selectedPost,
+  currentAgent,
+  assignedPosts,
+  onAssignToMe,
+  onRelease,
+  onResolve,
+  onCloseDetail,
+  onReassign,
+}: WorkPaneProps) {
   const [responseContent, setResponseContent] = useState('');
-  const [responses, setResponses] = useState<Array<{ id: string; content: string; isInternalNote: boolean; agent: string; createdAt: string }>>([]);
+  const [responses, setResponses] = useState<
+    Array<{
+      id: string;
+      content: string;
+      isInternalNote: boolean;
+      agent: string;
+      createdAt: string;
+    }>
+  >([]);
   const [isInternalNote, setIsInternalNote] = useState(false);
   const [isReassignModalOpen, setIsReassignModalOpen] = useState(false);
   const [responseError, setResponseError] = useState<string | null>(null);
@@ -121,10 +149,7 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
       }
 
       // Only trigger R key if not typing in an input/textarea
-      if (
-        e.target instanceof HTMLInputElement ||
-        e.target instanceof HTMLTextAreaElement
-      ) {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
         return;
       }
 
@@ -266,7 +291,9 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
           <MessageSquare size={32} className="text-muted-foreground" />
         </div>
         <h3 className="text-lg font-medium text-foreground mb-2">No Post Selected</h3>
-        <p className="text-sm text-muted-foreground">Select a post from the queue to begin moderation</p>
+        <p className="text-sm text-muted-foreground">
+          Select a post from the queue to begin moderation
+        </p>
       </div>
     );
   }
@@ -410,9 +437,7 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
                           Generating...
                         </>
                       ) : (
-                        <>
-                          ✨ AI Suggest
-                        </>
+                        <>✨ AI Suggest</>
                       )}
                     </Button>
                   </div>
@@ -428,13 +453,19 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
                         <Loader2 size={16} className="animate-spin" />
                         {isInternalNote ? 'Adding...' : 'Sending...'}
                       </>
+                    ) : isInternalNote ? (
+                      'Add Note'
                     ) : (
-                      isInternalNote ? 'Add Note' : 'Send Response'
+                      'Send Response'
                     )}
                   </Button>
                 </div>
                 <div className="text-xs text-muted-foreground mt-2">
-                  Tip: Press <kbd className="px-1 py-0.5 bg-background-tertiary rounded text-foreground">Cmd+Enter</kbd> to {isInternalNote ? 'add note' : 'send response'} and resolve
+                  Tip: Press{' '}
+                  <kbd className="px-1 py-0.5 bg-background-tertiary rounded text-foreground">
+                    Cmd+Enter
+                  </kbd>{' '}
+                  to {isInternalNote ? 'add note' : 'send response'} and resolve
                 </div>
               </section>
 
@@ -447,11 +478,11 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
                       if (selectedPost) {
                         // Reload responses
                         fetch(`/api/v1/posts/${selectedPost.id}/responses`)
-                          .then(res => {
+                          .then((res) => {
                             if (res.ok) return res.json();
                             throw new Error('Failed to reload');
                           })
-                          .then(result => {
+                          .then((result) => {
                             const transformed = result.data.map((r: any) => ({
                               id: r.id,
                               content: r.content,
@@ -495,10 +526,12 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
                           >
                             <div className="flex items-start justify-between mb-3">
                               <div className="flex items-center gap-2">
-                                <div className={cn(
-                                  'w-6 h-6 rounded-full flex items-center justify-center',
-                                  response.isInternalNote ? 'bg-amber-500/20' : 'bg-primary/20'
-                                )}>
+                                <div
+                                  className={cn(
+                                    'w-6 h-6 rounded-full flex items-center justify-center',
+                                    response.isInternalNote ? 'bg-amber-500/20' : 'bg-primary/20'
+                                  )}
+                                >
                                   {response.isInternalNote ? (
                                     <EyeOff size={12} className="text-amber-400" />
                                   ) : (
@@ -507,7 +540,9 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
                                 </div>
                                 <div className="flex flex-col">
                                   <div className="flex items-center gap-2">
-                                    <span className="text-sm font-medium text-foreground">{response.agent}</span>
+                                    <span className="text-sm font-medium text-foreground">
+                                      {response.agent}
+                                    </span>
                                     {response.isInternalNote && (
                                       <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 font-medium border border-amber-500/30 flex items-center gap-1">
                                         <EyeOff size={10} />
@@ -516,7 +551,9 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
                                     )}
                                   </div>
                                   <span className="text-xs text-muted-foreground">
-                                    {response.isInternalNote ? 'Private note - not visible to community' : 'Public response - visible to everyone'}
+                                    {response.isInternalNote
+                                      ? 'Private note - not visible to community'
+                                      : 'Public response - visible to everyone'}
                                   </span>
                                 </div>
                               </div>
@@ -524,12 +561,14 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
                                 {new Date(response.createdAt).toLocaleString()}
                               </span>
                             </div>
-                            <div className={cn(
-                              'text-sm leading-relaxed whitespace-pre-wrap p-3 rounded-md',
-                              response.isInternalNote
-                                ? 'bg-amber-950/20 text-amber-100/90'
-                                : 'bg-background-secondary text-foreground-secondary'
-                            )}>
+                            <div
+                              className={cn(
+                                'text-sm leading-relaxed whitespace-pre-wrap p-3 rounded-md',
+                                response.isInternalNote
+                                  ? 'bg-amber-950/20 text-amber-100/90'
+                                  : 'bg-background-secondary text-foreground-secondary'
+                              )}
+                            >
                               {response.content}
                             </div>
                           </div>
@@ -572,16 +611,41 @@ export function WorkPane({ selectedPost, currentAgent, assignedPosts, onAssignTo
                 <div className="bg-background-tertiary rounded-lg p-3 border border-border">
                   <div className="flex items-center gap-2">
                     {selectedPost.sentiment === 'negative' && (
-                      <AlertCircle size={16} className={(sentimentColors.negative?.split(' ')?.[0] || '').replace('text-', 'text-')} />
+                      <AlertCircle
+                        size={16}
+                        className={(sentimentColors.negative?.split(' ')?.[0] || '').replace(
+                          'text-',
+                          'text-'
+                        )}
+                      />
                     )}
                     {selectedPost.sentiment === 'positive' && (
-                      <CheckCircle2 size={16} className={(sentimentColors.positive?.split(' ')?.[0] || '').replace('text-', 'text-')} />
+                      <CheckCircle2
+                        size={16}
+                        className={(sentimentColors.positive?.split(' ')?.[0] || '').replace(
+                          'text-',
+                          'text-'
+                        )}
+                      />
                     )}
                     {selectedPost.sentiment === 'neutral' && (
-                      <MessageSquare size={16} className={(sentimentColors.neutral?.split(' ')?.[0] || '').replace('text-', 'text-')} />
+                      <MessageSquare
+                        size={16}
+                        className={(sentimentColors.neutral?.split(' ')?.[0] || '').replace(
+                          'text-',
+                          'text-'
+                        )}
+                      />
                     )}
-                    <span className={cn('text-sm font-medium', sentimentColors[selectedPost.sentiment]?.split(' ')?.[0])}>
-                      {selectedPost.sentiment.charAt(0).toUpperCase() + selectedPost.sentiment.slice(1)} Sentiment
+                    <span
+                      className={cn(
+                        'text-sm font-medium',
+                        sentimentColors[selectedPost.sentiment]?.split(' ')?.[0]
+                      )}
+                    >
+                      {selectedPost.sentiment.charAt(0).toUpperCase() +
+                        selectedPost.sentiment.slice(1)}{' '}
+                      Sentiment
                     </span>
                   </div>
                 </div>

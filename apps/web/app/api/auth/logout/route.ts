@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { isDemoMode } from '@/lib/demo-session';
 import { createServerSideClient } from '@/lib/supabase/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 export async function POST(_request: NextRequest) {
   const isSupabaseConfigured =

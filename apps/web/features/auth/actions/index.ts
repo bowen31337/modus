@@ -1,8 +1,8 @@
 'use server';
 
 import { createServerSideClient } from '@/lib/supabase/server';
-import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 /**
  * Server action to sign in with email and password

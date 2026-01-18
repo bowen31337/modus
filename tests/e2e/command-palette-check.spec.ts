@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 
 test.describe('Command Palette - DOM Check', () => {
   test.beforeEach(async ({ page, context }) => {
@@ -33,7 +33,7 @@ test.describe('Command Palette - DOM Check', () => {
       // Check if the component is rendered but with different test-id or structure
       const allTestIds = await page.evaluate(() => {
         const elements = document.querySelectorAll('[data-testid]');
-        return Array.from(elements).map(el => el.getAttribute('data-testid'));
+        return Array.from(elements).map((el) => el.getAttribute('data-testid'));
       });
 
       console.log('All test-ids on page:', allTestIds.slice(0, 20)); // Show first 20

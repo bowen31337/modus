@@ -9,7 +9,7 @@
  * 5. Verify information is conveyed without relying only on color
  */
 
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Sentiment Badges Accessibility', () => {
   test.beforeEach(async ({ page }) => {
@@ -74,7 +74,7 @@ test.describe('Sentiment Badges Accessibility', () => {
         if (text && text.toLowerCase().includes('negative')) {
           // Verify there's an SVG icon nearby (the AlertCircle)
           const parent = span.locator('..');
-          const hasIcon = await parent.locator('svg').count() > 0;
+          const hasIcon = (await parent.locator('svg').count()) > 0;
 
           if (hasIcon) {
             // Verify the color is red (for negative)
@@ -122,7 +122,7 @@ test.describe('Sentiment Badges Accessibility', () => {
         if (text && text.toLowerCase().includes('positive')) {
           // Verify there's an SVG icon nearby
           const parent = span.locator('..');
-          const hasIcon = await parent.locator('svg').count() > 0;
+          const hasIcon = (await parent.locator('svg').count()) > 0;
 
           if (hasIcon) {
             // Verify the color is emerald/green (for positive)
@@ -168,7 +168,7 @@ test.describe('Sentiment Badges Accessibility', () => {
         if (text && text.toLowerCase().includes('neutral')) {
           // Verify there's an SVG icon nearby
           const parent = span.locator('..');
-          const hasIcon = await parent.locator('svg').count() > 0;
+          const hasIcon = (await parent.locator('svg').count()) > 0;
 
           if (hasIcon) {
             foundNeutral = true;

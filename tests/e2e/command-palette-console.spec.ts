@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 
 test.describe('Command Palette - Console Debug', () => {
   test.beforeEach(async ({ page, context }) => {
@@ -24,7 +24,7 @@ test.describe('Command Palette - Console Debug', () => {
   test('should capture console logs and check keyboard events', async ({ page }) => {
     // Collect ALL console logs (not just 'log' type)
     const logs: { type: string; text: string }[] = [];
-    page.on('console', msg => {
+    page.on('console', (msg) => {
       const text = msg.text();
       const type = msg.type();
       logs.push({ type, text });

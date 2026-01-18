@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { dataStore } from '@/lib/data-store';
-import { postsQuerySchema, type PostsQuery } from '@modus/logic';
+import { type PostsQuery, postsQuerySchema } from '@modus/logic';
+import { type NextRequest, NextResponse } from 'next/server';
 
 /**
  * GET /api/v1/posts
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
         const priorities = searchParams.getAll('priority');
         queryParams.priority = priorities;
       } else if (key === 'page' || key === 'limit') {
-        queryParams[key] = parseInt(value, 10);
+        queryParams[key] = Number.parseInt(value, 10);
       } else {
         queryParams[key] = value;
       }
@@ -50,35 +50,39 @@ export async function GET(request: NextRequest) {
 
     // Apply filters
     if (validatedQuery.category_id) {
-      posts = posts.filter(post => post.category_id === validatedQuery.category_id);
+      posts = posts.filter((post) => post.category_id === validatedQuery.category_id);
     }
 
     if (validatedQuery.status) {
-      posts = posts.filter(post => post.status === validatedQuery.status);
+      posts = posts.filter((post) => post.status === validatedQuery.status);
     }
 
     if (validatedQuery.priority && validatedQuery.priority.length > 0) {
-      posts = posts.filter(post => validatedQuery.priority!.includes(post.priority));
+      posts = posts.filter((post) => validatedQuery.priority!.includes(post.priority));
     }
 
     if (validatedQuery.assigned_to_id) {
-      posts = posts.filter(post => post.assigned_to_id === validatedQuery.assigned_to_id);
+      posts = posts.filter((post) => post.assigned_to_id === validatedQuery.assigned_to_id);
     }
 
     if (validatedQuery.date_from) {
+      // Set to start of day to include all posts from that date
       const fromDate = new Date(validatedQuery.date_from);
-      posts = posts.filter(post => new Date(post.created_at) >= fromDate);
+      fromDate.setHours(0, 0, 0, 0);
+      posts = posts.filter((post) => new Date(post.created_at) >= fromDate);
     }
 
     if (validatedQuery.date_to) {
+      // Set to end of day to include all posts from that date
       const toDate = new Date(validatedQuery.date_to);
-      posts = posts.filter(post => new Date(post.created_at) <= toDate);
+      toDate.setHours(23, 59, 59, 999);
+      posts = posts.filter((post) => new Date(post.created_at) <= toDate);
     }
 
     if (validatedQuery.search) {
       const searchTerm = validatedQuery.search.toLowerCase();
       posts = posts.filter(
-        post =>
+        (post) =>
           post.title.toLowerCase().includes(searchTerm) ||
           post.body_content.toLowerCase().includes(searchTerm)
       );
@@ -135,9 +139,6 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

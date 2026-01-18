@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { dataStore } from '@/lib/data-store';
+import { type NextRequest, NextResponse } from 'next/server';
 
 /**
  * GET /api/v1/agents
@@ -25,7 +25,7 @@ import { dataStore } from '@/lib/data-store';
  *   }
  * }
  */
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     console.log('[GET /api/v1/agents] Request received');
 
@@ -34,18 +34,24 @@ export async function GET(request: NextRequest) {
 
     console.log('[GET /api/v1/agents] Returning', agents.length, 'agents');
 
-    return NextResponse.json({
-      data: agents,
-      meta: {
-        total: agents.length,
+    return NextResponse.json(
+      {
+        data: agents,
+        meta: {
+          total: agents.length,
+        },
       },
-    }, { status: 200 });
+      { status: 200 }
+    );
   } catch (error) {
     console.error('[GET /api/v1/agents] Error:', error);
 
-    return NextResponse.json({
-      error: 'Internal server error',
-      details: error instanceof Error ? error.message : 'Unknown error',
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    );
   }
 }

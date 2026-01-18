@@ -4,10 +4,7 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"],
-      "env": [
-        "NEXT_PUBLIC_SUPABASE_URL",
-        "NEXT_PUBLIC_SUPABASE_ANON_KEY"
-      ]
+      "env": ["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY"]
     },
     "dev": {
       "cache": false,
@@ -28,11 +25,6 @@
     }
   },
   "ui": "tui",
-  "globalDependencies": [
-    ".env*"
-  ],
-  "globalEnv": [
-    "NODE_ENV",
-    "VERCEL_URL"
-  ]
+  "globalDependencies": [".env*"],
+  "globalEnv": ["NODE_ENV", "VERCEL_URL"]
 }

@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('UI Theme and Design System Validation', () => {
   test.beforeEach(async ({ page }) => {
@@ -45,8 +45,8 @@ test.describe('UI Theme and Design System Validation', () => {
       // Or a close variant due to hover states
       const isIndigo =
         backgroundColor.includes('rgb(99, 102, 241)') ||
-        backgroundColor.includes('rgb(') &&
-        /rgb\(\d{2,3},\s*\d{2,3},\s*\d{2,3}\)/.test(backgroundColor);
+        (backgroundColor.includes('rgb(') &&
+          /rgb\(\d{2,3},\s*\d{2,3},\s*\d{2,3}\)/.test(backgroundColor));
       expect(isIndigo, 'Button should have indigo color').toBeTruthy();
     } else {
       // Alternative: check CSS variable for primary color
@@ -72,7 +72,9 @@ test.describe('UI Theme and Design System Validation', () => {
     const firstCard = postCards.first();
 
     // Look for priority strip (colored div on the left)
-    const priorityStrip = firstCard.locator('.priority-strip, [class*="priority"], [class*="bg-red-500"], [class*="bg-orange-500"], [class*="bg-blue-500"]');
+    const priorityStrip = firstCard.locator(
+      '.priority-strip, [class*="priority"], [class*="bg-red-500"], [class*="bg-orange-500"], [class*="bg-blue-500"]'
+    );
 
     const stripCount = await priorityStrip.count();
     if (stripCount > 0) {
@@ -100,7 +102,9 @@ test.describe('UI Theme and Design System Validation', () => {
 
   test('should have high-visibility Indigo-500 focus rings', async ({ page }) => {
     // Find focusable elements
-    const focusableElements = page.locator('button:visible, a:visible, input:visible, [tabindex]:visible').first();
+    const focusableElements = page
+      .locator('button:visible, a:visible, input:visible, [tabindex]:visible')
+      .first();
 
     // Focus the element
     await focusableElements.focus();
@@ -226,7 +230,7 @@ test.describe('UI Theme and Design System Validation', () => {
     // Check for spacing in child elements (the card content div has p-3 = 12px)
     const cardContent = card.locator('.p-3, div[class*="p-"], div[class*="padding"]').first();
 
-    const hasContentWithPadding = await cardContent.count() > 0;
+    const hasContentWithPadding = (await cardContent.count()) > 0;
 
     if (hasContentWithPadding) {
       const spacing = await cardContent.evaluate((el) => {
@@ -242,11 +246,13 @@ test.describe('UI Theme and Design System Validation', () => {
       // Convert to pixels
       const toPx = (val: string) => {
         if (!val || val === 'normal' || val === 'auto') return 0;
-        const parsed = parseFloat(val.replace('px', ''));
+        const parsed = Number.parseFloat(val.replace('px', ''));
         return isNaN(parsed) ? 0 : parsed;
       };
 
-      const spacingValues = Object.values(spacing).map(toPx).filter((v) => v > 0);
+      const spacingValues = Object.values(spacing)
+        .map(toPx)
+        .filter((v) => v > 0);
 
       // Should have padding that's a multiple of 4px (8px grid)
       const onGrid = spacingValues.some((v) => v > 0 && v % 4 === 0);
@@ -275,8 +281,7 @@ test.describe('UI Theme and Design System Validation', () => {
     const workPane = page.locator('main[data-testid="work-pane"]');
 
     // Either the text or the element should be present
-    const hasWorkPane =
-      (await workPaneText.count()) > 0 || (await workPane.count()) > 0;
+    const hasWorkPane = (await workPaneText.count()) > 0 || (await workPane.count()) > 0;
 
     expect(
       hasWorkPane,

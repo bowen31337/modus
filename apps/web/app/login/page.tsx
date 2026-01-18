@@ -1,7 +1,7 @@
-import { redirect } from 'next/navigation';
-import { createServerSideClient } from '@/lib/supabase/server';
 import { LoginForm } from '@/features/auth/components/login-form';
-import { isDemoMode, hasDemoSession } from '@/lib/demo-session';
+import { hasDemoSession, isDemoMode } from '@/lib/demo-session';
+import { createServerSideClient } from '@/lib/supabase/server';
+import { redirect } from 'next/navigation';
 
 export default async function LoginPage() {
   // Check if Supabase is configured

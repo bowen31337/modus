@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { dataStore } from '@/lib/data-store';
 import { createResponseInputSchema } from '@modus/logic';
+import { type NextRequest, NextResponse } from 'next/server';
 
 /**
  * POST /api/v1/posts/:id/responses
@@ -14,27 +14,18 @@ import { createResponseInputSchema } from '@modus/logic';
  * - content: Response content (required, min 1 character)
  * - is_internal_note: Whether this is an internal note (default: false)
  */
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
 
     if (!id) {
-      return NextResponse.json(
-        { error: 'Post ID is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Post ID is required' }, { status: 400 });
     }
 
     // Verify the post exists
     const post = dataStore.getPostById(id);
     if (!post) {
-      return NextResponse.json(
-        { error: 'Post not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
     const body = await request.json();
@@ -65,16 +56,10 @@ export async function POST(
     console.error('Error in POST /api/v1/posts/:id/responses:', error);
 
     if (error instanceof Error && error.name === 'ZodError') {
-      return NextResponse.json(
-        { error: 'Invalid request body', details: error },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Invalid request body', details: error }, { status: 400 });
     }
 
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -86,27 +71,18 @@ export async function POST(
  * Path Parameters:
  * - id: Post UUID
  */
-export async function GET(
-  _request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
 
     if (!id) {
-      return NextResponse.json(
-        { error: 'Post ID is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Post ID is required' }, { status: 400 });
     }
 
     // Verify the post exists
     const post = dataStore.getPostById(id);
     if (!post) {
-      return NextResponse.json(
-        { error: 'Post not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
     // Get all responses for this post
@@ -122,9 +98,6 @@ export async function GET(
   } catch (error) {
     console.error('Error in GET /api/v1/posts/:id/responses:', error);
 
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

@@ -1,14 +1,16 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 
 test.describe('Debug Page Content', () => {
   test('check what page loads at /dashboard', async ({ page, context }) => {
     // Add the demo session cookie
-    await context.addCookies([{
-      name: 'modus_demo_session',
-      value: 'active',
-      domain: 'localhost',
-      path: '/',
-    }]);
+    await context.addCookies([
+      {
+        name: 'modus_demo_session',
+        value: 'active',
+        domain: 'localhost',
+        path: '/',
+      },
+    ]);
 
     console.log('Navigating to /dashboard...');
     await page.goto('/dashboard');
@@ -21,11 +23,16 @@ test.describe('Debug Page Content', () => {
     console.log('Current URL:', url);
 
     // Get page content
-    const bodyText = await page.locator('body').textContent().catch(() => 'Could not get body text');
+    const bodyText = await page
+      .locator('body')
+      .textContent()
+      .catch(() => 'Could not get body text');
     console.log('Page body text:', bodyText);
 
     // Check for any error messages
-    const errorElements = await page.locator('[data-testid*="error"], .error, [class*="error"]').count();
+    const errorElements = await page
+      .locator('[data-testid*="error"], .error, [class*="error"]')
+      .count();
     console.log('Error elements found:', errorElements);
 
     // Check for login redirect
@@ -50,7 +57,10 @@ test.describe('Debug Page Content', () => {
     console.log('Current URL:', url);
 
     // Get page content
-    const bodyText = await page.locator('body').textContent().catch(() => 'Could not get body text');
+    const bodyText = await page
+      .locator('body')
+      .textContent()
+      .catch(() => 'Could not get body text');
     console.log('Page body text:', bodyText);
 
     // Check for queue pane

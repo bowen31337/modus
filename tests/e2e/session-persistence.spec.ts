@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Session Persistence', () => {
   test('should persist session across page refresh', async ({ page, context }) => {
@@ -19,8 +19,13 @@ test.describe('Session Persistence', () => {
 
     // Verify session cookie is set (either modus_session or modus_demo_session)
     const cookies = await context.cookies();
-    console.log('All cookies:', cookies.map(c => ({ name: c.name, value: c.value?.substring(0, 50) })));
-    const sessionCookie = cookies.find(c => c.name === 'modus_session' || c.name === 'modus_demo_session');
+    console.log(
+      'All cookies:',
+      cookies.map((c) => ({ name: c.name, value: c.value?.substring(0, 50) }))
+    );
+    const sessionCookie = cookies.find(
+      (c) => c.name === 'modus_session' || c.name === 'modus_demo_session'
+    );
     expect(sessionCookie).toBeDefined();
 
     // Reload the page
@@ -32,7 +37,9 @@ test.describe('Session Persistence', () => {
 
     // Session cookie should still be present (either one)
     const cookiesAfterReload = await context.cookies();
-    const sessionCookieAfterReload = cookiesAfterReload.find(c => c.name === 'modus_session' || c.name === 'modus_demo_session');
+    const sessionCookieAfterReload = cookiesAfterReload.find(
+      (c) => c.name === 'modus_session' || c.name === 'modus_demo_session'
+    );
     expect(sessionCookieAfterReload).toBeDefined();
   });
 
@@ -51,7 +58,9 @@ test.describe('Session Persistence', () => {
 
     // Verify session cookie is set (either modus_session or modus_demo_session)
     const cookies = await context.cookies();
-    const sessionCookie = cookies.find(c => c.name === 'modus_session' || c.name === 'modus_demo_session');
+    const sessionCookie = cookies.find(
+      (c) => c.name === 'modus_session' || c.name === 'modus_demo_session'
+    );
     expect(sessionCookie).toBeDefined();
 
     // Save session state

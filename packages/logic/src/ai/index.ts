@@ -51,7 +51,10 @@ Priority: ${post.priority}
   if (similarResponses.length > 0) {
     prompt += `
 ## Similar Past Responses (for reference)
-${similarResponses.slice(0, 3).map((r, i) => `${i + 1}. ${r.content.substring(0, 200)}...`).join('\n')}
+${similarResponses
+  .slice(0, 3)
+  .map((r, i) => `${i + 1}. ${r.content.substring(0, 200)}...`)
+  .join('\n')}
 `;
   }
 

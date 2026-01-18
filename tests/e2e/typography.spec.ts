@@ -1,13 +1,16 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Typography - Fonts', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to the dashboard (demo mode allows access without auth)
     await page.goto('/dashboard');
     // Wait for the keyboard handler to be attached (indicates page is fully loaded)
-    await page.waitForFunction(() => {
-      return !!document.getElementById('keyboard-handler-attached');
-    }, { timeout: 10000 });
+    await page.waitForFunction(
+      () => {
+        return !!document.getElementById('keyboard-handler-attached');
+      },
+      { timeout: 10000 }
+    );
   });
 
   test('should use Inter font for primary text', async ({ page }) => {
@@ -148,7 +151,7 @@ test.describe('Typography - Fonts', () => {
 
     const computedStyle = await title.evaluate((el) => {
       const style = window.getComputedStyle(el);
-      const fontSize = parseFloat(style.fontSize);
+      const fontSize = Number.parseFloat(style.fontSize);
       const lineHeight = style.lineHeight;
       return {
         fontSize,
@@ -158,7 +161,7 @@ test.describe('Typography - Fonts', () => {
 
     // leading-tight in Tailwind is 1.25 (125% of font size)
     // For 14px text (text-sm), line height should be around 17.5px (14 * 1.25)
-    const lineHeight = parseFloat(computedStyle.lineHeight);
+    const lineHeight = Number.parseFloat(computedStyle.lineHeight);
     const fontSize = computedStyle.fontSize;
     const lineHeightRatio = lineHeight / fontSize;
 
@@ -186,10 +189,10 @@ test.describe('Typography - Fonts', () => {
 
     // Check that padding values are multiples of 4px (or 8px)
     const paddingValues = [
-      parseInt(computedStyle.paddingTop),
-      parseInt(computedStyle.paddingRight),
-      parseInt(computedStyle.paddingBottom),
-      parseInt(computedStyle.paddingLeft),
+      Number.parseInt(computedStyle.paddingTop),
+      Number.parseInt(computedStyle.paddingRight),
+      Number.parseInt(computedStyle.paddingBottom),
+      Number.parseInt(computedStyle.paddingLeft),
     ];
 
     for (const value of paddingValues) {

@@ -1,13 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { isDemoMode } from '@/lib/demo-session';
+import { type NextRequest, NextResponse } from 'next/server';
 
 export async function POST(_request: NextRequest) {
   // Only allow in demo mode
   if (!isDemoMode()) {
-    return NextResponse.json(
-      { error: 'Demo mode not available' },
-      { status: 403 }
-    );
+    return NextResponse.json({ error: 'Demo mode not available' }, { status: 403 });
   }
 
   const response = NextResponse.json({ success: true }, { status: 200 });

@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { X, UserCheck, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Search, UserCheck, X } from 'lucide-react';
+import { useState } from 'react';
 
 interface Agent {
   id: string;
@@ -77,7 +77,10 @@ export function ReassignDialog({
           {/* Post Info */}
           <div className="mb-4 p-3 rounded bg-slate-800 border border-slate-700">
             <p className="text-sm text-slate-400">Reassigning:</p>
-            <p className="text-sm font-medium text-white truncate mt-1" data-testid="reassign-post-title">
+            <p
+              className="text-sm font-medium text-white truncate mt-1"
+              data-testid="reassign-post-title"
+            >
               {postTitle}
             </p>
           </div>

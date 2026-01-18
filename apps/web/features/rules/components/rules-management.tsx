@@ -1,26 +1,29 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import {
-  Plus,
-  Search,
-  Edit,
-  Trash2,
-  Play,
-  ChevronDown,
-  ChevronUp,
-  X,
-} from 'lucide-react';
+import { FormError } from '@/components/ui/field-error';
 import { cn } from '@/lib/utils';
 import type { PriorityRule } from '@modus/logic';
-import { FormError } from '@/components/ui/field-error';
+import { ChevronDown, ChevronUp, Edit, Play, Plus, Search, Trash2, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 // Condition type options
 const CONDITION_TYPES = [
-  { value: 'first_time_poster', label: 'First Time Poster', description: 'Post from author with fewer than X posts' },
-  { value: 'sentiment_negative', label: 'Negative Sentiment', description: 'Post with sentiment score below threshold' },
+  {
+    value: 'first_time_poster',
+    label: 'First Time Poster',
+    description: 'Post from author with fewer than X posts',
+  },
+  {
+    value: 'sentiment_negative',
+    label: 'Negative Sentiment',
+    description: 'Post with sentiment score below threshold',
+  },
   { value: 'sla_exceeded', label: 'SLA Exceeded', description: 'Post open for more than X hours' },
-  { value: 'keyword_match', label: 'Keyword Match', description: 'Post contains specific keywords' },
+  {
+    value: 'keyword_match',
+    label: 'Keyword Match',
+    description: 'Post contains specific keywords',
+  },
   { value: 'category_match', label: 'Category Match', description: 'Post in specific category' },
 ];
 
@@ -333,18 +336,24 @@ export function RulesManagement() {
               key={rule.id}
               className={cn(
                 'bg-background-secondary rounded-lg border p-4 transition-colors',
-                rule.is_active ? 'border-border hover:bg-background-secondary/80' : 'border-border/50 opacity-70'
+                rule.is_active
+                  ? 'border-border hover:bg-background-secondary/80'
+                  : 'border-border/50 opacity-70'
               )}
               data-testid={`rule-card-${rule.id}`}
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-base font-semibold text-foreground truncate">{rule.name}</h3>
+                    <h3 className="text-base font-semibold text-foreground truncate">
+                      {rule.name}
+                    </h3>
                     <span
                       className={cn(
                         'text-xs px-2 py-0.5 rounded-full',
-                        rule.is_active ? 'bg-green-500/10 text-green-400' : 'bg-gray-500/10 text-gray-400'
+                        rule.is_active
+                          ? 'bg-green-500/10 text-green-400'
+                          : 'bg-gray-500/10 text-gray-400'
                       )}
                     >
                       {rule.is_active ? 'Active' : 'Disabled'}
@@ -393,7 +402,12 @@ export function RulesManagement() {
                     data-testid={`toggle-rule-${rule.id}`}
                     title={rule.is_active ? 'Disable rule' : 'Enable rule'}
                   >
-                    <div className={cn('w-2 h-2 rounded-full', rule.is_active ? 'bg-yellow-400' : 'bg-green-400')} />
+                    <div
+                      className={cn(
+                        'w-2 h-2 rounded-full',
+                        rule.is_active ? 'bg-yellow-400' : 'bg-green-400'
+                      )}
+                    />
                   </button>
                   <button
                     onClick={() => openTestModal(rule)}
@@ -441,7 +455,9 @@ export function RulesManagement() {
               <div className="space-y-4">
                 {/* Name */}
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Rule Name</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Rule Name
+                  </label>
                   <input
                     type="text"
                     value={formData.name}
@@ -454,7 +470,9 @@ export function RulesManagement() {
 
                 {/* Description */}
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Description</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Description
+                  </label>
                   <textarea
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -467,7 +485,9 @@ export function RulesManagement() {
 
                 {/* Condition Type */}
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Condition Type</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Condition Type
+                  </label>
                   <select
                     value={formData.condition_type}
                     onChange={(e) => setFormData({ ...formData, condition_type: e.target.value })}
@@ -487,7 +507,9 @@ export function RulesManagement() {
 
                 {/* Condition Value */}
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Condition Value</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Condition Value
+                  </label>
                   <input
                     type="text"
                     value={formData.condition_value}
@@ -503,7 +525,9 @@ export function RulesManagement() {
 
                 {/* Action Type */}
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Action Type</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Action Type
+                  </label>
                   <select
                     value={formData.action_type}
                     onChange={(e) => setFormData({ ...formData, action_type: e.target.value })}
@@ -523,7 +547,9 @@ export function RulesManagement() {
 
                 {/* Action Value */}
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Action Value</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Action Value
+                  </label>
                   {formData.action_type === 'set_priority' ? (
                     <select
                       value={formData.action_value}
@@ -609,8 +635,8 @@ export function RulesManagement() {
             <div className="p-6">
               <h2 className="text-lg font-semibold text-foreground mb-2">Delete Rule</h2>
               <p className="text-sm text-foreground-secondary mb-4">
-                Are you sure you want to delete the rule <strong>{selectedRule.name}</strong>?
-                This action cannot be undone.
+                Are you sure you want to delete the rule <strong>{selectedRule.name}</strong>? This
+                action cannot be undone.
               </p>
 
               <div className="flex items-center justify-end gap-3">
@@ -646,7 +672,9 @@ export function RulesManagement() {
           <div className="bg-background-secondary rounded-lg border border-border shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-foreground">Test Rule: {selectedRule.name}</h2>
+                <h2 className="text-lg font-semibold text-foreground">
+                  Test Rule: {selectedRule.name}
+                </h2>
                 <button
                   onClick={() => {
                     setIsTestModalOpen(false);
@@ -675,11 +703,18 @@ export function RulesManagement() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">Author Post Count</label>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Author Post Count
+                    </label>
                     <input
                       type="number"
                       value={testData.author_post_count}
-                      onChange={(e) => setTestData({ ...testData, author_post_count: parseInt(e.target.value) || 0 })}
+                      onChange={(e) =>
+                        setTestData({
+                          ...testData,
+                          author_post_count: Number.parseInt(e.target.value) || 0,
+                        })
+                      }
                       className="w-full px-3 py-2 bg-background border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                       data-testid="test-author-post-count-input"
                     />
@@ -687,7 +722,9 @@ export function RulesManagement() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Body Content</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Body Content
+                  </label>
                   <textarea
                     value={testData.body_content}
                     onChange={(e) => setTestData({ ...testData, body_content: e.target.value })}
@@ -700,21 +737,32 @@ export function RulesManagement() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">Sentiment Score</label>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Sentiment Score
+                    </label>
                     <input
                       type="number"
                       step="0.1"
                       min="-1"
                       max="1"
                       value={testData.sentiment_score}
-                      onChange={(e) => setTestData({ ...testData, sentiment_score: parseFloat(e.target.value) || 0 })}
+                      onChange={(e) =>
+                        setTestData({
+                          ...testData,
+                          sentiment_score: Number.parseFloat(e.target.value) || 0,
+                        })
+                      }
                       className="w-full px-3 py-2 bg-background border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                       data-testid="test-sentiment-input"
                     />
-                    <p className="text-xs text-muted-foreground mt-1">-1 (negative) to 1 (positive)</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      -1 (negative) to 1 (positive)
+                    </p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">Category ID</label>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Category ID
+                    </label>
                     <input
                       type="text"
                       value={testData.category_id}
@@ -745,11 +793,15 @@ export function RulesManagement() {
                         <span
                           className={cn(
                             'px-2 py-0.5 rounded font-semibold',
-                            testResult.calculated_priority === 'P1' ? 'bg-red-500/20 text-red-400' :
-                            testResult.calculated_priority === 'P2' ? 'bg-orange-500/20 text-orange-400' :
-                            testResult.calculated_priority === 'P3' ? 'bg-yellow-500/20 text-yellow-400' :
-                            testResult.calculated_priority === 'P4' ? 'bg-blue-500/20 text-blue-400' :
-                            'bg-gray-500/20 text-gray-400'
+                            testResult.calculated_priority === 'P1'
+                              ? 'bg-red-500/20 text-red-400'
+                              : testResult.calculated_priority === 'P2'
+                                ? 'bg-orange-500/20 text-orange-400'
+                                : testResult.calculated_priority === 'P3'
+                                  ? 'bg-yellow-500/20 text-yellow-400'
+                                  : testResult.calculated_priority === 'P4'
+                                    ? 'bg-blue-500/20 text-blue-400'
+                                    : 'bg-gray-500/20 text-gray-400'
                           )}
                           data-testid="test-result-priority"
                         >
@@ -761,7 +813,10 @@ export function RulesManagement() {
                         {testResult.matched_rules.length > 0 ? (
                           <ul className="mt-2 space-y-1" data-testid="test-result-matched-rules">
                             {testResult.matched_rules.map((r: any, i: number) => (
-                              <li key={i} className="text-xs bg-background rounded p-2 border border-border">
+                              <li
+                                key={i}
+                                className="text-xs bg-background rounded p-2 border border-border"
+                              >
                                 <div className="font-medium">{r.rule_name}</div>
                                 <div className="text-muted-foreground">
                                   {r.action_type}: {r.action_value}

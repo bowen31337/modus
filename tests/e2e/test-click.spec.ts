@@ -1,13 +1,15 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test('should click on post card and see work pane', async ({ page, context }) => {
   // Set demo session cookie
-  await context.addCookies([{
-    name: 'modus_demo_session',
-    value: 'active',
-    domain: 'localhost',
-    path: '/',
-  }]);
+  await context.addCookies([
+    {
+      name: 'modus_demo_session',
+      value: 'active',
+      domain: 'localhost',
+      path: '/',
+    },
+  ]);
 
   // Navigate to dashboard
   await page.goto('/dashboard');
@@ -59,19 +61,35 @@ test('should click on post card and see work pane', async ({ page, context }) =>
     const posts = document.querySelectorAll('[data-testid^="post-card-"]');
     posts.forEach((post, i) => {
       // Add listener in capture phase to see if click reaches the button
-      post.addEventListener('click', (e) => {
-        console.log(`[Test] Post ${i} clicked (capture phase)!`, e.isTrusted);
-      }, { capture: true });
+      post.addEventListener(
+        'click',
+        (e) => {
+          console.log(`[Test] Post ${i} clicked (capture phase)!`, e.isTrusted);
+        },
+        { capture: true }
+      );
 
       // Also add bubble phase listener
-      post.addEventListener('click', (e) => {
-        console.log(`[Test] Post ${i} clicked (bubble phase)!`, e.isTrusted);
-      }, { capture: false });
+      post.addEventListener(
+        'click',
+        (e) => {
+          console.log(`[Test] Post ${i} clicked (bubble phase)!`, e.isTrusted);
+        },
+        { capture: false }
+      );
     });
     // Also add a window-level listener
-    window.addEventListener('click', (e) => {
-      console.log(`[Test] Window click on:`, (e.target as HTMLElement)?.tagName, (e.target as HTMLElement)?.getAttribute('data-testid'));
-    }, { capture: true });
+    window.addEventListener(
+      'click',
+      (e) => {
+        console.log(
+          `[Test] Window click on:`,
+          (e.target as HTMLElement)?.tagName,
+          (e.target as HTMLElement)?.getAttribute('data-testid')
+        );
+      },
+      { capture: true }
+    );
   });
 
   // Click on the first post card using click()
@@ -87,7 +105,10 @@ test('should click on post card and see work pane', async ({ page, context }) =>
   console.log('Work pane visible:', isVisible);
 
   // Check if there's a "No Post Selected" message
-  const noPostSelected = await page.locator('text=No Post Selected').isVisible().catch(() => false);
+  const noPostSelected = await page
+    .locator('text=No Post Selected')
+    .isVisible()
+    .catch(() => false);
   console.log('No Post Selected visible:', noPostSelected);
 
   // Check the selected post state
@@ -111,12 +132,14 @@ test('should click on post card and see work pane', async ({ page, context }) =>
 
 test('should click on post card using JavaScript dispatch', async ({ page, context }) => {
   // Set demo session cookie
-  await context.addCookies([{
-    name: 'modus_demo_session',
-    value: 'active',
-    domain: 'localhost',
-    path: '/',
-  }]);
+  await context.addCookies([
+    {
+      name: 'modus_demo_session',
+      value: 'active',
+      domain: 'localhost',
+      path: '/',
+    },
+  ]);
 
   // Navigate to dashboard
   await page.goto('/dashboard');
@@ -158,7 +181,10 @@ test('should click on post card using JavaScript dispatch', async ({ page, conte
   console.log('Work pane visible:', isVisible);
 
   // Check if there's a "No Post Selected" message
-  const noPostSelected = await page.locator('text=No Post Selected').isVisible().catch(() => false);
+  const noPostSelected = await page
+    .locator('text=No Post Selected')
+    .isVisible()
+    .catch(() => false);
   console.log('No Post Selected visible:', noPostSelected);
 
   // Check the selected post state

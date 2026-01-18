@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { dataStore } from '@/lib/data-store';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 /**
@@ -27,7 +27,7 @@ import { z } from 'zod';
  *   }
  * }
  */
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     console.log('[GET /api/v1/templates] Request received');
 
@@ -36,19 +36,25 @@ export async function GET(request: NextRequest) {
 
     console.log('[GET /api/v1/templates] Returning', templates.length, 'templates');
 
-    return NextResponse.json({
-      data: templates,
-      meta: {
-        total: templates.length,
+    return NextResponse.json(
+      {
+        data: templates,
+        meta: {
+          total: templates.length,
+        },
       },
-    }, { status: 200 });
+      { status: 200 }
+    );
   } catch (error) {
     console.error('[GET /api/v1/templates] Error:', error);
 
-    return NextResponse.json({
-      error: 'Internal server error',
-      details: error instanceof Error ? error.message : 'Unknown error',
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -91,12 +97,12 @@ const createTemplateSchema = z.object({
  *   "message": "Template created successfully"
  * }
  */
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   try {
     console.log('[POST /api/v1/templates] Request received');
 
     // Parse request body
-    const body = await request.json();
+    const body = await _request.json();
 
     // Validate request body
     const validatedData = createTemplateSchema.parse(body);
@@ -114,23 +120,32 @@ export async function POST(request: NextRequest) {
 
     console.log('[POST /api/v1/templates] Template created:', newTemplate.id);
 
-    return NextResponse.json({
-      data: newTemplate,
-      message: 'Template created successfully',
-    }, { status: 201 });
+    return NextResponse.json(
+      {
+        data: newTemplate,
+        message: 'Template created successfully',
+      },
+      { status: 201 }
+    );
   } catch (error) {
     console.error('[POST /api/v1/templates] Error:', error);
 
     if (error instanceof z.ZodError) {
-      return NextResponse.json({
-        error: 'Invalid request body',
-        details: error.errors,
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          error: 'Invalid request body',
+          details: error.errors,
+        },
+        { status: 400 }
+      );
     }
 
-    return NextResponse.json({
-      error: 'Internal server error',
-      details: error instanceof Error ? error.message : 'Unknown error',
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    );
   }
 }

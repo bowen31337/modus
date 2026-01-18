@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { isDemoMode } from '@/lib/demo-session';
 import { sessionSchema } from '@modus/logic';
+import { type NextRequest, NextResponse } from 'next/server';
 
 /**
  * GET /api/v1/auth/session
@@ -30,10 +30,7 @@ export async function GET(request: NextRequest) {
     const demoSessionCookie = request.cookies.get('modus_demo_session');
 
     if (!sessionCookie && !demoSessionCookie) {
-      return NextResponse.json(
-        { error: 'No active session' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'No active session' }, { status: 401 });
     }
 
     // If we have a proper session cookie, parse and validate it
@@ -51,10 +48,7 @@ export async function GET(request: NextRequest) {
       } catch (parseError) {
         // Session cookie is invalid
         console.error('Invalid session cookie:', parseError);
-        return NextResponse.json(
-          { error: 'Invalid session' },
-          { status: 401 }
-        );
+        return NextResponse.json({ error: 'Invalid session' }, { status: 401 });
       }
     }
 
@@ -78,16 +72,9 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    return NextResponse.json(
-      { error: 'No active session' },
-      { status: 401 }
-    );
-
+    return NextResponse.json({ error: 'No active session' }, { status: 401 });
   } catch (error) {
     console.error('Session check error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

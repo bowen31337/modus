@@ -9,7 +9,7 @@
  * 5. Verify information hierarchy is clear
  */
 
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('PostCard High-Density Layout', () => {
   test.beforeEach(async ({ page }) => {
@@ -36,7 +36,8 @@ test.describe('PostCard High-Density Layout', () => {
     });
 
     // Padding should be small (12px or less for high-density)
-    const paddingVertical = parseFloat(cardPadding.paddingTop) + parseFloat(cardPadding.paddingBottom);
+    const paddingVertical =
+      Number.parseFloat(cardPadding.paddingTop) + Number.parseFloat(cardPadding.paddingBottom);
     expect(paddingVertical).toBeLessThanOrEqual(24); // 12px top + 12px bottom max
   });
 
@@ -116,7 +117,10 @@ test.describe('PostCard High-Density Layout', () => {
     await expect(postCard).toBeVisible();
 
     // Verify priority is most prominent (high contrast, small font)
-    const priorityBadge = postCard.locator('span').filter({ hasText: /P[1-5]/ }).first();
+    const priorityBadge = postCard
+      .locator('span')
+      .filter({ hasText: /P[1-5]/ })
+      .first();
     await expect(priorityBadge).toBeVisible();
 
     // Verify priority has monospace font for distinctiveness
@@ -127,13 +131,16 @@ test.describe('PostCard High-Density Layout', () => {
     expect(priorityFont.toLowerCase()).toContain('mono');
 
     // Verify status badge is visible
-    const statusBadge = postCard.locator('span').filter({ hasText: /Open|In Progress|Resolved/ }).first();
+    const statusBadge = postCard
+      .locator('span')
+      .filter({ hasText: /Open|In Progress|Resolved/ })
+      .first();
     await expect(statusBadge).toBeVisible();
 
     // Verify metadata is less prominent (smaller font, muted color)
     // Look for timestamp text (ISO format with T and Z)
     const timestampText = postCard.locator('text=/\\d{4}-\\d{2}-\\d{2}T/').first();
-    const hasTimestamp = await timestampText.count() > 0;
+    const hasTimestamp = (await timestampText.count()) > 0;
 
     expect(hasTimestamp).toBeTruthy();
   });
@@ -170,7 +177,7 @@ test.describe('PostCard High-Density Layout', () => {
     });
 
     // Gap should be small (12px or less for high-density)
-    const gapValue = parseFloat(gapSize);
+    const gapValue = Number.parseFloat(gapSize);
     expect(gapValue).toBeLessThanOrEqual(12);
   });
 });

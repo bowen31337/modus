@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { dataStore } from '@/lib/data-store';
-import { buildSuggestionPrompt, type SuggestContext } from '@modus/logic';
+import { type SuggestContext, buildSuggestionPrompt } from '@modus/logic';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 // ============================================================================
@@ -43,7 +43,10 @@ export async function POST(request: NextRequest) {
     const post = dataStore.getPostById(validatedInput.post_id);
     if (!post) {
       return NextResponse.json(
-        { error: 'Post not found', details: `Post with ID ${validatedInput.post_id} does not exist` },
+        {
+          error: 'Post not found',
+          details: `Post with ID ${validatedInput.post_id} does not exist`,
+        },
         { status: 404 }
       );
     }
@@ -100,14 +103,14 @@ export async function POST(request: NextRequest) {
     console.error('Error in POST /api/v1/ai/suggest:', error);
 
     if (error instanceof Error && error.name === 'ZodError') {
-      return NextResponse.json(
-        { error: 'Invalid request body', details: error },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Invalid request body', details: error }, { status: 400 });
     }
 
     return NextResponse.json(
-      { error: 'Internal server error', details: error instanceof Error ? error.message : 'Unknown error' },
+      {
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 }
     );
   }
@@ -126,13 +129,14 @@ function generateMockSuggestion(post: {
   const { title, priority, author_post_count } = post;
 
   // Generate contextual mock suggestions based on post priority
-  const greetings = author_post_count <= 1
-    ? ['Hi there! Welcome to our community!', 'Hello! Thanks for reaching out.', 'Hello!']
-    : ['Hi!', 'Hello!', 'Hi there!'];
+  const greetings =
+    author_post_count <= 1
+      ? ['Hi there! Welcome to our community!', 'Hello! Thanks for reaching out.', 'Hello!']
+      : ['Hi!', 'Hello!', 'Hi there!'];
 
   const closings = [
     'Please let us know if you need any further assistance.',
-    'We\'re here to help if you have any other questions.',
+    "We're here to help if you have any other questions.",
     'Feel free to reach out if you need anything else.',
   ];
 

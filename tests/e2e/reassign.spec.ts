@@ -1,14 +1,16 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Post Reassignment', () => {
   test.beforeEach(async ({ page, context }) => {
     // Set demo session cookie
-    await context.addCookies([{
-      name: 'modus_demo_session',
-      value: 'active',
-      path: '/',
-      domain: 'localhost',
-    }]);
+    await context.addCookies([
+      {
+        name: 'modus_demo_session',
+        value: 'active',
+        path: '/',
+        domain: 'localhost',
+      },
+    ]);
 
     // Navigate to dashboard
     await page.goto('/dashboard');
@@ -17,7 +19,9 @@ test.describe('Post Reassignment', () => {
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 5000 });
   });
 
-  test('should display reassign button when post is assigned to current agent', async ({ page }) => {
+  test('should display reassign button when post is assigned to current agent', async ({
+    page,
+  }) => {
     // Click on first post to assign it
     await page.locator('[data-testid^="post-card-"]').first().click();
 
@@ -104,7 +108,9 @@ test.describe('Post Reassignment', () => {
     expect(count).toBe(1);
 
     // Verify it's Agent B
-    await expect(page.getByTestId('agent-option-550e8400-e29b-41d4-a716-446655440002')).toBeVisible();
+    await expect(
+      page.getByTestId('agent-option-550e8400-e29b-41d4-a716-446655440002')
+    ).toBeVisible();
   });
 
   test('should show current agent as disabled option', async ({ page }) => {
@@ -113,7 +119,9 @@ test.describe('Post Reassignment', () => {
     await page.getByTestId('reassign-button').click();
 
     // Verify current agent (Agent A) shows "(Current)" label
-    const currentAgentOption = page.getByTestId('agent-option-550e8400-e29b-41d4-a716-446655440001');
+    const currentAgentOption = page.getByTestId(
+      'agent-option-550e8400-e29b-41d4-a716-446655440001'
+    );
     await expect(currentAgentOption).toContainText('(Current)');
 
     // Verify current agent option is disabled (not clickable)
@@ -148,7 +156,9 @@ test.describe('Post Reassignment', () => {
 
     // Post should no longer be assigned to current agent
     // Verify "Assigned to you" badge is gone
-    await expect(page.locator('[data-testid="work-pane"] >> text=Assigned to you')).not.toBeVisible();
+    await expect(
+      page.locator('[data-testid="work-pane"] >> text=Assigned to you')
+    ).not.toBeVisible();
 
     // Assign to Me button should appear
     await expect(page.getByTestId('assign-to-me-button')).toBeVisible();
@@ -169,7 +179,9 @@ test.describe('Post Reassignment', () => {
     await expect(page.getByTestId('reassign-modal')).not.toBeVisible();
 
     // Post should still be assigned to current agent
-    await expect(page.locator('[data-testid="work-pane"] >> text=Assigned to you').first()).toBeVisible();
+    await expect(
+      page.locator('[data-testid="work-pane"] >> text=Assigned to you').first()
+    ).toBeVisible();
   });
 
   test('should close reassign modal with Escape key', async ({ page }) => {

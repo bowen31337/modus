@@ -11,22 +11,24 @@
  * 6. Verify all three panes are responsive and properly positioned
  */
 
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Three-Pane Layout', () => {
   test.beforeEach(async ({ page, context }) => {
     // Listen for ALL console messages
-    page.on('console', msg => {
+    page.on('console', (msg) => {
       console.log('Browser console:', msg.type(), msg.text());
     });
 
     // Set demo session cookie directly on the browser context
-    await context.addCookies([{
-      name: 'modus_demo_session',
-      value: 'active',
-      domain: 'localhost',
-      path: '/',
-    }]);
+    await context.addCookies([
+      {
+        name: 'modus_demo_session',
+        value: 'active',
+        domain: 'localhost',
+        path: '/',
+      },
+    ]);
 
     // Navigate directly to dashboard
     await page.goto('/dashboard');
@@ -53,7 +55,7 @@ test.describe('Three-Pane Layout', () => {
       return window.getComputedStyle(el).width;
     });
     // Parse and check width (allow for small rounding differences)
-    const widthNum = parseInt(leftRailWidth);
+    const widthNum = Number.parseInt(leftRailWidth);
     expect(widthNum).toBeGreaterThanOrEqual(60);
     expect(widthNum).toBeLessThanOrEqual(70);
 
@@ -71,7 +73,7 @@ test.describe('Three-Pane Layout', () => {
 
     // Verify queue pane width is between 320px and 400px
     const queuePaneWidth = await queuePane.evaluate((el) => {
-      return parseInt(window.getComputedStyle(el).width);
+      return Number.parseInt(window.getComputedStyle(el).width);
     });
     expect(queuePaneWidth).toBeGreaterThanOrEqual(320);
     expect(queuePaneWidth).toBeLessThanOrEqual(400);
@@ -132,8 +134,12 @@ test.describe('Three-Pane Layout', () => {
     // The work pane shows the selected post content
     // Look for the h1 with the post title in the work pane
     // Use toHaveText instead of toBeVisible since the element might be in a scrollable container
-    const postTitle = page.locator('h1:has-text("Unable to access my account after password reset")');
-    await expect(postTitle).toHaveText('Unable to access my account after password reset', { timeout: 10000 });
+    const postTitle = page.locator(
+      'h1:has-text("Unable to access my account after password reset")'
+    );
+    await expect(postTitle).toHaveText('Unable to access my account after password reset', {
+      timeout: 10000,
+    });
   });
 
   test('should have proper accessibility attributes', async ({ page }) => {
@@ -145,7 +151,8 @@ test.describe('Three-Pane Layout', () => {
       const navLink = navLinks.nth(i);
       await expect(navLink).toHaveAttribute('href');
       // Verify aria-label or title attribute for accessibility
-      const hasLabel = await navLink.getAttribute('aria-label') || await navLink.getAttribute('title');
+      const hasLabel =
+        (await navLink.getAttribute('aria-label')) || (await navLink.getAttribute('title'));
       expect(hasLabel).toBeTruthy();
     }
 
@@ -170,7 +177,7 @@ test.describe('Three-Pane Layout', () => {
 
     // On tablet, queue pane might be narrower but should still be visible
     const queuePaneWidth = await queuePane.evaluate((el) => {
-      return parseInt(window.getComputedStyle(el).width);
+      return Number.parseInt(window.getComputedStyle(el).width);
     });
     expect(queuePaneWidth).toBeGreaterThanOrEqual(200); // Minimum readable width on tablet
   });

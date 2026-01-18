@@ -1,7 +1,7 @@
 'use server';
 
-import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 import { isDemoMode } from './demo-session';
 
 const DEMO_SESSION_COOKIE = 'modus_demo_session';
@@ -33,7 +33,7 @@ export async function demoLogin() {
  * This is a wrapper that can be used directly with form's action prop
  * Accepts FormData but ignores it since demo mode doesn't need credentials
  */
-export async function demoLoginAction(formData: FormData): Promise<void> {
+export async function demoLoginAction(_formData: FormData): Promise<void> {
   // In demo mode, we don't actually validate credentials
   // The form fields are just for show to simulate a real login flow
   await demoLogin();

@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { FileText, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ChevronDown, FileText } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 export interface Template {
   id: string;
@@ -27,35 +27,40 @@ const MOCK_TEMPLATES: Template[] = [
   {
     id: '1',
     name: 'Welcome Message',
-    content: 'Hi {{authorName}},\n\nThank you for reaching out about "{{title}}". We appreciate you taking the time to share your thoughts with our community.\n\nBest regards,\n{{agentName}}',
+    content:
+      'Hi {{authorName}},\n\nThank you for reaching out about "{{title}}". We appreciate you taking the time to share your thoughts with our community.\n\nBest regards,\n{{agentName}}',
     placeholders: ['authorName', 'title', 'agentName'],
     usage_count: 15,
   },
   {
     id: '2',
     name: 'Issue Resolution',
-    content: 'Hello {{authorName}},\n\nI\'ve looked into your issue with "{{title}}" and I\'m happy to report that it has been resolved. Please let me know if you have any further questions.\n\nThank you,\n{{agentName}}',
+    content:
+      'Hello {{authorName}},\n\nI\'ve looked into your issue with "{{title}}" and I\'m happy to report that it has been resolved. Please let me know if you have any further questions.\n\nThank you,\n{{agentName}}',
     placeholders: ['authorName', 'title', 'agentName'],
     usage_count: 8,
   },
   {
     id: '3',
     name: 'Request for More Information',
-    content: 'Hi {{authorName}},\n\nThank you for your post about "{{title}}". To help us assist you better, could you please provide more details about:\n\n- Specific error messages\n- Steps to reproduce the issue\n- Any relevant screenshots\n\nWe look forward to hearing from you!\n\nBest,\n{{agentName}}',
+    content:
+      'Hi {{authorName}},\n\nThank you for your post about "{{title}}". To help us assist you better, could you please provide more details about:\n\n- Specific error messages\n- Steps to reproduce the issue\n- Any relevant screenshots\n\nWe look forward to hearing from you!\n\nBest,\n{{agentName}}',
     placeholders: ['authorName', 'title', 'agentName'],
     usage_count: 12,
   },
   {
     id: '4',
     name: 'Policy Reminder',
-    content: 'Hello {{authorName}},\n\nI wanted to gently remind you about our community guidelines regarding "{{title}}". Please ensure your future posts align with our policies to maintain a positive environment for all members.\n\nThank you for your understanding,\n{{agentName}}',
+    content:
+      'Hello {{authorName}},\n\nI wanted to gently remind you about our community guidelines regarding "{{title}}". Please ensure your future posts align with our policies to maintain a positive environment for all members.\n\nThank you for your understanding,\n{{agentName}}',
     placeholders: ['authorName', 'title', 'agentName'],
     usage_count: 5,
   },
   {
     id: '5',
     name: 'Escalation Notice',
-    content: 'Hi {{authorName}},\n\nRegarding your concern about "{{title}}", I\'ve escalated this to our specialized team for further review. They will reach out to you within 24-48 hours with a detailed response.\n\nThank you for your patience,\n{{agentName}}',
+    content:
+      'Hi {{authorName}},\n\nRegarding your concern about "{{title}}", I\'ve escalated this to our specialized team for further review. They will reach out to you within 24-48 hours with a detailed response.\n\nThank you for your patience,\n{{agentName}}',
     placeholders: ['authorName', 'title', 'agentName'],
     usage_count: 3,
   },
@@ -175,7 +180,9 @@ export function TemplateSelector({ onSelect, postContext = {} }: TemplateSelecto
                 >
                   <div className="flex items-center justify-between mb-1">
                     <span className="font-medium text-sm text-foreground">{template.name}</span>
-                    <span className="text-xs text-muted-foreground">{template.usage_count} uses</span>
+                    <span className="text-xs text-muted-foreground">
+                      {template.usage_count} uses
+                    </span>
                   </div>
                   <p className="text-xs text-muted-foreground line-clamp-2">
                     {template.content.substring(0, 100)}...

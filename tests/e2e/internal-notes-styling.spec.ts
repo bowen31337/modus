@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Internal Notes Styling', () => {
   test.beforeEach(async ({ page }) => {
@@ -25,10 +25,7 @@ test.describe('Internal Notes Styling', () => {
 
     // Type a note
     const noteContent = 'This is an internal note for the team';
-    await page.fill(
-      'textarea[placeholder*="Type your response"]',
-      noteContent
-    );
+    await page.fill('textarea[placeholder*="Type your response"]', noteContent);
 
     // Click add note button
     await page.click('[data-testid="send-response-button"]');
@@ -53,7 +50,7 @@ test.describe('Internal Notes Styling', () => {
 
     // Verify the note has an EyeOff icon (indicating internal/private)
     const eyeOffIcon = noteElement.locator('.lucide-eye-off');
-    const hasIcon = await eyeOffIcon.count() > 0;
+    const hasIcon = (await eyeOffIcon.count()) > 0;
     expect(hasIcon).toBeTruthy();
 
     // Take screenshot for visual verification
@@ -75,10 +72,7 @@ test.describe('Internal Notes Styling', () => {
 
     // Type a public response
     const responseContent = 'This is a public response to the user';
-    await page.fill(
-      'textarea[placeholder*="Type your response"]',
-      responseContent
-    );
+    await page.fill('textarea[placeholder*="Type your response"]', responseContent);
 
     // Click send response button
     await page.click('[data-testid="send-response-button"]');
@@ -99,7 +93,7 @@ test.describe('Internal Notes Styling', () => {
 
     // Verify it has a MessageCircle icon (indicating public response)
     const messageIcon = responseElement.locator('.lucide-message-circle');
-    const hasIcon = await messageIcon.count() > 0;
+    const hasIcon = (await messageIcon.count()) > 0;
     expect(hasIcon).toBeTruthy();
 
     // Take screenshot for visual verification
@@ -109,7 +103,9 @@ test.describe('Internal Notes Styling', () => {
     });
   });
 
-  test('should show both internal notes and public responses with distinct styling', async ({ page }) => {
+  test('should show both internal notes and public responses with distinct styling', async ({
+    page,
+  }) => {
     // Select the first post
     await page.locator('[data-testid^="post-card-"]').first().click();
 
@@ -118,19 +114,13 @@ test.describe('Internal Notes Styling', () => {
 
     // Add an internal note
     await page.check('[data-testid="internal-note-checkbox"]');
-    await page.fill(
-      'textarea[placeholder*="Type your response"]',
-      'Internal note about this post'
-    );
+    await page.fill('textarea[placeholder*="Type your response"]', 'Internal note about this post');
     await page.click('[data-testid="send-response-button"]');
     await page.waitForTimeout(500);
 
     // Add a public response
     await page.uncheck('[data-testid="internal-note-checkbox"]');
-    await page.fill(
-      'textarea[placeholder*="Type your response"]',
-      'Public response to the user'
-    );
+    await page.fill('textarea[placeholder*="Type your response"]', 'Public response to the user');
     await page.click('[data-testid="send-response-button"]');
     await page.waitForTimeout(500);
 
@@ -159,7 +149,9 @@ test.describe('Internal Notes Styling', () => {
     });
   });
 
-  test('should have clear visual separation between internal and public responses', async ({ page }) => {
+  test('should have clear visual separation between internal and public responses', async ({
+    page,
+  }) => {
     // Select the first post
     await page.locator('[data-testid^="post-card-"]').first().click();
 
@@ -221,19 +213,13 @@ test.describe('Internal Notes Styling', () => {
 
     // Add an internal note
     await page.check('[data-testid="internal-note-checkbox"]');
-    await page.fill(
-      'textarea[placeholder*="Type your response"]',
-      'Internal note'
-    );
+    await page.fill('textarea[placeholder*="Type your response"]', 'Internal note');
     await page.click('[data-testid="send-response-button"]');
     await page.waitForTimeout(500);
 
     // Add a public response
     await page.uncheck('[data-testid="internal-note-checkbox"]');
-    await page.fill(
-      'textarea[placeholder*="Type your response"]',
-      'Public response'
-    );
+    await page.fill('textarea[placeholder*="Type your response"]', 'Public response');
     await page.click('[data-testid="send-response-button"]');
     await page.waitForTimeout(500);
 

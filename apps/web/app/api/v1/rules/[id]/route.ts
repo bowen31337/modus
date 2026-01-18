@@ -1,24 +1,18 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { dataStore, type UpdateRuleInput } from '@/lib/data-store';
+import { type UpdateRuleInput, dataStore } from '@/lib/data-store';
+import { type NextRequest, NextResponse } from 'next/server';
 
 /**
  * GET /api/v1/rules/[id]
  *
  * Returns a specific priority rule by ID.
  */
-export async function GET(
-  _request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
     const rule = dataStore.getRuleById(id);
 
     if (!rule) {
-      return NextResponse.json(
-        { error: 'Rule not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Rule not found' }, { status: 404 });
     }
 
     return NextResponse.json({
@@ -27,10 +21,7 @@ export async function GET(
   } catch (error) {
     console.error('Error in GET /api/v1/rules/[id]:', error);
 
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -50,10 +41,7 @@ export async function GET(
  *   is_active?: boolean;
  * }
  */
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
     const body = await request.json();
@@ -71,10 +59,7 @@ export async function PATCH(
     const rule = dataStore.updateRule(id, input);
 
     if (!rule) {
-      return NextResponse.json(
-        { error: 'Rule not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Rule not found' }, { status: 404 });
     }
 
     return NextResponse.json({
@@ -83,10 +68,7 @@ export async function PATCH(
   } catch (error) {
     console.error('Error in PATCH /api/v1/rules/[id]:', error);
 
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -104,10 +86,7 @@ export async function DELETE(
     const deleted = dataStore.deleteRule(id);
 
     if (!deleted) {
-      return NextResponse.json(
-        { error: 'Rule not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Rule not found' }, { status: 404 });
     }
 
     return NextResponse.json({
@@ -117,9 +96,6 @@ export async function DELETE(
   } catch (error) {
     console.error('Error in DELETE /api/v1/rules/[id]:', error);
 
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

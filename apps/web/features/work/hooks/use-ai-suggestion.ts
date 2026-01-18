@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface UseAiSuggestionProps {
   postContent: string;
@@ -18,11 +18,7 @@ interface AiSuggestionState {
  * Hook for managing AI-powered response suggestions with RAG
  * Simulates streaming AI responses with ghost text preview
  */
-export function useAiSuggestion({
-  postContent,
-  postTitle,
-  authorName,
-}: UseAiSuggestionProps) {
+export function useAiSuggestion({ postContent, postTitle, authorName }: UseAiSuggestionProps) {
   const [state, setState] = useState<AiSuggestionState>({
     isStreaming: false,
     ghostText: '',
@@ -50,7 +46,10 @@ export function useAiSuggestion({
     const templates: string[] = [];
 
     // Sentiment-based suggestions
-    if (postContent.toLowerCase().includes('frustrating') || postContent.toLowerCase().includes('angry')) {
+    if (
+      postContent.toLowerCase().includes('frustrating') ||
+      postContent.toLowerCase().includes('angry')
+    ) {
       templates.push(
         `Hi ${authorName || 'there'},
 
@@ -80,7 +79,10 @@ Best regards`
     }
 
     // Feature request suggestions
-    if (postTitle.toLowerCase().includes('feature') || postTitle.toLowerCase().includes('request')) {
+    if (
+      postTitle.toLowerCase().includes('feature') ||
+      postTitle.toLowerCase().includes('request')
+    ) {
       templates.push(
         `Hi ${authorName || 'there'},
 

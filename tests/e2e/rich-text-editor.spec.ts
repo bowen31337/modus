@@ -1,10 +1,108 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
+
+test.describe('Rich Text Editor - Clean Minimal Appearance', () => {
+  test.beforeEach(async ({ page }) => {
+    // Login and navigate to dashboard
+    await page.goto('/login');
+    await page.getByRole('button', { name: 'Sign In' }).click();
+    await page.waitForURL('**/dashboard');
+  });
+
+  test('should have minimal toolbar without heavy borders', async ({ page }) => {
+    await page.locator('[data-testid="post-card-1"]').click();
+    await page.waitForSelector('[data-testid="work-pane"]');
+
+    // Verify toolbar exists and has minimal styling (no heavy border)
+    const toolbar = page.locator('[data-testid="format-bold-button"]').locator('..');
+    await expect(toolbar).toBeVisible();
+
+    // Verify toolbar buttons have rounded corners and subtle hover states
+    const boldButton = page.locator('[data-testid="format-bold-button"]');
+    await expect(boldButton).toHaveClass(/rounded-md/);
+    await expect(boldButton).toHaveClass(/transition-all/);
+  });
+
+  test('should have subtle textarea background and border', async ({ page }) => {
+    await page.locator('[data-testid="post-card-1"]').click();
+    await page.waitForSelector('[data-testid="work-pane"]');
+
+    const textarea = page.locator('[data-testid="response-textarea"]');
+
+    // Verify textarea has subtle background (bg-background-tertiary/50)
+    await expect(textarea).toHaveClass(/bg-background-tertiary\/50/);
+
+    // Verify textarea has subtle border (border-border/60)
+    await expect(textarea).toHaveClass(/border-border\/60/);
+
+    // Verify textarea has rounded corners (rounded-lg)
+    await expect(textarea).toHaveClass(/rounded-lg/);
+  });
+
+  test('should have smooth transitions on interactive elements', async ({ page }) => {
+    await page.locator('[data-testid="post-card-1"]').click();
+    await page.waitForSelector('[data-testid="work-pane"]');
+
+    // Verify toolbar buttons have transition-all duration-150
+    const boldButton = page.locator('[data-testid="format-bold-button"]');
+    await expect(boldButton).toHaveClass(/transition-all/);
+    await expect(boldButton).toHaveClass(/duration-150/);
+
+    // Verify textarea has transition
+    const textarea = page.locator('[data-testid="response-textarea"]');
+    await expect(textarea).toHaveClass(/transition-all/);
+    await expect(textarea).toHaveClass(/duration-150/);
+  });
+
+  test('should have consistent font usage (sans-serif for editor)', async ({ page }) => {
+    await page.locator('[data-testid="post-card-1"]').click();
+    await page.waitForSelector('[data-testid="work-pane"]');
+
+    const textarea = page.locator('[data-testid="response-textarea"]');
+
+    // Verify textarea uses sans-serif font (font-sans)
+    await expect(textarea).toHaveClass(/font-sans/);
+  });
+
+  test('should have proper focus states for accessibility', async ({ page }) => {
+    await page.locator('[data-testid="post-card-1"]').click();
+    await page.waitForSelector('[data-testid="work-pane"]');
+
+    const textarea = page.locator('[data-testid="response-textarea"]');
+
+    // Verify focus ring is present
+    await expect(textarea).toHaveClass(/focus:ring-2/);
+    await expect(textarea).toHaveClass(/focus:ring-primary\/50/);
+  });
+
+  test('should have subtle help text styling', async ({ page }) => {
+    await page.locator('[data-testid="post-card-1"]').click();
+    await page.waitForSelector('[data-testid="work-pane"]');
+
+    // Verify help text exists with proper styling
+    const helpText = page.locator('text=Tips:');
+    await expect(helpText).toBeVisible();
+
+    // Verify keyboard shortcut hints use monospace font
+    const kbd = page.locator('kbd');
+    await expect(kbd.first()).toHaveClass(/font-mono/);
+    await expect(kbd.first()).toHaveClass(/text-\[10px\]/);
+  });
+
+  test('should have consistent spacing (gap-3) between elements', async ({ page }) => {
+    await page.locator('[data-testid="post-card-1"]').click();
+    await page.waitForSelector('[data-testid="work-pane"]');
+
+    // Verify the editor wrapper uses gap-3 (the flex container around toolbar and textarea)
+    const editorWrapper = page.locator('[data-testid="response-textarea"]').locator('../..');
+    await expect(editorWrapper).toHaveClass(/gap-3/);
+  });
+});
 
 test.describe('Rich Text Editor - Formatting Toolbar', () => {
   test.beforeEach(async ({ page }) => {
     // Login and navigate to dashboard
     await page.goto('/login');
-    await page.click('button[type="submit"]');
+    await page.getByRole('button', { name: 'Sign In' }).click();
     await page.waitForURL('**/dashboard');
   });
 

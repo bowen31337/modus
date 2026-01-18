@@ -1,14 +1,16 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Loading Indicators', () => {
   test.beforeEach(async ({ page, context }) => {
     // Use cookie-based authentication for faster tests
-    await context.addCookies([{
-      name: 'modus_demo_session',
-      value: 'active',
-      domain: 'localhost',
-      path: '/',
-    }]);
+    await context.addCookies([
+      {
+        name: 'modus_demo_session',
+        value: 'active',
+        domain: 'localhost',
+        path: '/',
+      },
+    ]);
     await page.goto('/dashboard');
   });
 
@@ -55,7 +57,9 @@ test.describe('Loading Indicators', () => {
     expect(responseCount).toBe(0);
   });
 
-  test('should show loading spinner on Send Response button during submission', async ({ page }) => {
+  test('should show loading spinner on Send Response button during submission', async ({
+    page,
+  }) => {
     // Click on the first post to open detail view
     const firstPost = page.locator('[data-testid^="post-card-"]').first();
     await firstPost.click();
@@ -71,7 +75,7 @@ test.describe('Loading Indicators', () => {
     // Intercept the POST request to slow it down
     await page.route('**/api/v1/posts/*/responses', async (route) => {
       // Delay the response by 500ms to ensure we see the loading state
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       route.continue();
     });
 
@@ -113,7 +117,7 @@ test.describe('Loading Indicators', () => {
     // Intercept the POST request to slow it down
     await page.route('**/api/v1/posts/*/responses', async (route) => {
       // Delay the response by 500ms to ensure we see the loading state
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       route.continue();
     });
 
@@ -150,7 +154,7 @@ test.describe('Loading Indicators', () => {
 
     // Intercept the POST request to slow it down
     await page.route('**/api/v1/posts/*/responses', async (route) => {
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       route.continue();
     });
 

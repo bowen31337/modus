@@ -1,7 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-import { Circle, ChevronDown } from 'lucide-react';
 import { Button } from '@modus/ui';
 import {
   DropdownMenu,
@@ -9,6 +7,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@modus/ui';
+import { ChevronDown, Circle } from 'lucide-react';
+import { useState } from 'react';
 
 export type AgentStatus = 'online' | 'busy' | 'offline';
 
@@ -78,17 +78,10 @@ export function AgentStatusIndicator({
               className="flex items-center gap-3 cursor-pointer"
               data-testid={`status-option-${key}`}
             >
-              <Circle
-                size={12}
-                className={`${value.color} fill-current flex-shrink-0`}
-              />
+              <Circle size={12} className={`${value.color} fill-current flex-shrink-0`} />
               <div className="flex flex-col">
-                <span className={`text-sm font-medium ${value.textColor}`}>
-                  {value.label}
-                </span>
-                <span className="text-xs text-foreground-muted">
-                  {value.description}
-                </span>
+                <span className={`text-sm font-medium ${value.textColor}`}>{value.label}</span>
+                <span className="text-xs text-foreground-muted">{value.description}</span>
               </div>
             </DropdownMenuItem>
           ))}

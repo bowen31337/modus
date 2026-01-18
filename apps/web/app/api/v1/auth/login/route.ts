@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { dataStore } from '@/lib/data-store';
 import { isDemoMode } from '@/lib/demo-session';
 import { loginInputSchema, sessionSchema } from '@modus/logic';
+import { type NextRequest, NextResponse } from 'next/server';
 import { ZodError } from 'zod';
-import { dataStore } from '@/lib/data-store';
 
 /**
  * POST /api/v1/auth/login
@@ -46,10 +46,7 @@ export async function POST(request: NextRequest) {
       const demoAgent = agents[0]; // Use first agent as demo user
 
       if (!demoAgent) {
-        return NextResponse.json(
-          { error: 'No demo agent available' },
-          { status: 500 }
-        );
+        return NextResponse.json({ error: 'No demo agent available' }, { status: 500 });
       }
 
       // Create session data
@@ -96,11 +93,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Production mode would integrate with Supabase Auth here
-    return NextResponse.json(
-      { error: 'Supabase Auth not configured' },
-      { status: 501 }
-    );
-
+    return NextResponse.json({ error: 'Supabase Auth not configured' }, { status: 501 });
   } catch (error) {
     // Handle Zod validation errors
     if (error instanceof ZodError) {
@@ -115,9 +108,6 @@ export async function POST(request: NextRequest) {
 
     // Handle other errors
     console.error('Login error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

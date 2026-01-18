@@ -1,6 +1,6 @@
-import { Clock, User, MessageSquare, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { type PostStatus, StatusBadge } from '@/components/ui/status-badge';
 import { cn } from '@/lib/utils';
-import { StatusBadge, type PostStatus } from '@/components/ui/status-badge';
+import { AlertCircle, CheckCircle2, Clock, MessageSquare, User } from 'lucide-react';
 
 export type PriorityLevel = 'P1' | 'P2' | 'P3' | 'P4' | 'P5';
 export type { PostStatus } from '@/components/ui/status-badge';
@@ -96,7 +96,9 @@ export function PostCard({
         {/* Metadata Row */}
         <div className="flex items-center gap-3 text-xs text-foreground-muted">
           {/* Priority */}
-          <span className="font-mono text-[10px] px-1 rounded bg-background-tertiary">{priority}</span>
+          <span className="font-mono text-[10px] px-1 rounded bg-background-tertiary">
+            {priority}
+          </span>
 
           {/* Sentiment */}
           {sentiment && (

@@ -12,7 +12,7 @@
  * 8. Test combined filters
  */
 
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Queue Filtering and Sorting', () => {
   test.beforeEach(async ({ page }) => {
@@ -20,8 +20,10 @@ test.describe('Queue Filtering and Sorting', () => {
     await page.goto('/login');
     await page.getByRole('button', { name: 'Sign In' }).click();
     await expect(page).toHaveURL(/.*dashboard/);
-    // Wait for page to load
-    await expect(page.locator('h2:has-text("Moderation Queue")')).toBeVisible();
+    // Wait for queue pane to load
+    await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
+    // Wait for posts to be visible (not loading skeleton)
+    await expect(page.locator('[data-testid="queue-container"]')).toBeVisible();
   });
 
   test('should display filter and sort controls', async ({ page }) => {
@@ -40,7 +42,7 @@ test.describe('Queue Filtering and Sorting', () => {
 
   test('should filter posts by category', async ({ page }) => {
     // Get initial post count
-    const initialPosts = page.locator('aside').nth(1).locator('button[type="button"]');
+    const initialPosts = page.locator('[data-testid="queue-container"] button[type="button"]');
     const initialCount = await initialPosts.count();
     expect(initialCount).toBeGreaterThan(0);
 
@@ -53,14 +55,14 @@ test.describe('Queue Filtering and Sorting', () => {
     // Click on Category dropdown to expand
     await page.locator('button:has-text("Category")').first().click();
 
-    // Select "Bug Reports" category (use nth to avoid ambiguity)
+    // Select "Bug Reports" category
     await page.locator('button:has-text("Bug Reports")').nth(0).click();
 
     // Wait for filtering to apply
     await page.waitForTimeout(500);
 
     // Verify filtered results
-    const filteredPosts = page.locator('aside').nth(1).locator('button[type="button"]');
+    const filteredPosts = page.locator('[data-testid="queue-container"] button[type="button"]');
     const filteredCount = await filteredPosts.count();
 
     // Should have fewer posts after filtering
@@ -68,7 +70,11 @@ test.describe('Queue Filtering and Sorting', () => {
 
     // Verify at least one visible post has "Bug Reports" category
     if (filteredCount > 0) {
-      const categoryText = await filteredPosts.first().locator('span').filter({ hasText: 'Bug Reports' }).count();
+      const categoryText = await filteredPosts
+        .first()
+        .locator('span')
+        .filter({ hasText: 'Bug Reports' })
+        .count();
       expect(categoryText).toBeGreaterThan(0);
     }
   });
@@ -88,7 +94,7 @@ test.describe('Queue Filtering and Sorting', () => {
     await page.waitForTimeout(500);
 
     // Verify filtered results show only "In Progress" posts
-    const inProgressPosts = page.locator('aside').nth(1).locator('[role="button"][tabindex="0"]');
+    const inProgressPosts = page.locator('[data-testid="queue-container"] [role="button"][tabindex="0"]');
     const count = await inProgressPosts.count();
 
     expect(count).toBeGreaterThan(0);
@@ -115,7 +121,7 @@ test.describe('Queue Filtering and Sorting', () => {
     await page.waitForTimeout(500);
 
     // Verify filtered results show only P1 posts
-    const p1Posts = page.locator('aside').nth(1).locator('[role="button"][tabindex="0"]');
+    const p1Posts = page.locator('[data-testid="queue-container"] [role="button"][tabindex="0"]');
     const count = await p1Posts.count();
 
     expect(count).toBeGreaterThan(0);
@@ -134,7 +140,7 @@ test.describe('Queue Filtering and Sorting', () => {
     await page.waitForTimeout(500);
 
     // Verify filtered results
-    const searchResults = page.locator('[role="button"][tabindex="0"]');
+    const searchResults = page.locator('[data-testid="queue-container"] [role="button"][tabindex="0"]');
     const count = await searchResults.count();
 
     expect(count).toBeGreaterThan(0);
@@ -155,7 +161,7 @@ test.describe('Queue Filtering and Sorting', () => {
     await page.waitForTimeout(500);
 
     // Verify all posts are shown again
-    const allPosts = page.locator('[role="button"][tabindex="0"]');
+    const allPosts = page.locator('[data-testid="queue-container"] [role="button"][tabindex="0"]');
     const totalCount = await allPosts.count();
     expect(totalCount).toBeGreaterThan(count);
   });
@@ -176,7 +182,7 @@ test.describe('Queue Filtering and Sorting', () => {
     await page.waitForTimeout(500);
 
     // Get all posts and check that P1 posts come first (descending order)
-    const posts = page.locator('[role="button"][tabindex="0"]');
+    const posts = page.locator('[data-testid="queue-container"] [role="button"][tabindex="0"]');
     const postCount = await posts.count();
     expect(postCount).toBeGreaterThan(0);
 
@@ -196,7 +202,7 @@ test.describe('Queue Filtering and Sorting', () => {
 
   test('should clear all filters', async ({ page }) => {
     // Get initial post count
-    const initialPosts = page.locator('aside').nth(1).locator('button[type="button"]');
+    const initialPosts = page.locator('[data-testid="queue-container"] button[type="button"]');
     const initialCount = await initialPosts.count();
 
     // Open filter dropdown
@@ -214,16 +220,17 @@ test.describe('Queue Filtering and Sorting', () => {
 
     // Click "Clear all"
     await page.locator('button:has-text("Clear all")').click();
-    await page.waitForTimeout(500);
 
-    // Verify badge is gone
+    // Verify badge is gone - wait for it to disappear
     const badgeCountAfter = filterButton.locator('span').filter({ hasText: /^\d+$/ });
-    await expect(badgeCountAfter).toHaveCount(0);
+    await expect(badgeCountAfter).toHaveCount(0, { timeout: 10000 });
+
+    // Wait for posts to reload after clearing filters
+    await expect(page.locator('[data-testid="queue-container"]')).toBeVisible();
 
     // Verify all posts are shown again
-    const allPosts = page.locator('aside').nth(1).locator('button[type="button"]');
-    const totalCount = await allPosts.count();
-    expect(totalCount).toBe(initialCount);
+    const allPosts = page.locator('[data-testid="queue-container"] button[type="button"]');
+    await expect(allPosts).toHaveCount(initialCount, { timeout: 10000 });
   });
 
   test('should show no results message when filters match nothing', async ({ page }) => {

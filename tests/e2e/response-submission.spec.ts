@@ -1,15 +1,17 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Response Submission', () => {
   test.beforeEach(async ({ page, context }) => {
     // Set demo session cookie directly on the browser context
     // This cookie is checked by DashboardLayout to allow access
-    await context.addCookies([{
-      name: 'modus_demo_session',
-      value: 'active',
-      domain: 'localhost',
-      path: '/',
-    }]);
+    await context.addCookies([
+      {
+        name: 'modus_demo_session',
+        value: 'active',
+        domain: 'localhost',
+        path: '/',
+      },
+    ]);
 
     // Navigate directly to dashboard
     await page.goto('/dashboard');
@@ -62,9 +64,13 @@ test.describe('Response Submission', () => {
 
     // Verify it doesn't have "Internal Note" badge
     // The badge is only rendered when isInternalNote is true, so we check that no badge exists
-    const responseElement = page.locator('[data-testid^="response-"]').filter({
-      hasText: 'This is a public response to the community'
-    });
+    // Use nth(0) to skip the textarea which also has data-testid="response-textarea"
+    const responseElement = page
+      .locator('[data-testid^="response-"]')
+      .filter({
+        hasText: 'This is a public response to the community',
+      })
+      .first();
     await expect(responseElement).toBeVisible();
     await expect(responseElement.locator('text=Internal Note')).not.toBeVisible();
 
@@ -102,9 +108,13 @@ test.describe('Response Submission', () => {
     await expect(page.locator('text=This is an internal note for moderators only')).toBeVisible();
 
     // Verify it has "Internal" badge (check within the response element)
-    const noteElement = page.locator('[data-testid^="response-"]').filter({
-      hasText: 'This is an internal note for moderators only'
-    });
+    // Filter to get the response element that contains our text (excludes textarea automatically)
+    const noteElement = page
+      .locator('[data-testid^="response-"]')
+      .filter({
+        hasText: 'This is an internal note for moderators only',
+      })
+      .first();
     await expect(noteElement).toBeVisible();
     const badge = noteElement.locator('span:has-text("Internal")').first();
     await expect(badge).toBeVisible();
@@ -152,12 +162,17 @@ test.describe('Response Submission', () => {
 
     // Send internal note
     await page.check('[data-testid="internal-note-checkbox"]');
+    await page.waitForTimeout(100); // Wait for state update
     await textarea.fill('Internal moderator note');
+    await page.waitForTimeout(100); // Wait for onChange to propagate
     await page.click('[data-testid="send-response-button"]');
+    await page.waitForTimeout(500); // Wait for submission to complete
 
     // Send second response
     await page.uncheck('[data-testid="internal-note-checkbox"]');
+    await page.waitForTimeout(100); // Wait for state update
     await textarea.fill('Second public response');
+    await page.waitForTimeout(100); // Wait for onChange to propagate
     await page.click('[data-testid="send-response-button"]');
 
     // Verify all three appear in history
@@ -167,8 +182,10 @@ test.describe('Response Submission', () => {
 
     // Verify only one has "Internal" badge
     // Count badges within response elements (not in other places like post cards)
-    // Use a more specific selector to find only the badge span, not any text containing "Internal"
-    const responseElements = page.locator('[data-testid^="response-"]');
+    // Filter to get response elements that contain response text (excludes textarea automatically)
+    const responseElements = page.locator('[data-testid^="response-"]').filter({
+      hasText: /First public response|Internal moderator note|Second public response/,
+    });
     const internalNoteBadges = responseElements.locator('span:has-text("Internal")');
     await expect(internalNoteBadges).toHaveCount(1);
   });
@@ -190,9 +207,12 @@ test.describe('Response Submission', () => {
 
     // Verify timestamp is shown - toLocaleString() produces format like "1/18/2025, 10:30:00 AM"
     // The timestamp is in a span with class "text-xs text-muted-foreground" within the response element
-    const responseElement = page.locator('[data-testid^="response-"]').filter({
-      hasText: 'Test response with timestamp'
-    });
+    const responseElement = page
+      .locator('[data-testid^="response-"]')
+      .filter({
+        hasText: 'Test response with timestamp',
+      })
+      .first();
     await expect(responseElement).toBeVisible();
 
     // Find the timestamp element within the response element
@@ -218,9 +238,12 @@ test.describe('Response Submission', () => {
     await page.waitForSelector('text=Activity History', { timeout: 5000 });
 
     // Verify agent name is shown within the response element (not in the post card)
-    const responseElement = page.locator('[data-testid^="response-"]').filter({
-      hasText: 'Test response by agent'
-    });
+    const responseElement = page
+      .locator('[data-testid^="response-"]')
+      .filter({
+        hasText: 'Test response by agent',
+      })
+      .first();
     await expect(responseElement).toBeVisible();
     await expect(responseElement.locator('text=Agent A')).toBeVisible();
   });

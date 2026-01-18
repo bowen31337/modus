@@ -34,7 +34,7 @@ async function testGetAllAgents() {
 
     if (response.ok && data.data && Array.isArray(data.data)) {
       success(`GET /api/v1/agents - Returned ${data.data.length} agents`);
-      data.data.forEach(agent => {
+      data.data.forEach((agent) => {
         info(`  - ${agent.display_name} (${agent.status})`);
       });
       return true;

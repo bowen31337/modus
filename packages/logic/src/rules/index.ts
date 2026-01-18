@@ -1,4 +1,4 @@
-import type { ModerationPost, PriorityRule, Priority } from '../validation';
+import type { ModerationPost, Priority, PriorityRule } from '../validation';
 
 // ============================================================================
 // Rule Condition Types
@@ -116,17 +116,17 @@ export class RulesEngine {
 
     switch (rule.condition_type) {
       case RuleConditionType.FIRST_TIME_POSTER: {
-        const threshold = parseInt(rule.condition_value, 10) || 2;
+        const threshold = Number.parseInt(rule.condition_value, 10) || 2;
         return post.author_post_count < threshold;
       }
 
       case RuleConditionType.SENTIMENT_NEGATIVE: {
-        const threshold = parseFloat(rule.condition_value) || -0.3;
+        const threshold = Number.parseFloat(rule.condition_value) || -0.3;
         return (post.sentiment_score ?? 0) < threshold;
       }
 
       case RuleConditionType.SLA_EXCEEDED: {
-        const hoursThreshold = parseFloat(rule.condition_value) || 2;
+        const hoursThreshold = Number.parseFloat(rule.condition_value) || 2;
         const postCreated = new Date(post.created_at);
         const hoursSinceCreation =
           (currentTime.getTime() - postCreated.getTime()) / (1000 * 60 * 60);

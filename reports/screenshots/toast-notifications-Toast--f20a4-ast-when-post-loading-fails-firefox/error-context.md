@@ -1,0 +1,60 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]: m
+      - 'button "Status: Online" [ref=e6] [cursor=pointer]':
+        - img [ref=e7]
+        - img [ref=e9]
+      - navigation [ref=e11]:
+        - link "Home" [ref=e12] [cursor=pointer]:
+          - /url: /dashboard
+          - img [ref=e13]
+        - link "Queue" [ref=e16] [cursor=pointer]:
+          - /url: /dashboard/queue
+          - img [ref=e17]
+        - link "Assigned" [ref=e20] [cursor=pointer]:
+          - /url: /dashboard/assigned
+          - img [ref=e21]
+        - link "Settings" [ref=e24] [cursor=pointer]:
+          - /url: /dashboard/settings
+          - img [ref=e25]
+      - button "Logout" [ref=e28] [cursor=pointer]:
+        - img [ref=e29]
+    - complementary [ref=e33]:
+      - generic [ref=e34]:
+        - heading "Moderation Queue" [level=2] [ref=e35]
+        - generic [ref=e36]:
+          - img [ref=e37]
+          - searchbox "Search posts..." [ref=e40]
+      - generic [ref=e41]:
+        - button "Filters" [ref=e43] [cursor=pointer]:
+          - img [ref=e44]
+          - text: Filters
+          - img [ref=e46]
+        - 'button "Sort : Priority" [ref=e49] [cursor=pointer]':
+          - img [ref=e50]
+          - text: Sort
+          - generic [ref=e55]: ": Priority"
+          - img [ref=e56]
+        - generic [ref=e59]:
+          - button "List view" [ref=e60] [cursor=pointer]:
+            - img [ref=e61]
+          - button "Grid view" [ref=e68] [cursor=pointer]:
+            - img [ref=e69]
+      - generic [ref=e75]:
+        - generic [ref=e77]: +
+        - paragraph [ref=e78]: No posts match your filters
+        - paragraph [ref=e79]: Try adjusting your search or filters
+      - generic [ref=e81]:
+        - generic [ref=e82]: "Total: 0"
+        - generic [ref=e83]: "Loaded: 0"
+    - generic [ref=e84]:
+      - img [ref=e86]
+      - heading "No Post Selected" [level=3] [ref=e88]
+      - paragraph [ref=e89]: Select a post from the queue to begin moderation
+  - region "Notifications (F8)":
+    - list
+```

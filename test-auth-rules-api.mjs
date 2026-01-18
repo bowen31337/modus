@@ -101,7 +101,7 @@ async function testGetRules() {
     }
 
     log(`  Found ${data.data.length} rules`);
-    data.data.slice(0, 3).forEach(rule => {
+    data.data.slice(0, 3).forEach((rule) => {
       log(`  - ${rule.name}: ${rule.condition_type} → ${rule.action_value}`);
     });
   });
@@ -179,7 +179,7 @@ async function runAllTests() {
   process.exit(failedTests > 0 ? 1 : 0);
 }
 
-runAllTests().catch(error => {
+runAllTests().catch((error) => {
   log(`\nFatal error: ${error.message}`, RED);
   console.error(error);
   process.exit(1);

@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation';
 import { createServerSideClient } from '@/lib/supabase/server';
+import { redirect } from 'next/navigation';
 import SettingsClient from './settings-client';
 
 // Force dynamic rendering for this page

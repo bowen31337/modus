@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
-import { Inter, Geist_Mono } from 'next/font/google';
+import { Geist_Mono, Inter } from 'next/font/google';
 import './globals.css';
+import { ToastProvider } from '@/components/ui/toast';
+import { ToastContainer } from '@/components/ui/toast-container';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -25,7 +27,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body
         className={`${inter.variable} ${geistMono.variable} font-sans bg-background text-foreground antialiased`}
       >
-        {children}
+        <ToastProvider>
+          {children}
+          <ToastContainer />
+        </ToastProvider>
       </body>
     </html>
   );

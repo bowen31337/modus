@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { type SentimentResult } from '@modus/logic';
+import type { SentimentResult } from '@modus/logic';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 // ============================================================================
@@ -53,14 +53,14 @@ export async function POST(request: NextRequest) {
     console.error('Error in POST /api/v1/ai/analyze-sentiment:', error);
 
     if (error instanceof Error && error.name === 'ZodError') {
-      return NextResponse.json(
-        { error: 'Invalid request body', details: error },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Invalid request body', details: error }, { status: 400 });
     }
 
     return NextResponse.json(
-      { error: 'Internal server error', details: error instanceof Error ? error.message : 'Unknown error' },
+      {
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 }
     );
   }
@@ -79,19 +79,65 @@ function analyzeSentimentMock(text: string): SentimentResult {
 
   // Negative indicators
   const negativeWords = [
-    'terrible', 'horrible', 'awful', 'hate', 'worst', 'bad', 'poor', 'broken',
-    'frustrated', 'annoyed', 'angry', 'upset', 'disappointed', 'useless',
-    'waste', 'ridiculous', 'pathetic', 'disgusting', 'unacceptable',
-    'fail', 'failure', 'error', 'bug', 'issue', 'problem', 'not working',
-    'doesn\'t work', 'won\'t work', 'can\'t access', 'unable to'
+    'terrible',
+    'horrible',
+    'awful',
+    'hate',
+    'worst',
+    'bad',
+    'poor',
+    'broken',
+    'frustrated',
+    'annoyed',
+    'angry',
+    'upset',
+    'disappointed',
+    'useless',
+    'waste',
+    'ridiculous',
+    'pathetic',
+    'disgusting',
+    'unacceptable',
+    'fail',
+    'failure',
+    'error',
+    'bug',
+    'issue',
+    'problem',
+    'not working',
+    "doesn't work",
+    "won't work",
+    "can't access",
+    'unable to',
   ];
 
   // Positive indicators
   const positiveWords = [
-    'great', 'awesome', 'excellent', 'amazing', 'wonderful', 'fantastic',
-    'love', 'best', 'good', 'helpful', 'thanks', 'thank you', 'appreciate',
-    'perfect', 'works great', 'working', 'fixed', 'resolved', 'helped',
-    'happy', 'pleased', 'satisfied', 'enjoy', 'excited', 'glad'
+    'great',
+    'awesome',
+    'excellent',
+    'amazing',
+    'wonderful',
+    'fantastic',
+    'love',
+    'best',
+    'good',
+    'helpful',
+    'thanks',
+    'thank you',
+    'appreciate',
+    'perfect',
+    'works great',
+    'working',
+    'fixed',
+    'resolved',
+    'helped',
+    'happy',
+    'pleased',
+    'satisfied',
+    'enjoy',
+    'excited',
+    'glad',
   ];
 
   // Intensifiers
@@ -145,7 +191,7 @@ function analyzeSentimentMock(text: string): SentimentResult {
   if (exclamationCount > 0) {
     // Amplify existing sentiment
     if (score !== 0) {
-      score *= 1 + (exclamationCount * 0.1);
+      score *= 1 + exclamationCount * 0.1;
     }
   }
 
@@ -163,7 +209,7 @@ function analyzeSentimentMock(text: string): SentimentResult {
 
   // Calculate confidence based on how many indicators we found
   const totalIndicators = negativeCount + positiveCount;
-  const confidence = Math.min(1, 0.5 + (totalIndicators * 0.1));
+  const confidence = Math.min(1, 0.5 + totalIndicators * 0.1);
 
   return {
     score: Math.round(score * 100) / 100, // Round to 2 decimal places

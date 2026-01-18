@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { dataStore } from '@/lib/data-store';
+import { type NextRequest, NextResponse } from 'next/server';
 
 /**
  * POST /api/v1/rules/reorder
@@ -17,10 +17,7 @@ export async function POST(request: NextRequest) {
     const { ruleIds } = body;
 
     if (!Array.isArray(ruleIds)) {
-      return NextResponse.json(
-        { error: 'ruleIds must be an array' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'ruleIds must be an array' }, { status: 400 });
     }
 
     const rules = dataStore.reorderRules(ruleIds);
@@ -32,9 +29,6 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error in POST /api/v1/rules/reorder:', error);
 
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

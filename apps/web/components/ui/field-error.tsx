@@ -1,7 +1,7 @@
 'use client';
 
-import { AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { AlertCircle } from 'lucide-react';
 
 interface FieldErrorProps {
   /** Error message to display */
@@ -27,10 +27,7 @@ export function FieldError({ message, className = '' }: FieldErrorProps) {
 
   return (
     <div
-      className={cn(
-        'flex items-center gap-2 mt-1.5 text-sm text-red-400',
-        className
-      )}
+      className={cn('flex items-center gap-2 mt-1.5 text-sm text-red-400', className)}
       role="alert"
       aria-live="polite"
     >
@@ -53,7 +50,7 @@ export function FieldError({ message, className = '' }: FieldErrorProps) {
  */
 export function FormError({
   message,
-  className = ''
+  className = '',
 }: {
   message: string;
   className?: string;

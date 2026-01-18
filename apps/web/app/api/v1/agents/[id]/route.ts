@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { dataStore } from '@/lib/data-store';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 /**
@@ -21,12 +21,9 @@ import { z } from 'zod';
  *   }
  * }
  */
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = params;
+    const { id } = await params;
 
     console.log('[GET /api/v1/agents/:id] Request received for agent:', id);
 
@@ -35,23 +32,32 @@ export async function GET(
 
     if (!agent) {
       console.log('[GET /api/v1/agents/:id] Agent not found:', id);
-      return NextResponse.json({
-        error: 'Agent not found',
-      }, { status: 404 });
+      return NextResponse.json(
+        {
+          error: 'Agent not found',
+        },
+        { status: 404 }
+      );
     }
 
     console.log('[GET /api/v1/agents/:id] Returning agent:', agent.id);
 
-    return NextResponse.json({
-      data: agent,
-    }, { status: 200 });
+    return NextResponse.json(
+      {
+        data: agent,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error('[GET /api/v1/agents/:id] Error:', error);
 
-    return NextResponse.json({
-      error: 'Internal server error',
-      details: error instanceof Error ? error.message : 'Unknown error',
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -86,12 +92,9 @@ const updateAgentStatusSchema = z.object({
  *   "message": "Agent status updated successfully"
  * }
  */
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = params;
+    const { id } = await params;
 
     console.log('[PATCH /api/v1/agents/:id] Request received for agent:', id);
 
@@ -108,30 +111,42 @@ export async function PATCH(
 
     if (!updatedAgent) {
       console.log('[PATCH /api/v1/agents/:id] Agent not found:', id);
-      return NextResponse.json({
-        error: 'Agent not found',
-      }, { status: 404 });
+      return NextResponse.json(
+        {
+          error: 'Agent not found',
+        },
+        { status: 404 }
+      );
     }
 
     console.log('[PATCH /api/v1/agents/:id] Agent status updated:', updatedAgent.id);
 
-    return NextResponse.json({
-      data: updatedAgent,
-      message: 'Agent status updated successfully',
-    }, { status: 200 });
+    return NextResponse.json(
+      {
+        data: updatedAgent,
+        message: 'Agent status updated successfully',
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error('[PATCH /api/v1/agents/:id] Error:', error);
 
     if (error instanceof z.ZodError) {
-      return NextResponse.json({
-        error: 'Invalid request body',
-        details: error.errors,
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          error: 'Invalid request body',
+          details: error.errors,
+        },
+        { status: 400 }
+      );
     }
 
-    return NextResponse.json({
-      error: 'Internal server error',
-      details: error instanceof Error ? error.message : 'Unknown error',
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    );
   }
 }

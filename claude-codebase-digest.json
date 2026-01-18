@@ -106,9 +106,7 @@
                 "depth": 3,
                 "subdirectories": [],
                 "file_count": 1,
-                "key_files": [
-                  "index.ts"
-                ]
+                "key_files": ["index.ts"]
               },
               {
                 "name": "validation",
@@ -120,9 +118,7 @@
               }
             ],
             "file_count": 2,
-            "key_files": [
-              "tsconfig.json"
-            ]
+            "key_files": ["tsconfig.json"]
           },
           {
             "name": "ui",
@@ -135,15 +131,11 @@
                 "depth": 3,
                 "subdirectories": [],
                 "file_count": 6,
-                "key_files": [
-                  "index.ts"
-                ]
+                "key_files": ["index.ts"]
               }
             ],
             "file_count": 2,
-            "key_files": [
-              "tsconfig.json"
-            ]
+            "key_files": ["tsconfig.json"]
           }
         ],
         "file_count": 0,
@@ -323,12 +315,7 @@
     "files_changed_recently": []
   },
   "dependencies": {
-    "npm": [
-      "@playwright/test",
-      "@vitest/coverage-v8",
-      "typescript",
-      "vitest"
-    ],
+    "npm": ["@playwright/test", "@vitest/coverage-v8", "typescript", "vitest"],
     "python": []
   },
   "estimated_tokens": 1941

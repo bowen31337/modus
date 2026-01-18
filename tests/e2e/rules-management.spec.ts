@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Rules Management', () => {
   test.beforeEach(async ({ page }) => {
@@ -46,7 +46,9 @@ test.describe('Rules Management', () => {
 
     // Verify specific rule is displayed (use heading role to avoid matching condition value span)
     await expect(page.getByRole('heading', { name: 'First Time Poster Escalation' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Negative Sentiment Escalation' })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Negative Sentiment Escalation' })
+    ).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Keyword Match: Urgent' })).toBeVisible();
   });
 
@@ -440,7 +442,9 @@ test.describe('Rules Management', () => {
 
     // Select different condition types and verify help text
     await page.getByTestId('rule-condition-type-select').selectOption('first_time_poster');
-    await expect(page.getByText('Posts from authors with fewer than this many posts')).toBeVisible();
+    await expect(
+      page.getByText('Posts from authors with fewer than this many posts')
+    ).toBeVisible();
 
     await page.getByTestId('rule-condition-type-select').selectOption('sentiment_negative');
     await expect(page.getByText('Sentiment score threshold')).toBeVisible();

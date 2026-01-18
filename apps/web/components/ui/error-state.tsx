@@ -1,7 +1,7 @@
 'use client';
 
-import { AlertCircle, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { AlertCircle, RefreshCw } from 'lucide-react';
 
 interface ErrorStateProps {
   /** Error message to display */
@@ -47,6 +47,8 @@ export function ErrorState({
       className={cn('flex flex-col items-center justify-center p-8 text-center', className)}
       role="alert"
       aria-live="polite"
+      data-testid="error-state"
+      data-error-message={message}
     >
       {/* Error icon */}
       <div className="mb-4 rounded-full bg-red-500/10 p-4">
@@ -57,9 +59,7 @@ export function ErrorState({
       <h3 className="mb-2 text-lg font-semibold text-white">{message}</h3>
 
       {/* Error details */}
-      {details && (
-        <p className="mb-6 max-w-md text-sm text-slate-400">{details}</p>
-      )}
+      {details && <p className="mb-6 max-w-md text-sm text-slate-400">{details}</p>}
 
       {/* Retry button */}
       {showRetry && onRetry && (

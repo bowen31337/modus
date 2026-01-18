@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Command Palette - Manual Test', () => {
   test.beforeEach(async ({ page, context }) => {
@@ -52,11 +52,16 @@ test.describe('Command Palette - Manual Test', () => {
     await page.waitForTimeout(500);
 
     // Check if command palette appeared
-    const isVisible = await page.getByTestId('command-palette').isVisible().catch(() => false);
+    const isVisible = await page
+      .getByTestId('command-palette')
+      .isVisible()
+      .catch(() => false);
     console.log('Command palette visible:', isVisible);
   });
 
-  test('should manually trigger command palette via button click if available', async ({ page }) => {
+  test('should manually trigger command palette via button click if available', async ({
+    page,
+  }) => {
     // Look for any button that might open the command palette
     const buttons = await page.locator('button').all();
     console.log('Total buttons:', buttons.length);

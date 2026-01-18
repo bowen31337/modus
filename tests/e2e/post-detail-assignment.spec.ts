@@ -1,16 +1,18 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Post Detail View and Assignment', () => {
   test.beforeEach(async ({ page, context }) => {
     // Set the demo session cookie directly to authenticate
     // This bypasses the login form and directly establishes a session
-    await context.addCookies([{
-      name: 'modus_demo_session',
-      value: 'active',
-      path: '/',
-      domain: 'localhost',
-      httpOnly: true,
-    }]);
+    await context.addCookies([
+      {
+        name: 'modus_demo_session',
+        value: 'active',
+        path: '/',
+        domain: 'localhost',
+        httpOnly: true,
+      },
+    ]);
 
     // Navigate directly to dashboard
     await page.goto('/dashboard');
@@ -145,7 +147,10 @@ test.describe('Post Detail View and Assignment', () => {
     // Verify response textarea is visible
     const responseTextarea = page.getByTestId('response-textarea');
     await expect(responseTextarea).toBeVisible();
-    await expect(responseTextarea).toHaveAttribute('placeholder', 'Type your response here... (Press R to focus)');
+    await expect(responseTextarea).toHaveAttribute(
+      'placeholder',
+      'Type your response here... (Press R to focus)'
+    );
 
     // Verify template button is visible
     const templateButton = page.getByTestId('template-trigger-button');

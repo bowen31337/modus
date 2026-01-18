@@ -1,14 +1,16 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Release Assignment', () => {
   test.beforeEach(async ({ page, context }) => {
     // Set demo session cookie directly on the browser context
-    await context.addCookies([{
-      name: 'modus_demo_session',
-      value: 'active',
-      domain: 'localhost',
-      path: '/',
-    }]);
+    await context.addCookies([
+      {
+        name: 'modus_demo_session',
+        value: 'active',
+        domain: 'localhost',
+        path: '/',
+      },
+    ]);
 
     // Navigate directly to dashboard
     await page.goto('/dashboard');
@@ -45,7 +47,9 @@ test.describe('Release Assignment', () => {
     await expect(page.getByTestId('work-pane')).toBeVisible();
 
     // Verify "Assigned to you" badge is visible in the header
-    await expect(page.locator('[data-testid="work-pane"] >> text=Assigned to you').first()).toBeVisible();
+    await expect(
+      page.locator('[data-testid="work-pane"] >> text=Assigned to you').first()
+    ).toBeVisible();
 
     // Click release button
     await page.getByTestId('release-button').click();
@@ -54,10 +58,14 @@ test.describe('Release Assignment', () => {
     await expect(page.getByTestId('assign-to-me-button')).toBeVisible();
 
     // Verify "Assigned to you" badge is no longer visible in the header
-    await expect(page.locator('[data-testid="work-pane"] >> text=Assigned to you')).not.toBeVisible();
+    await expect(
+      page.locator('[data-testid="work-pane"] >> text=Assigned to you')
+    ).not.toBeVisible();
   });
 
-  test('should show assign button instead of release button for unassigned posts', async ({ page }) => {
+  test('should show assign button instead of release button for unassigned posts', async ({
+    page,
+  }) => {
     // Select a post (which auto-assigns it)
     await page.locator('[data-testid^="post-card-"]').first().click();
     await expect(page.getByTestId('work-pane')).toBeVisible();
@@ -84,7 +92,9 @@ test.describe('Release Assignment', () => {
     await page.getByTestId('assign-to-me-button').click();
 
     // Verify "Assigned to you" badge is visible again in the header
-    await expect(page.locator('[data-testid="work-pane"] >> text=Assigned to you').first()).toBeVisible();
+    await expect(
+      page.locator('[data-testid="work-pane"] >> text=Assigned to you').first()
+    ).toBeVisible();
 
     // Verify release button is back
     await expect(page.getByTestId('release-button')).toBeVisible();

@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-import { ArrowUpDown, ChevronDown, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@modus/ui';
+import { ArrowUpDown, Check, ChevronDown } from 'lucide-react';
+import { useState } from 'react';
 
 export type SortField = 'priority' | 'date' | 'status' | 'response_count';
 export type SortOrder = 'asc' | 'desc';
@@ -28,7 +28,7 @@ const sortOptions: { field: SortField; label: string; description: string }[] = 
 export function SortControls({ sort, onSortChange }: SortControlsProps) {
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const currentSortOption = sortOptions.find(opt => opt.field === sort.field);
+  const currentSortOption = sortOptions.find((opt) => opt.field === sort.field);
 
   const handleSortFieldChange = (field: SortField) => {
     onSortChange({ field, order: 'desc' });
@@ -55,29 +55,25 @@ export function SortControls({ sort, onSortChange }: SortControlsProps) {
         <ArrowUpDown size={12} />
         Sort
         {currentSortOption && (
-          <span className="text-foreground-secondary">
-            : {currentSortOption.label}
-          </span>
+          <span className="text-foreground-secondary">: {currentSortOption.label}</span>
         )}
-        <ChevronDown size={12} className={cn('transition-transform', showDropdown && 'rotate-180')} />
+        <ChevronDown
+          size={12}
+          className={cn('transition-transform', showDropdown && 'rotate-180')}
+        />
       </Button>
 
       {/* Dropdown Menu */}
       {showDropdown && (
         <>
           {/* Backdrop */}
-          <div
-            className="fixed inset-0 z-40"
-            onClick={() => setShowDropdown(false)}
-          />
+          <div className="fixed inset-0 z-40" onClick={() => setShowDropdown(false)} />
 
           {/* Dropdown Content */}
           <div className="absolute top-full right-0 mt-1 w-56 bg-background-secondary border border-border rounded-lg shadow-lg z-50 p-2 space-y-1">
             {/* Sort Field Options */}
             <div className="space-y-0.5">
-              <div className="px-2 py-1 text-xs text-foreground-muted font-medium">
-                Sort by
-              </div>
+              <div className="px-2 py-1 text-xs text-foreground-muted font-medium">Sort by</div>
               {sortOptions.map((option) => (
                 <button
                   key={option.field}
@@ -93,9 +89,7 @@ export function SortControls({ sort, onSortChange }: SortControlsProps) {
                     <span>{option.label}</span>
                     <span className="text-[10px] opacity-70">{option.description}</span>
                   </div>
-                  {sort.field === option.field && (
-                    <Check size={14} />
-                  )}
+                  {sort.field === option.field && <Check size={14} />}
                 </button>
               ))}
             </div>
@@ -109,7 +103,9 @@ export function SortControls({ sort, onSortChange }: SortControlsProps) {
               className="w-full flex items-center justify-between px-2 py-1.5 rounded text-xs text-left hover:bg-background-tertiary text-foreground-secondary transition-colors"
             >
               <span>Order</span>
-              <span className={cn('font-mono text-[10px] px-1.5 py-0.5 rounded bg-background-tertiary')}>
+              <span
+                className={cn('font-mono text-[10px] px-1.5 py-0.5 rounded bg-background-tertiary')}
+              >
                 {sort.order === 'asc' ? 'Ascending' : 'Descending'}
               </span>
             </button>

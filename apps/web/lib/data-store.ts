@@ -5,9 +5,9 @@
  * In production, this will be replaced with Supabase database queries.
  */
 
-import { v4 as uuidv4 } from 'uuid';
-import type { ModerationPost, Response, PriorityRule, ResponseTemplate } from '@modus/logic';
+import type { ModerationPost, PriorityRule, Response, ResponseTemplate } from '@modus/logic';
 import { RulesEngine } from '@modus/logic/rules';
+import { v4 as uuidv4 } from 'uuid';
 
 // ============================================================================
 // Types
@@ -150,7 +150,7 @@ const mockRules: PriorityRule[] = [
     name: 'Bug Report Category',
     description: 'Set P2 priority for bug reports',
     condition_type: 'category_match',
-    condition_value: 'cat-3',
+    condition_value: '33333333-3333-3333-3333-333333333333',
     action_type: 'set_priority',
     action_value: 'P2',
     position: 5,
@@ -160,13 +160,24 @@ const mockRules: PriorityRule[] = [
   },
 ];
 
+// Category UUIDs (matching the ones used in queue-pane.tsx)
+const CATEGORY_UUIDS = {
+  'Account Issues': '11111111-1111-1111-1111-111111111111',
+  'Feature Request': '22222222-2222-2222-2222-222222222222',
+  'Bug Reports': '33333333-3333-3333-3333-333333333333',
+  'Help & Support': '44444444-4444-4444-4444-444444444444',
+  'Policy & Guidelines': '55555555-5555-5555-5555-555555555555',
+} as const;
+
 const mockPosts: PostWithRelations[] = [
   {
     id: '1',
     title: 'Unable to access my account after password reset',
-    body_content: 'I reset my password yesterday but still can\'t log in. The system keeps saying my credentials are invalid. I\'ve tried clearing my cache, using incognito mode, and even a different browser, but nothing works. I need to access my account urgently for work purposes. Please help me resolve this issue as soon as possible.',
-    excerpt: 'I reset my password yesterday but still can\'t log in. The system keeps saying my credentials are invalid...',
-    category_id: 'cat-1',
+    body_content:
+      "I reset my password yesterday but still can't log in. The system keeps saying my credentials are invalid. I've tried clearing my cache, using incognito mode, and even a different browser, but nothing works. I need to access my account urgently for work purposes. Please help me resolve this issue as soon as possible.",
+    excerpt:
+      "I reset my password yesterday but still can't log in. The system keeps saying my credentials are invalid...",
+    category_id: CATEGORY_UUIDS['Account Issues'],
     status: 'open',
     priority: 'P2',
     sentiment_score: -0.3,
@@ -179,7 +190,7 @@ const mockPosts: PostWithRelations[] = [
     updated_at: '2025-01-18T10:30:00Z',
     resolved_at: null,
     category: {
-      id: 'cat-1',
+      id: CATEGORY_UUIDS['Account Issues'] as string,
       name: 'Account Issues',
       color: '#eab308',
     },
@@ -189,9 +200,11 @@ const mockPosts: PostWithRelations[] = [
   {
     id: '2',
     title: 'Feature request: Dark mode for mobile app',
-    body_content: 'Would love to see a dark mode option in the mobile application. My eyes get tired using the app at night, and the bright white background is really uncomfortable. Many other apps have this feature now, and it would be great if you could implement it. Maybe you could also add an automatic option that switches based on system settings.',
-    excerpt: 'Would love to see a dark mode option in the mobile application. My eyes get tired using the app at night...',
-    category_id: 'cat-2',
+    body_content:
+      'Would love to see a dark mode option in the mobile application. My eyes get tired using the app at night, and the bright white background is really uncomfortable. Many other apps have this feature now, and it would be great if you could implement it. Maybe you could also add an automatic option that switches based on system settings.',
+    excerpt:
+      'Would love to see a dark mode option in the mobile application. My eyes get tired using the app at night...',
+    category_id: CATEGORY_UUIDS['Feature Request'],
     status: 'open',
     priority: 'P3',
     sentiment_score: 0.2,
@@ -204,7 +217,7 @@ const mockPosts: PostWithRelations[] = [
     updated_at: '2025-01-17T14:15:00Z',
     resolved_at: null,
     category: {
-      id: 'cat-2',
+      id: CATEGORY_UUIDS['Feature Request'] as string,
       name: 'Feature Request',
       color: '#8b5cf6',
     },
@@ -214,9 +227,11 @@ const mockPosts: PostWithRelations[] = [
   {
     id: '3',
     title: 'Bug: Images not loading in posts',
-    body_content: 'Since the last update, images in community posts are not loading. Just shows a broken image icon where the images should be. This is happening on both desktop and mobile versions. I\'ve tried on different internet connections and the issue persists. It\'s really frustrating because images are a big part of the community experience.',
-    excerpt: 'Since the last update, images in community posts are not loading. Just shows a broken image icon...',
-    category_id: 'cat-3',
+    body_content:
+      "Since the last update, images in community posts are not loading. Just shows a broken image icon where the images should be. This is happening on both desktop and mobile versions. I've tried on different internet connections and the issue persists. It's really frustrating because images are a big part of the community experience.",
+    excerpt:
+      'Since the last update, images in community posts are not loading. Just shows a broken image icon...',
+    category_id: CATEGORY_UUIDS['Bug Reports'],
     status: 'in_progress',
     priority: 'P1',
     sentiment_score: -0.6,
@@ -229,7 +244,7 @@ const mockPosts: PostWithRelations[] = [
     updated_at: '2025-01-17T15:00:00Z',
     resolved_at: null,
     category: {
-      id: 'cat-3',
+      id: CATEGORY_UUIDS['Bug Reports'] as string,
       name: 'Bug Reports',
       color: '#ef4444',
     },
@@ -242,9 +257,11 @@ const mockPosts: PostWithRelations[] = [
   {
     id: '4',
     title: 'How do I change my email notification settings?',
-    body_content: 'I\'ve been looking everywhere but can\'t find where to change my email notification preferences. I want to receive daily digest emails instead of instant notifications for every post. Can someone point me to the right setting? Thanks in advance!',
-    excerpt: 'I\'ve been looking everywhere but can\'t find where to change my email notification preferences...',
-    category_id: 'cat-4',
+    body_content:
+      "I've been looking everywhere but can't find where to change my email notification preferences. I want to receive daily digest emails instead of instant notifications for every post. Can someone point me to the right setting? Thanks in advance!",
+    excerpt:
+      "I've been looking everywhere but can't find where to change my email notification preferences...",
+    category_id: CATEGORY_UUIDS['Help & Support'],
     status: 'open',
     priority: 'P4',
     sentiment_score: 0.1,
@@ -257,7 +274,7 @@ const mockPosts: PostWithRelations[] = [
     updated_at: '2025-01-17T11:20:00Z',
     resolved_at: null,
     category: {
-      id: 'cat-4',
+      id: CATEGORY_UUIDS['Help & Support'] as string,
       name: 'Help & Support',
       color: '#3b82f6',
     },
@@ -267,9 +284,10 @@ const mockPosts: PostWithRelations[] = [
   {
     id: '5',
     title: 'Community guidelines clarification needed',
-    body_content: 'I\'m a bit confused about the community guidelines regarding self-promotion. I\'ve seen some posts promoting products get removed while others stay up. What exactly is the policy? I want to make sure I don\'t accidentally break the rules when sharing my own projects. A clearer explanation would be really helpful for everyone.',
-    excerpt: 'I\'m a bit confused about the community guidelines regarding self-promotion...',
-    category_id: 'cat-5',
+    body_content:
+      "I'm a bit confused about the community guidelines regarding self-promotion. I've seen some posts promoting products get removed while others stay up. What exactly is the policy? I want to make sure I don't accidentally break the rules when sharing my own projects. A clearer explanation would be really helpful for everyone.",
+    excerpt: "I'm a bit confused about the community guidelines regarding self-promotion...",
+    category_id: CATEGORY_UUIDS['Policy & Guidelines'],
     status: 'resolved',
     priority: 'P3',
     sentiment_score: 0.0,
@@ -282,7 +300,7 @@ const mockPosts: PostWithRelations[] = [
     updated_at: '2025-01-16T14:00:00Z',
     resolved_at: '2025-01-16T14:00:00Z',
     category: {
-      id: 'cat-5',
+      id: CATEGORY_UUIDS['Policy & Guidelines'] as string,
       name: 'Policy & Guidelines',
       color: '#06b6d4',
     },
@@ -358,9 +376,10 @@ const mockTemplates: ResponseTemplate[] = [
   {
     id: 'template-1',
     name: 'Bug Acknowledgment',
-    content: 'Hi {{authorName}}, thank you for reporting this issue. I\'ve escalated this to our engineering team and they\'re investigating it now. We\'ll keep you updated on the progress.',
+    content:
+      "Hi {{authorName}}, thank you for reporting this issue. I've escalated this to our engineering team and they're investigating it now. We'll keep you updated on the progress.",
     placeholders: ['authorName'],
-    category_id: 'cat-3',
+    category_id: '33333333-3333-3333-3333-333333333333',
     usage_count: 15,
     created_by: 'agent-1',
     created_at: '2025-01-01T00:00:00Z',
@@ -369,9 +388,10 @@ const mockTemplates: ResponseTemplate[] = [
   {
     id: 'template-2',
     name: 'Feature Request Response',
-    content: 'Hi {{authorName}}, thanks for your suggestion! We appreciate feedback like yours. I\'ve added this to our feature request backlog for the team to consider.',
+    content:
+      "Hi {{authorName}}, thanks for your suggestion! We appreciate feedback like yours. I've added this to our feature request backlog for the team to consider.",
     placeholders: ['authorName'],
-    category_id: 'cat-2',
+    category_id: '22222222-2222-2222-2222-222222222222',
     usage_count: 8,
     created_by: 'agent-2',
     created_at: '2025-01-01T00:00:00Z',
@@ -380,7 +400,8 @@ const mockTemplates: ResponseTemplate[] = [
   {
     id: 'template-3',
     name: 'General Welcome',
-    content: 'Welcome to the community, {{authorName}}! If you have any questions or need assistance, feel free to reach out. We\'re glad to have you here!',
+    content:
+      "Welcome to the community, {{authorName}}! If you have any questions or need assistance, feel free to reach out. We're glad to have you here!",
     placeholders: ['authorName'],
     category_id: null,
     usage_count: 42,
@@ -391,7 +412,8 @@ const mockTemplates: ResponseTemplate[] = [
   {
     id: 'template-4',
     name: 'Escalation Notice',
-    content: 'Hi {{authorName}}, your concern has been escalated to our senior team. Someone will review this shortly and get back to you with a resolution.',
+    content:
+      'Hi {{authorName}}, your concern has been escalated to our senior team. Someone will review this shortly and get back to you with a resolution.',
     placeholders: ['authorName'],
     category_id: null,
     usage_count: 5,
@@ -414,16 +436,16 @@ class DataStore {
 
   constructor() {
     // Initialize with mock data
-    mockPosts.forEach(post => {
+    mockPosts.forEach((post) => {
       this.posts.set(post.id, { ...post });
     });
-    mockRules.forEach(rule => {
+    mockRules.forEach((rule) => {
       this.rules.set(rule.id, { ...rule });
     });
-    mockAgents.forEach(agent => {
+    mockAgents.forEach((agent) => {
       this.agents.set(agent.id, { ...agent });
     });
-    mockTemplates.forEach(template => {
+    mockTemplates.forEach((template) => {
       this.templates.set(template.id, { ...template });
     });
   }
@@ -536,7 +558,7 @@ class DataStore {
   }
 
   getResponsesByPostId(postId: string): Response[] {
-    return Array.from(this.responses.values()).filter(r => r.post_id === postId);
+    return Array.from(this.responses.values()).filter((r) => r.post_id === postId);
   }
 
   createResponse(input: {
@@ -575,7 +597,8 @@ class DataStore {
   createRule(input: CreateRuleInput): PriorityRule {
     const now = new Date().toISOString();
     const allRules = this.getAllRules();
-    const newPosition = allRules.length > 0 ? Math.max(...allRules.map(r => r.position ?? 0)) + 1 : 1;
+    const newPosition =
+      allRules.length > 0 ? Math.max(...allRules.map((r) => r.position ?? 0)) + 1 : 1;
 
     const rule: PriorityRule = {
       id: uuidv4(),
@@ -641,9 +664,14 @@ class DataStore {
       status: 'open',
       priority: 'P4', // Start with default priority
       sentiment_score: input.sentiment_score ?? 0,
-      sentiment_label: input.sentiment_score !== undefined
-        ? (input.sentiment_score < -0.2 ? 'negative' : input.sentiment_score > 0.2 ? 'positive' : 'neutral')
-        : null,
+      sentiment_label:
+        input.sentiment_score !== undefined
+          ? input.sentiment_score < -0.2
+            ? 'negative'
+            : input.sentiment_score > 0.2
+              ? 'positive'
+              : 'neutral'
+          : null,
       author_user_id: 'test-user',
       author_post_count: input.author_post_count,
       assigned_to_id: null,
@@ -656,7 +684,7 @@ class DataStore {
     // Get rules to test (either specific rule or all active rules)
     const rulesToTest = ruleId
       ? [this.getRuleById(ruleId)].filter((r): r is PriorityRule => r !== null)
-      : this.getAllRules().filter(r => r.is_active);
+      : this.getAllRules().filter((r) => r.is_active);
 
     // Use RulesEngine to evaluate rules
     const rulesEngine = new RulesEngine(rulesToTest);
@@ -664,7 +692,7 @@ class DataStore {
     const calculatedPriority = rulesEngine.calculatePriority({ post: testPost });
 
     return {
-      matched_rules: evaluationResults.map(r => ({
+      matched_rules: evaluationResults.map((r) => ({
         rule_id: r.rule.id,
         rule_name: r.rule.name,
         action_type: r.appliedAction?.type ?? '',
@@ -777,20 +805,41 @@ class DataStore {
     return updated;
   }
 
-
   // ============================================================================
   // Helper Methods
   // ============================================================================
 
-  private getCategoryById(categoryId: string | null | undefined): { id: string; name: string; color: string } | undefined {
+  private getCategoryById(
+    categoryId: string | null | undefined
+  ): { id: string; name: string; color: string } | undefined {
     if (!categoryId) return undefined;
 
     const categories: Record<string, { id: string; name: string; color: string }> = {
-      'cat-1': { id: 'cat-1', name: 'Account Issues', color: '#eab308' },
-      'cat-2': { id: 'cat-2', name: 'Feature Request', color: '#8b5cf6' },
-      'cat-3': { id: 'cat-3', name: 'Bug Reports', color: '#ef4444' },
-      'cat-4': { id: 'cat-4', name: 'Help & Support', color: '#3b82f6' },
-      'cat-5': { id: 'cat-5', name: 'Policy & Guidelines', color: '#06b6d4' },
+      '11111111-1111-1111-1111-111111111111': {
+        id: '11111111-1111-1111-1111-111111111111',
+        name: 'Account Issues',
+        color: '#eab308',
+      },
+      '22222222-2222-2222-2222-222222222222': {
+        id: '22222222-2222-2222-2222-222222222222',
+        name: 'Feature Request',
+        color: '#8b5cf6',
+      },
+      '33333333-3333-3333-3333-333333333333': {
+        id: '33333333-3333-3333-3333-333333333333',
+        name: 'Bug Reports',
+        color: '#ef4444',
+      },
+      '44444444-4444-4444-4444-444444444444': {
+        id: '44444444-4444-4444-4444-444444444444',
+        name: 'Help & Support',
+        color: '#3b82f6',
+      },
+      '55555555-5555-5555-5555-555555555555': {
+        id: '55555555-5555-5555-5555-555555555555',
+        name: 'Policy & Guidelines',
+        color: '#06b6d4',
+      },
     };
 
     return categories[categoryId];

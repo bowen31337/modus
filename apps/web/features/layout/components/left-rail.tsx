@@ -66,15 +66,15 @@ export function LeftRail() {
             <Link
               key={item.href}
               href={item.href as never}
-              className={`w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-150 ${
+              className={`w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-200 ${
                 isActive
-                  ? 'bg-obsidian-600 text-white'
-                  : 'text-obsidian-400 hover:bg-obsidian-800 hover:text-obsidian-200 active:scale-95'
+                  ? 'bg-obsidian-600 text-white shadow-md'
+                  : 'text-obsidian-400 hover:bg-obsidian-800 hover:text-obsidian-200 hover:scale-105 active:scale-95'
               }`}
               title={item.label}
               aria-label={item.label}
             >
-              <item.icon size={20} />
+              <item.icon size={20} className="transition-transform duration-200" />
             </Link>
           );
         })}
@@ -85,10 +85,10 @@ export function LeftRail() {
         variant="ghost"
         size="icon"
         onClick={handleLogout}
-        className="w-10 h-10 text-obsidian-400 hover:text-red-400 hover:bg-obsidian-800"
+        className="w-10 h-10 text-obsidian-400 hover:text-red-400 hover:bg-obsidian-800 transition-all duration-200"
         title="Logout"
       >
-        <LogOut size={20} />
+        <LogOut size={20} className="transition-transform duration-200" />
       </Button>
     </aside>
   );

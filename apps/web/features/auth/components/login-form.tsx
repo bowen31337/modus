@@ -1,15 +1,15 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { FieldError, FormError } from '@/components/ui/field-error';
+import { demoLoginAction } from '@/lib/auth-actions';
 import { createClient } from '@/lib/supabase/client';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@modus/ui';
 import { Input } from '@modus/ui';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { demoLoginAction } from '@/lib/auth-actions';
-import { FieldError, FormError } from '@/components/ui/field-error';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -22,7 +22,11 @@ export function LoginForm() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     mode: 'all',
   });

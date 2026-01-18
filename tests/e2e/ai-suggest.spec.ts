@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('AI Suggest Functionality', () => {
   test.beforeEach(async ({ page }) => {
@@ -135,11 +135,13 @@ test.describe('AI Suggest Functionality', () => {
 
     // Wait for React state update and ghost text to disappear
     await page.waitForTimeout(200);
-    await page.waitForSelector('[data-testid="ghost-text-overlay"]', { state: 'hidden', timeout: 5000 }).catch(() => {
-      // Ghost text might have been removed from DOM entirely
-      const overlay = page.locator('[data-testid="ghost-text-overlay"]');
-      expect(overlay).toHaveCount(0);
-    });
+    await page
+      .waitForSelector('[data-testid="ghost-text-overlay"]', { state: 'hidden', timeout: 5000 })
+      .catch(() => {
+        // Ghost text might have been removed from DOM entirely
+        const overlay = page.locator('[data-testid="ghost-text-overlay"]');
+        expect(overlay).toHaveCount(0);
+      });
 
     // Verify suggestion was inserted into textarea (should have content)
     const textareaValue = await textarea.inputValue();
@@ -181,11 +183,13 @@ test.describe('AI Suggest Functionality', () => {
 
     // Wait for React state update and ghost text to disappear
     await page.waitForTimeout(200);
-    await page.waitForSelector('[data-testid="ghost-text-overlay"]', { state: 'hidden', timeout: 5000 }).catch(() => {
-      // Ghost text might have been removed from DOM entirely
-      const overlay = page.locator('[data-testid="ghost-text-overlay"]');
-      expect(overlay).toHaveCount(0);
-    });
+    await page
+      .waitForSelector('[data-testid="ghost-text-overlay"]', { state: 'hidden', timeout: 5000 })
+      .catch(() => {
+        // Ghost text might have been removed from DOM entirely
+        const overlay = page.locator('[data-testid="ghost-text-overlay"]');
+        expect(overlay).toHaveCount(0);
+      });
 
     // Verify textarea is still empty (or has previous content)
     const textareaValue = await textarea.inputValue();
@@ -213,7 +217,10 @@ test.describe('AI Suggest Functionality', () => {
     await page.keyboard.type('H');
 
     // Wait for ghost text to disappear
-    await page.waitForSelector('[data-testid="ghost-text-overlay"]', { state: 'hidden', timeout: 5000 });
+    await page.waitForSelector('[data-testid="ghost-text-overlay"]', {
+      state: 'hidden',
+      timeout: 5000,
+    });
 
     // Verify only the typed character is in textarea
     const textareaValue = await textarea.inputValue();

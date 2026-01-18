@@ -1,13 +1,15 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Command Palette Debug', () => {
   test('check if useEffect marker is present', async ({ page, context }) => {
-    await context.addCookies([{
-      name: 'modus_demo_session',
-      value: 'active',
-      domain: 'localhost',
-      path: '/',
-    }]);
+    await context.addCookies([
+      {
+        name: 'modus_demo_session',
+        value: 'active',
+        domain: 'localhost',
+        path: '/',
+      },
+    ]);
 
     await page.goto('/dashboard');
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
@@ -30,12 +32,14 @@ test.describe('Command Palette Debug', () => {
   });
 
   test('test cmd+k with marker verification', async ({ page, context }) => {
-    await context.addCookies([{
-      name: 'modus_demo_session',
-      value: 'active',
-      domain: 'localhost',
-      path: '/',
-    }]);
+    await context.addCookies([
+      {
+        name: 'modus_demo_session',
+        value: 'active',
+        domain: 'localhost',
+        path: '/',
+      },
+    ]);
 
     await page.goto('/dashboard');
     await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });

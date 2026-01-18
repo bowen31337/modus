@@ -34,7 +34,7 @@ async function testGetAllTemplates() {
 
     if (response.ok && data.data && Array.isArray(data.data)) {
       success(`GET /api/v1/templates - Returned ${data.data.length} templates`);
-      data.data.forEach(template => {
+      data.data.forEach((template) => {
         info(`  - ${template.name} (${template.usage_count} uses)`);
       });
       return true;
@@ -111,7 +111,9 @@ async function testCreateTemplate() {
     const data = await response.json();
 
     if (response.ok && data.data && data.data.name === 'Test Template') {
-      success(`POST /api/v1/templates - Created template "${data.data.name}" (ID: ${data.data.id})`);
+      success(
+        `POST /api/v1/templates - Created template "${data.data.name}" (ID: ${data.data.id})`
+      );
 
       // Clean up - delete the test template
       await fetch(`${BASE_URL}/api/v1/templates/${data.data.id}`, {

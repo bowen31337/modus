@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Template Management', () => {
   test.beforeEach(async ({ page }) => {
@@ -47,7 +47,9 @@ test.describe('Template Management', () => {
     await expect(page.getByTestId('template-card-1')).toContainText('{{authorName}}');
   });
 
-  test('should open create template modal when clicking Create Template button', async ({ page }) => {
+  test('should open create template modal when clicking Create Template button', async ({
+    page,
+  }) => {
     // Click Create Template button
     await page.getByTestId('create-template-button').click();
 
@@ -71,9 +73,11 @@ test.describe('Template Management', () => {
     await page.getByTestId('create-template-name-input').fill('Bug Report Acknowledgment');
 
     // Fill in template content
-    await page.getByTestId('create-template-content-input').fill(
-      'Hi {{authorName}},\n\nThank you for reporting this bug about "{{title}}". Our development team has been notified and will investigate the issue.\n\nWe\'ll keep you updated on the progress.\n\nBest regards,\n{{agentName}}'
-    );
+    await page
+      .getByTestId('create-template-content-input')
+      .fill(
+        'Hi {{authorName}},\n\nThank you for reporting this bug about "{{title}}". Our development team has been notified and will investigate the issue.\n\nWe\'ll keep you updated on the progress.\n\nBest regards,\n{{agentName}}'
+      );
 
     // Verify placeholders are detected within the modal
     const modal = page.getByTestId('create-template-modal');
@@ -137,7 +141,9 @@ test.describe('Template Management', () => {
 
     // Verify existing data is pre-filled
     await expect(page.getByTestId('edit-template-name-input')).toHaveValue('Welcome Message');
-    await expect(page.getByTestId('edit-template-content-input')).toHaveValue(/\Thank you for reaching out/);
+    await expect(page.getByTestId('edit-template-content-input')).toHaveValue(
+      /\Thank you for reaching out/
+    );
 
     // Modify template name
     await page.getByTestId('edit-template-name-input').clear();
@@ -145,9 +151,11 @@ test.describe('Template Management', () => {
 
     // Modify template content
     await page.getByTestId('edit-template-content-input').clear();
-    await page.getByTestId('edit-template-content-input').fill(
-      'Hi {{authorName}},\n\nThank you for reaching out! We\'ve received your post about "{{title}}" and appreciate your contribution to our community.\n\nWarm regards,\n{{agentName}}'
-    );
+    await page
+      .getByTestId('edit-template-content-input')
+      .fill(
+        'Hi {{authorName}},\n\nThank you for reaching out! We\'ve received your post about "{{title}}" and appreciate your contribution to our community.\n\nWarm regards,\n{{agentName}}'
+      );
 
     // Click Save Changes
     await page.getByTestId('save-edit-template').click();
@@ -295,9 +303,9 @@ test.describe('Template Management', () => {
     await page.getByTestId('create-template-button').click();
 
     // Type content with multiple placeholders
-    await page.getByTestId('create-template-content-input').fill(
-      'Hi {{username}}, regarding your post {{postId}} in category {{category}}'
-    );
+    await page
+      .getByTestId('create-template-content-input')
+      .fill('Hi {{username}}, regarding your post {{postId}} in category {{category}}');
 
     // Verify all placeholders are detected - use test IDs for specificity
     const modal = page.getByTestId('create-template-modal');
@@ -312,7 +320,9 @@ test.describe('Template Management', () => {
 
     // Fill in template with name but no placeholders
     await page.getByTestId('create-template-name-input').fill('Simple Greeting');
-    await page.getByTestId('create-template-content-input').fill('Hello! Thanks for contacting us.');
+    await page
+      .getByTestId('create-template-content-input')
+      .fill('Hello! Thanks for contacting us.');
 
     // Verify "No placeholders detected" message
     await expect(page.getByText('No placeholders detected')).toBeVisible();
@@ -334,9 +344,9 @@ test.describe('Template Management', () => {
 
     // Create template with all placeholders
     await page.getByTestId('create-template-name-input').fill('Full Context Template');
-    await page.getByTestId('create-template-content-input').fill(
-      'Hi {{authorName}},\n\nRe: {{title}} in {{category}}\n\nFrom: {{agentName}}'
-    );
+    await page
+      .getByTestId('create-template-content-input')
+      .fill('Hi {{authorName}},\n\nRe: {{title}} in {{category}}\n\nFrom: {{agentName}}');
 
     // Verify all placeholders detected - use test IDs for specificity
     const modal = page.getByTestId('create-template-modal');

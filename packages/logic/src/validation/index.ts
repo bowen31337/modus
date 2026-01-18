@@ -247,8 +247,9 @@ export const postsQuerySchema = z.object({
   status: z.enum(['open', 'in_progress', 'resolved']).optional(),
   priority: z.array(z.enum(['P1', 'P2', 'P3', 'P4', 'P5'])).optional(),
   assigned_to_id: z.string().uuid().optional(),
-  date_from: z.string().datetime().optional(),
-  date_to: z.string().datetime().optional(),
+  // Accept both date-only (YYYY-MM-DD) and datetime (ISO 8601) formats
+  date_from: z.string().optional(),
+  date_to: z.string().optional(),
   search: z.string().optional(),
   sort_by: z.enum(['priority', 'date', 'status']).default('priority'),
   sort_order: z.enum(['asc', 'desc']).default('asc'),

@@ -78,7 +78,7 @@ export function PostCard({
         aria-pressed={isSelected}
         data-testid={`post-card-${id}`}
         className={cn(
-          'group relative flex flex-col w-full bg-background-secondary hover:bg-background-tertiary active:bg-background-hover active:scale-[0.99] transition-all duration-150 cursor-pointer text-left border border-border rounded-lg overflow-hidden',
+          'group relative flex flex-col w-full bg-background-secondary hover:bg-background-tertiary hover:-translate-y-0.5 hover:shadow-lg active:bg-background-hover active:scale-[0.99] active:translate-y-0 transition-all duration-150 cursor-pointer text-left border border-border rounded-lg overflow-hidden',
           isSelected && 'ring-2 ring-primary',
           isKeyboardFocused && 'ring-2 ring-primary ring-offset-2 ring-offset-background'
         )}
@@ -176,7 +176,7 @@ export function PostCard({
       aria-pressed={isSelected}
       data-testid={`post-card-${id}`}
       className={cn(
-        'group relative flex w-full border-b border-border bg-background-secondary hover:bg-background-tertiary active:bg-background-hover active:scale-[0.995] transition-all duration-150 cursor-pointer text-left',
+        'group relative flex w-full border-b border-border bg-background-secondary hover:bg-background-tertiary hover:-translate-y-px active:bg-background-hover active:scale-[0.995] active:translate-x-px transition-all duration-150 cursor-pointer text-left',
         isSelected && 'bg-background-tertiary ring-1 ring-primary inset-0',
         isKeyboardFocused && 'outline-none ring-2 ring-primary ring-offset-2 ring-offset-background'
       )}

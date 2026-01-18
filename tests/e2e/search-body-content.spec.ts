@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Search Body Content', () => {
   test.beforeEach(async ({ page, context }) => {
@@ -34,7 +34,9 @@ test.describe('Search Body Content', () => {
 
     // Verify that post with "different browser" in body is shown
     // Using a more flexible selector
-    await expect(page.locator('[data-testid="queue-pane"]')).toContainText('Unable to access my account');
+    await expect(page.locator('[data-testid="queue-pane"]')).toContainText(
+      'Unable to access my account'
+    );
   });
 
   test('should find posts by searching title', async ({ page }) => {
@@ -45,7 +47,9 @@ test.describe('Search Body Content', () => {
     await page.waitForTimeout(500);
 
     // Verify that post with "Dark mode" in title is shown
-    await expect(page.locator('[data-testid="queue-pane"]')).toContainText('Feature request: Dark mode');
+    await expect(page.locator('[data-testid="queue-pane"]')).toContainText(
+      'Feature request: Dark mode'
+    );
   });
 
   test('should find posts by searching excerpt', async ({ page }) => {
@@ -68,7 +72,9 @@ test.describe('Search Body Content', () => {
     await page.waitForTimeout(500);
 
     // Verify empty state is shown
-    await expect(page.locator('[data-testid="queue-pane"]')).toContainText('No posts match your filters');
+    await expect(page.locator('[data-testid="queue-pane"]')).toContainText(
+      'No posts match your filters'
+    );
   });
 
   test('should clear search and show all posts', async ({ page }) => {
@@ -77,17 +83,27 @@ test.describe('Search Body Content', () => {
     await page.waitForTimeout(500);
 
     // Verify filtered results - only one post should be visible
-    await expect(page.locator('[data-testid="queue-pane"]')).toContainText('Unable to access my account');
-    await expect(page.locator('[data-testid="queue-pane"]')).not.toContainText('Feature request: Dark mode');
+    await expect(page.locator('[data-testid="queue-pane"]')).toContainText(
+      'Unable to access my account'
+    );
+    await expect(page.locator('[data-testid="queue-pane"]')).not.toContainText(
+      'Feature request: Dark mode'
+    );
 
     // Clear the search
     await page.getByPlaceholder('Search posts...').clear();
     await page.waitForTimeout(500);
 
     // Verify all posts are shown again - at least 5 titles
-    await expect(page.locator('[data-testid="queue-pane"]')).toContainText('Unable to access my account');
-    await expect(page.locator('[data-testid="queue-pane"]')).toContainText('Feature request: Dark mode');
-    await expect(page.locator('[data-testid="queue-pane"]')).toContainText('Bug: Images not loading');
+    await expect(page.locator('[data-testid="queue-pane"]')).toContainText(
+      'Unable to access my account'
+    );
+    await expect(page.locator('[data-testid="queue-pane"]')).toContainText(
+      'Feature request: Dark mode'
+    );
+    await expect(page.locator('[data-testid="queue-pane"]')).toContainText(
+      'Bug: Images not loading'
+    );
   });
 
   test('should be case insensitive', async ({ page }) => {
@@ -96,7 +112,9 @@ test.describe('Search Body Content', () => {
     await page.waitForTimeout(500);
 
     // Should find the post
-    await expect(page.locator('[data-testid="queue-pane"]')).toContainText('Unable to access my account');
+    await expect(page.locator('[data-testid="queue-pane"]')).toContainText(
+      'Unable to access my account'
+    );
 
     // Clear and search with lowercase
     await page.getByPlaceholder('Search posts...').clear();
@@ -105,7 +123,9 @@ test.describe('Search Body Content', () => {
     await page.waitForTimeout(500);
 
     // Should also find the post
-    await expect(page.locator('[data-testid="queue-pane"]')).toContainText('Unable to access my account');
+    await expect(page.locator('[data-testid="queue-pane"]')).toContainText(
+      'Unable to access my account'
+    );
   });
 
   test('should find multiple posts with common terms', async ({ page }) => {
@@ -123,7 +143,9 @@ test.describe('Search Body Content', () => {
     await page.waitForTimeout(500);
 
     // Should find the account post
-    await expect(page.locator('[data-testid="queue-pane"]')).toContainText('Unable to access my account');
+    await expect(page.locator('[data-testid="queue-pane"]')).toContainText(
+      'Unable to access my account'
+    );
   });
 
   test('should update search results in real-time', async ({ page }) => {
@@ -133,12 +155,16 @@ test.describe('Search Body Content', () => {
     // Type first part
     await searchInput.fill('dark');
     await page.waitForTimeout(500);
-    await expect(page.locator('[data-testid="queue-pane"]')).toContainText('Feature request: Dark mode');
+    await expect(page.locator('[data-testid="queue-pane"]')).toContainText(
+      'Feature request: Dark mode'
+    );
 
     // Continue typing
     await searchInput.fill('dark mode');
     await page.waitForTimeout(500);
-    await expect(page.locator('[data-testid="queue-pane"]')).toContainText('Feature request: Dark mode');
+    await expect(page.locator('[data-testid="queue-pane"]')).toContainText(
+      'Feature request: Dark mode'
+    );
   });
 
   test('should preserve search when changing filters', async ({ page }) => {
@@ -148,7 +174,9 @@ test.describe('Search Body Content', () => {
     await page.waitForTimeout(500);
 
     // Verify results - the question post should be visible
-    await expect(page.locator('[data-testid="queue-pane"]')).toContainText('Question about account settings');
+    await expect(page.locator('[data-testid="queue-pane"]')).toContainText(
+      'Question about account settings'
+    );
 
     // Open filter dropdown
     await page.getByRole('button', { name: /Filters/i }).click();
@@ -164,6 +192,8 @@ test.describe('Search Body Content', () => {
     await page.waitForTimeout(500);
 
     // Should still show the same post (first-time poster with P2 priority)
-    await expect(page.locator('[data-testid="queue-pane"]')).toContainText('Question about account settings');
+    await expect(page.locator('[data-testid="queue-pane"]')).toContainText(
+      'Question about account settings'
+    );
   });
 });

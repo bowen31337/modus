@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useRef, KeyboardEvent } from 'react';
-import { Search, Command, X, LogOut, User, Settings, AlertCircle, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { AlertCircle, Command, FileText, LogOut, Search, Settings, User, X } from 'lucide-react';
+import { type KeyboardEvent, useEffect, useRef, useState } from 'react';
 
 interface Command {
   id: string;
@@ -91,10 +91,7 @@ export function CommandPalette({ isOpen, onClose, onNavigate }: CommandPalettePr
   // Handle click outside to close
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(e.target as Node)
-      ) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         onClose();
       }
     };
@@ -123,13 +120,7 @@ export function CommandPalette({ isOpen, onClose, onNavigate }: CommandPalettePr
   // Always render the component but hide it visually when closed
   // This allows tests to find the component in the DOM
   if (!isOpen) {
-    return (
-      <div
-        data-testid="command-palette"
-        className="hidden"
-        aria-hidden="true"
-      />
-    );
+    return <div data-testid="command-palette" className="hidden" aria-hidden="true" />;
   }
 
   return (
@@ -172,16 +163,12 @@ export function CommandPalette({ isOpen, onClose, onNavigate }: CommandPalettePr
                 case 'ArrowDown':
                   e.stopPropagation();
                   e.preventDefault();
-                  setSelectedIndex((prev) =>
-                    prev < filteredCommands.length - 1 ? prev + 1 : 0
-                  );
+                  setSelectedIndex((prev) => (prev < filteredCommands.length - 1 ? prev + 1 : 0));
                   break;
                 case 'ArrowUp':
                   e.stopPropagation();
                   e.preventDefault();
-                  setSelectedIndex((prev) =>
-                    prev > 0 ? prev - 1 : filteredCommands.length - 1
-                  );
+                  setSelectedIndex((prev) => (prev > 0 ? prev - 1 : filteredCommands.length - 1));
                   break;
                 case 'Enter':
                   e.stopPropagation();
@@ -200,8 +187,7 @@ export function CommandPalette({ isOpen, onClose, onNavigate }: CommandPalettePr
             data-testid="command-palette-input"
           />
           <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-1 text-xs text-muted-foreground bg-background-tertiary rounded border border-border">
-            <Command size={12} />
-            K
+            <Command size={12} />K
           </kbd>
           <button
             onClick={onClose}
@@ -243,15 +229,11 @@ export function CommandPalette({ isOpen, onClose, onNavigate }: CommandPalettePr
                   >
                     <Icon
                       size={18}
-                      className={cn(
-                        'text-muted-foreground',
-                        isSelected && 'text-primary'
-                      )}
+                      className={cn('text-muted-foreground', isSelected && 'text-primary')}
                     />
-                    <span className={cn(
-                      'flex-1 text-sm text-foreground',
-                      isSelected && 'text-primary'
-                    )}>
+                    <span
+                      className={cn('flex-1 text-sm text-foreground', isSelected && 'text-primary')}
+                    >
                       {cmd.label}
                     </span>
                     {cmd.shortcut && (
@@ -282,19 +264,27 @@ export function CommandPalette({ isOpen, onClose, onNavigate }: CommandPalettePr
         <div className="border-t border-border px-4 py-2 flex items-center justify-between text-xs text-muted-foreground">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 bg-background-tertiary rounded border border-border font-mono">↑↓</kbd>
+              <kbd className="px-1.5 py-0.5 bg-background-tertiary rounded border border-border font-mono">
+                ↑↓
+              </kbd>
               Navigate
             </span>
             <span className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 bg-background-tertiary rounded border border-border font-mono">↵</kbd>
+              <kbd className="px-1.5 py-0.5 bg-background-tertiary rounded border border-border font-mono">
+                ↵
+              </kbd>
               Select
             </span>
             <span className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 bg-background-tertiary rounded border border-border font-mono">Esc</kbd>
+              <kbd className="px-1.5 py-0.5 bg-background-tertiary rounded border border-border font-mono">
+                Esc
+              </kbd>
               Close
             </span>
           </div>
-          <span>{filteredCommands.length} command{filteredCommands.length !== 1 ? 's' : ''}</span>
+          <span>
+            {filteredCommands.length} command{filteredCommands.length !== 1 ? 's' : ''}
+          </span>
         </div>
       </div>
     </div>

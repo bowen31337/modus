@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { dataStore } from '@/lib/data-store';
+import { type NextRequest, NextResponse } from 'next/server';
 
 /**
  * GET /api/v1/posts/:id
@@ -9,27 +9,18 @@ import { dataStore } from '@/lib/data-store';
  * Path Parameters:
  * - id: Post UUID
  */
-export async function GET(
-  _request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
 
     if (!id) {
-      return NextResponse.json(
-        { error: 'Post ID is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Post ID is required' }, { status: 400 });
     }
 
     const post = dataStore.getPostById(id);
 
     if (!post) {
-      return NextResponse.json(
-        { error: 'Post not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
     return NextResponse.json({
@@ -38,10 +29,7 @@ export async function GET(
   } catch (error) {
     console.error('Error in GET /api/v1/posts/:id:', error);
 
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -57,18 +45,12 @@ export async function GET(
  * - status: New status (open, in_progress, resolved)
  * - priority: New priority (P1, P2, P3, P4, P5)
  */
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
 
     if (!id) {
-      return NextResponse.json(
-        { error: 'Post ID is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Post ID is required' }, { status: 400 });
     }
 
     const body = await request.json();
@@ -84,10 +66,7 @@ export async function PATCH(
     const updatedPost = dataStore.updatePost(id, body);
 
     if (!updatedPost) {
-      return NextResponse.json(
-        { error: 'Post not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
     return NextResponse.json({
@@ -96,9 +75,6 @@ export async function PATCH(
   } catch (error) {
     console.error('Error in PATCH /api/v1/posts/:id:', error);
 
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

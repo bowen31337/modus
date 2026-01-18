@@ -25,7 +25,8 @@ async function testPostResponse() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        content: 'Thank you for reaching out. I have looked into your account issue and will help resolve it.',
+        content:
+          'Thank you for reaching out. I have looked into your account issue and will help resolve it.',
         is_internal_note: false,
       }),
     });

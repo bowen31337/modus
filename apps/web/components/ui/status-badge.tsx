@@ -58,6 +58,7 @@ export function StatusBadge({ status, className, size = 'xs' }: StatusBadgeProps
     <span
       className={cn(
         'rounded font-medium whitespace-nowrap inline-flex items-center',
+        'transition-all duration-150 hover:scale-105 active:scale-95',
         sizeClass,
         config.bg,
         config.text,

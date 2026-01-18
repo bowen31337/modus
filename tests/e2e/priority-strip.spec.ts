@@ -9,7 +9,7 @@
  * 5. Take screenshot for visual verification
  */
 
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('PostCard Priority Strip', () => {
   test.beforeEach(async ({ page }) => {
@@ -52,7 +52,7 @@ test.describe('PostCard Priority Strip', () => {
     }
 
     // All strips should have the same width
-    expect(stripWidths.every(w => w === stripWidths[0])).toBeTruthy();
+    expect(stripWidths.every((w) => w === stripWidths[0])).toBeTruthy();
   });
 
   test('should display P1 priority with red color strip', async ({ page }) => {

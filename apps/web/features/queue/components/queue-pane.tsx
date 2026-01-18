@@ -1,13 +1,14 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { ErrorState } from '@/components/ui/error-state';
 import { Search } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { FilterControls, type FilterState, isDateInRange } from './filter-controls';
 import { PostCard, type PostCardProps } from './post-card';
 import { PostCardSkeleton } from './post-card-skeleton';
-import { FilterControls, type FilterState, isDateInRange } from './filter-controls';
 import { SortControls, type SortState } from './sort-controls';
-import { ViewToggle, type ViewMode } from './view-toggle';
-import { ErrorState } from '@/components/ui/error-state';
+import { type ViewMode, ViewToggle } from './view-toggle';
 
 interface QueuePaneProps {
   forceReset?: number;
@@ -58,20 +59,48 @@ interface ApiPostsResponse {
 // Constants for API pagination
 const POSTS_PER_PAGE = 20;
 
+// Helper function to map category name to category ID
+const getCategoryIdByName = (categoryName: string): string | null => {
+  const categoryMap: Record<string, string> = {
+    'Account Issues': '11111111-1111-1111-1111-111111111111',
+    'Feature Request': '22222222-2222-2222-2222-222222222222',
+    'Bug Reports': '33333333-3333-3333-3333-333333333333',
+    'Help & Support': '44444444-4444-4444-4444-444444444444',
+    'Policy & Guidelines': '55555555-5555-5555-5555-555555555555',
+  };
+  return categoryMap[categoryName] || null;
+};
+
 export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePaneProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Initialize filters from URL query parameters
   const [filters, setFilters] = useState<FilterState>({
-    category: 'all',
-    status: 'all',
-    priority: 'all',
-    search: '',
+    category: (searchParams.get('category') as FilterState['category']) || 'all',
+    status: (searchParams.get('status') as FilterState['status']) || 'all',
+    priority: (searchParams.get('priority') as FilterState['priority']) || 'all',
+    search: searchParams.get('search') || '',
+    dateRange: (() => {
+      const startDate = searchParams.get('dateFrom');
+      const endDate = searchParams.get('dateTo');
+      if (startDate || endDate) {
+        return { startDate: startDate || '', endDate: endDate || '' };
+      }
+      return undefined;
+    })(),
   });
 
+  // Initialize sort from URL query parameters
   const [sort, setSort] = useState<SortState>({
-    field: 'priority',
-    order: 'desc',
+    field: (searchParams.get('sortBy') as SortState['field']) || 'priority',
+    order: (searchParams.get('sortOrder') as SortState['order']) || 'desc',
   });
 
-  const [viewMode, setViewMode] = useState<ViewMode>('list');
+  // Initialize view mode from URL query parameters
+  const [viewMode, setViewMode] = useState<ViewMode>(
+    (searchParams.get('view') as ViewMode) || 'list'
+  );
 
   // API state
   const [posts, setPosts] = useState<PostCardProps[]>([]);
@@ -145,78 +174,92 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
   }, []);
 
   // Fetch posts from API
-  const fetchPosts = useCallback(async (page: number, reset: boolean = false) => {
-    console.log('[QueuePane] fetchPosts called', { page, reset, loadingRef: loadingRef.current });
-    if (loadingRef.current) {
-      console.log('[QueuePane] fetchPosts skipped - already loading');
-      return;
-    }
-
-    setLoading(true);
-    setError(null); // Clear previous errors
-    try {
-      // Build query parameters
-      const params = new URLSearchParams({
-        page: page.toString(),
-        limit: POSTS_PER_PAGE.toString(),
-        sort_by: sort.field,
-        sort_order: sort.order,
-      });
-      console.log('[QueuePane] Fetching from API:', `/api/v1/posts?${params.toString()}`);
-
-      // Add filters
-      if (filters.status !== 'all') {
-        params.append('status', filters.status);
-      }
-      if (filters.priority !== 'all') {
-        params.append('priority', filters.priority);
-      }
-      if (filters.search) {
-        params.append('search', filters.search);
-      }
-      // Note: category filter would need category_id, not name
-      // Date range would use date_from and date_to
-
-      const url = `/api/v1/posts?${params.toString()}`;
-      console.log('[QueuePane] Fetching posts from:', url);
-      console.log('[QueuePane] Current filters:', JSON.stringify(filters));
-      console.log('[QueuePane] Current sort:', JSON.stringify(sort));
-      const response = await fetch(url);
-      console.log('[QueuePane] API response status:', response.status);
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('[QueuePane] API error response:', errorText);
-        throw new Error(`HTTP error! status: ${response.status}`);
+  const fetchPosts = useCallback(
+    async (page: number, reset = false) => {
+      console.log('[QueuePane] fetchPosts called', { page, reset, loadingRef: loadingRef.current });
+      if (loadingRef.current) {
+        console.log('[QueuePane] fetchPosts skipped - already loading');
+        return;
       }
 
-      const data: ApiPostsResponse = await response.json();
-      console.log('[QueuePane] API response data:', JSON.stringify(data).substring(0, 500));
+      setLoading(true);
+      setError(null); // Clear previous errors
+      try {
+        // Build query parameters
+        const params = new URLSearchParams({
+          page: page.toString(),
+          limit: POSTS_PER_PAGE.toString(),
+          sort_by: sort.field,
+          sort_order: sort.order,
+        });
+        console.log('[QueuePane] Fetching from API:', `/api/v1/posts?${params.toString()}`);
 
-      // Transform API posts to PostCardProps
-      const transformedPosts = data.data.map(transformApiPost);
+        // Add filters
+        if (filters.status !== 'all') {
+          params.append('status', filters.status);
+        }
+        if (filters.priority !== 'all') {
+          params.append('priority', filters.priority);
+        }
+        if (filters.search) {
+          params.append('search', filters.search);
+        }
+        // Category filter - map category name to category_id
+        if (filters.category !== 'all') {
+          const categoryId = getCategoryIdByName(filters.category);
+          if (categoryId) {
+            params.append('category_id', categoryId);
+          }
+        }
+        // Date range filter
+        if (filters.dateRange?.startDate) {
+          params.append('date_from', filters.dateRange.startDate);
+        }
+        if (filters.dateRange?.endDate) {
+          params.append('date_to', filters.dateRange.endDate);
+        }
 
-      if (reset) {
-        setPosts(transformedPosts);
-      } else {
-        setPosts(prev => [...prev, ...transformedPosts]);
+        const url = `/api/v1/posts?${params.toString()}`;
+        console.log('[QueuePane] Fetching posts from:', url);
+        console.log('[QueuePane] Current filters:', JSON.stringify(filters));
+        console.log('[QueuePane] Current sort:', JSON.stringify(sort));
+        const response = await fetch(url);
+        console.log('[QueuePane] API response status:', response.status);
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('[QueuePane] API error response:', errorText);
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data: ApiPostsResponse = await response.json();
+        console.log('[QueuePane] API response data:', JSON.stringify(data).substring(0, 500));
+
+        // Transform API posts to PostCardProps
+        const transformedPosts = data.data.map(transformApiPost);
+
+        if (reset) {
+          setPosts(transformedPosts);
+        } else {
+          setPosts((prev) => [...prev, ...transformedPosts]);
+        }
+
+        setTotalPosts(data.meta.total);
+        setHasMore(page < data.meta.pages);
+        setCurrentPage(page);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+        // Set user-friendly error message - always use consistent message for UI
+        setError('Failed to load posts');
+        // On error, keep existing posts or show empty state
+        if (reset) {
+          setPosts([]);
+        }
+      } finally {
+        setLoading(false);
       }
-
-      setTotalPosts(data.meta.total);
-      setHasMore(page < data.meta.pages);
-      setCurrentPage(page);
-    } catch (error) {
-      console.error('Error fetching posts:', error);
-      // Set user-friendly error message
-      const errorMessage = error instanceof Error ? error.message : 'Failed to load posts';
-      setError(errorMessage);
-      // On error, keep existing posts or show empty state
-      if (reset) {
-        setPosts([]);
-      }
-    } finally {
-      setLoading(false);
-    }
-  }, [filters, sort, transformApiPost]);
+    },
+    [filters, sort, transformApiPost]
+  );
 
   // Initial fetch and refetch when filters/sort change
   useEffect(() => {
@@ -233,6 +276,131 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
     // those values change, not when the callback is recreated.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters, sort]);
+
+  // Sync filters, sort, and view mode to URL query parameters
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+
+    // Update filter parameters
+    if (filters.category !== 'all') {
+      params.set('category', filters.category);
+    } else {
+      params.delete('category');
+    }
+
+    if (filters.status !== 'all') {
+      params.set('status', filters.status);
+    } else {
+      params.delete('status');
+    }
+
+    if (filters.priority !== 'all') {
+      params.set('priority', filters.priority);
+    } else {
+      params.delete('priority');
+    }
+
+    if (filters.search) {
+      params.set('search', filters.search);
+    } else {
+      params.delete('search');
+    }
+
+    if (filters.dateRange?.startDate) {
+      params.set('dateFrom', filters.dateRange.startDate);
+    } else {
+      params.delete('dateFrom');
+    }
+
+    if (filters.dateRange?.endDate) {
+      params.set('dateTo', filters.dateRange.endDate);
+    } else {
+      params.delete('dateTo');
+    }
+
+    // Update sort parameters
+    if (sort.field !== 'priority') {
+      params.set('sortBy', sort.field);
+    } else {
+      params.delete('sortBy');
+    }
+
+    if (sort.order !== 'desc') {
+      params.set('sortOrder', sort.order);
+    } else {
+      params.delete('sortOrder');
+    }
+
+    // Update view mode parameter
+    if (viewMode !== 'list') {
+      params.set('view', viewMode);
+    } else {
+      params.delete('view');
+    }
+
+    // Only update URL if there are changes (avoid infinite loops)
+    const currentParams = searchParams.toString();
+    const newParams = params.toString();
+
+    if (currentParams !== newParams) {
+      // Use replace instead of push to avoid cluttering browser history
+      // for filter changes (only push when user explicitly navigates)
+      router.replace(`/dashboard?${newParams}`, { scroll: false });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters, sort, viewMode]);
+
+  // Sync from URL to state when URL changes externally (e.g., browser back/forward)
+  useEffect(() => {
+    const urlCategory = (searchParams.get('category') as FilterState['category']) || 'all';
+    const urlStatus = (searchParams.get('status') as FilterState['status']) || 'all';
+    const urlPriority = (searchParams.get('priority') as FilterState['priority']) || 'all';
+    const urlSearch = searchParams.get('search') || '';
+    const urlDateFrom = searchParams.get('dateFrom');
+    const urlDateTo = searchParams.get('dateTo');
+    const urlSortBy = (searchParams.get('sortBy') as SortState['field']) || 'priority';
+    const urlSortOrder = (searchParams.get('sortOrder') as SortState['order']) || 'desc';
+    const urlView = (searchParams.get('view') as ViewMode) || 'list';
+
+    const urlDateRange =
+      urlDateFrom || urlDateTo
+        ? { startDate: urlDateFrom || '', endDate: urlDateTo || '' }
+        : undefined;
+
+    // Check if URL state differs from current state
+    const needsFilterUpdate =
+      filters.category !== urlCategory ||
+      filters.status !== urlStatus ||
+      filters.priority !== urlPriority ||
+      filters.search !== urlSearch ||
+      JSON.stringify(filters.dateRange) !== JSON.stringify(urlDateRange);
+
+    const needsSortUpdate = sort.field !== urlSortBy || sort.order !== urlSortOrder;
+
+    const needsViewUpdate = viewMode !== urlView;
+
+    if (needsFilterUpdate) {
+      setFilters({
+        category: urlCategory,
+        status: urlStatus,
+        priority: urlPriority,
+        search: urlSearch,
+        dateRange: urlDateRange,
+      });
+    }
+
+    if (needsSortUpdate) {
+      setSort({
+        field: urlSortBy,
+        order: urlSortOrder,
+      });
+    }
+
+    if (needsViewUpdate) {
+      setViewMode(urlView);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   // Keyboard navigation handler
   useEffect(() => {
@@ -264,7 +432,9 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
         });
 
         // Scroll the focused item into view
-        const cardElement = document.querySelector(`[data-testid="post-card-${currentPosts[newIndex]?.id}"]`);
+        const cardElement = document.querySelector(
+          `[data-testid="post-card-${currentPosts[newIndex]?.id}"]`
+        );
         if (cardElement) {
           cardElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
@@ -279,10 +449,14 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
         const currentIndex = focusedIndexRef.current;
         const newIndex = currentIndex <= 0 ? currentPosts.length - 1 : currentIndex - 1;
 
-        console.log(`[K key] currentIndex: ${currentIndex}, newIndex: ${newIndex}, posts length: ${currentPosts.length}`);
+        console.log(
+          `[K key] currentIndex: ${currentIndex}, newIndex: ${newIndex}, posts length: ${currentPosts.length}`
+        );
 
         // Scroll the focused item into view
-        const cardElement = document.querySelector(`[data-testid="post-card-${currentPosts[newIndex]?.id}"]`);
+        const cardElement = document.querySelector(
+          `[data-testid="post-card-${currentPosts[newIndex]?.id}"]`
+        );
         if (cardElement) {
           cardElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
@@ -294,12 +468,19 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
       if (e.key === 'Enter') {
         const currentPosts = postsRef.current;
         const currentIndex = focusedIndexRef.current;
-        console.log(`[Enter key] posts length: ${currentPosts.length}, focusedIndex: ${currentIndex}`);
-        console.log(`[Enter key] posts content:`, JSON.stringify(currentPosts.map(p => ({ id: p?.id, title: p?.title }))));
+        console.log(
+          `[Enter key] posts length: ${currentPosts.length}, focusedIndex: ${currentIndex}`
+        );
+        console.log(
+          `[Enter key] posts content:`,
+          JSON.stringify(currentPosts.map((p) => ({ id: p?.id, title: p?.title })))
+        );
         if (currentPosts.length > 0) {
           e.preventDefault();
           const focusedPost = currentPosts[currentIndex];
-          console.log(`[Enter key] focusedPost: ${focusedPost?.id}, onPostSelect exists: ${!!onPostSelectRef.current}`);
+          console.log(
+            `[Enter key] focusedPost: ${focusedPost?.id}, onPostSelect exists: ${!!onPostSelectRef.current}`
+          );
           if (focusedPost && onPostSelectRef.current) {
             onPostSelectRef.current(focusedPost);
           }
@@ -345,7 +526,7 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
 
   // Filter posts locally for display (client-side filtering for already loaded posts)
   // Note: In production, all filtering would be done server-side via API
-  const filteredPosts = posts.filter(post => {
+  const filteredPosts = posts.filter((post) => {
     // Apply category filter
     if (filters.category !== 'all' && post.category?.name !== filters.category) {
       return false;
@@ -353,7 +534,9 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
 
     // Apply date range filter
     if (filters.dateRange?.startDate || filters.dateRange?.endDate) {
-      if (!isDateInRange(post.createdAt, filters.dateRange?.startDate, filters.dateRange?.endDate)) {
+      if (
+        !isDateInRange(post.createdAt, filters.dateRange?.startDate, filters.dateRange?.endDate)
+      ) {
         return false;
       }
     }
@@ -386,7 +569,10 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
   });
 
   return (
-    <aside className="w-80 bg-background-secondary border-r border-border flex flex-col min-w-[320px] max-w-[400px]" data-testid="queue-pane">
+    <aside
+      className="w-80 bg-background-secondary border-r border-border flex flex-col min-w-[320px] max-w-[400px]"
+      data-testid="queue-pane"
+    >
       {/* Queue Header */}
       <div className="p-4 border-b border-border">
         <h2 className="text-lg font-semibold text-foreground mb-3">Moderation Queue</h2>
@@ -414,15 +600,9 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
           onFiltersChange={setFilters}
           postCount={sortedPosts.length}
         />
-        <SortControls
-          sort={sort}
-          onSortChange={setSort}
-        />
+        <SortControls sort={sort} onSortChange={setSort} />
         <div className="ml-auto">
-          <ViewToggle
-            viewMode={viewMode}
-            onViewModeChange={setViewMode}
-          />
+          <ViewToggle viewMode={viewMode} onViewModeChange={setViewMode} />
         </div>
       </div>
 
@@ -444,7 +624,10 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
           />
         ) : sortedPosts.length > 0 ? (
           <>
-            <div className={viewMode === 'grid' ? 'grid grid-cols-2 gap-3 p-3' : ''} data-testid="queue-container">
+            <div
+              className={viewMode === 'grid' ? 'grid grid-cols-2 gap-3 p-3' : ''}
+              data-testid="queue-container"
+            >
               {sortedPosts.map((post, index) => {
                 const isFocused = index === focusedIndex;
                 return (
@@ -471,9 +654,7 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
               </div>
             )}
             {!hasMore && sortedPosts.length > 0 && (
-              <div className="text-center p-4 text-xs text-muted-foreground">
-                End of list
-              </div>
+              <div className="text-center p-4 text-xs text-muted-foreground">End of list</div>
             )}
           </>
         ) : (
@@ -482,7 +663,9 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
               <div className="text-2xl text-muted-foreground">+</div>
             </div>
             <p className="text-sm text-muted-foreground">No posts match your filters</p>
-            <p className="text-xs text-muted-foreground mt-1">Try adjusting your search or filters</p>
+            <p className="text-xs text-muted-foreground mt-1">
+              Try adjusting your search or filters
+            </p>
           </div>
         )}
       </div>

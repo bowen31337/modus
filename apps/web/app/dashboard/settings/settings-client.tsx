@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
-import { ArrowLeft, Plus, Search, Edit, Trash2, FileText, Shield } from 'lucide-react';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
 import { LeftRail } from '@/features/layout/components/left-rail';
 import { RulesManagement } from '@/features/rules/components/rules-management';
+import { cn } from '@/lib/utils';
+import { Button } from '@modus/ui';
+import { ArrowLeft, Edit, FileText, Plus, Search, Shield, Trash2 } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
 
 export interface Template {
   id: string;
@@ -22,35 +23,40 @@ export default function SettingsClient() {
     {
       id: '1',
       name: 'Welcome Message',
-      content: 'Hi {{authorName}},\n\nThank you for reaching out about "{{title}}". We appreciate you taking the time to share your thoughts with our community.\n\nBest regards,\n{{agentName}}',
+      content:
+        'Hi {{authorName}},\n\nThank you for reaching out about "{{title}}". We appreciate you taking the time to share your thoughts with our community.\n\nBest regards,\n{{agentName}}',
       placeholders: ['authorName', 'title', 'agentName'],
       usage_count: 15,
     },
     {
       id: '2',
       name: 'Issue Resolution',
-      content: 'Hello {{authorName}},\n\nI\'ve looked into your issue with "{{title}}" and I\'m happy to report that it has been resolved. Please let me know if you have any further questions.\n\nThank you,\n{{agentName}}',
+      content:
+        'Hello {{authorName}},\n\nI\'ve looked into your issue with "{{title}}" and I\'m happy to report that it has been resolved. Please let me know if you have any further questions.\n\nThank you,\n{{agentName}}',
       placeholders: ['authorName', 'title', 'agentName'],
       usage_count: 8,
     },
     {
       id: '3',
       name: 'Request for More Information',
-      content: 'Hi {{authorName}},\n\nThank you for your post about "{{title}}". To help us assist you better, could you please provide more details about:\n\n- Specific error messages\n- Steps to reproduce the issue\n- Any relevant screenshots\n\nWe look forward to hearing from you!\n\nBest,\n{{agentName}}',
+      content:
+        'Hi {{authorName}},\n\nThank you for your post about "{{title}}". To help us assist you better, could you please provide more details about:\n\n- Specific error messages\n- Steps to reproduce the issue\n- Any relevant screenshots\n\nWe look forward to hearing from you!\n\nBest,\n{{agentName}}',
       placeholders: ['authorName', 'title', 'agentName'],
       usage_count: 12,
     },
     {
       id: '4',
       name: 'Policy Reminder',
-      content: 'Hello {{authorName}},\n\nI wanted to gently remind you about our community guidelines regarding "{{title}}". Please ensure your future posts align with our policies to maintain a positive environment for all members.\n\nThank you for your understanding,\n{{agentName}}',
+      content:
+        'Hello {{authorName}},\n\nI wanted to gently remind you about our community guidelines regarding "{{title}}". Please ensure your future posts align with our policies to maintain a positive environment for all members.\n\nThank you for your understanding,\n{{agentName}}',
       placeholders: ['authorName', 'title', 'agentName'],
       usage_count: 5,
     },
     {
       id: '5',
       name: 'Escalation Notice',
-      content: 'Hi {{authorName}},\n\nRegarding your concern about "{{title}}", I\'ve escalated this to our specialized team for further review. They will reach out to you within 24-48 hours with a detailed response.\n\nThank you for your patience,\n{{agentName}}',
+      content:
+        'Hi {{authorName}},\n\nRegarding your concern about "{{title}}", I\'ve escalated this to our specialized team for further review. They will reach out to you within 24-48 hours with a detailed response.\n\nThank you for your patience,\n{{agentName}}',
       placeholders: ['authorName', 'title', 'agentName'],
       usage_count: 3,
     },
@@ -150,7 +156,10 @@ export default function SettingsClient() {
       <LeftRail />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col bg-background overflow-hidden" data-testid="settings-page">
+      <div
+        className="flex-1 flex flex-col bg-background overflow-hidden"
+        data-testid="settings-page"
+      >
         {/* Header */}
         <div className="border-b border-border p-4 bg-background-secondary">
           <div className="flex items-center justify-between mb-3">
@@ -165,20 +174,21 @@ export default function SettingsClient() {
               <h1 className="text-xl font-semibold text-foreground">Settings</h1>
             </div>
             {activeTab === 'templates' && (
-              <button
+              <Button
                 onClick={() => setIsCreateModalOpen(true)}
-                className="px-4 py-2 bg-primary hover:bg-primary/90 text-white text-sm rounded-md transition-colors flex items-center gap-2"
                 data-testid="create-template-button"
+                variant="default"
+                size="default"
               >
                 <Plus size={16} />
                 Create Template
-              </button>
+              </Button>
             )}
           </div>
 
           {/* Tab Navigation */}
           <div className="flex items-center gap-2">
-            <button
+            <Button
               onClick={() => setActiveTab('templates')}
               className={cn(
                 'px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-2',
@@ -190,8 +200,8 @@ export default function SettingsClient() {
             >
               <FileText size={16} />
               Templates
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => setActiveTab('rules')}
               className={cn(
                 'px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-2',
@@ -203,7 +213,7 @@ export default function SettingsClient() {
             >
               <Shield size={16} />
               Priority Rules
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -234,7 +244,9 @@ export default function SettingsClient() {
                     <FileText size={48} className="mx-auto mb-3 opacity-50" />
                     <p className="text-lg font-medium">No templates found</p>
                     <p className="text-sm">
-                      {searchTerm ? 'Try a different search term' : 'Create your first template to get started'}
+                      {searchTerm
+                        ? 'Try a different search term'
+                        : 'Create your first template to get started'}
                     </p>
                   </div>
                 ) : (
@@ -258,27 +270,32 @@ export default function SettingsClient() {
                             </div>
                           </div>
                           <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button
+                            <Button
                               onClick={() => openEditModal(template)}
-                              className="p-1.5 hover:bg-background-tertiary rounded-md transition-colors"
+                              variant="ghost"
+                              size="icon"
                               data-testid={`edit-template-${template.id}`}
                               title="Edit template"
                             >
                               <Edit size={16} className="text-foreground-secondary" />
-                            </button>
-                            <button
+                            </Button>
+                            <Button
                               onClick={() => openDeleteModal(template)}
-                              className="p-1.5 hover:bg-red-500/10 rounded-md transition-colors"
+                              variant="ghost"
+                              size="icon"
                               data-testid={`delete-template-${template.id}`}
                               title="Delete template"
                             >
                               <Trash2 size={16} className="text-red-400" />
-                            </button>
+                            </Button>
                           </div>
                         </div>
 
                         {/* Preview */}
-                        <div className="bg-background-tertiary rounded-md p-3 border border-border" data-testid="detected-placeholders">
+                        <div
+                          className="bg-background-tertiary rounded-md p-3 border border-border"
+                          data-testid="detected-placeholders"
+                        >
                           <p className="text-sm text-foreground-secondary whitespace-pre-wrap line-clamp-3">
                             {template.content}
                           </p>
@@ -292,7 +309,9 @@ export default function SettingsClient() {
                                 key={placeholder}
                                 className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-md font-mono"
                               >
-                                {'{{'}{placeholder}{'}}'}
+                                {'{{'}
+                                {placeholder}
+                                {'}}'}
                               </span>
                             ))}
                           </div>
@@ -362,30 +381,58 @@ export default function SettingsClient() {
                     data-testid="create-template-content-input"
                   />
                   <p className="text-xs text-muted-foreground mt-2">
-                    Use <code className="bg-background-tertiary px-1 py-0.5 rounded">{'{{placeholder}}'}</code> syntax for dynamic values. Available placeholders:{' '}
-                    <code className="bg-background-tertiary px-1 py-0.5 rounded">{'{{authorName}}'}</code>,{' '}
-                    <code className="bg-background-tertiary px-1 py-0.5 rounded">{'{{title}}'}</code>,{' '}
-                    <code className="bg-background-tertiary px-1 py-0.5 rounded">{'{{category}}'}</code>,{' '}
-                    <code className="bg-background-tertiary px-1 py-0.5 rounded">{'{{agentName}}'}</code>
+                    Use{' '}
+                    <code className="bg-background-tertiary px-1 py-0.5 rounded">
+                      {'{{placeholder}}'}
+                    </code>{' '}
+                    syntax for dynamic values. Available placeholders:{' '}
+                    <code className="bg-background-tertiary px-1 py-0.5 rounded">
+                      {'{{authorName}}'}
+                    </code>
+                    ,{' '}
+                    <code className="bg-background-tertiary px-1 py-0.5 rounded">
+                      {'{{title}}'}
+                    </code>
+                    ,{' '}
+                    <code className="bg-background-tertiary px-1 py-0.5 rounded">
+                      {'{{category}}'}
+                    </code>
+                    ,{' '}
+                    <code className="bg-background-tertiary px-1 py-0.5 rounded">
+                      {'{{agentName}}'}
+                    </code>
                   </p>
                 </div>
 
                 {/* Preview detected placeholders */}
                 {formData.content && (
-                  <div className="bg-background-tertiary rounded-md p-3 border border-border" data-testid="detected-placeholders">
-                    <p className="text-xs font-medium text-foreground mb-2">Detected Placeholders:</p>
-                    <div className="flex flex-wrap gap-1.5" data-testid="detected-placeholders-list">
+                  <div
+                    className="bg-background-tertiary rounded-md p-3 border border-border"
+                    data-testid="detected-placeholders"
+                  >
+                    <p className="text-xs font-medium text-foreground mb-2">
+                      Detected Placeholders:
+                    </p>
+                    <div
+                      className="flex flex-wrap gap-1.5"
+                      data-testid="detected-placeholders-list"
+                    >
                       {Array.from(formData.content.matchAll(/\{\{(\w+)\}\}/g)).length > 0 ? (
-                        Array.from(formData.content.matchAll(/\{\{(\w+)\}\}/g)).map((match, index) => (
-                          <span
-                            key={index}
-                            className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-md font-mono" data-testid={`detected-placeholder-${match[1]}`}
-                          >
-                            {match[0]}
-                          </span>
-                        ))
+                        Array.from(formData.content.matchAll(/\{\{(\w+)\}\}/g)).map(
+                          (match, index) => (
+                            <span
+                              key={index}
+                              className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-md font-mono"
+                              data-testid={`detected-placeholder-${match[1]}`}
+                            >
+                              {match[0]}
+                            </span>
+                          )
+                        )
                       ) : (
-                        <span className="text-xs text-muted-foreground">No placeholders detected</span>
+                        <span className="text-xs text-muted-foreground">
+                          No placeholders detected
+                        </span>
                       )}
                     </div>
                   </div>
@@ -393,29 +440,26 @@ export default function SettingsClient() {
               </div>
 
               <div className="flex items-center justify-end gap-3 mt-6">
-                <button
+                <Button
                   onClick={() => {
                     setIsCreateModalOpen(false);
                     setFormData({ name: '', content: '' });
                   }}
-                  className="px-4 py-2 bg-background-tertiary hover:bg-background-tertiary/80 text-foreground text-sm rounded-md transition-colors border border-border"
+                  variant="outline"
+                  size="default"
                   data-testid="cancel-create-template"
                 >
                   Cancel
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={handleCreateTemplate}
                   disabled={!formData.name.trim() || !formData.content.trim()}
-                  className={cn(
-                    'px-4 py-2 text-white text-sm rounded-md transition-colors',
-                    formData.name.trim() && formData.content.trim()
-                      ? 'bg-primary hover:bg-primary/90'
-                      : 'bg-primary/50 cursor-not-allowed'
-                  )}
+                  variant="default"
+                  size="default"
                   data-testid="save-create-template"
                 >
                   Create Template
-                </button>
+                </Button>
               </div>
             </div>
           </div>
@@ -468,30 +512,58 @@ export default function SettingsClient() {
                     data-testid="edit-template-content-input"
                   />
                   <p className="text-xs text-muted-foreground mt-2">
-                    Use <code className="bg-background-tertiary px-1 py-0.5 rounded">{'{{placeholder}}'}</code> syntax for dynamic values. Available placeholders:{' '}
-                    <code className="bg-background-tertiary px-1 py-0.5 rounded">{'{{authorName}}'}</code>,{' '}
-                    <code className="bg-background-tertiary px-1 py-0.5 rounded">{'{{title}}'}</code>,{' '}
-                    <code className="bg-background-tertiary px-1 py-0.5 rounded">{'{{category}}'}</code>,{' '}
-                    <code className="bg-background-tertiary px-1 py-0.5 rounded">{'{{agentName}}'}</code>
+                    Use{' '}
+                    <code className="bg-background-tertiary px-1 py-0.5 rounded">
+                      {'{{placeholder}}'}
+                    </code>{' '}
+                    syntax for dynamic values. Available placeholders:{' '}
+                    <code className="bg-background-tertiary px-1 py-0.5 rounded">
+                      {'{{authorName}}'}
+                    </code>
+                    ,{' '}
+                    <code className="bg-background-tertiary px-1 py-0.5 rounded">
+                      {'{{title}}'}
+                    </code>
+                    ,{' '}
+                    <code className="bg-background-tertiary px-1 py-0.5 rounded">
+                      {'{{category}}'}
+                    </code>
+                    ,{' '}
+                    <code className="bg-background-tertiary px-1 py-0.5 rounded">
+                      {'{{agentName}}'}
+                    </code>
                   </p>
                 </div>
 
                 {/* Preview detected placeholders */}
                 {formData.content && (
-                  <div className="bg-background-tertiary rounded-md p-3 border border-border" data-testid="detected-placeholders">
-                    <p className="text-xs font-medium text-foreground mb-2">Detected Placeholders:</p>
-                    <div className="flex flex-wrap gap-1.5" data-testid="detected-placeholders-list">
+                  <div
+                    className="bg-background-tertiary rounded-md p-3 border border-border"
+                    data-testid="detected-placeholders"
+                  >
+                    <p className="text-xs font-medium text-foreground mb-2">
+                      Detected Placeholders:
+                    </p>
+                    <div
+                      className="flex flex-wrap gap-1.5"
+                      data-testid="detected-placeholders-list"
+                    >
                       {Array.from(formData.content.matchAll(/\{\{(\w+)\}\}/g)).length > 0 ? (
-                        Array.from(formData.content.matchAll(/\{\{(\w+)\}\}/g)).map((match, index) => (
-                          <span
-                            key={index}
-                            className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-md font-mono" data-testid={`detected-placeholder-${match[1]}`}
-                          >
-                            {match[0]}
-                          </span>
-                        ))
+                        Array.from(formData.content.matchAll(/\{\{(\w+)\}\}/g)).map(
+                          (match, index) => (
+                            <span
+                              key={index}
+                              className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-md font-mono"
+                              data-testid={`detected-placeholder-${match[1]}`}
+                            >
+                              {match[0]}
+                            </span>
+                          )
+                        )
                       ) : (
-                        <span className="text-xs text-muted-foreground">No placeholders detected</span>
+                        <span className="text-xs text-muted-foreground">
+                          No placeholders detected
+                        </span>
                       )}
                     </div>
                   </div>
@@ -499,30 +571,27 @@ export default function SettingsClient() {
               </div>
 
               <div className="flex items-center justify-end gap-3 mt-6">
-                <button
+                <Button
                   onClick={() => {
                     setIsEditModalOpen(false);
                     setSelectedTemplate(null);
                     setFormData({ name: '', content: '' });
                   }}
-                  className="px-4 py-2 bg-background-tertiary hover:bg-background-tertiary/80 text-foreground text-sm rounded-md transition-colors border border-border"
+                  variant="outline"
+                  size="default"
                   data-testid="cancel-edit-template"
                 >
                   Cancel
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={handleEditTemplate}
                   disabled={!formData.name.trim() || !formData.content.trim()}
-                  className={cn(
-                    'px-4 py-2 text-white text-sm rounded-md transition-colors',
-                    formData.name.trim() && formData.content.trim()
-                      ? 'bg-primary hover:bg-primary/90'
-                      : 'bg-primary/50 cursor-not-allowed'
-                  )}
+                  variant="default"
+                  size="default"
                   data-testid="save-edit-template"
                 >
                   Save Changes
-                </button>
+                </Button>
               </div>
             </div>
           </div>
@@ -539,28 +608,30 @@ export default function SettingsClient() {
             <div className="p-6">
               <h2 className="text-lg font-semibold text-foreground mb-2">Delete Template</h2>
               <p className="text-sm text-foreground-secondary mb-4">
-                Are you sure you want to delete the template <strong>{selectedTemplate.name}</strong>
-                ? This action cannot be undone.
+                Are you sure you want to delete the template{' '}
+                <strong>{selectedTemplate.name}</strong>? This action cannot be undone.
               </p>
 
               <div className="flex items-center justify-end gap-3">
-                <button
+                <Button
                   onClick={() => {
                     setIsDeleteModalOpen(false);
                     setSelectedTemplate(null);
                   }}
-                  className="px-4 py-2 bg-background-tertiary hover:bg-background-tertiary/80 text-foreground text-sm rounded-md transition-colors border border-border"
+                  variant="outline"
+                  size="default"
                   data-testid="cancel-delete-template"
                 >
                   Cancel
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={handleDeleteTemplate}
-                  className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm rounded-md transition-colors"
+                  variant="destructive"
+                  size="default"
                   data-testid="confirm-delete-template"
                 >
                   Delete Template
-                </button>
+                </Button>
               </div>
             </div>
           </div>

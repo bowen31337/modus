@@ -7,9 +7,7 @@ export default function Home() {
         <h1 className="text-4xl font-bold tracking-tight">
           m<span className="text-primary">.</span>
         </h1>
-        <p className="text-lg text-foreground-secondary max-w-md">
-          Community Moderation System
-        </p>
+        <p className="text-lg text-foreground-secondary max-w-md">Community Moderation System</p>
         <p className="text-sm text-foreground-muted max-w-lg">
           A lightweight, high-efficiency platform for agents to discover, manage, and respond to
           community posts with intelligent prioritization and AI-assisted drafting.

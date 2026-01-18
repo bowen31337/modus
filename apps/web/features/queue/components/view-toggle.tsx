@@ -1,7 +1,7 @@
 'use client';
 
-import { LayoutGrid, List } from 'lucide-react';
 import { Button } from '@modus/ui';
+import { LayoutGrid, List } from 'lucide-react';
 
 export type ViewMode = 'grid' | 'list';
 

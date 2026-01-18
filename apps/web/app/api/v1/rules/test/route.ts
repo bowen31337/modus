@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { dataStore, type TestRuleInput } from '@/lib/data-store';
+import { type TestRuleInput, dataStore } from '@/lib/data-store';
+import { type NextRequest, NextResponse } from 'next/server';
 
 /**
  * POST /api/v1/rules/test
@@ -47,9 +47,6 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error in POST /api/v1/rules/test:', error);
 
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

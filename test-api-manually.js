@@ -6,7 +6,7 @@ function testAPI() {
     hostname: 'localhost',
     port: 3006,
     path: '/api/v1/posts',
-    method: 'GET'
+    method: 'GET',
   };
 
   const req = http.request(options, (res) => {
@@ -26,7 +26,7 @@ function testAPI() {
             id: parsed.data[0].id,
             title: parsed.data[0].title,
             status: parsed.data[0].status,
-            priority: parsed.data[0].priority
+            priority: parsed.data[0].priority,
           });
         }
         console.log('Full response:', JSON.stringify(parsed, null, 2));

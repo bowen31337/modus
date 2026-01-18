@@ -1,13 +1,16 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Layout Dimensions', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to the dashboard (demo mode allows access without auth)
     await page.goto('/dashboard');
     // Wait for the keyboard handler to be attached (indicates page is fully loaded)
-    await page.waitForFunction(() => {
-      return !!document.getElementById('keyboard-handler-attached');
-    }, { timeout: 10000 });
+    await page.waitForFunction(
+      () => {
+        return !!document.getElementById('keyboard-handler-attached');
+      },
+      { timeout: 10000 }
+    );
   });
 
   test('should maintain 64px width for left rail', async ({ page }) => {
@@ -55,7 +58,7 @@ test.describe('Layout Dimensions', () => {
           width: style.width,
         };
       });
-      const widthValue = parseInt(computedStyle.width);
+      const widthValue = Number.parseInt(computedStyle.width);
       expect(widthValue).toBeGreaterThanOrEqual(320);
       expect(widthValue).toBeLessThanOrEqual(400);
     }
@@ -112,10 +115,10 @@ test.describe('Layout Dimensions', () => {
     const postCardPadding = await postCard.evaluate((el) => {
       const style = window.getComputedStyle(el);
       return {
-        paddingTop: parseInt(style.paddingTop),
-        paddingRight: parseInt(style.paddingRight),
-        paddingBottom: parseInt(style.paddingBottom),
-        paddingLeft: parseInt(style.paddingLeft),
+        paddingTop: Number.parseInt(style.paddingTop),
+        paddingRight: Number.parseInt(style.paddingRight),
+        paddingBottom: Number.parseInt(style.paddingBottom),
+        paddingLeft: Number.parseInt(style.paddingLeft),
       };
     });
 
@@ -130,10 +133,10 @@ test.describe('Layout Dimensions', () => {
     const queuePanePadding = await queuePane.evaluate((el) => {
       const style = window.getComputedStyle(el);
       return {
-        paddingTop: parseInt(style.paddingTop),
-        paddingRight: parseInt(style.paddingRight),
-        paddingBottom: parseInt(style.paddingBottom),
-        paddingLeft: parseInt(style.paddingLeft),
+        paddingTop: Number.parseInt(style.paddingTop),
+        paddingRight: Number.parseInt(style.paddingRight),
+        paddingBottom: Number.parseInt(style.paddingBottom),
+        paddingLeft: Number.parseInt(style.paddingLeft),
       };
     });
 
@@ -165,8 +168,8 @@ test.describe('Layout Dimensions', () => {
     const computedStyle = await postCard.evaluate((el) => {
       const style = window.getComputedStyle(el);
       return {
-        paddingTop: parseInt(style.paddingTop),
-        paddingBottom: parseInt(style.paddingBottom),
+        paddingTop: Number.parseInt(style.paddingTop),
+        paddingBottom: Number.parseInt(style.paddingBottom),
       };
     });
 

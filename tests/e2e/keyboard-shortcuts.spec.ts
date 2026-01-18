@@ -1,14 +1,16 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Keyboard Shortcuts', () => {
   test.beforeEach(async ({ page, context }) => {
     // Set demo session cookie directly on the browser context
-    await context.addCookies([{
-      name: 'modus_demo_session',
-      value: 'active',
-      domain: 'localhost',
-      path: '/',
-    }]);
+    await context.addCookies([
+      {
+        name: 'modus_demo_session',
+        value: 'active',
+        domain: 'localhost',
+        path: '/',
+      },
+    ]);
 
     // Navigate directly to dashboard
     await page.goto('/dashboard');
@@ -80,7 +82,7 @@ test.describe('Keyboard Shortcuts', () => {
 
     // Verify the agent name is shown within the response element
     const responseElement = page.locator('[data-testid^="response-"]').filter({
-      hasText: 'This is a test response'
+      hasText: 'This is a test response',
     });
     await expect(responseElement.locator('text=Agent A')).toBeVisible();
   });

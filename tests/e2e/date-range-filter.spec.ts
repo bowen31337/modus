@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Date Range Filter', () => {
   test.beforeEach(async ({ page }) => {
@@ -140,7 +140,7 @@ test.describe('Date Range Filter', () => {
     const filterBadge = page.locator('[data-testid="filter-controls-button"] span.ml-auto');
     await expect(filterBadge).toBeVisible();
     const badgeText = await filterBadge.textContent();
-    expect(parseInt(badgeText || '0')).toBeGreaterThanOrEqual(1);
+    expect(Number.parseInt(badgeText || '0')).toBeGreaterThanOrEqual(1);
   });
 
   test('should combine date filter with other filters', async ({ page }) => {
