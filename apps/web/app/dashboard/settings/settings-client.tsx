@@ -3,9 +3,10 @@
 import { LeftRail } from '@/features/layout/components/left-rail';
 import { RulesManagement } from '@/features/rules/components/rules-management';
 import { ProfileSettings } from '@/features/settings/components/profile-settings';
+import { AgentManagement } from '@/features/settings/components/agent-management';
 import { cn } from '@/lib/utils';
 import { Button } from '@modus/ui';
-import { ArrowLeft, Edit, FileText, Plus, Search, Shield, Trash2, User } from 'lucide-react';
+import { ArrowLeft, Edit, FileText, Plus, Search, Shield, Trash2, User, Users } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -30,7 +31,7 @@ export interface Agent {
 }
 
 export default function SettingsClient() {
-  const [activeTab, setActiveTab] = useState<'profile' | 'templates' | 'rules'>('profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'templates' | 'rules' | 'agents'>('profile');
 
   // Mock current agent (in real app, this would come from auth/session)
   const [currentAgent, setCurrentAgent] = useState<Agent>({
@@ -38,11 +39,55 @@ export default function SettingsClient() {
     user_id: 'user-agent-1',
     display_name: 'Agent A',
     avatar_url: null,
-    role: 'agent',
+    role: 'admin', // Set to admin for testing role management
     status: 'online',
     last_active_at: new Date().toISOString(),
     created_at: '2025-01-01T00:00:00Z',
   });
+
+  // Mock agents list for management
+  const [agents, setAgents] = useState<Agent[]>([
+    {
+      id: 'agent-1',
+      user_id: 'user-agent-1',
+      display_name: 'Agent A',
+      avatar_url: null,
+      role: 'admin',
+      status: 'online',
+      last_active_at: new Date().toISOString(),
+      created_at: '2025-01-01T00:00:00Z',
+    },
+    {
+      id: 'agent-2',
+      user_id: 'user-agent-2',
+      display_name: 'Agent B',
+      avatar_url: null,
+      role: 'supervisor',
+      status: 'online',
+      last_active_at: new Date(Date.now() - 30 * 60000).toISOString(),
+      created_at: '2025-01-02T00:00:00Z',
+    },
+    {
+      id: 'agent-3',
+      user_id: 'user-agent-3',
+      display_name: 'Agent C',
+      avatar_url: null,
+      role: 'agent',
+      status: 'busy',
+      last_active_at: new Date(Date.now() - 15 * 60000).toISOString(),
+      created_at: '2025-01-03T00:00:00Z',
+    },
+    {
+      id: 'agent-4',
+      user_id: 'user-agent-4',
+      display_name: 'Agent D',
+      avatar_url: null,
+      role: 'moderator',
+      status: 'offline',
+      last_active_at: new Date(Date.now() - 2 * 3600000).toISOString(),
+      created_at: '2025-01-04T00:00:00Z',
+    },
+  ]);
 
   const handleUpdateAgent = async (agentId: string, updates: Partial<Agent>) => {
     try {
@@ -65,10 +110,19 @@ export default function SettingsClient() {
       if (agentId === currentAgent.id) {
         setCurrentAgent(result.data);
       }
+
+      // Also update the agent in the agents list
+      setAgents((prevAgents) =>
+        prevAgents.map((agent) => (agent.id === agentId ? result.data : agent))
+      );
     } catch (error) {
       console.error('Failed to update agent:', error);
       throw error;
     }
+  };
+
+  const handleUpdateAgentRole = async (agentId: string, newRole: Agent['role']) => {
+    await handleUpdateAgent(agentId, { role: newRole });
   };
 
   const [templates, setTemplates] = useState<Template[]>([
@@ -279,6 +333,19 @@ export default function SettingsClient() {
               <Shield size={16} />
               Priority Rules
             </Button>
+            <Button
+              onClick={() => setActiveTab('agents')}
+              className={cn(
+                'px-4 py-2 text-sm rounded-md transition-colors flex items-center gap-2',
+                activeTab === 'agents'
+                  ? 'bg-background-tertiary text-foreground font-medium'
+                  : 'text-muted-foreground hover:bg-background-tertiary/50'
+              )}
+              data-testid="tab-agents"
+            >
+              <Users size={16} />
+              Agents
+            </Button>
           </div>
         </div>
 
@@ -403,6 +470,13 @@ export default function SettingsClient() {
             <div className="max-w-4xl mx-auto">
               <RulesManagement />
             </div>
+          </div>
+        )}
+
+        {/* Agents Tab Content */}
+        {activeTab === 'agents' && (
+          <div className="flex-1 overflow-y-auto p-6">
+            <AgentManagement agents={agents} onUpdateAgentRole={handleUpdateAgentRole} />
           </div>
         )}
       </div>

@@ -873,6 +873,21 @@ class DataStore {
     return updated;
   }
 
+  updateAgentRole(id: string, role: 'agent' | 'supervisor' | 'admin' | 'moderator'): Agent | null {
+    const agent = this.agents.get(id);
+    if (!agent) return null;
+
+    const now = new Date().toISOString();
+    const updated: Agent = {
+      ...agent,
+      role,
+      last_active_at: now,
+    };
+
+    this.agents.set(id, updated);
+    return updated;
+  }
+
   // ============================================================================
   // Templates CRUD Operations
   // ============================================================================

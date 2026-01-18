@@ -72,10 +72,15 @@ const updateAgentProfileSchema = z.object({
   avatar_url: z.string().url().nullable().optional(),
 });
 
+// Validation schema for PATCH request - Role Update (Admin only)
+const updateAgentRoleSchema = z.object({
+  role: z.enum(['agent', 'supervisor', 'admin', 'moderator']),
+});
+
 /**
  * PATCH /api/v1/agents/:id
  *
- * Updates an agent's status or profile information.
+ * Updates an agent's status, profile information, or role.
  * Also updates the last_active_at timestamp.
  *
  * Request Body (Status Update):
@@ -87,6 +92,11 @@ const updateAgentProfileSchema = z.object({
  * {
  *   "display_name": "Agent A",
  *   "avatar_url": "https://example.com/avatar.jpg" | null
+ * }
+ *
+ * Request Body (Role Update - Admin only):
+ * {
+ *   "role": "agent" | "supervisor" | "admin" | "moderator"
  * }
  *
  * Response Format:
@@ -131,11 +141,18 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
       updatedAgent = dataStore.updateAgentProfile(id, validatedData);
       message = 'Agent profile updated successfully';
+    } else if ('role' in body) {
+      // Role update (admin only)
+      const validatedData = updateAgentRoleSchema.parse(body);
+      console.log('[PATCH /api/v1/agents/:id] Updating role to:', validatedData.role);
+
+      updatedAgent = dataStore.updateAgentRole(id, validatedData.role);
+      message = 'Agent role updated successfully';
     } else {
       return NextResponse.json(
         {
           error: 'Invalid request body',
-          details: 'Must provide either "status" or profile fields (display_name, avatar_url)',
+          details: 'Must provide either "status", profile fields (display_name, avatar_url), or "role"',
         },
         { status: 400 }
       );
