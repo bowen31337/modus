@@ -3777,7 +3777,8 @@
     "qa_validated": true,
     "last_qa_run": "2026-01-18T07:31:24.743634Z",
     "qa_notes": "Fixed: TypeScript path aliases added to root tsconfig.json",
-    "qa_report_path": "modus/qa-reports/feature-198-2026-01-18-07-31-24.json"
+    "qa_report_path": "modus/qa-reports/feature-198-2026-01-18-07-31-24.json",
+    "qa_completed_at": 1768730991.298
   },
   {
     "category": "functional",
