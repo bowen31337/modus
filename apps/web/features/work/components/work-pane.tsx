@@ -10,9 +10,7 @@ import {
   AlertCircle,
   ArrowRightLeft,
   CheckCircle2,
-  Clock,
   EyeOff,
-  Hash,
   Loader2,
   MessageCircle,
   MessageSquare,
@@ -43,12 +41,6 @@ const priorityColors: Record<string, string> = {
   P4: 'bg-blue-500',
   P5: 'bg-gray-500',
 };
-
-const sentimentColors: Record<string, string> = {
-  negative: 'text-red-400 bg-red-500/10',
-  neutral: 'text-foreground-muted bg-background-tertiary',
-  positive: 'text-emerald-400 bg-emerald-500/10',
-} as const;
 
 export function WorkPane({
   selectedPost,

@@ -533,6 +533,27 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
       return false;
     }
 
+    // Apply status filter
+    if (filters.status !== 'all' && post.status !== filters.status) {
+      return false;
+    }
+
+    // Apply priority filter
+    if (filters.priority !== 'all' && post.priority !== filters.priority) {
+      return false;
+    }
+
+    // Apply search filter (searches in title and body content)
+    if (filters.search) {
+      const searchLower = filters.search.toLowerCase();
+      const titleMatch = post.title?.toLowerCase().includes(searchLower);
+      const bodyMatch = post.excerpt?.toLowerCase().includes(searchLower) ||
+                       post.bodyContent?.toLowerCase().includes(searchLower);
+      if (!titleMatch && !bodyMatch) {
+        return false;
+      }
+    }
+
     // Apply date range filter
     if (filters.dateRange?.startDate || filters.dateRange?.endDate) {
       if (
