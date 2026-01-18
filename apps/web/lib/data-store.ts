@@ -6,7 +6,7 @@
  */
 
 import { v4 as uuidv4 } from 'uuid';
-import type { ModerationPost, Response, PriorityRule } from '@modus/logic';
+import type { ModerationPost, Response, PriorityRule, ResponseTemplate } from '@modus/logic';
 import { RulesEngine } from '@modus/logic/rules';
 
 // ============================================================================
@@ -298,10 +298,119 @@ const mockPosts: PostWithRelations[] = [
 // Data Store Class
 // ============================================================================
 
+// ============================================================================
+// Agent Types
+// ============================================================================
+
+export interface Agent {
+  id: string;
+  user_id: string;
+  display_name: string;
+  avatar_url?: string | null;
+  role: 'agent' | 'supervisor' | 'admin' | 'moderator';
+  status: 'online' | 'offline' | 'busy';
+  last_active_at: string;
+  created_at: string;
+}
+
+// ============================================================================
+// Initial Mock Agents
+// ============================================================================
+
+const mockAgents: Agent[] = [
+  {
+    id: 'agent-1',
+    user_id: 'user-agent-1',
+    display_name: 'Agent A',
+    avatar_url: null,
+    role: 'agent',
+    status: 'online',
+    last_active_at: new Date().toISOString(),
+    created_at: '2025-01-01T00:00:00Z',
+  },
+  {
+    id: 'agent-2',
+    user_id: 'user-agent-2',
+    display_name: 'Agent B',
+    avatar_url: null,
+    role: 'supervisor',
+    status: 'online',
+    last_active_at: new Date().toISOString(),
+    created_at: '2025-01-01T00:00:00Z',
+  },
+  {
+    id: 'agent-3',
+    user_id: 'user-agent-3',
+    display_name: 'Agent C',
+    avatar_url: null,
+    role: 'agent',
+    status: 'offline',
+    last_active_at: '2025-01-17T10:00:00Z',
+    created_at: '2025-01-01T00:00:00Z',
+  },
+];
+
+// ============================================================================
+// Initial Mock Templates
+// ============================================================================
+
+const mockTemplates: ResponseTemplate[] = [
+  {
+    id: 'template-1',
+    name: 'Bug Acknowledgment',
+    content: 'Hi {{authorName}}, thank you for reporting this issue. I\'ve escalated this to our engineering team and they\'re investigating it now. We\'ll keep you updated on the progress.',
+    placeholders: ['authorName'],
+    category_id: 'cat-3',
+    usage_count: 15,
+    created_by: 'agent-1',
+    created_at: '2025-01-01T00:00:00Z',
+    updated_at: '2025-01-15T00:00:00Z',
+  },
+  {
+    id: 'template-2',
+    name: 'Feature Request Response',
+    content: 'Hi {{authorName}}, thanks for your suggestion! We appreciate feedback like yours. I\'ve added this to our feature request backlog for the team to consider.',
+    placeholders: ['authorName'],
+    category_id: 'cat-2',
+    usage_count: 8,
+    created_by: 'agent-2',
+    created_at: '2025-01-01T00:00:00Z',
+    updated_at: '2025-01-10T00:00:00Z',
+  },
+  {
+    id: 'template-3',
+    name: 'General Welcome',
+    content: 'Welcome to the community, {{authorName}}! If you have any questions or need assistance, feel free to reach out. We\'re glad to have you here!',
+    placeholders: ['authorName'],
+    category_id: null,
+    usage_count: 42,
+    created_by: 'agent-1',
+    created_at: '2025-01-01T00:00:00Z',
+    updated_at: '2025-01-12T00:00:00Z',
+  },
+  {
+    id: 'template-4',
+    name: 'Escalation Notice',
+    content: 'Hi {{authorName}}, your concern has been escalated to our senior team. Someone will review this shortly and get back to you with a resolution.',
+    placeholders: ['authorName'],
+    category_id: null,
+    usage_count: 5,
+    created_by: 'agent-2',
+    created_at: '2025-01-05T00:00:00Z',
+    updated_at: '2025-01-14T00:00:00Z',
+  },
+];
+
+// ============================================================================
+// Data Store Class
+// ============================================================================
+
 class DataStore {
   private posts: Map<string, PostWithRelations> = new Map();
   private responses: Map<string, Response> = new Map();
   private rules: Map<string, PriorityRule> = new Map();
+  private agents: Map<string, Agent> = new Map();
+  private templates: Map<string, ResponseTemplate> = new Map();
 
   constructor() {
     // Initialize with mock data
@@ -310,6 +419,12 @@ class DataStore {
     });
     mockRules.forEach(rule => {
       this.rules.set(rule.id, { ...rule });
+    });
+    mockAgents.forEach(agent => {
+      this.agents.set(agent.id, { ...agent });
+    });
+    mockTemplates.forEach(template => {
+      this.templates.set(template.id, { ...template });
     });
   }
 
@@ -559,6 +674,109 @@ class DataStore {
     };
   }
 
+  // ============================================================================
+  // Agents CRUD Operations
+  // ============================================================================
+
+  getAllAgents(): Agent[] {
+    return Array.from(this.agents.values());
+  }
+
+  getAgent(id: string): Agent | null {
+    return this.agents.get(id) || null;
+  }
+
+  updateAgentStatus(id: string, status: 'online' | 'offline' | 'busy'): Agent | null {
+    const agent = this.agents.get(id);
+    if (!agent) return null;
+
+    const now = new Date().toISOString();
+    const updated: Agent = {
+      ...agent,
+      status,
+      last_active_at: now,
+    };
+
+    this.agents.set(id, updated);
+    return updated;
+  }
+
+  // ============================================================================
+  // Templates CRUD Operations
+  // ============================================================================
+
+  getAllTemplates(): ResponseTemplate[] {
+    return Array.from(this.templates.values());
+  }
+
+  getTemplate(id: string): ResponseTemplate | null {
+    return this.templates.get(id) || null;
+  }
+
+  createTemplate(input: {
+    name: string;
+    content: string;
+    placeholders?: string[];
+    category_id?: string | null;
+    created_by: string;
+  }): ResponseTemplate {
+    const now = new Date().toISOString();
+    const template: ResponseTemplate = {
+      id: uuidv4(),
+      name: input.name,
+      content: input.content,
+      placeholders: input.placeholders || [],
+      category_id: input.category_id || null,
+      usage_count: 0,
+      created_by: input.created_by,
+      created_at: now,
+      updated_at: now,
+    };
+
+    this.templates.set(template.id, template);
+    return template;
+  }
+
+  updateTemplate(
+    id: string,
+    input: {
+      name?: string;
+      content?: string;
+      placeholders?: string[];
+      category_id?: string | null;
+    }
+  ): ResponseTemplate | null {
+    const template = this.templates.get(id);
+    if (!template) return null;
+
+    const now = new Date().toISOString();
+    const updated: ResponseTemplate = {
+      ...template,
+      ...input,
+      updated_at: now,
+    };
+
+    this.templates.set(id, updated);
+    return updated;
+  }
+
+  deleteTemplate(id: string): boolean {
+    return this.templates.delete(id);
+  }
+
+  incrementTemplateUsage(id: string): ResponseTemplate | null {
+    const template = this.templates.get(id);
+    if (!template) return null;
+
+    const updated: ResponseTemplate = {
+      ...template,
+      usage_count: template.usage_count + 1,
+    };
+
+    this.templates.set(id, updated);
+    return updated;
+  }
+
 
   // ============================================================================
   // Helper Methods
@@ -579,13 +797,13 @@ class DataStore {
   }
 
   private getAgentById(agentId: string): { id: string; display_name: string } | null {
-    const agents: Record<string, { id: string; display_name: string }> = {
-      'agent-1': { id: 'agent-1', display_name: 'Agent A' },
-      'agent-2': { id: 'agent-2', display_name: 'Agent B' },
-      'agent-3': { id: 'agent-3', display_name: 'Agent C' },
-    };
+    const agent = this.agents.get(agentId);
+    if (!agent) return null;
 
-    return agents[agentId] || null;
+    return {
+      id: agent.id,
+      display_name: agent.display_name,
+    };
   }
 }
 
