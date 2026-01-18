@@ -455,6 +455,37 @@ const mockTemplates: ResponseTemplate[] = [
   },
 ];
 
+// Mock responses for testing chronological ordering
+const mockResponses: Response[] = [
+  {
+    id: 'response-1',
+    post_id: '1',
+    agent_id: 'agent-1',
+    content: 'Thank you for reporting this issue. I can see you\'re having trouble accessing your account after the password reset. Let me investigate this for you.',
+    is_internal_note: false,
+    created_at: '2025-01-15T10:00:00Z',
+    updated_at: '2025-01-15T10:00:00Z',
+  },
+  {
+    id: 'response-2',
+    post_id: '1',
+    agent_id: 'agent-2',
+    content: 'Internal note: User has contacted support 3 times about this issue. Priority should be escalated.',
+    is_internal_note: true,
+    created_at: '2025-01-15T10:30:00Z',
+    updated_at: '2025-01-15T10:30:00Z',
+  },
+  {
+    id: 'response-3',
+    post_id: '1',
+    agent_id: 'agent-1',
+    content: 'I\'ve escalated this to our technical team. They\'re looking into the password reset system issue. We should have an update for you within 24 hours.',
+    is_internal_note: false,
+    created_at: '2025-01-15T11:00:00Z',
+    updated_at: '2025-01-15T11:00:00Z',
+  },
+];
+
 // ============================================================================
 // Data Store Class
 // ============================================================================
@@ -479,6 +510,9 @@ class DataStore {
     });
     mockTemplates.forEach((template) => {
       this.templates.set(template.id, { ...template });
+    });
+    mockResponses.forEach((response) => {
+      this.responses.set(response.id, { ...response });
     });
   }
 
@@ -600,7 +634,9 @@ class DataStore {
   }
 
   getResponsesByPostId(postId: string): Response[] {
-    return Array.from(this.responses.values()).filter((r) => r.post_id === postId);
+    return Array.from(this.responses.values())
+      .filter((r) => r.post_id === postId)
+      .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
   }
 
   createResponse(input: {
@@ -626,6 +662,50 @@ class DataStore {
 
     this.responses.set(response.id, response);
     return response;
+  }
+
+  updateResponse(
+    responseId: string,
+    agentId: string,
+    input: {
+      content?: string;
+      is_internal_note?: boolean;
+    }
+  ): Response | null {
+    const response = this.responses.get(responseId);
+    if (!response) return null;
+
+    // Authorization: agent can only edit their own responses
+    if (response.agent_id !== agentId) {
+      return null;
+    }
+
+    const now = new Date().toISOString();
+
+    // Sanitize content if provided
+    const sanitizedContent = input.content ? sanitizeResponse(input.content) : response.content;
+
+    const updated: Response = {
+      ...response,
+      ...(input.content !== undefined && { content: sanitizedContent }),
+      ...(input.is_internal_note !== undefined && { is_internal_note: input.is_internal_note }),
+      updated_at: now,
+    };
+
+    this.responses.set(responseId, updated);
+    return updated;
+  }
+
+  deleteResponse(responseId: string, agentId: string): boolean {
+    const response = this.responses.get(responseId);
+    if (!response) return false;
+
+    // Authorization: agent can only delete their own responses
+    if (response.agent_id !== agentId) {
+      return false;
+    }
+
+    return this.responses.delete(responseId);
   }
 
   // ============================================================================

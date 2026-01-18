@@ -2883,14 +2883,11 @@
       "Step 5: Verify .env.example documents all required vars"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 0,
-    "dev_failure_count": 1,
-    "last_dev_failure_at": "2026-01-18T04:58:27.990794Z",
-    "dev_failure_reasons": [
-      "Worker session timed out"
-    ]
+    "dev_failure_count": 0,
+    "dev_completed_at": "2026-01-18T05:18:58.114765Z"
   },
   {
     "category": "style",
@@ -3373,8 +3370,11 @@
       "Step 5: Verify filters work efficiently at scale"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-18T05:05:44.022857Z",
+    "dev_failure_count": 0
   },
   {
     "category": "functional",
@@ -3389,7 +3389,13 @@
     ],
     "passes": false,
     "is_dev_done": false,
-    "is_qa_passed": false
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-18T05:18:15.255040Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -3419,9 +3425,11 @@
       "Step 4: Verify each response shows agent name, timestamp, and content",
       "Step 5: Verify internal notes are visually distinguished from public responses"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768713545",
+    "qa_passed_at": "1768713545"
   },
   {
     "category": "style",

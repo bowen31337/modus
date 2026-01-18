@@ -14,6 +14,8 @@ import {
   Loader2,
   MessageCircle,
   MessageSquare,
+  Pencil,
+  Trash2,
   User,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
@@ -35,11 +37,11 @@ interface WorkPaneProps {
 }
 
 const priorityColors: Record<string, string> = {
-  P1: 'bg-red-500',
+  P1: 'bg-red-600',
   P2: 'bg-orange-500',
   P3: 'bg-yellow-500',
   P4: 'bg-blue-500',
-  P5: 'bg-gray-500',
+  P5: 'bg-slate-500',
 };
 
 export function WorkPane({
@@ -59,6 +61,7 @@ export function WorkPane({
       content: string;
       isInternalNote: boolean;
       agent: string;
+      agentId: string;
       createdAt: string;
     }>
   >([]);
@@ -67,7 +70,13 @@ export function WorkPane({
   const [responseError, setResponseError] = useState<string | null>(null);
   const [loadingResponses, setLoadingResponses] = useState(false);
   const [submittingResponse, setSubmittingResponse] = useState(false);
+  const [editingResponseId, setEditingResponseId] = useState<string | null>(null);
+  const [editContent, setEditContent] = useState('');
+  const [editIsInternalNote, setEditIsInternalNote] = useState(false);
+  const [savingEdit, setSavingEdit] = useState(false);
+  const [deletingResponseId, setDeletingResponseId] = useState<string | null>(null);
   const editorRef = useRef<RichTextEditorRef>(null);
+  const editEditorRef = useRef<RichTextEditorRef>(null);
   const isAssignedToMe = selectedPost ? assignedPosts.has(selectedPost.id) : false;
 
   // Mock agents for reassignment
@@ -188,6 +197,7 @@ export function WorkPane({
             content: r.content,
             isInternalNote: r.is_internal_note,
             agent: currentAgent.name, // In production, this would come from the agent_id
+            agentId: r.agent_id,
             createdAt: r.created_at,
           }));
           setResponses(transformedResponses);
@@ -227,6 +237,7 @@ export function WorkPane({
           content: result.data.content,
           isInternalNote: result.data.is_internal_note,
           agent: currentAgent.name,
+          agentId: result.data.agent_id,
           createdAt: result.data.created_at,
         };
 
@@ -277,6 +288,104 @@ export function WorkPane({
     }
   };
 
+  const handleEditResponse = (responseId: string) => {
+    const response = responses.find((r) => r.id === responseId);
+    if (!response) return;
+
+    setEditingResponseId(responseId);
+    setEditContent(response.content);
+    setEditIsInternalNote(response.isInternalNote);
+    // Focus the edit editor after state update
+    setTimeout(() => {
+      editEditorRef.current?.focus();
+    }, 0);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingResponseId(null);
+    setEditContent('');
+    setEditIsInternalNote(false);
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editingResponseId || !selectedPost || !editContent.trim()) return;
+
+    try {
+      setSavingEdit(true);
+      setResponseError(null);
+
+      const response = await fetch(
+        `/api/v1/posts/${selectedPost.id}/responses/${editingResponseId}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            content: editContent,
+            is_internal_note: editIsInternalNote,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        const result = await response.json();
+        setResponses((prev) =>
+          prev.map((r) =>
+            r.id === editingResponseId
+              ? {
+                  ...r,
+                  content: result.data.content,
+                  isInternalNote: result.data.is_internal_note,
+                }
+              : r
+          )
+        );
+        handleCancelEdit();
+      } else {
+        const errorText = await response.text();
+        console.error('Failed to update response:', errorText);
+        setResponseError('Failed to update response');
+      }
+    } catch (error) {
+      console.error('Error updating response:', error);
+      setResponseError('Failed to update response');
+    } finally {
+      setSavingEdit(false);
+    }
+  };
+
+  const handleDeleteResponse = async (responseId: string) => {
+    if (!selectedPost) return;
+
+    try {
+      setDeletingResponseId(responseId);
+      setResponseError(null);
+
+      const response = await fetch(
+        `/api/v1/posts/${selectedPost.id}/responses/${responseId}`,
+        {
+          method: 'DELETE',
+        }
+      );
+
+      if (response.ok) {
+        setResponses((prev) => prev.filter((r) => r.id !== responseId));
+      } else {
+        const errorText = await response.text();
+        console.error('Failed to delete response:', errorText);
+        setResponseError('Failed to delete response');
+      }
+    } catch (error) {
+      console.error('Error deleting response:', error);
+      setResponseError('Failed to delete response');
+    } finally {
+      setDeletingResponseId(null);
+    }
+  };
+
+  const handleResponseEditContentChange = (content: string) => {
+    setEditContent(content);
+  };
+
   if (!selectedPost) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center bg-background text-muted-foreground">
@@ -301,7 +410,7 @@ export function WorkPane({
               <span
                 className={cn(
                   'font-mono text-sm px-2 py-0.5 rounded',
-                  `${priorityColors[selectedPost.priority]}/20`,
+                  `${priorityColors[selectedPost.priority]}/40`,
                   'text-foreground'
                 )}
               >
@@ -309,7 +418,7 @@ export function WorkPane({
               </span>
               <StatusBadge status={selectedPost.status} size="sm" />
               {isAssignedToMe && (
-                <span className="text-xs px-2 py-0.5 rounded bg-primary/20 text-primary flex items-center gap-1">
+                <span className="text-xs px-2 py-0.5 rounded bg-primary/30 text-foreground font-medium flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                   Assigned to you
                 </span>
@@ -511,6 +620,7 @@ export function WorkPane({
                                 content: r.content,
                                 isInternalNote: r.is_internal_note,
                                 agent: currentAgent.name,
+                                agentId: r.agent_id,
                                 createdAt: r.created_at,
                               }));
                               setResponses(transformed);
@@ -523,7 +633,10 @@ export function WorkPane({
                   </div>
                 )}
                 {(responses.length > 0 || loadingResponses) && (
-                  <section className="bg-background-secondary rounded-lg border border-border p-4">
+                  <section
+                    className="bg-background-secondary rounded-lg border border-border p-4"
+                    data-testid="activity-history"
+                  >
                     <h2 className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wide">
                       Activity History
                     </h2>
@@ -536,70 +649,181 @@ export function WorkPane({
                         </>
                       ) : (
                         <>
-                          {responses.map((response) => (
-                            <div
-                              key={response.id}
-                              className={cn(
-                                'p-4 rounded-lg border transition-all',
-                                response.isInternalNote
-                                  ? 'bg-amber-500/5 border-amber-500/20 border-l-4 border-l-amber-500/60'
-                                  : 'bg-background-tertiary border-border hover:border-border/80'
-                              )}
-                              data-testid={`response-${response.id}`}
-                            >
-                              <div className="flex items-start justify-between mb-3">
-                                <div className="flex items-center gap-2">
-                                  <div
-                                    className={cn(
-                                      'w-6 h-6 rounded-full flex items-center justify-center',
-                                      response.isInternalNote ? 'bg-amber-500/20' : 'bg-primary/20'
-                                    )}
-                                  >
-                                    {response.isInternalNote ? (
-                                      <EyeOff size={12} className="text-amber-400" />
-                                    ) : (
-                                      <MessageCircle size={12} className="text-primary" />
-                                    )}
+                          {responses.map((response) => {
+                            const isEditing = editingResponseId === response.id;
+                            const isOwnResponse = response.agentId === currentAgent.id;
+                            const isDeleting = deletingResponseId === response.id;
+
+                            if (isEditing) {
+                              return (
+                                <div
+                                  key={response.id}
+                                  className={cn(
+                                    'p-4 rounded-lg border transition-all',
+                                    editIsInternalNote
+                                      ? 'bg-amber-500/5 border-amber-500/20 border-l-4 border-l-amber-500/60'
+                                      : 'bg-background-tertiary border-border'
+                                  )}
+                                  data-testid={`response-edit-${response.id}`}
+                                >
+                                  <div className="flex items-center justify-between mb-3">
+                                    <h3 className="text-sm font-medium text-foreground">
+                                      Edit Response
+                                    </h3>
+                                    <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer">
+                                      <input
+                                        type="checkbox"
+                                        checked={editIsInternalNote}
+                                        onChange={(e) => setEditIsInternalNote(e.target.checked)}
+                                        className="w-4 h-4 rounded border-border bg-background-tertiary text-primary focus:ring-2 focus:ring-primary"
+                                        data-testid="edit-internal-note-checkbox"
+                                      />
+                                      <span>Internal Note</span>
+                                    </label>
                                   </div>
-                                  <div className="flex flex-col">
-                                    <div className="flex items-center gap-2">
-                                      <span className="text-sm font-medium text-foreground">
-                                        {response.agent}
-                                      </span>
-                                      {response.isInternalNote && (
-                                        <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 font-medium border border-amber-500/30 flex items-center gap-1">
-                                          <EyeOff size={10} />
-                                          Internal
-                                        </span>
+                                  <RichTextEditor
+                                    ref={editEditorRef}
+                                    value={editContent}
+                                    onChange={handleResponseEditContentChange}
+                                    placeholder="Edit your response..."
+                                  />
+                                  <div className="flex items-center justify-end gap-2 mt-3">
+                                    <Button
+                                      onClick={handleCancelEdit}
+                                      variant="outline"
+                                      size="sm"
+                                      data-testid="cancel-edit-button"
+                                    >
+                                      Cancel
+                                    </Button>
+                                    <Button
+                                      onClick={handleSaveEdit}
+                                      disabled={!editContent.trim() || savingEdit}
+                                      variant="default"
+                                      size="sm"
+                                      data-testid="save-edit-button"
+                                    >
+                                      {savingEdit ? (
+                                        <>
+                                          <Loader2 size={14} className="animate-spin" />
+                                          Saving...
+                                        </>
+                                      ) : (
+                                        'Save Changes'
+                                      )}
+                                    </Button>
+                                  </div>
+                                </div>
+                              );
+                            }
+
+                            return (
+                              <div
+                                key={response.id}
+                                className={cn(
+                                  'p-4 rounded-lg border transition-all',
+                                  response.isInternalNote
+                                    ? 'bg-amber-500/5 border-amber-500/20 border-l-4 border-l-amber-500/60'
+                                    : 'bg-background-tertiary border-border hover:border-border/80'
+                                )}
+                                data-testid={`response-${response.id}`}
+                              >
+                                <div className="flex items-start justify-between mb-3">
+                                  <div className="flex items-center gap-2">
+                                    <div
+                                      className={cn(
+                                        'w-6 h-6 rounded-full flex items-center justify-center',
+                                        response.isInternalNote ? 'bg-amber-500/20' : 'bg-primary/20'
+                                      )}
+                                    >
+                                      {response.isInternalNote ? (
+                                        <EyeOff size={12} className="text-amber-400" />
+                                      ) : (
+                                        <MessageCircle size={12} className="text-primary" />
                                       )}
                                     </div>
-                                    <span className="text-xs text-muted-foreground">
-                                      {response.isInternalNote
-                                        ? 'Private note - not visible to community'
-                                        : 'Public response - visible to everyone'}
+                                    <div className="flex flex-col">
+                                      <div className="flex items-center gap-2">
+                                        <span className="text-sm font-medium text-foreground">
+                                          {response.agent}
+                                        </span>
+                                        {response.isInternalNote && (
+                                          <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 font-medium border border-amber-500/30 flex items-center gap-1">
+                                            <EyeOff size={10} />
+                                            Internal
+                                          </span>
+                                        )}
+                                        {isOwnResponse && (
+                                          <span className="text-xs px-2 py-0.5 rounded-full bg-primary/20 text-primary font-medium border border-primary/30 flex items-center gap-1">
+                                            You
+                                          </span>
+                                        )}
+                                      </div>
+                                      <span className="text-xs text-muted-foreground">
+                                        {response.isInternalNote
+                                          ? 'Private note - not visible to community'
+                                          : 'Public response - visible to everyone'}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    {isOwnResponse && (
+                                      <>
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <Button
+                                              onClick={() => handleEditResponse(response.id)}
+                                              variant="ghost"
+                                              size="sm"
+                                              data-testid={`edit-response-${response.id}`}
+                                            >
+                                              <Pencil size={14} />
+                                            </Button>
+                                          </TooltipTrigger>
+                                          <TooltipContent>Edit this response</TooltipContent>
+                                        </Tooltip>
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <Button
+                                              onClick={() => handleDeleteResponse(response.id)}
+                                              variant="ghost"
+                                              size="sm"
+                                              disabled={isDeleting}
+                                              data-testid={`delete-response-${response.id}`}
+                                            >
+                                              {isDeleting ? (
+                                                <Loader2 size={14} className="animate-spin" />
+                                              ) : (
+                                                <Trash2 size={14} className="text-red-400" />
+                                              )}
+                                            </Button>
+                                          </TooltipTrigger>
+                                          <TooltipContent>Delete this response</TooltipContent>
+                                        </Tooltip>
+                                      </>
+                                    )}
+                                    <span className="text-xs text-muted-foreground ml-2">
+                                      {new Date(response.createdAt).toLocaleString()}
                                     </span>
                                   </div>
                                 </div>
-                                <span className="text-xs text-muted-foreground">
-                                  {new Date(response.createdAt).toLocaleString()}
-                                </span>
+                                <div
+                                  className={cn(
+                                    'text-sm leading-relaxed whitespace-pre-wrap p-3 rounded-md',
+                                    response.isInternalNote
+                                      ? 'bg-amber-950/20 text-amber-100/90'
+                                      : 'bg-background-secondary text-foreground-secondary'
+                                  )}
+                                  dangerouslySetInnerHTML={{
+                                    __html: sanitizePostContent(response.content, {
+                                      allowHtml: false,
+                                      escapeHtml: false,
+                                    }),
+                                  }}
+                                />
                               </div>
-                              <div
-                                className={cn(
-                                  'text-sm leading-relaxed whitespace-pre-wrap p-3 rounded-md',
-                                  response.isInternalNote
-                                    ? 'bg-amber-950/20 text-amber-100/90'
-                                    : 'bg-background-secondary text-foreground-secondary'
-                                )}
-                                dangerouslySetInnerHTML={{
-                                  __html: sanitizePostContent(response.content, {
-                                    allowHtml: false,
-                                    escapeHtml: false,
-                                  }),
-                                }}
-                              />
-                            </div>
-                          ))}
+                            );
+                          })}
                         </>
                       )}
                     </div>
@@ -720,7 +944,7 @@ export function WorkPane({
                     {isAssignedToMe ? (
                       <div className="flex items-center gap-2 text-sm">
                         <span className="w-2 h-2 rounded-full bg-primary" />
-                        <span className="text-primary font-medium">Assigned to you</span>
+                        <span className="text-foreground font-medium">Assigned to you</span>
                       </div>
                     ) : (
                       <div className="text-sm text-muted-foreground">
