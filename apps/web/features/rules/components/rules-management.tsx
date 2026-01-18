@@ -10,10 +10,10 @@ import {
   ChevronDown,
   ChevronUp,
   X,
-  AlertCircle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { PriorityRule } from '@modus/logic';
+import { FormError } from '@/components/ui/field-error';
 
 // Condition type options
 const CONDITION_TYPES = [
@@ -300,12 +300,7 @@ export function RulesManagement() {
       </div>
 
       {/* Error Banner */}
-      {error && (
-        <div className="flex items-center gap-2 p-3 bg-red-500/10 border border-red-500/30 rounded-md text-red-400 text-sm">
-          <AlertCircle size={16} />
-          {error}
-        </div>
-      )}
+      {error && <FormError message={error} />}
 
       {/* Search Bar */}
       <div className="relative">

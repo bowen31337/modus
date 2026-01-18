@@ -9,6 +9,7 @@ import { Input } from '@modus/ui';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { demoLoginAction } from '@/lib/auth-actions';
+import { FieldError, FormError } from '@/components/ui/field-error';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -85,11 +86,7 @@ export function LoginForm() {
           />
         </div>
 
-        {error && (
-          <div className="rounded-md bg-red-500/10 p-3 text-sm text-red-400">
-            {error}
-          </div>
-        )}
+        {error && <FormError message={error} />}
 
         <Button type="submit" disabled={loading} className="w-full">
           {loading ? 'Signing in...' : 'Sign In'}
@@ -111,9 +108,7 @@ export function LoginForm() {
           autoComplete="email"
           {...register('email')}
         />
-        {errors.email && (
-          <p className="text-xs text-red-400">{errors.email.message}</p>
-        )}
+        <FieldError message={errors.email?.message} />
       </div>
 
       <div className="space-y-2">
@@ -127,16 +122,10 @@ export function LoginForm() {
           autoComplete="current-password"
           {...register('password')}
         />
-        {errors.password && (
-          <p className="text-xs text-red-400">{errors.password.message}</p>
-        )}
+        <FieldError message={errors.password?.message} />
       </div>
 
-      {error && (
-        <div className="rounded-md bg-red-500/10 p-3 text-sm text-red-400">
-          {error}
-        </div>
-      )}
+      {error && <FormError message={error} />}
 
       <Button type="submit" disabled={loading} className="w-full">
         {loading ? 'Signing in...' : 'Sign In'}
