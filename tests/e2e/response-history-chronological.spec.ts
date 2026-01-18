@@ -352,14 +352,14 @@ test.describe('Response History - Chronological Order', () => {
     }
   });
 
-  test('should show activity history section header', async ({ page }) => {
+  test('should show activity timeline section header', async ({ page }) => {
     await page.click('[data-testid="post-card-1"]');
     await page.waitForSelector('[data-testid="work-pane"]', { timeout: 10000 });
 
-    // Verify activity history section exists with proper header
+    // Verify activity timeline section exists with proper header
     await page.waitForSelector('[data-testid="activity-history"]', { timeout: 10000 });
 
-    const header = await page.locator('h2:has-text("Activity History")').textContent();
+    const header = await page.locator('h2:has-text("Activity Timeline")').textContent();
     expect(header).toBeTruthy();
 
     // Verify it has proper styling

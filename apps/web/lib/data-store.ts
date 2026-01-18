@@ -45,6 +45,7 @@ export interface CreatePostInput {
   author_post_count: number;
   assigned_to_id?: string | null;
   embedding?: number[] | null;
+  created_at?: string;
 }
 
 export interface UpdatePostInput {
@@ -516,6 +517,8 @@ class DataStore {
 
   createPost(input: CreatePostInput): PostWithRelations {
     const now = new Date().toISOString();
+    // Use provided created_at or default to now (for SLA testing with old posts)
+    const createdAt = input.created_at || now;
 
     // Sanitize content to prevent XSS attacks
     const sanitized = sanitizeModerationPost({
@@ -524,11 +527,11 @@ class DataStore {
       excerpt: input.excerpt,
     });
 
-    const post: PostWithRelations = {
-      id: uuidv4(),
+    // Create a temporary post for rule evaluation
+    const tempPost: ModerationPost = {
+      id: 'temp',
       title: sanitized.title,
       body_content: sanitized.body_content,
-      excerpt: sanitized.excerpt,
       category_id: input.category_id,
       status: input.status,
       priority: input.priority,
@@ -537,8 +540,32 @@ class DataStore {
       author_user_id: input.author_user_id,
       author_post_count: input.author_post_count,
       assigned_to_id: input.assigned_to_id || null,
-      assigned_at: input.assigned_to_id ? now : null,
-      created_at: now,
+      assigned_at: input.assigned_to_id ? createdAt : null,
+      created_at: createdAt,
+      updated_at: now,
+      resolved_at: null,
+    };
+
+    // Apply priority rules to calculate the final priority
+    const rules = this.getAllRules().filter((r) => r.is_active);
+    const rulesEngine = new RulesEngine(rules);
+    const calculatedPriority = rulesEngine.calculatePriority({ post: tempPost, currentTime: new Date(createdAt) });
+
+    const post: PostWithRelations = {
+      id: uuidv4(),
+      title: sanitized.title,
+      body_content: sanitized.body_content,
+      excerpt: sanitized.excerpt,
+      category_id: input.category_id,
+      status: input.status,
+      priority: calculatedPriority, // Use priority calculated by rules engine
+      sentiment_score: input.sentiment_score,
+      sentiment_label: input.sentiment_label,
+      author_user_id: input.author_user_id,
+      author_post_count: input.author_post_count,
+      assigned_to_id: input.assigned_to_id || null,
+      assigned_at: input.assigned_to_id ? createdAt : null,
+      created_at: createdAt,
       updated_at: now,
       resolved_at: null,
       category: this.getCategoryById(input.category_id),
@@ -1094,7 +1121,7 @@ class DataStore {
   getAllPresence(): Map<string, Presence[]> {
     const postPresence = new Map<string, Presence[]>();
 
-    for (const [key, presence] of this.presence.entries()) {
+    for (const presence of this.presence.values()) {
       const postId = presence.post_id;
       if (!postPresence.has(postId)) {
         postPresence.set(postId, []);

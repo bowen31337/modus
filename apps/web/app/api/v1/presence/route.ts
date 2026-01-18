@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { dataStore } from '@/lib/data-store';
+import { requireCsrfProtection, csrfErrorResponse } from '@/lib/csrf';
 
 // ============================================================================
 // GET /api/v1/presence?post_id=xxx
@@ -40,8 +41,15 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    // Validate CSRF token for state-changing operation
+    try {
+      await requireCsrfProtection(request);
+    } catch (csrfError) {
+      return csrfErrorResponse();
+    }
+
     const body = await request.json();
-    const { post_id, agent_id } = body;
+    const { post_id, agent_id, agent_name, agent_status } = body;
 
     if (!post_id || !agent_id) {
       return NextResponse.json(
@@ -50,8 +58,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // updatePresence will fetch agent info from the store
-    const presence = dataStore.updatePresence(post_id, agent_id);
+    // Get agent info if not provided
+    let agentName = agent_name;
+    let agentStatus = agent_status;
+
+    if (!agentName || !agentStatus) {
+      const agent = dataStore.getAgent(agent_id);
+      if (!agent) {
+        return NextResponse.json(
+          { error: 'Agent not found' },
+          { status: 404 }
+        );
+      }
+      agentName = agent.display_name;
+      agentStatus = agent.status;
+    }
+
+    const presence = dataStore.addPresence(
+      post_id,
+      agent_id,
+      agentName,
+      agent_status || 'online'
+    );
 
     return NextResponse.json(presence, { status: 200 });
   } catch (error) {
@@ -70,6 +98,13 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
+    // Validate CSRF token for state-changing operation
+    try {
+      await requireCsrfProtection(request);
+    } catch (csrfError) {
+      return csrfErrorResponse();
+    }
+
     const searchParams = request.nextUrl.searchParams;
     const postId = searchParams.get('post_id');
     const agentId = searchParams.get('agent_id');

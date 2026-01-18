@@ -185,6 +185,7 @@ const createPostInputSchema = z.object({
   author_post_count: z.number().int().min(0, 'Author post count must be 0 or greater'),
   assigned_to_id: z.string().uuid().optional().nullable(),
   embedding: z.array(z.number()).length(1536).optional().nullable(),
+  created_at: z.string().datetime().optional(),
 });
 
 export async function POST(request: NextRequest) {

@@ -6,22 +6,69 @@
 
 const BASE_URL = 'http://localhost:3000';
 
+// Store cookies across requests
+let cookieJar = '';
+
+async function fetchWithCookies(url, options = {}) {
+  const headers = {
+    ...options.headers,
+    cookie: cookieJar,
+  };
+
+  const response = await fetch(url, { ...options, headers });
+
+  // Store cookies from response
+  const setCookie = response.headers.get('set-cookie');
+  if (setCookie) {
+    // Parse and store cookies
+    const cookies = setCookie.split(',').map(c => c.split(';')[0].trim());
+    cookieJar = cookies.join('; ');
+  }
+
+  return response;
+}
+
+async function getCsrfToken() {
+  const response = await fetchWithCookies(`${BASE_URL}/api/v1/auth/csrf`);
+  const data = await response.json();
+  return data.data?.token;
+}
+
 async function testPresence() {
   console.log('=== Testing Presence Functionality ===\n');
 
-  // Test 1: Add presence for post 1 with agent 1
-  console.log('1. Adding presence for post 1 with agent-1...');
+  // Get CSRF token first
+  console.log('0. Getting CSRF token...');
+  let csrfToken;
   try {
-    const response = await fetch(`${BASE_URL}/api/v1/presence`, {
+    csrfToken = await getCsrfToken();
+    console.log('✓ CSRF token obtained:', csrfToken.substring(0, 16) + '...');
+    console.log('  Cookies stored:', cookieJar ? 'yes' : 'no');
+  } catch (error) {
+    console.error('✗ Failed to get CSRF token:', error.message);
+    return;
+  }
+
+  // Test 1: Add presence for post 1 with agent 1
+  console.log('\n1. Adding presence for post 1 with agent-1...');
+  try {
+    const response = await fetchWithCookies(`${BASE_URL}/api/v1/presence`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-csrf-token': csrfToken,
+      },
       body: JSON.stringify({
         post_id: '1',
         agent_id: 'agent-1',
       }),
     });
     const data = await response.json();
-    console.log('✓ Presence added:', JSON.stringify(data, null, 2));
+    if (response.ok) {
+      console.log('✓ Presence added:', JSON.stringify(data, null, 2));
+    } else {
+      console.log('✗ Failed:', JSON.stringify(data, null, 2));
+    }
   } catch (error) {
     console.error('✗ Failed to add presence:', error.message);
     return;
@@ -30,7 +77,7 @@ async function testPresence() {
   // Test 2: Get presence for post 1
   console.log('\n2. Getting presence for post 1...');
   try {
-    const response = await fetch(`${BASE_URL}/api/v1/presence?post_id=1`);
+    const response = await fetchWithCookies(`${BASE_URL}/api/v1/presence?post_id=1`);
     const data = await response.json();
     console.log('✓ Presence data:', JSON.stringify(data, null, 2));
 
@@ -46,16 +93,23 @@ async function testPresence() {
   // Test 3: Add presence for another agent
   console.log('\n3. Adding presence for post 1 with agent-2...');
   try {
-    const response = await fetch(`${BASE_URL}/api/v1/presence`, {
+    const response = await fetchWithCookies(`${BASE_URL}/api/v1/presence`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-csrf-token': csrfToken,
+      },
       body: JSON.stringify({
         post_id: '1',
         agent_id: 'agent-2',
       }),
     });
     const data = await response.json();
-    console.log('✓ Presence added:', JSON.stringify(data, null, 2));
+    if (response.ok) {
+      console.log('✓ Presence added:', JSON.stringify(data, null, 2));
+    } else {
+      console.log('✗ Failed:', JSON.stringify(data, null, 2));
+    }
   } catch (error) {
     console.error('✗ Failed to add presence:', error.message);
   }
@@ -63,7 +117,7 @@ async function testPresence() {
   // Test 4: Get updated presence
   console.log('\n4. Getting updated presence for post 1...');
   try {
-    const response = await fetch(`${BASE_URL}/api/v1/presence?post_id=1`);
+    const response = await fetchWithCookies(`${BASE_URL}/api/v1/presence?post_id=1`);
     const data = await response.json();
     console.log(`✓ Found ${data.presences.length} agent(s) viewing post 1`);
 
@@ -77,10 +131,18 @@ async function testPresence() {
   // Test 5: Remove presence
   console.log('\n5. Removing presence for agent-1...');
   try {
-    await fetch(`${BASE_URL}/api/v1/presence?post_id=1&agent_id=agent-1`, {
+    const response = await fetchWithCookies(`${BASE_URL}/api/v1/presence?post_id=1&agent_id=agent-1`, {
       method: 'DELETE',
+      headers: {
+        'x-csrf-token': csrfToken,
+      },
     });
-    console.log('✓ Presence removed');
+    if (response.ok) {
+      console.log('✓ Presence removed');
+    } else {
+      const data = await response.json();
+      console.log('✗ Failed:', JSON.stringify(data, null, 2));
+    }
   } catch (error) {
     console.error('✗ Failed to remove presence:', error.message);
   }
@@ -88,7 +150,7 @@ async function testPresence() {
   // Test 6: Verify removal
   console.log('\n6. Verifying removal...');
   try {
-    const response = await fetch(`${BASE_URL}/api/v1/presence?post_id=1`);
+    const response = await fetchWithCookies(`${BASE_URL}/api/v1/presence?post_id=1`);
     const data = await response.json();
     console.log(`✓ Now ${data.presences.length} agent(s) viewing post 1`);
 

@@ -125,6 +125,10 @@ export default function DashboardPage() {
     console.log('[DashboardPage] handlePostSelect called with post:', post.id);
     // Auto-assign on click if not already assigned
     if (!assignedPosts.has(post.id)) {
+      // OPTIMISTIC UI: Immediately update local state before API call
+      setAssignedPosts((prev) => new Set(prev).add(post.id));
+      console.log('[DashboardPage] Optimistically assigned post:', post.id);
+
       try {
         const response = await fetch(`/api/v1/posts/${post.id}/assign`, {
           method: 'POST',
@@ -133,17 +137,28 @@ export default function DashboardPage() {
         });
 
         if (response.ok) {
-          setAssignedPosts((prev) => new Set(prev).add(post.id));
           success(
             'Post assigned',
             `${post.title.substring(0, 40)}${post.title.length > 40 ? '...' : ''} assigned to you.`
           );
         } else {
+          // ROLLBACK: Revert the optimistic update on failure
           console.error('Failed to assign post:', await response.text());
+          setAssignedPosts((prev) => {
+            const newSet = new Set(prev);
+            newSet.delete(post.id);
+            return newSet;
+          });
           error('Assignment failed', 'Could not assign this post. Please try again.');
         }
       } catch (err) {
+        // ROLLBACK: Revert the optimistic update on error
         console.error('Error assigning post:', err);
+        setAssignedPosts((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(post.id);
+          return newSet;
+        });
         error('Assignment failed', 'An error occurred while assigning the post.');
       }
     }
@@ -158,6 +173,10 @@ export default function DashboardPage() {
 
   const handleAssignToMe = async () => {
     if (selectedPost) {
+      // OPTIMISTIC UI: Immediately update local state before API call
+      setAssignedPosts((prev) => new Set(prev).add(selectedPost.id));
+      console.log('[DashboardPage] Optimistically assigned post:', selectedPost.id);
+
       try {
         const response = await fetch(`/api/v1/posts/${selectedPost.id}/assign`, {
           method: 'POST',
@@ -166,17 +185,28 @@ export default function DashboardPage() {
         });
 
         if (response.ok) {
-          setAssignedPosts((prev) => new Set(prev).add(selectedPost.id));
           success(
             'Post assigned',
             `${selectedPost.title.substring(0, 40)}${selectedPost.title.length > 40 ? '...' : ''} assigned to you.`
           );
         } else {
+          // ROLLBACK: Revert the optimistic update on failure
           console.error('Failed to assign post:', await response.text());
+          setAssignedPosts((prev) => {
+            const newSet = new Set(prev);
+            newSet.delete(selectedPost.id);
+            return newSet;
+          });
           error('Assignment failed', 'Could not assign this post. Please try again.');
         }
       } catch (err) {
+        // ROLLBACK: Revert the optimistic update on error
         console.error('Error assigning post:', err);
+        setAssignedPosts((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(selectedPost.id);
+          return newSet;
+        });
         error('Assignment failed', 'An error occurred while assigning the post.');
       }
     }
@@ -303,6 +333,7 @@ export default function DashboardPage() {
         forceReset={forceReset}
         onPostSelect={handlePostSelect}
         selectedPostId={selectedPost?.id ?? null}
+        assignedPosts={assignedPosts}
       />
 
       {/* Work Pane - Flexible, fills remaining space */}

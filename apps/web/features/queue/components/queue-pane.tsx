@@ -12,10 +12,17 @@ import { PostCardSkeleton } from './post-card-skeleton';
 import { SortControls, type SortState } from './sort-controls';
 import { type ViewMode, ViewToggle } from './view-toggle';
 
+// Mock current agent for demo purposes - must match dashboard-client.tsx
+const CURRENT_AGENT = {
+  id: '550e8400-e29b-41d4-a716-446655440001',
+  name: 'Agent A',
+};
+
 interface QueuePaneProps {
   forceReset?: number;
   onPostSelect?: (post: PostCardProps) => void;
   selectedPostId?: string | null;
+  assignedPosts?: Set<string>;
 }
 
 // API response type for posts
@@ -73,7 +80,7 @@ const getCategoryIdByName = (categoryName: string): string | null => {
   return categoryMap[categoryName] || null;
 };
 
-export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePaneProps) {
+export function QueuePane({ forceReset, onPostSelect, selectedPostId, assignedPosts }: QueuePaneProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -665,10 +672,14 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
             >
               {sortedPosts.map((post, index) => {
                 const isFocused = index === focusedIndex;
+                // OPTIMISTIC UI: Show "Assigned to you" immediately if post is being assigned
+                const isOptimisticallyAssigned = assignedPosts?.has(post.id) && !post.assignedTo;
+                const displayAssignedTo = isOptimisticallyAssigned ? 'You' : post.assignedTo;
                 return (
                   <PostCard
                     key={post.id}
                     {...post}
+                    assignedTo={displayAssignedTo}
                     isSelected={selectedPostId === post.id}
                     isKeyboardFocused={isFocused}
                     onClick={() => {
@@ -676,6 +687,7 @@ export function QueuePane({ forceReset, onPostSelect, selectedPostId }: QueuePan
                       onPostSelect?.(post);
                     }}
                     viewMode={viewMode}
+                    currentAgentId={CURRENT_AGENT.id}
                   />
                 );
               })}

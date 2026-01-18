@@ -1,8 +1,9 @@
 'use client';
 
 import { Button } from '@modus/ui';
-import { Camera, Mail, Shield, User } from 'lucide-react';
+import { Camera, Mail, Shield } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { Avatar } from '@/components/ui/avatar';
 
 interface Agent {
   id: string;
@@ -152,19 +153,15 @@ export function ProfileSettings({ agent, onUpdateAgent }: ProfileSettingsProps) 
         {/* Avatar Section */}
         <div className="flex items-center gap-6 mb-6">
           <div
-            className="relative w-24 h-24 rounded-full bg-background-tertiary border-2 border-border flex items-center justify-center overflow-hidden group"
+            className="relative overflow-hidden group"
             data-testid="avatar-display"
           >
-            {agent.avatar_url ? (
-              <img
-                src={agent.avatar_url}
-                alt={agent.display_name}
-                className="w-full h-full object-cover"
-                data-testid="avatar-image"
-              />
-            ) : (
-              <User size={40} className="text-muted-foreground" data-testid="avatar-placeholder" />
-            )}
+            <Avatar
+              src={agent.avatar_url}
+              name={agent.display_name}
+              size="2xl"
+              withBorder
+            />
             {isEditing && (
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <Camera size={24} className="text-white" />

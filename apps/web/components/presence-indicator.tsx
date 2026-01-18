@@ -10,6 +10,7 @@
 import React, { useEffect, useState } from 'react';
 import { Eye, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Avatar } from '@/components/ui/avatar';
 
 // ============================================================================
 // Types
@@ -118,7 +119,10 @@ export function PresenceIndicator({
   // Compact mode: just show count
   if (compact) {
     return (
-      <div className={cn('flex items-center gap-1.5 text-xs text-muted-foreground', className)}>
+      <div
+        className={cn('flex items-center gap-1.5 text-xs text-muted-foreground', className)}
+        data-testid="presence-indicator"
+      >
         <Users className="w-3 h-3" />
         <span className="font-medium">{viewingCount}</span>
       </div>
@@ -196,16 +200,23 @@ export function PresenceAvatars({
   return (
     <div className={cn('flex items-center -space-x-2', className)} data-testid="presence-avatars">
       {visible.map((presence) => (
-        <div
+        <Avatar
           key={presence.agent_id}
-          className="w-7 h-7 rounded-full bg-primary/20 border-2 border-background flex items-center justify-center text-xs font-medium text-primary"
-          title={`${presence.agent_name} (${presence.agent_status})`}
-        >
-          {presence.agent_name.charAt(0).toUpperCase()}
-        </div>
+          name={presence.agent_name}
+          size="sm"
+          status={presence.agent_status}
+          className="ring-2 ring-background"
+          data-testid={`presence-avatar-${presence.agent_id}`}
+        />
       ))}
       {remaining > 0 && (
-        <div className="w-7 h-7 rounded-full bg-muted border-2 border-background flex items-center justify-center text-xs font-medium text-muted-foreground">
+        <div
+          className={cn(
+            'rounded-full bg-muted border-2 border-background flex items-center justify-center',
+            'w-8 h-8 text-xs font-medium text-muted-foreground'
+          )}
+          data-testid="presence-avatars-more"
+        >
           +{remaining}
         </div>
       )}

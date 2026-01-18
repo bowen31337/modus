@@ -1,8 +1,9 @@
 'use client';
 
 import { Button } from '@modus/ui';
-import { ChevronDown, ChevronUp, Edit, Shield, User, Users } from 'lucide-react';
+import { ChevronDown, ChevronUp, Edit, Shield, Users } from 'lucide-react';
 import { useState } from 'react';
+import { Avatar } from '@/components/ui/avatar';
 
 export interface Agent {
   id: string;
@@ -125,17 +126,13 @@ export function AgentManagement({ agents, onUpdateAgentRole }: AgentManagementPr
                   />
 
                   {/* Avatar */}
-                  <div className="w-10 h-10 rounded-full bg-background-tertiary border border-border flex items-center justify-center">
-                    {agent.avatar_url ? (
-                      <img
-                        src={agent.avatar_url}
-                        alt={agent.display_name}
-                        className="w-full h-full rounded-full object-cover"
-                      />
-                    ) : (
-                      <User size={18} className="text-muted-foreground" />
-                    )}
-                  </div>
+                  <Avatar
+                    src={agent.avatar_url}
+                    name={agent.display_name}
+                    size="md"
+                    status={agent.status}
+                    withBorder
+                  />
 
                   {/* Agent Info */}
                   <div className="flex-1">
