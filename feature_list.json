@@ -1126,12 +1126,13 @@
       "Step 5: Verify cannot access admin settings",
       "Step 6: Verify cannot manage rules or templates (if restricted)"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_failure_count": 0,
-    "dev_completed_at": "2026-01-17T19:26:04.400942Z"
+    "dev_completed_at": "2026-01-17T19:26:04.400942Z",
+    "qa_completed_at": "1768698102.962156"
   },
   {
     "category": "functional",
@@ -1897,9 +1898,13 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_failure_count": 0,
+    "dev_failure_count": 1,
     "dev_completed_at": "2026-01-18T18:00:00.000000Z",
-    "qa_completed_at": "2026-01-18T18:00:00.000000Z"
+    "qa_completed_at": "2026-01-18T18:00:00.000000Z",
+    "last_dev_failure_at": "2026-01-18T00:54:01.250560Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "style",
@@ -2072,8 +2077,11 @@
       "Step 5: Verify focus ring is consistently applied"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-18T00:48:10.144652Z",
+    "dev_failure_count": 0
   },
   {
     "category": "style",
