@@ -15,24 +15,49 @@ test.describe('XSS Prevention', () => {
 
   /**
    * Helper function to get CSRF token and make authenticated POST request
+   * Uses the page context to preserve cookies between requests
    */
   async function createPostWithXSS(
     page: any,
     postData: Record<string, unknown>
   ) {
     // First, get a CSRF token by visiting the CSRF endpoint
-    const csrfResponse = await page.request.get('/api/v1/auth/csrf');
+    // This sets the CSRF cookie which will be used for the POST request
+    const csrfResponse = await page.request.get('/api/v1/auth/csrf', {
+      headers: {
+        'cookie': 'modus_demo_session=active',
+      },
+    });
     expect(csrfResponse.ok()).toBe(true);
     const csrfData = await csrfResponse.json();
     const csrfToken = csrfData.data.token;
+
+    // Get the CSRF cookie from the response to include in subsequent requests
+    const setCookieHeader = csrfResponse.headers()['set-cookie'];
+    let cookieHeader = 'modus_demo_session=active';
+    if (setCookieHeader) {
+      // Extract csrf_token from set-cookie header
+      const csrfCookieMatch = setCookieHeader.match(/csrf_token=([^;]+)/);
+      if (csrfCookieMatch) {
+        cookieHeader += `; csrf_token=${csrfCookieMatch[1]}`;
+      }
+    }
 
     // Now create the post with the CSRF token
     const response = await page.request.post('/api/v1/posts', {
       headers: {
         'x-csrf-token': csrfToken,
+        'cookie': cookieHeader,
+        'content-type': 'application/json',
       },
       data: postData,
     });
+
+    // Debug: log response if it fails
+    if (!response.ok()) {
+      const text = await response.text();
+      console.log('POST /api/v1/posts failed:', response.status(), text);
+    }
 
     return response;
   }

@@ -2812,14 +2812,15 @@
     "is_dev_done": false,
     "is_qa_passed": false,
     "qa_retry_count": 1,
-    "dev_failure_count": 1,
+    "dev_failure_count": 2,
     "dev_completed_at": "1768715565",
     "qa_validated": true,
     "last_qa_run": "2026-01-18T07:31:24.321435Z",
     "qa_notes": "Failed: One or more gates failed",
     "qa_report_path": "modus/qa-reports/feature-149-2026-01-18-07-31-24.json",
-    "last_dev_failure_at": "2026-01-18T09:12:41.505230Z",
+    "last_dev_failure_at": "2026-01-18T09:42:45.019116Z",
     "dev_failure_reasons": [
+      "Worker session timed out",
       "Worker session timed out"
     ]
   },
@@ -2939,19 +2940,15 @@
       "Step 5: Verify PII is appropriately redacted in logs"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 1,
-    "dev_completed_at": "2026-01-18T03:19:08.669530Z",
-    "dev_failure_count": 1,
+    "dev_completed_at": "2026-01-18T09:43:14.194460Z",
+    "dev_failure_count": 0,
     "qa_validated": true,
     "last_qa_run": "2026-01-18T07:31:24.389305Z",
     "qa_notes": "Failed: One or more gates failed",
-    "qa_report_path": "modus/qa-reports/feature-154-2026-01-18-07-31-24.json",
-    "last_dev_failure_at": "2026-01-18T09:32:48.604742Z",
-    "dev_failure_reasons": [
-      "Worker session timed out"
-    ]
+    "qa_report_path": "modus/qa-reports/feature-154-2026-01-18-07-31-24.json"
   },
   {
     "category": "functional",
@@ -2968,9 +2965,10 @@
     "is_qa_passed": false,
     "dev_completed_at": "2026-01-18T09:28:23.518Z",
     "qa_retry_count": 1,
-    "dev_failure_count": 1,
-    "last_dev_failure_at": "2026-01-18T03:49:09.112039Z",
+    "dev_failure_count": 2,
+    "last_dev_failure_at": "2026-01-18T09:46:00.012637Z",
     "dev_failure_reasons": [
+      "Worker session timed out",
       "Worker session timed out"
     ],
     "qa_validated": true,
@@ -3770,9 +3768,9 @@
       "Step 7: Verify the updated_at timestamp reflects the change"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false,
-    "dev_completed_at": "2026-01-18T12:00:00.000000Z",
+    "dev_completed_at": "2026-01-18T09:52:38.516Z",
     "qa_retry_count": 1,
     "qa_validated": true,
     "last_qa_run": "2026-01-18T07:31:24.743634Z",

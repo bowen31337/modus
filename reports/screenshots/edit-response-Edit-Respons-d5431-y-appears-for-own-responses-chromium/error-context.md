@@ -1,0 +1,198 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - complementary [ref=e5]:
+        - generic [ref=e6]: m
+        - 'button "Agent status: Online. Available for assignments" [ref=e8] [cursor=pointer]':
+          - img [ref=e9]
+          - img [ref=e11]
+        - navigation [ref=e13]:
+          - generic [ref=e14]:
+            - link "Home" [ref=e15] [cursor=pointer]:
+              - /url: /dashboard
+              - img [ref=e16]
+            - generic:
+              - generic:
+                - generic: Home
+                - generic:
+                  - generic:
+                    - generic: G
+                  - generic:
+                    - generic: +
+                    - generic: H
+          - generic [ref=e19]:
+            - link "Queue" [ref=e20] [cursor=pointer]:
+              - /url: /dashboard/queue
+              - img [ref=e21]
+            - generic:
+              - generic:
+                - generic: Queue
+                - generic:
+                  - generic:
+                    - generic: G
+                  - generic:
+                    - generic: +
+                    - generic: Q
+          - generic [ref=e24]:
+            - link "Assigned" [ref=e25] [cursor=pointer]:
+              - /url: /dashboard/assigned
+              - img [ref=e26]
+            - generic:
+              - generic:
+                - generic: Assigned
+                - generic:
+                  - generic:
+                    - generic: G
+                  - generic:
+                    - generic: +
+                    - generic: A
+          - generic [ref=e29]:
+            - link "Settings" [ref=e30] [cursor=pointer]:
+              - /url: /dashboard/settings
+              - img [ref=e31]
+            - generic:
+              - generic:
+                - generic: Settings
+                - generic:
+                  - generic:
+                    - generic: G
+                  - generic:
+                    - generic: +
+                    - generic: S
+        - button "Logout from the application" [ref=e34] [cursor=pointer]:
+          - img [ref=e35]
+      - separator "Drag to resize" [ref=e38]
+      - complementary [ref=e40]:
+        - generic [ref=e41]:
+          - generic [ref=e42]:
+            - heading "Moderation Queue" [level=1] [ref=e43]
+            - generic [ref=e44]:
+              - generic [ref=e45]: "Navigate:"
+              - generic [ref=e48]: K
+              - generic [ref=e51]: J
+          - generic [ref=e52]:
+            - img [ref=e53]
+            - searchbox "Search posts..." [ref=e56]
+        - generic [ref=e57]:
+          - button "Filters" [ref=e59] [cursor=pointer]:
+            - img [ref=e60]
+            - text: Filters
+            - img [ref=e62]
+          - 'button "Sort : Priority" [ref=e65] [cursor=pointer]':
+            - img [ref=e66]
+            - text: Sort
+            - generic [ref=e69]: ": Priority"
+            - img [ref=e70]
+          - generic [ref=e73]:
+            - button "List view" [ref=e74] [cursor=pointer]:
+              - img [ref=e75]
+            - button "Grid view" [ref=e76] [cursor=pointer]:
+              - img [ref=e77]
+        - generic [ref=e82]:
+          - generic [ref=e83]:
+            - 'button "Bug: Images not loading in posts In Progress Since the last update, images in community posts are not loading. Just shows a broken image icon... P1 Bug Reports user-3 2025-01-17T13:45:00Z Assigned to Agent A Open" [ref=e84] [cursor=pointer]':
+              - generic [ref=e86]:
+                - generic [ref=e87]:
+                  - 'heading "Bug: Images not loading in posts" [level=3] [ref=e88]'
+                  - generic [ref=e89]: In Progress
+                - paragraph [ref=e90]: Since the last update, images in community posts are not loading. Just shows a broken image icon...
+                - generic [ref=e91]:
+                  - generic [ref=e92]: P1
+                  - img [ref=e94]
+                  - generic [ref=e96]: Bug Reports
+                  - generic [ref=e97]:
+                    - img [ref=e98]
+                    - text: user-3
+                  - generic [ref=e101]:
+                    - img [ref=e102]
+                    - text: 2025-01-17T13:45:00Z
+                - generic [ref=e105]: Assigned to Agent A
+              - generic [ref=e108]: Open
+            - button "Unable to access my account after password reset Open I reset my password yesterday but still can't log in. The system keeps saying my credentials are invalid... P2 Account Issues user-1 2025-01-18T10:30:00Z Open" [ref=e109] [cursor=pointer]:
+              - generic [ref=e111]:
+                - generic [ref=e112]:
+                  - heading "Unable to access my account after password reset" [level=3] [ref=e113]
+                  - generic [ref=e114]: Open
+                - paragraph [ref=e115]: I reset my password yesterday but still can't log in. The system keeps saying my credentials are invalid...
+                - generic [ref=e116]:
+                  - generic [ref=e117]: P2
+                  - img [ref=e119]
+                  - generic [ref=e121]: Account Issues
+                  - generic [ref=e122]:
+                    - img [ref=e123]
+                    - text: user-1
+                  - generic [ref=e126]:
+                    - img [ref=e127]
+                    - text: 2025-01-18T10:30:00Z
+              - generic [ref=e131]: Open
+            - 'button "Feature request: Dark mode for mobile app Open Would love to see a dark mode option in the mobile application. My eyes get tired using the app at night... P3 Feature Request user-2 2025-01-17T14:15:00Z Open" [ref=e132] [cursor=pointer]':
+              - generic [ref=e134]:
+                - generic [ref=e135]:
+                  - 'heading "Feature request: Dark mode for mobile app" [level=3] [ref=e136]'
+                  - generic [ref=e137]: Open
+                - paragraph [ref=e138]: Would love to see a dark mode option in the mobile application. My eyes get tired using the app at night...
+                - generic [ref=e139]:
+                  - generic [ref=e140]: P3
+                  - img [ref=e142]
+                  - generic [ref=e145]: Feature Request
+                  - generic [ref=e146]:
+                    - img [ref=e147]
+                    - text: user-2
+                  - generic [ref=e150]:
+                    - img [ref=e151]
+                    - text: 2025-01-17T14:15:00Z
+              - generic [ref=e155]: Open
+            - button "Community guidelines clarification needed Resolved I'm a bit confused about the community guidelines regarding self-promotion... P3 Policy & Guidelines user-5 2025-01-16T09:30:00Z Assigned to Agent B Open" [ref=e156] [cursor=pointer]:
+              - generic [ref=e158]:
+                - generic [ref=e159]:
+                  - heading "Community guidelines clarification needed" [level=3] [ref=e160]
+                  - generic [ref=e161]: Resolved
+                - paragraph [ref=e162]: I'm a bit confused about the community guidelines regarding self-promotion...
+                - generic [ref=e163]:
+                  - generic [ref=e164]: P3
+                  - img [ref=e166]
+                  - generic [ref=e168]: Policy & Guidelines
+                  - generic [ref=e169]:
+                    - img [ref=e170]
+                    - text: user-5
+                  - generic [ref=e173]:
+                    - img [ref=e174]
+                    - text: 2025-01-16T09:30:00Z
+                - generic [ref=e177]: Assigned to Agent B
+              - generic [ref=e180]: Open
+            - button "How do I change my email notification settings? Open I've been looking everywhere but can't find where to change my email notification preferences... P4 Help & Support user-4 2025-01-17T11:20:00Z Open" [ref=e181] [cursor=pointer]:
+              - generic [ref=e183]:
+                - generic [ref=e184]:
+                  - heading "How do I change my email notification settings?" [level=3] [ref=e185]
+                  - generic [ref=e186]: Open
+                - paragraph [ref=e187]: I've been looking everywhere but can't find where to change my email notification preferences...
+                - generic [ref=e188]:
+                  - generic [ref=e189]: P4
+                  - img [ref=e191]
+                  - generic [ref=e193]: Help & Support
+                  - generic [ref=e194]:
+                    - img [ref=e195]
+                    - text: user-4
+                  - generic [ref=e198]:
+                    - img [ref=e199]
+                    - text: 2025-01-17T11:20:00Z
+              - generic [ref=e203]: Open
+          - generic [ref=e204]: End of list
+        - generic [ref=e206]:
+          - generic [ref=e207]: "Total: 5"
+          - generic [ref=e208]: "Loaded: 5"
+      - separator "Drag to resize" [ref=e209]
+      - generic [ref=e211]:
+        - img [ref=e213]
+        - heading "No Post Selected" [level=3] [ref=e215]
+        - paragraph [ref=e216]: Select a post from the queue to begin moderation
+    - img [ref=e219]
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e228] [cursor=pointer]:
+    - img [ref=e229]
+  - alert [ref=e232]
+```

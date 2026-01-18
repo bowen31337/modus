@@ -1,19 +1,21 @@
 import { test, expect } from '@playwright/test';
 
-const BASE_URL = process.env.BASE_URL || 'http://localhost:3003';
+const BASE_URL = process.env.BASE_URL || 'http://localhost:3002';
 
 test.describe('Agent Management - Admin View', () => {
   test('Admin can view list of all agents', async ({ page }) => {
     // Navigate to login page
     await page.goto(`${BASE_URL}/login`);
 
-    // Use demo login
-    const demoLoginButton = page.getByRole('button', { name: /demo login/i });
-    await expect(demoLoginButton).toBeVisible();
-    await demoLoginButton.click();
+    // Fill in login form (demo mode accepts any credentials)
+    await page.getByLabel('Email').fill('demo@example.com');
+    await page.getByLabel('Password').fill('password123');
+
+    // Submit login form
+    await page.getByRole('button', { name: 'Sign In' }).click();
 
     // Wait for navigation to dashboard
-    await page.waitForURL(`${BASE_URL}/dashboard`);
+    await page.waitForURL(`${BASE_URL}/dashboard`, { timeout: 5000 });
 
     // Navigate to settings
     await page.goto(`${BASE_URL}/dashboard/settings`);

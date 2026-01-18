@@ -1,12 +1,27 @@
 import { expect, test } from '@playwright/test';
 
+// Generate a valid CSRF token for testing
+const generateCsrfToken = () => {
+  const array = new Uint8Array(32);
+  crypto.getRandomValues(array);
+  return Array.from(array, (byte) => byte.toString(16).padStart(2, '0')).join('');
+};
+
 test.describe('Response Editing', () => {
   test.beforeEach(async ({ page, context }) => {
-    // Set demo session cookie directly on the browser context
+    const csrfToken = generateCsrfToken();
+
+    // Set demo session cookie and CSRF token directly on the browser context
     await context.addCookies([
       {
         name: 'modus_demo_session',
         value: 'active',
+        domain: 'localhost',
+        path: '/',
+      },
+      {
+        name: 'csrf_token',
+        value: csrfToken,
         domain: 'localhost',
         path: '/',
       },
@@ -31,8 +46,8 @@ test.describe('Response Editing', () => {
     await textarea.fill('Test response for editing');
     await page.click('[data-testid="send-response-button"]');
 
-    // Wait for activity history
-    await page.waitForSelector('text=Activity History', { timeout: 5000 });
+    // Wait for activity timeline
+    await page.waitForSelector('text=Activity Timeline', { timeout: 5000 });
 
     // Verify the response appears
     const responseElement = page
@@ -67,8 +82,8 @@ test.describe('Response Editing', () => {
     await textarea.fill('Original response text');
     await page.click('[data-testid="send-response-button"]');
 
-    // Wait for activity history
-    await page.waitForSelector('text=Activity History', { timeout: 5000 });
+    // Wait for activity timeline
+    await page.waitForSelector('text=Activity Timeline', { timeout: 5000 });
 
     // Click edit button
     const editButton = page.locator('[data-testid^="edit-response-"]').first();
@@ -100,8 +115,8 @@ test.describe('Response Editing', () => {
     await textarea.fill('Response to cancel');
     await page.click('[data-testid="send-response-button"]');
 
-    // Wait for activity history
-    await page.waitForSelector('text=Activity History', { timeout: 5000 });
+    // Wait for activity timeline
+    await page.waitForSelector('text=Activity Timeline', { timeout: 5000 });
 
     // Click edit button
     await page.locator('[data-testid^="edit-response-"]').first().click();
@@ -129,8 +144,8 @@ test.describe('Response Editing', () => {
     await textarea.fill('Original content');
     await page.click('[data-testid="send-response-button"]');
 
-    // Wait for activity history
-    await page.waitForSelector('text=Activity History', { timeout: 5000 });
+    // Wait for activity timeline
+    await page.waitForSelector('text=Activity Timeline', { timeout: 5000 });
 
     // Click edit button
     await page.locator('[data-testid^="edit-response-"]').first().click();
@@ -164,8 +179,8 @@ test.describe('Response Editing', () => {
     await textarea.fill('Public response');
     await page.click('[data-testid="send-response-button"]');
 
-    // Wait for activity history
-    await page.waitForSelector('text=Activity History', { timeout: 5000 });
+    // Wait for activity timeline
+    await page.waitForSelector('text=Activity Timeline', { timeout: 5000 });
 
     // Click edit button
     await page.locator('[data-testid^="edit-response-"]').first().click();
@@ -207,8 +222,8 @@ test.describe('Response Editing', () => {
     await textarea.fill('Response to delete');
     await page.click('[data-testid="send-response-button"]');
 
-    // Wait for activity history
-    await page.waitForSelector('text=Activity History', { timeout: 5000 });
+    // Wait for activity timeline
+    await page.waitForSelector('text=Activity Timeline', { timeout: 5000 });
 
     // Verify response is visible
     await expect(page.locator('text=Response to delete')).toBeVisible();
@@ -242,8 +257,8 @@ test.describe('Response Editing', () => {
     await textarea.fill('Response to not delete');
     await page.click('[data-testid="send-response-button"]');
 
-    // Wait for activity history
-    await page.waitForSelector('text=Activity History', { timeout: 5000 });
+    // Wait for activity timeline
+    await page.waitForSelector('text=Activity Timeline', { timeout: 5000 });
 
     // Verify response is visible
     await expect(page.locator('text=Response to not delete')).toBeVisible();
@@ -276,8 +291,8 @@ test.describe('Response Editing', () => {
     await textarea.fill('Response for loading test');
     await page.click('[data-testid="send-response-button"]');
 
-    // Wait for activity history
-    await page.waitForSelector('text=Activity History', { timeout: 5000 });
+    // Wait for activity timeline
+    await page.waitForSelector('text=Activity Timeline', { timeout: 5000 });
 
     // Click edit button
     await page.locator('[data-testid^="edit-response-"]').first().click();
@@ -313,8 +328,8 @@ test.describe('Response Editing', () => {
     await textarea.fill('Response to delete with loading');
     await page.click('[data-testid="send-response-button"]');
 
-    // Wait for activity history
-    await page.waitForSelector('text=Activity History', { timeout: 5000 });
+    // Wait for activity timeline
+    await page.waitForSelector('text=Activity Timeline', { timeout: 5000 });
 
     // Click delete button
     const deleteButton = page.locator('[data-testid^="delete-response-"]').first();
@@ -349,8 +364,8 @@ test.describe('Response Editing', () => {
     await textarea.fill('Response to clear');
     await page.click('[data-testid="send-response-button"]');
 
-    // Wait for activity history
-    await page.waitForSelector('text=Activity History', { timeout: 5000 });
+    // Wait for activity timeline
+    await page.waitForSelector('text=Activity Timeline', { timeout: 5000 });
 
     // Click edit button
     await page.locator('[data-testid^="edit-response-"]').first().click();
@@ -376,8 +391,8 @@ test.describe('Response Editing', () => {
     await textarea.fill('Response content');
     await page.click('[data-testid="send-response-button"]');
 
-    // Wait for activity history
-    await page.waitForSelector('text=Activity History', { timeout: 5000 });
+    // Wait for activity timeline
+    await page.waitForSelector('text=Activity Timeline', { timeout: 5000 });
 
     // Click edit button
     await page.locator('[data-testid^="edit-response-"]').first().click();
