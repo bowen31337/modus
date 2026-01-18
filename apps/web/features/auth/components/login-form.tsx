@@ -65,7 +65,7 @@ export function LoginForm() {
   // For demo mode, use a form with server action for proper cookie handling
   // demoLoginAction is a server action that handles the redirect directly
   if (!isSupabaseConfigured) {
-    const handleDemoLogin = () => {
+    const handleDemoLogin = async () => {
       startTransition(async () => {
         await demoLoginAction(new FormData());
       });

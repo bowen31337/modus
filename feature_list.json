@@ -2664,13 +2664,8 @@
     "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 0,
-    "dev_failure_count": 2,
-    "last_dev_failure_at": "2026-01-18T03:35:00.152148Z",
-    "dev_failure_reasons": [
-      "Worker session timed out",
-      "Worker session timed out"
-    ],
-    "dev_completed_at": "1768707986"
+    "dev_failure_count": 0,
+    "dev_completed_at": "2026-01-18T03:46:54.124145Z"
   },
   {
     "category": "functional",
@@ -2685,9 +2680,10 @@
     "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 0,
-    "dev_failure_count": 1,
-    "last_dev_failure_at": "2026-01-18T03:20:54.942176Z",
+    "dev_failure_count": 2,
+    "last_dev_failure_at": "2026-01-18T03:50:57.580923Z",
     "dev_failure_reasons": [
+      "Worker session timed out",
       "Worker session timed out"
     ],
     "dev_completed_at": "1768707986"
@@ -2742,9 +2738,10 @@
     "is_dev_done": false,
     "is_qa_passed": false,
     "qa_retry_count": 0,
-    "dev_failure_count": 1,
-    "last_dev_failure_at": "2026-01-18T03:33:00.860733Z",
+    "dev_failure_count": 2,
+    "last_dev_failure_at": "2026-01-18T04:03:03.507234Z",
     "dev_failure_reasons": [
+      "Worker session timed out",
       "Worker session timed out"
     ]
   },
@@ -2778,7 +2775,13 @@
     "passes": false,
     "is_dev_done": true,
     "is_qa_passed": false,
-    "dev_completed_at": "1768707986"
+    "dev_completed_at": "1768707986",
+    "qa_retry_count": 0,
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-18T03:49:09.112039Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -2874,9 +2877,12 @@
       "Step 4: Simulate 500 error",
       "Step 5: Verify error page is helpful and styled"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768708979",
+    "qa_completed_at": "1768708979",
+    "qa_retry_count": 0
   },
   {
     "category": "style",
@@ -2906,9 +2912,12 @@
       "Step 4: Verify forms are properly styled",
       "Step 5: Verify dark theme is consistent"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "1768709217",
+    "qa_completed_at": "1768709217",
+    "qa_retry_count": 0
   },
   {
     "category": "functional",

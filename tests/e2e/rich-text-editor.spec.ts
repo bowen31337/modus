@@ -1,11 +1,22 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('Rich Text Editor - Clean Minimal Appearance', () => {
-  test.beforeEach(async ({ page }) => {
-    // Login and navigate to dashboard
-    await page.goto('/login');
-    await page.getByRole('button', { name: 'Sign In' }).click();
-    await page.waitForURL('**/dashboard');
+  test.beforeEach(async ({ page, context }) => {
+    // Set demo session cookie directly on the browser context
+    await context.addCookies([
+      {
+        name: 'modus_demo_session',
+        value: 'active',
+        domain: 'localhost',
+        path: '/',
+      },
+    ]);
+
+    // Navigate directly to dashboard
+    await page.goto('/dashboard');
+
+    // Wait for the queue pane to load
+    await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
   });
 
   test('should have minimal toolbar without heavy borders', async ({ page }) => {
@@ -99,11 +110,22 @@ test.describe('Rich Text Editor - Clean Minimal Appearance', () => {
 });
 
 test.describe('Rich Text Editor - Formatting Toolbar', () => {
-  test.beforeEach(async ({ page }) => {
-    // Login and navigate to dashboard
-    await page.goto('/login');
-    await page.getByRole('button', { name: 'Sign In' }).click();
-    await page.waitForURL('**/dashboard');
+  test.beforeEach(async ({ page, context }) => {
+    // Set demo session cookie directly on the browser context
+    await context.addCookies([
+      {
+        name: 'modus_demo_session',
+        value: 'active',
+        domain: 'localhost',
+        path: '/',
+      },
+    ]);
+
+    // Navigate directly to dashboard
+    await page.goto('/dashboard');
+
+    // Wait for the queue pane to load
+    await page.waitForSelector('[data-testid="queue-pane"]', { timeout: 10000 });
   });
 
   test('should display rich text editor with formatting toolbar', async ({ page }) => {
