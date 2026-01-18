@@ -15,11 +15,18 @@ test.describe('Template Management', () => {
     // Navigate to settings page
     await page.goto('/dashboard/settings');
     await expect(page.getByTestId('settings-page')).toBeVisible();
+
+    // Click on Templates tab
+    await page.getByTestId('tab-templates').click();
+    await expect(page.getByTestId('tab-templates')).toHaveClass(/bg-background-tertiary/);
   });
 
   test('should display template management page', async ({ page }) => {
-    // Verify page title
-    await expect(page.getByText('Settings')).toBeVisible();
+    // Verify page title (use heading role to be specific)
+    await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible();
+
+    // Verify Templates tab is active
+    await expect(page.getByTestId('tab-templates')).toBeVisible();
 
     // Verify Create Template button
     await expect(page.getByTestId('create-template-button')).toBeVisible();
@@ -27,8 +34,8 @@ test.describe('Template Management', () => {
     // Verify search input
     await expect(page.getByTestId('template-search-input')).toBeVisible();
 
-    // Verify template list is displayed
-    await expect(page.getByText('Response Templates')).toBeVisible();
+    // Verify template cards are displayed
+    await expect(page.getByTestId('template-card-1')).toBeVisible();
   });
 
   test('should display list of existing templates', async ({ page }) => {
