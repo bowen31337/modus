@@ -5,6 +5,7 @@ import { KeyboardShortcut } from '@/components/ui/keyboard-shortcut';
 import { Search } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { FilterChips } from './filter-chips';
 import { FilterControls, type FilterState, isDateInRange } from './filter-controls';
 import { PostCard, type PostCardProps } from './post-card';
@@ -715,27 +716,29 @@ export function QueuePane({
               className={viewMode === 'grid' ? 'grid grid-cols-2 gap-3 p-3' : ''}
               data-testid="queue-container"
             >
-              {sortedPosts.map((post, index) => {
-                const isFocused = index === focusedIndex;
-                // OPTIMISTIC UI: Show "Assigned to you" immediately if post is being assigned
-                const isOptimisticallyAssigned = assignedPosts?.has(post.id) && !post.assignedTo;
-                const displayAssignedTo = isOptimisticallyAssigned ? 'You' : post.assignedTo;
-                return (
-                  <PostCard
-                    key={post.id}
-                    {...post}
-                    assignedTo={displayAssignedTo}
-                    isSelected={selectedPostId === post.id}
-                    isKeyboardFocused={isFocused}
-                    onClick={() => {
-                      setFocusedIndex(index);
-                      onPostSelect?.(post);
-                    }}
-                    viewMode={viewMode}
-                    currentAgentId={CURRENT_AGENT.id}
-                  />
-                );
-              })}
+              <AnimatePresence mode="popLayout">
+                {sortedPosts.map((post, index) => {
+                  const isFocused = index === focusedIndex;
+                  // OPTIMISTIC UI: Show "Assigned to you" immediately if post is being assigned
+                  const isOptimisticallyAssigned = assignedPosts?.has(post.id) && !post.assignedTo;
+                  const displayAssignedTo = isOptimisticallyAssigned ? 'You' : post.assignedTo;
+                  return (
+                    <PostCard
+                      key={post.id}
+                      {...post}
+                      assignedTo={displayAssignedTo}
+                      isSelected={selectedPostId === post.id}
+                      isKeyboardFocused={isFocused}
+                      onClick={() => {
+                        setFocusedIndex(index);
+                        onPostSelect?.(post);
+                      }}
+                      viewMode={viewMode}
+                      currentAgentId={CURRENT_AGENT.id}
+                    />
+                  );
+                })}
+              </AnimatePresence>
             </div>
             {loading && (
               <div className={viewMode === 'grid' ? 'grid grid-cols-2 gap-3 p-3' : ''}>

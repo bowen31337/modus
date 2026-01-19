@@ -4,6 +4,7 @@ import { PresenceIndicator } from '@/components/presence-indicator';
 import { type PostStatus, StatusBadge } from '@/components/ui/status-badge';
 import { sanitizePostContent } from '@/lib/sanitize';
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 import { AlertCircle, CheckCircle2, Clock, MessageSquare, User } from 'lucide-react';
 import type { ViewMode } from './view-toggle';
 
@@ -76,14 +77,20 @@ export function PostCard({
   // Grid view layout
   if (viewMode === 'grid') {
     return (
-      <button
+      <motion.button
+        layout
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.9 }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
         type="button"
         tabIndex={0}
         onClick={onClick}
         aria-pressed={isSelected}
         data-testid={`post-card-${id}`}
         className={cn(
-          'group relative flex flex-col w-full bg-background-secondary hover:bg-background-tertiary hover:-translate-y-0.5 hover:shadow-lg active:bg-background-hover active:scale-[0.99] active:translate-y-0 transition-all duration-150 cursor-pointer text-left border border-border rounded-lg overflow-hidden',
+          'group relative flex flex-col w-full bg-background-secondary hover:bg-background-tertiary hover:shadow-lg active:bg-background-hover transition-colors duration-150 cursor-pointer text-left border border-border rounded-lg overflow-hidden',
           isSelected && 'ring-2 ring-primary',
           isKeyboardFocused && 'ring-2 ring-primary ring-offset-2 ring-offset-background'
         )}
@@ -181,20 +188,26 @@ export function PostCard({
             {assignedTo}
           </div>
         )}
-      </button>
+      </motion.button>
     );
   }
 
   // List view layout (original)
   return (
-    <button
+    <motion.button
+      layout
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      whileHover={{ scale: 1.01, backgroundColor: 'var(--background-tertiary)' }}
+      whileTap={{ scale: 0.99 }}
       type="button"
       tabIndex={0}
       onClick={onClick}
       aria-pressed={isSelected}
       data-testid={`post-card-${id}`}
       className={cn(
-        'group relative flex w-full border-b border-border bg-background-secondary hover:bg-background-tertiary hover:-translate-y-px active:bg-background-hover active:scale-[0.995] active:translate-x-px transition-all duration-150 cursor-pointer text-left',
+        'group relative flex w-full border-b border-border bg-background-secondary transition-colors duration-150 cursor-pointer text-left',
         isSelected && 'bg-background-tertiary ring-1 ring-primary inset-0',
         isKeyboardFocused && 'outline-none ring-2 ring-primary ring-offset-2 ring-offset-background'
       )}
@@ -296,6 +309,6 @@ export function PostCard({
       <div className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
         <div className="bg-primary text-white text-xs px-2 py-1 rounded">Open</div>
       </div>
-    </button>
+    </motion.button>
   );
 }
